@@ -1,0 +1,51 @@
+<?php
+    $base_url = $this->config->base_url();
+    $public_url = $base_url.'public/';
+    $img_url = $public_url.'img/';
+?>
+		<div id="header-section">
+            <div id="signin">
+                <h1 class="page-header">
+                    <?php echo $header; ?>
+                </h1>
+
+                <form method="post" action="<?php echo $base_url; ?>signin/login" id="signin_form">
+                    <input type="text" class="form-control" placeholder="Username, Email or Phone Number" name="username"><br>
+                    <input type="password" class="form-control" placeholder="Password" name="password"><br>
+
+                    <button class="btn btn-primary pull-right" type="submit" name="submit" value="submit">Sign in</button>
+
+                    <div class="clearfix"></div>
+                </form>
+
+                <hr>
+
+                <span class="pull-right">By signing in, you accept the <a href="#" data-toggle="modal" data-target="#terms_modal">Terms of Service</a></span>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="modal fade" id="terms_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                            <h3 class="modal-title">Terms of Service</h3>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="col-lg-12 text-center">
+                                <p></p>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="button" id="accept_terms">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
