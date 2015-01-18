@@ -42,15 +42,15 @@
                     </p>
 
                     <p>
-                        <span class="bold_span">Search for anyone:</span> You can search for people by their names and ages insted of just by location.
+                        Search for anyone: You can search for people by their names and ages insted of just by location.
                     </p>
 
                     <p>
-                        <span class="bold_span">Keep Records:</span> Keep track of all of the people that you have liked/passed.
+                        Keep Records: Keep track of all of the people that you have liked/passed.
                     </p>
 
                     <p>
-                        <span class="bold_span">Find the most popular users:</span> See the users that have gotten the most matches and likes.
+                        Find the most popular users: See the users that have gotten the most matches and likes.
                     </p>
 
 

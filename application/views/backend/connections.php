@@ -1,26 +1,17 @@
 <?php
 	$base_url = $this->config->base_url();
 
-	$count = $connections['count'];
     $per_page = 5;
     $pages = ceil($count/$per_page);
 
     if($pages > 0) {
-    	$start = $page*$per_page;
-
-        if($page == ($pages-1)) {
-            $mod = $count%$per_page;
-            $end = $start+$mod;
-        } else {
-            $end = $start+$per_page;
-        }
 ?>
 	<div class="hidden" id="matches_results_num"><?php echo $count; ?></div>
 
 	<ul class="list-group">
 <?php
-		for($i=$start;$i<$end;$i++) {
-			$user = $connections['likes'][$i]['user_info'];
+		for($i=0;$i<count($connections);$i++) {
+			$user = $connections[$i]['user_info'];
 
 			if(is_array($user)) {
 				$name = $user['first_name'];
@@ -38,7 +29,7 @@
 			<a href="<?php echo $base_url.'matches/'; ?>" title=""><?php echo $name; ?></a>, <?php echo $age; ?>
 
 			<span class="pull-right">
-				<?php echo date('D, M j', strtotime($connections['likes'][$i]['datetime'])); ?>
+				<?php echo date('D, M j', strtotime($connections[$i]['datetime'])); ?>
 			</span>
 
 			<span class="clearfix"></span> 

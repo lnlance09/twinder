@@ -36,7 +36,7 @@
 ?>
 	</ul>
 
-		<button type="submit" class="btn btn-default" id="autocomplete_submit">see <?php echo number_format($count); ?> results for '<?php echo $q; ?>'</button>
+	<button class="btn btn-default" type="submit" id="autocomplete_submit">see all results for '<?php echo $q; ?>'</button>
 
 	<div class="clearfix"></div>
 <?php

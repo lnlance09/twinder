@@ -160,6 +160,10 @@ $(document).ready(function() {
         $('#single_users_load').load(base_url +'users/EditProfile', user_data, function() {
             var can_edit = $('#can_edit').text().trim();
 
+            $('#other_trigger').click(function() {
+                $('#other_box').slideDown();
+            });
+
             if(can_edit == 'true') {
                 // Edit the user's bio
                 $('h1.static button').click(function(e) {
@@ -256,7 +260,9 @@ $(document).ready(function() {
             var lon = position.coords.longitude;
             var lat = position.coords.latitude;
 
-            function initialize() {
+            function initialize(lat, lon) {
+                var latlng = new google.maps.LatLng(lat, lon);
+
                 var mapOptions = {
                     center: latlng,
                     zoom: 6,
@@ -264,16 +270,17 @@ $(document).ready(function() {
                 };
 
                 var el = document.getElementById('ping_map');
-                map = new google.maps.Map(el, mapOptions);
+                var map = new google.maps.Map(el, mapOptions);
 
                 var marker = new google.maps.Marker({
                     map: map,
                     position: latlng
                 });
+
+                marker.setAnimation(google.maps.Animation.BOUNCE);
             }
 
-            var latlng = new google.maps.LatLng(lat, lon);
-            initialize();
+            initialize(lat, lon);
         }
     } 
 });

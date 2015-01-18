@@ -24,7 +24,7 @@
                     <p>
                         Soon thereafter, it came to my attention that although Tinder was a wildly popular app, it was lacking in some key areas.
                         For starters, there was too much anonymity. Sure, anonymity is great because it helps users keep their distance from the crowds of creepy males on Tinder that will swipe right on just about anything with two legs.
-                        But, an online directory of Tinder users would serve an enormously useful purpose. It would grant more choices to millions of Tinder users. It would let users search for people in partcular instead of just having to hope that you run into thanks to to sheer luck. It would also rank the most popular and most desired Tinder users based upon a number of key faotors.
+                        But, an online directory of Tinder users would serve an enormously useful purpose. It would grant more choices to millions of Tinder users. It would let users search for people in partcular instead of just having to hope that you run into thanks to to sheer luck. It would also rank the most popular and most desired Tinder users based upon a number of key factors.
                     </p>
                 </div>
 

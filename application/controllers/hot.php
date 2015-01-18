@@ -17,8 +17,20 @@
 			}
 
 			public function Index() {
-				// Get the page from the URL
-				$page = $this->uri->segment(2, 0);
+				if(is_numeric($this->session->userdata('distance_filter'))) {
+					$dist = $this->session->userdata('distance_filter');
+				} else {
+					$dist = 50;
+				}
+
+				// Get the URL parameters
+				$gender = $this->uri->segment(2, 'both');
+				$city = $this->uri->segment(3, 0);
+				$state = $this->uri->segment(4, 0);
+				$distance = $this->uri->segment(5, $dist);
+				$min = $this->uri->segment(6, 18);
+				$max = $this->uri->segment(7, 50);
+				$page = $this->uri->segment(8, 0);
 
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
@@ -28,17 +40,11 @@
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
 
-					// Get the user's like count
-					$like_count = $this->database_model->GetLikeCount($tinder_id, FALSE);
-
-					// Find out how many matches the user has
-					$match_count = $this->database_model->GetMatches($tinder_id);
-
-					// Get the pass count
-					$pass_count = NULL;
-
-					// Get the distance filter
-					$distance = $this->session->userdata('distance_filter');
+					// Get all of the stats for the header if the client is logged in
+					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$like_count = $stats['like_count'];
+					$match_count = $stats['match_count'];
+					$pass_count = $stats['pass_count'];
 				} else {
 					$session = FALSE;
 					$auth = NULL;
@@ -46,7 +52,6 @@
 					$like_count = NULL;
 					$match_count = NULL;
 					$pass_count = NULL;
-					$distance = 50;
 				}
 
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
@@ -64,16 +69,24 @@
 									'tinder_id' => $tinder_id,
 									'like_count' => $like_count,
 									'pass_count' => $pass_count,
-									'match_count' => $match_count['count'],
+									'match_count' => $match_count,
 									'first_name' => $this->session->userdata('first_name'),
 									'last_name' => $this->session->userdata('last_name'),
 									'meta' => $meta_info,
 									'profile_link' => $profile_link);
 
 				// Define the body info
-				$body_info = array('distance' => $distance,
+				$body_info = array('gender' => $gender,
+									'city' => $city,
+									'state' => $state,
+									'distance' => $distance,
 									'meters' => MilesToMeters($distance),
+									'min' => $min,
+									'max' => $max,
 									'page' => $page);
+
+				//FormatArray($body_info);
+				//die;
 
 				// Load all of the views
 				$this->load->view('header', $header_info); 
@@ -82,14 +95,15 @@
 			}
 
 			public function GetHottest() {
-				// Get the page from the URL
-				$page = $this->input->get('page');
-				$gender = $this->input->get('gender');
+				// Get all of the query string parameters
+				$params = $this->input->get();
+						
+				foreach($params as $key => $value) {
+					$$key = $value;
+				}
 
 				// Get all of the hottest users
-				$hot = $this->database_model->GetHottest();
-				// FormatArray($hot);
-				// die;
+				$hot = $this->database_model->GetHottest($gender, $city, $state, $distance, $min, $max, $page);
 
 				// Load all of the views
 				$this->load->view('backend/hot', array('hot' => $hot, 'page' => $page)); 

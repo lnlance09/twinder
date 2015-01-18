@@ -20,10 +20,6 @@
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
-				//$coord = CircleDistance(-73.9844, 40.7590, -117.1801, 32.8288);
-				//echo $coord;
-				//die;
-
 				if(is_numeric($user_id)) {
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
@@ -33,15 +29,13 @@
 					$lon = $info['pos']['lon'];
 					$lat = $info['pos']['lat'];
 
-					// Get the user's like count
-					$like_count = $this->database_model->GetLikeCount($tinder_id, FALSE);
+					// Get all of the stats for the header if the client is logged in
+					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$like_count = $stats['like_count'];
+					$match_count = $stats['match_count'];
+					$pass_count = $stats['pass_count'];
 
-					// Find out how many matches the user has
-					$match_count = $this->database_model->GetMatches($tinder_id);
-
-					// Get the pass count
-					$pass_count = NULL;
-
+					// Get the user's profile link
 					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 					$settings_info = array('distance' => $info['distance_filter'],
@@ -63,7 +57,7 @@
 										'tinder_id' => $tinder_id,
 										'like_count' => $like_count,
 										'pass_count' => $pass_count,
-										'match_count' => $match_count['count'],
+										'match_count' => $match_count,
 										'profile_link' => $profile_link);
 
 					// Load all of the views
@@ -84,9 +78,16 @@
 
 				// Update all of the settings
 				$info = $this->users_model->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
-	
+				// FormatArray($info);
+
+				// Update the username in the DB
+				$this->database_model->UpdateUser($this->session->userdata('tinder_id'), array('username' => $username));
+
+				// Update the username session variable
+				$this->session->set_userdata('username', $username);
+
 				// $this->database_model->Update
-				header('Location: '.$this->base_url.'settings');
+				// header('Location: '.$this->base_url.'settings');
 			}
 
 			public function CheckUsername() {

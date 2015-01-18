@@ -10,7 +10,6 @@
     }
 
     $img_path = 'http://images.gotinder.com/'.$tinder_id.'/'; 
-    //$fb_pic_id = https://www.facebook.com/photo.php?fbid='.$fb_pid_id;
 ?>
             <div class="col-lg-12" id="focus_box">
                 <!-- Ping the user's last location -->
@@ -118,15 +117,4 @@
                 </div>
 
                 <div class="hidden" id="type_name">matches</div>
-            </div>
-
-            <!-- The modal for the profile pic -->
-            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <img src="//placehold.it/1000x600" class="img-responsive">
-                        </div>
-                    </div>
-                </div>
             </div>

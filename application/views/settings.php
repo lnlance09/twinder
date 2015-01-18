@@ -19,26 +19,11 @@
                 <form method="POST" action="" id="settings_form">
                     <div class="col-lg-12 settings_box">
                         <span>
-                            username
-                        </span>
-
-                        <div class="pull-right" id="username_div">
-                            <div class="input-group pull-right">
-                                <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $username; ?>" autocomplete="off">
-                                <span class="input-group-addon">@</span>
-                            </div>
-                        </div>
-    
-                        <div class="clearfix"></div>
-                    </div>
-
-                    <div class="col-lg-12 settings_box">
-                        <span>
                             interested in
                         </span>
     
                         <div class="dropdown pull-right">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="interested_in_button" data-toggle="dropdown" aria-expanded="true"><?php echo FormatInterestedIn($gender_filter); ?> <span class="caret"></span></button>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="interested_in_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender_filter; ?>"><?php echo FormatInterestedIn($gender_filter); ?> <span class="caret"></span></button>
 
                             <ul class="dropdown-menu" id="interested_in">
 <?php
@@ -60,7 +45,7 @@
                         </span>
 
                         <div class="dropdown pull-right">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"><?php echo FormatGender($gender); ?> <span class="caret"></span></button>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="gender_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender; ?>"><?php echo FormatGender($gender); ?> <span class="caret"></span></button>
 
                             <ul class="dropdown-menu" id="gender">
 <?php
@@ -75,6 +60,21 @@
 
                         <div class="clearfix"></div>
                     </div> 
+
+                    <div class="col-lg-12 settings_box">
+                        <span>
+                            username
+                        </span>
+
+                        <div class="pull-right" id="username_div">
+                            <div class="input-group pull-right">
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $username; ?>" autocomplete="off">
+                                <span class="input-group-addon">@</span>
+                            </div>
+                        </div>
+    
+                        <div class="clearfix"></div>
+                    </div>
 
                     <div class="col-lg-12 text-center settings_box">
                         <h2>age</h2>

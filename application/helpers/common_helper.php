@@ -2,6 +2,7 @@
 	if(!defined('BASEPATH')) {
 		exit('No direct script access allowed');
 	} else {
+		// Send the request to one of Tinder's API endpoints
 		if(!function_exists('SendRequest')) {
 			function SendRequest($url, $auth = NULL, $post, $post_data) {
 				// Define the HTTP headers
@@ -43,6 +44,7 @@
 			}
 		}
 
+		//  Get the formatted name of a location from its latitude and longitude coordinates
 		if(!function_exists('GeoLocation')) {
 			function GeoLocation($lon, $lat) {
 				$api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
@@ -59,23 +61,22 @@
 			}
 		}
 
-		if(!function_exists('CircleDistance')) {
-			function CircleDistance($lat_from, $lon_from, $lat_to, $lon_to, $radius = 6371000) {
-				// Convert from degrees to radians
-				$lat_from = deg2rad($lat_from);
-				$lon_from = deg2rad($lon_from);
-				$lat_to = deg2rad($lat_to);
-				$lon_to = deg2rad($lon_to);
-				$lon_delta = $lon_to-$lon_from;
-
-				$a = pow(cos($lat_to)*sin($lon_delta), 2) + pow(cos($lat_from)*sin($lat_to) - sin($lat_from)*cos($lat_to)*cos($lon_delta), 2);
-				$b = sin($lat_from)*sin($lat_to) + cos($lat_from)*cos($lat_to)*cos($lon_delta);
-				$angle = atan2(sqrt($a), $b);
-
-				return ceil(($angle*$radius)*0.000621371);
+		// Find the Distance between two places
+		if(!function_exists('Haversine')) {
+			function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
+				$delta_lat = deg2rad($lat_to - $lat_from);
+				$delta_lon = deg2rad($lon_to - $lon_from);
+				
+				$a = sin($delta_lat/2) * sin($delta_lat/2) +
+					cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) *
+					sin($delta_lon/2) * sin($delta_lon/2);
+				$c = 2*atan2(sqrt($a), sqrt(1-$a));
+				
+				return ceil((6371000*$c)*0.000621371);
 			}
 		}
 
+		// Format the user's bios to link to their Instagram profiles and Twitter hashtags
 		if(!function_exists('BioLinks')) {
 			function BioLinks($bio) {
 				$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA');
@@ -88,6 +89,7 @@
 			}
 		}
 
+		// Format a user's WeTinder link according to their username
 		if(!function_exists('FormatUserLink')) {
 			function FormatUserLink($tinder_id, $username) {
 				if(strlen($username) > 0) {
@@ -98,6 +100,7 @@
 			}
 		}
 
+		// Format the user's gender name
 		if(!function_exists('FormatGender')) {
 			function FormatGender($num) {
 				if($num == 0) {
@@ -108,6 +111,18 @@
 			}
 		}
 
+		// Get the gender's number from its name
+		if(!function_exists('ReverseGender')) {
+			function ReverseGender($name) {
+				if($name == 'male') {
+					return 0;
+				} else {
+					return 1;
+				}
+			}
+		}
+
+		// Format the user's interested in
 		if(!function_exists('FormatInterestedIn')) {
 			function FormatInterestedIn($num) {
 				switch($num) {
@@ -129,16 +144,42 @@
 			}
 		}
 
+		// Get the user's interested in number from the name
+		if(!function_exists('ReverseInterestedIn')) {
+			function ReverseInterestedIn($name) {
+				switch($name) {
+					case 'men';
+
+						return 0;
+						break;
+
+					case 'women';
+
+						return 1;
+						break;
+
+					default:
+
+						return '-1';
+						break;
+				}
+			}
+		}
+
+		// Format a user's likes, passes and matches numbers
 		if(!function_exists('FormatNumber')) {
 			function FormatNumber($num) {
 				if($num > 1000) {
-					return floor($num/1000).'K';
+					$floor = floor($num/1000);
+					$decimal = ceil($num/100)-($floor*10); 
+					return $floor.'.'.$decimal.'k';
 				} else {
 					return $num;
 				}
 			}
 		}
 
+		// Format the time that the user was last online
 		if(!function_exists('FormatTime')) {
 			function FormatTime($time) {
 				// Find out the difference between now and the given date
@@ -172,6 +213,15 @@
 			}
 		}
 
+		// Find out a user's age from their date of birth
+		if(!function_exists('ReturnAge')) {
+			function ReturnAge($birthday) {
+				$dob = date('M j, Y', strtotime($birthday));
+				return date_diff(date_create(), date_create($dob))->format('%y');
+			}
+		}
+
+		// Return the link to the user's cookie file
 		if(!function_exists('CookieFile')) {
 			function CookieFile($email) {
 				$exp = explode('@', $email);
@@ -187,6 +237,7 @@
 			}
 		}
 
+		// Strip the path to the user's pic
 		if(!function_exists('StripPic')) {
 			function StripPic($pic_name) {
 				$exp = explode('/', $pic_name);
@@ -195,20 +246,61 @@
 			}
 		}
 
+		// Format an json decoded array
 		if(!function_exists('FormatArray')) {
-			function FormatArray($array) {
+			function FormatArray($array, $style = NULL) {
+				if($style !== NULL) {
+					echo '<div style="color: #090127;text-shadow:none;text-align:left;">';
+				}
+
 				echo '<pre>';
 				print_r($array);
 				echo '</pre>';
+
+				if($style !== NULL) {
+					echo '</div>';
+				}
 			}
 		}
 
+		// Convert miles to meters
 		if(!function_exists('MilesToMeters')) {
 			function MilesToMeters($miles) {
 				return ceil($miles/0.000621371);
 			}
 		}	
 
+		// Format the time that was 5 minutes ago
+		if(!function_exists('RequestTime')) {
+			function RequestTime($time) {
+				if($time === NULL) {
+					return $time;
+				} else {
+					return date('Y-m-d', strtotime($time)).'T'.date('h:i:s', strtotime($time)).'.906Z';
+				}
+			}
+		}
+
+		// Get a user's first and last names
+		if(!function_exists('FormatNames')) {
+			function FormatNames($name) {
+				$exp = explode(' ', $name);
+				$exp_num = count($exp);
+				return array('first_name' => $exp[0], 'last_name' => $exp[$exp_num-1]);
+			}
+		}
+
+		if(!function_exists('MetaSubject')) {
+			function MetaSubject($username, $name) {
+				if($username == '') {
+					return $name;
+				} else {
+					return $username;
+				}
+			}
+		}
+
+		// Print out pagination links
 		if(!function_exists('Pagination')) {
 			function Pagination($page, $pages) {
 				$each = 5;

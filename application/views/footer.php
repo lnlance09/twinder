@@ -90,12 +90,6 @@
     <script src="<?php echo $js_url; ?>nouislider.min.js"></script>
 <?php
     }
-
-    if(in_array($controller, $fancy_pages)) {
-?>
-    <script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>
-<?php
-    }
 ?>
     <!-- The JavaScript for each page -->
     <script src="<?php echo $js_url.$controller; ?>.js"></script>

@@ -39,7 +39,7 @@
 				      		<div class="modal-body">
 				        		<div class="col-lg-6 text-right">
 				        			<div>
-										<img src="http://images.gotinder.com/<?php echo $this->session->userdata('tinder_id').'/'.$this->session->userdata('profile_pic_medium');  ?>" width="172" height="172" alt="<?php echo $this->session->userdata('first_name'); ?>" class="img-circle"/>
+										<img src="http://images.gotinder.com/<?php echo $this->session->userdata('tinder_id').'/'.$this->session->userdata('profile_pic_tiny');  ?>" width="172" height="172" alt="<?php echo $this->session->userdata('first_name'); ?>" class="img-circle"/>
 									</div>
 				        		</div>
 

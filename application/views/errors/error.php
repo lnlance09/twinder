@@ -153,37 +153,5 @@
         </div>
     </div>
 
-    <div id="search_container">
-        <form method="GET" action="<?php echo $base_url; ?>search">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
-<?php
-    if($controller == 'search') {
-?>
-                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $q; ?>" autocomplete="off">
-<?php
-    } else {
-?>
-                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" autocomplete="off">
-<?php
-    }
-?>
-                <span class="input-group-addon"></span>
-
-                <div class="clearfix"></div>
-            </div>
-        </form>
-    </div>
-
-    <div id="autocomplete_wrapper">
-        <div id="autocomplete">
-                    
-        </div>
-    </div>
-
-    <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
-    <div id="controller" class="hidden"><?php echo $controller; ?></div>
-    <div id="method" class="hidden"><?php echo $method; ?></div>
-    <div id="auth" class="hidden"><?php echo $auth; ?></div>
-    <div id="like_users_num" class="hidden">0</div>
+    

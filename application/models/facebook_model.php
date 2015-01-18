@@ -1,0 +1,113 @@
+<?php 
+	class Facebook_model extends CI_Model {
+		public $user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36';
+		public $client_id = 464891386855067;
+		public $scope = 'basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details';
+
+		public function __construct() {       
+			parent:: __construct();
+
+			// Load the helpers file
+			$this->load->helper('common_helper');
+		}
+
+		public function FacebookLogin($email, $password) {  
+			// Define the cookies files
+			$cookies = CookieFile($email);
+		    
+		    // Build the query
+		    $data = array('charset_test' => htmlspecialchars("&euro;,&acute;,â‚¬,Â´,æ°´,Ð”,Ð„"),
+		            	'lsd' => 'OsC-Z',
+		            	'locale' => 'en_US',
+		            	'email' => $email,
+		            	'pass' => $password,
+		            	'persistent' => 1,
+		            	'default_persistent' => 0); 
+              
+			$ch = curl_init();  
+			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php');
+			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);  
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);    
+			curl_setopt($ch, CURLOPT_POST, TRUE);  
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
+			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
+			curl_exec($ch); 					
+
+		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+			curl_close($ch);
+				  	
+			return $http;   
+		}
+
+		// Grab the access token from the FB API
+		public function FacebookToken($email, $password) {
+			$login = $this->FacebookLogin($email, $password);
+
+			if($login == 200) {
+				// Define the cookies file
+				$cookies = CookieFile($email);
+			    $uri = 'https://www.facebook.com/connect/login_success.html';
+				$url = 'https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.urlencode($uri).'&scope='.$this->scope.'&response_type=token';
+						
+				$ch = curl_init();  
+				curl_setopt($ch, CURLOPT_URL, $url);  
+				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
+				curl_setopt($ch, CURLOPT_HEADER, TRUE);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
+				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);  
+				$data = curl_exec($ch);   
+
+				// echo $data;
+			    $curl_info = curl_getinfo($ch);
+
+				// Get the headers and then the HTTP code
+				$headers = substr($data, 0, $curl_info['header_size']);
+				$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+				// Make sure that the HTTP redirects to a location that has an access token in the URL
+				if($code == 302) {
+					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
+					$break = explode('access_token=', $matches[1]);
+					// FormatArray($break);
+
+					if(count($break) == 2) {
+						// Split the URL once more to get the access token value
+						$exp = explode('&', $break[1]);
+						$token = $exp[0];	
+					}  else {
+						$token = 'Failed';
+					}
+				} elseif($code == 200) {
+					$token = 'Permissions';
+				} else {
+					$token = 'Failed';
+				}
+						
+				return $token;  
+			} else {
+				return 'Error';
+			}
+		} 
+
+		public function ScrapePage($token, $page) {
+			$data = array('access_token' => $token,
+						'format' => 'json',
+						'method' => 'get',
+						'pretty' => 0,
+						'suppress_http_code' => 1,
+						'fields' => 'name,picture');
+
+			$ch = curl_init();  
+			curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/v2.2/'.$page.'?'.http_build_query($data));
+			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+			$data = curl_exec($ch); 					 
+			curl_close($ch);
+				  	
+			return @json_decode($data, TRUE);  
+		}
+	}

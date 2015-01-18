@@ -1,9 +1,16 @@
 $(document).ready(function() { 
     var base_url = $('#base_url').text();
+
+    // Get all of the parameters from the URL
+    var gender = $('#gender').text().trim();
+    var city = $('#city').text().trim();
+    var state = $('#state').text().trim();
     var distance = $('#distance').text().trim();
     var meters = parseInt($('#meters').text().trim());
+    var min = $('#min').text().trim();
+    var max = $('#max').text().trim();
     var page = $('#page').text().trim();
-    // console.log(meters);
+    console.log(distance);
 
     // Get the longitude and latitude coordinates
     if(navigator.geolocation) {
@@ -21,7 +28,7 @@ $(document).ready(function() {
     $("#age_slider").noUiSlider({
         connect: true,
         behaviour: 'tap',
-        start: [18, 50],
+        start: [min, max],
         step: 1,
         format: wNumb({
             decimals: 0
@@ -52,18 +59,16 @@ $(document).ready(function() {
     $("#distance_slider").Link('lower').to($('#distance-value'));
 
     
-    $('ul#sex_select li').click(function() {
-        var gender = $(this).find('a').attr('title');
-
-        // Load the hottest
-        $('#hot_load').load(base_url +'hot/GetHottest', 'page='+ page +'&gender='+ gender, function() {
-            $('#hot_load .ajax-loader').fadeOut();
-        });
-    });
-
     // Load the hottest
-    $('#hot_load').load(base_url +'hot/GetHottest', 'page='+ page, function() {
-    	$('#hot_load .ajax-loader').fadeOut();
+    var data = 'gender='+ gender +
+                '&city='+ city +
+                '&state='+ state +
+                '&distance='+ distance +
+                '&min='+ min +
+                '&max='+ max +
+                '&page='+ page;
+    $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
+        $('#hot_load .ajax-loader').fadeOut();
     });
 
     function ShowPosition(position) {
@@ -123,10 +128,9 @@ $(document).ready(function() {
         // Get the user's current longitude and latitude coordinates
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
-        initialize(meters, lat, lon);
-
         $('#drag_lat').text(lat);
         $('#drag_lon').text(lon);
+        initialize(meters, lat, lon);
 
         $.ajax({
             url : base_url +'home/LocationNameFromCoords',
@@ -149,6 +153,43 @@ $(document).ready(function() {
             // console.log(lat +' '+ lon);
 
             initialize(meters, lat, lng);
+        });
+
+        // Update the results upon change of the distance
+        $('#age_slider').click(function() {
+            var min = $('#lower-value').text();
+            var max = $('#upper-value').text();
+            var gender = $('#interested_in').val();
+            var data = 'gender='+ gender +'&city='+ city +'&state='+ state +'&distance='+ distance +'&min='+ min +'&max='+ max +'&page='+ page;
+
+            $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
+                $('#hot_load .ajax-loader').fadeOut();
+
+                // var count = $('#search_results_num').text();
+                // $('#count_num').text(count);
+            });
+        });
+
+        $('ul#sex_select li').click(function() {
+            var gender = $(this).find('a').attr('title');
+            var city = '';
+            var state = '';
+            var distance = $('#distance-value').text().trim();
+            var min = $('#lower-value').text();
+            var max = $('#upper-value').text();
+            var page = parseInt(0);
+            
+            var data = 'gender='+ gender +
+                        '&city='+ city +
+                        '&state='+ state +
+                        '&distance='+ distance +
+                        '&min='+ min +
+                        '&max='+ max +
+                        '&page='+ page;
+            // Load the hottest
+            $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
+                $('#hot_load .ajax-loader').fadeOut();
+            });
         });
     }
 });

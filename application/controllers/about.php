@@ -25,14 +25,11 @@
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
 
-					// Get the user's like count
-					$like_count = $this->database_model->GetLikeCount($tinder_id, FALSE);
-
-					// Find out how many matches the user has
-					$match_count = $this->database_model->GetMatches($tinder_id);
-
-					// Get the pass count
-					$pass_count = NULL;
+					// Get all of the stats for the header if the client is logged in
+					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$like_count = $stats['like_count'];
+					$match_count = $stats['match_count'];
+					$pass_count = $stats['pass_count'];
 				} else {
 					$session = FALSE;
 					$auth = NULL;
@@ -56,7 +53,7 @@
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
 									'like_count' => $like_count,
-									'match_count' => $match_count['count'],
+									'match_count' => $match_count,
 									'pass_count' => $pass_count,
 									'first_name' => $this->session->userdata('first_name'),
 									'last_name' => $this->session->userdata('last_name'),

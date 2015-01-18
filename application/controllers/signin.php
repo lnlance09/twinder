@@ -51,6 +51,7 @@
 					$username = $this->input->post('username');
 					$password = $this->input->post('password');
 
+					// Log the user in and get the auth token
 					$login = $this->users_model->AuthToken($username, $password);
 
 					// Use if internet not available
@@ -66,7 +67,7 @@
 						//FormatArray($this->session->all_userdata());
 						//die;
 
-						header('Location: '.$this->base_url.'users/Discover');
+						header('Location: '.$this->base_url.'users/discover');
 					} else {
 						header('Location: '.$this->base_url.'signin');
 					}

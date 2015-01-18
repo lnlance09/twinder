@@ -25,33 +25,31 @@
 			}
 
 			public function Test() {
-				//$geo = GeoLocation('-73.9844', '40.7590');
-				//FormatArray($geo);
+				//$auth = $this->session->userdata('token');
+				//$info = $this->users_model->ReportUser('52cbac34fe5f7abb63000661', $auth, 1, NULL);
+
+				/*
+				$center_lat = 40.7590;
+				$center_lng = -73.9844;
+				$lat = 34.0617;
+				$lng = -118.2458;
+				$info = Haversine($center_lat, $center_lng, $lat, $lng);
+				echo $info;
+				*/
+
+				// Get all of the user's matches since they have joined
+				//$updates = $this->users_model->GetUpdates('b3b5096f-b4ec-4604-ade0-34583b22200a', '-100 days');
+				//FormatArray($updates);
 				//die;
 
-				//$auth = 'bee1d478-2a75-4602-a2a5-d47fcdfe40ca'; 
-				$auth = $this->session->userdata('token');
-				//$info = $this->users_model->UserLookup('53b0f42b451e714a5fd0c819', $auth);
-				$info = $this->users_model->FindUsers($auth);
+				//$token = $this->facebook_model->FacebookToken('mia_falco92@mail.com', 'Codecall87!');
+				//$info = $this->facebook_model->ScrapePage($token, 1043010065);
 				//FormatArray($info);
-				//die;
+				die;
 
 				// Flush the DB
 				//$this->database_model->FlushDB();   
 				//die;
-
-				$hot = $this->database_model->GetHottest();  
-
-				for($i=0;$i<count($hot['users']);$i++) {
-					$bio = $hot['users'][$i]['bio'];
-
-					echo '<a href="'.$this->base_url.'users/'.$hot['users'][$i]['tinder_id'].'">'.strlen($bio).'</a><br>';
-					if($bio != '') {
-						// echo 'Bio: '.$bio.'<br><br>';
-						echo 'Bio: '.BioLinks($bio).'<br><br>';
-						echo '<br><br>';
-					}
-				}
 			}
 		}
 	}

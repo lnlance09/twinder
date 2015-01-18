@@ -10,12 +10,13 @@ $(document).ready(function() {
         || val == '') {
             $('#autocomplete').slideUp('fast');
         } else {
-            //$('#autocomplete').prepend('<div class="ajax-loader"><i class="fa fa-refresh fa-2x fa-spin"></i></div>');
             $('#autocomplete').slideDown('fast');
             var data = 'q='+ val +'&gender=both';
 
             $('#autocomplete').load(url, data, function() {
-            //    $('#autocomplete .ajax-loader').fadeOut();
+                $('#autocomplete_submit').click(function() {
+                    window.location = base_url +'search?='+ val;
+                });
             }); 
         }
     });
@@ -24,7 +25,8 @@ $(document).ready(function() {
     $('body').bind('click', function(e) {
         var that = $('#autocomplete');
 
-        if($(e.target).attr("id") != that.attr("id")) {
+        if($(e.target).attr('id') != that.attr('id')
+        && $(e.target).attr('id') != 'autocomplete_submit') {
             $('#autocomplete').slideUp('fast');
         }
     });

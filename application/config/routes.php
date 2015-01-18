@@ -40,13 +40,15 @@
 */
 
 $route['default_controller'] = 'hot';
-$route['404_override'] = '';
 
-// Sitemap
+$route['404_override'] = 'error';
+
+/* Sitemap */
 $route['seo/sitemap\.xml'] = 'seo/sitemap';
 
-// Users page
+/* Users page */
 $route['users/(:any)'] = 'users/index/$1';
+$route['users/discover'] = 'users/Discover/';
 $route['users/Discover'] = 'users/Discover/';
 $route['users/DiscoverLoad'] = 'users/DiscoverLoad/';
 $route['users/EditProfile'] = 'users/EditProfile/';
@@ -57,18 +59,37 @@ $route['users/GetPings'] = 'users/GetPings/';
 $route['users/LikeUser'] = 'users/LikeUser/';
 $route['users/Logout'] = 'users/Logout/';
 $route['users/PassUser'] = 'users/PassUser/';
+$route['users/ReportUser'] = 'users/ReportUser/';
 $route['users/SendMessage'] = 'users/SendMessage/';
 $route['users/UpdateProfile'] = 'users/UpdateProfile/';
 
-// Matches page
+/* Matches page */
 $route['matches/(:any)'] = 'matches/index/$1';
 $route['matches/MatchesBackend'] = 'matches/MatchesBackend/';
 $route['matches/ThreadBackend'] = 'matches/ThreadBackend/';
 
 // Hot page
-$route['hot/(:num)'] = 'hot/index/$1';
-$route['hot/GetHottest'] = 'hot/GetHottest';
-//$route['hot/GetHottest/(:any)'] = 'hot/GetHottest/$1';
+// Gender
+$route['hot/(:any)'] = 'hot/index/$1'; 
 
-/* End of file routes.php */
-/* Location: ./application/config/routes.php */
+// City or Longitude
+$route['hot/(:any)/(:any)'] = 'hot/index/$1/$2';
+
+// State or Latitude
+$route['hot/(:any)/(:any)/(:any)'] = 'hot/index/$1/$2/$3';
+
+// Distance
+$route['hot/(:any)/(:any)/(:any)/(:num)'] = 'hot/index/$1/$2/$3/$4';
+
+// Minimum age
+$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5';
+
+// Maximum age
+$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6';
+
+// Page number
+$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6/$7';
+
+// Get hottest method
+$route['hot/GetHottest'] = 'hot/GetHottest';
+$route['hot/GetHottest/(:any)'] = 'hot/GetHottest/$1';

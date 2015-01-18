@@ -20,7 +20,7 @@
         $sex = 'Female';
     }
 
-    $img_path = 'http://images.gotinder.com/'.$tinder_id.'/';
+    $img_path = 'http://images.gotinder.com/'.$tinder_id.'/'; 
 ?>
             <div class="col-lg-12" id="focus_box">
                 <div class="col-lg-4">

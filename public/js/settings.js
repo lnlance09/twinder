@@ -56,10 +56,18 @@ $(document).ready(function() {
     $("#distance_slider").Link('lower').to($('#distance-value'));
 
     
-    $('.settings_box .dropdown li a').click(function() {
+    $('#interested_in li a').click(function() {
         var value = $(this).attr('title');
         var key = $(this).text().trim();
         $('#interested_in_button').text(key);
+        $('#interested_in_button').val(value);
+    });
+
+    $('#gender li a').click(function() {
+        var value = $(this).attr('title');
+        var key = $(this).text().trim();
+        $('#gender_button').text(key);
+        $('#gender_button').val(value);
     });
 
 
@@ -128,9 +136,11 @@ $(document).ready(function() {
         var username = $('#username').val();
         var max = $('#upper-value').text();
         var min = $('#lower-value').text();
-        var interested = $('#interested_in_button').attr('name');
-        var gender = $('#gender_button').attr('name');
+        var interested = $('#interested_in_button').val();
+        var gender = $('#gender_button').val();
 
+        console.log('Distance: '+ distance +', Username: '+ username +', Max: '+ max +', Min: '+ min +', Interested In: '+ interested +', Gender: '+ gender);
+        
         $.ajax({
             url : base_url +'settings/UpdateSettings',
             type: 'POST',
@@ -144,6 +154,7 @@ $(document).ready(function() {
                 min: min
             },
             success: function(data) {
+                // console.log(data);
                 window.location = base_url +'settings';
             }
         });

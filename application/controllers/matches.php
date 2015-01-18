@@ -31,7 +31,7 @@
 					$like_count = $this->database_model->GetLikeCount($tinder_id, FALSE);
 
 					// Find out how many matches the user has
-					$match_count = $this->database_model->GetMatches($tinder_id);
+					$match_count = $this->database_model->GetMatchCount($tinder_id);
 
 					// Get the pass count
 					$pass_count = NULL;
@@ -45,7 +45,7 @@
 										'auth' => $auth,
 										'tinder_id' => $tinder_id,
 										'like_count' => $like_count,
-										'match_count' => $match_count['count'],
+										'match_count' => $match_count,
 										'pass_count' => $pass_count,
 										'profile_link' => $profile_link);
 
