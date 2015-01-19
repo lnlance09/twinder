@@ -60,7 +60,6 @@
 
 								$his_id = $user_info['results']['_id'];
 								unset($user_info);
-
 								// echo $his_id;
 
 								// Get the most recent info about this user
@@ -84,7 +83,7 @@
 
 					// Define the meta tags
 					$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['first_name']).' on WeTinder',
-									'img' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/'.$user_info['pics'][0]['tiny'],
+									'img' => '',//'http://images.gotinder.com/'.$user_info['tinder_id'].'/'.$user_info['pics'][0]['tiny'],
 									'url' => $this->base_url.$user_info['link']);
 
 					// Set all of the info that needs to be passed to the header view
@@ -147,6 +146,7 @@
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
 
+					// Get all of the stats of the user who is logged in
 					$stats = $this->database_model->GetThreeStats($tinder_id);
 					$like_count = $stats['like_count'];
 					$match_count = $stats['match_count'];
@@ -188,6 +188,7 @@
 			public function DiscoverLoad() {
 				// Save the user's session ID as a variable
 				$my_id = $this->session->userdata('user_id');
+				$tinder_id = $this->session->userdata('tinder_id');
 				$auth = $this->session->userdata('token');
 
 				// Get all of the parameters from the URL
@@ -204,7 +205,6 @@
 					// Insert the user's ping into the DB
 					if($info['status'] == 200
 					&& !array_key_exists('error', $info)) {
-						$tinder_id = $this->session->userdata('tinder_id');
 						$this->database_model->InsertPing($lon, $lat, $tinder_id);
 					}
 
@@ -216,13 +216,14 @@
 					$this->database_model->RemoveAllBatch($my_id);
 
 					// Insert the user batch into the DB
-					$this->database_model->InsertBatch($my_id, $info);
+					$this->database_model->InsertBatch($my_id, $tinder_id, $info, $lon, $lat);
 
 					// Get the most recent batch user
 					$next = $this->database_model->GetBatchUser($my_id);
+					// FormatArray($next);
 
 					// Lookup the user to see if there's any mutual likes or friends
-					$lookup = $this->users_model->UserLookup($next['tinder_id'], $auth);
+					$lookup = $this->users_model->UserLookup($next, $auth);
 					// FormatArray($lookup);
 
 					// Load the view
@@ -250,13 +251,10 @@
 					$$key = $value;
 				}
 				
-				// Get the like count
-				$like_count = $this->database_model->GetLikeCount($id, FALSE);
-
-				// Find out how many matches the user has
-				$match_count = $this->database_model->GetMatchCount($id);
-
-				// Get the pass count
+				// Get all of the stats of the user who is logged in
+				$stats = $this->database_model->GetThreeStats($id);
+				$like_count = $stats['like_count'];
+				$match_count = $stats['match_count'];
 				$pass_count = $this->database_model->GetPassCount($id, FALSE);
 
 				// Get the info about the user
@@ -350,18 +348,10 @@
 				echo json_encode($data);
 			}
 
-			public function GetPings() {
-				// Save the user's session ID as a variable
-				$tinder_id = $this->session->userdata('tinder_id');
-
-				// Get the user's pings
-				$pings = $this->database_model->GetPings($tinder_id);
-			}
-
 			public function GetUpdates() {
 				// Call the GetUpdates function in the users model 
 				$auth = $this->session->userdata('token');
-				$updates = $this->users_model->GetUpdates($auth);
+				$updates = $this->users_model->GetUpdates($auth, 'now');
 				echo json_encode($updates);
 			}
 
@@ -384,7 +374,7 @@
 				}
 
 				// Remove the batch user from the DB and then insert him/her into the likes table
-				$this->database_model->RemoveBatchUser($id);
+				$this->database_model->RemoveBatchUser($id, $this->session->userdata('user_id'));
 				$this->database_model->InsertIntoLikes($tinder_id, $id, $match_id);
 
 				// Echo out the match ID
@@ -417,7 +407,7 @@
 				$pass = $this->users_model->PassUser($id, $auth);
 
 				// Remove the batch user from the DB and then insert him/her into the passes table
-				$this->database_model->RemoveBatchUser($id);
+				$this->database_model->RemoveBatchUser($id, $this->session->userdata('user_id'));
 				$this->database_model->InsertIntoPasses($tinder_id, $id);
 			}
 
@@ -440,7 +430,6 @@
 				
 				// Insert the message into the DB
 				$this->database_model->InsertMessage($id, $msg, $tinder_id);
-
 				FormatArray($message);
 			}
 

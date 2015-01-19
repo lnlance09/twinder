@@ -39,7 +39,7 @@
 				$updates = $this->GetUpdates($user['api_token'], $user['create_date']);
 
 				// Sync all of the messages from the user's Tinder account
-				$this->database_model->SyncMessages($updates['matches']);
+				$this->database_model->SyncMessages($updates['matches'], $user['_id']);
 
 				// Seperate the first name from the last
 				$names = FormatNames($user['full_name']);
@@ -64,8 +64,10 @@
 							'first_name' => $names['first_name'],
 							'last_name' => $names['last_name'],
 							'age' => ReturnAge($user['birth_date']),
+							'dob' => $user['birth_date'],
 							'gender' => $user['gender'],
-							'profile_pic_tiny' => StripPic($pics[0]['tiny']));
+							'profile_pic_tiny' => StripPic($pics[0]['tiny']),
+							'profile_pic_medium' => StripPic($pics[0]['medium']));
 
 				// Define the settings array for the query on the settings table
 				$settings = array('age_min' => $user['age_filter_min'],
@@ -80,8 +82,6 @@
 				$count = $query->num_rows();
 
 				if($count == 0) {
-					$username = NULL;
-
 					// If there isn't, then insert a row into the users table
 					$this->db->insert('users', $users);
 					$user_id = $this->db->insert_id();
@@ -89,6 +89,8 @@
 					// Insert a row into the settings table
 					$settings['tinder_id'] = $user['_id'];
 					$this->db->insert('settings', $settings);
+
+					$username = NULL;
 				} else {
 					// Get the user's ID
 					$row = $query->row_array();
@@ -162,7 +164,7 @@
 
 		public function GetUpdates($auth, $time = NULL) {
 			$time = RequestTime($time);
-			echo $time;
+			//echo $time;
 			$info = SendRequest('updates', $auth, TRUE, array('last_activity_date' => $time));
 			$decode = @json_decode($info, TRUE);
 			return $decode;
@@ -196,6 +198,7 @@
 		public function PresentUsers($auth) {
 			// Get a new batch of users
 			$users = $this->FindUsers($auth);
+			FormatArray($users);
 			$results = $users['results'];
 
 			$users = array();
@@ -213,12 +216,15 @@
 									'fb_id' => NULL); 
 				}
 
+				//FormatArray($results[$i]);
+				//die;
 				$users[$i] = array('tinder_id' => $results[$i]['_id'],
 								'name' => $results[$i]['name'],
-								'bio' => FormatBio($results[$i]['bio']),
+								'bio' => BioLinks($results[$i]['bio']),
 								'gender' => $results[$i]['gender'],
 								'birth_date' => $results[$i]['birth_date'],
 								'age' => ReturnAge($results[$i]['birth_date']),
+								'distance' => $results[$i]['distance_mi'],
 								'ping_time' => date('M j @ g:i A', strtotime($results[$i]['ping_time'])),
 								'time_format' => FormatTime($results[$i]['ping_time']),
 								'pics' => $pics);

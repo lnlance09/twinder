@@ -4,6 +4,7 @@
     $per_page = 5;
     $pages = ceil($count/$per_page);
 
+    echo $pages;
     if($pages > 0) {
 ?>
 	<div class="hidden" id="matches_results_num"><?php echo $count; ?></div>
@@ -23,7 +24,7 @@
 				$name = '';
 			}
 ?>
-		<li class="list-group-item" onclick="location.href='<?php echo $link; ?>'">
+		<li class="list-group-item" onclick="location.href='<?php echo $base_url.$link; ?>'">
 			<img src="http://images.gotinder.com/<?php echo $pic; ?>" width="50" height="50" class="img-circle" alt="<?php echo $name; ?>" />
 
 			<a href="<?php echo $base_url.'matches/'; ?>" title=""><?php echo $name; ?></a>, <?php echo $age; ?>

@@ -47,7 +47,7 @@
 		//  Get the formatted name of a location from its latitude and longitude coordinates
 		if(!function_exists('GeoLocation')) {
 			function GeoLocation($lon, $lat) {
-				$api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
+				// $api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
 
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$lat.','.$lon.'&sensor=false');

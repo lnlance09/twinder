@@ -1,4 +1,4 @@
-<?php 
+ <?php 
 	if(!defined('BASEPATH')) {
 		exit('No direct script access allowed');
 	} else {
@@ -48,20 +48,12 @@
 			public function LocationNameFromCoords() {
 				$lon = $this->input->get('lon');
 				$lat = $this->input->get('lat');
-
 				$geo = GeoLocation($lon, $lat);
 
-				/*
-				echo '<div style="color: #090127;text-shadow:none;text-align:left;">';
 				FormatArray($geo);
-				echo '</div>';
-				die;
-				*/
-
 				$city = $geo['results'][3]['formatted_address'];
 				//$state = $geo['results'][4]['address_components'][0]['short_name'];
-
-				echo $city;
+				//echo $city;
 			}
 		}
 	}

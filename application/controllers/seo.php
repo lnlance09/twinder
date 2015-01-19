@@ -25,6 +25,7 @@
 			}
 
 			public function Test() {
+				$this->database_model->FlushDB();
 				//$auth = $this->session->userdata('token');
 				//$info = $this->users_model->ReportUser('52cbac34fe5f7abb63000661', $auth, 1, NULL);
 
