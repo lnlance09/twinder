@@ -50,10 +50,10 @@
 				$lat = $this->input->get('lat');
 				$geo = GeoLocation($lon, $lat);
 
-				FormatArray($geo);
+				//FormatArray($geo);
 				$city = $geo['results'][3]['formatted_address'];
 				//$state = $geo['results'][4]['address_components'][0]['short_name'];
-				//echo $city;
+				echo $city;
 			}
 		}
 	}

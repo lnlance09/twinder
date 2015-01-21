@@ -76,6 +76,9 @@ hr {
 #contact_modal p {
   line-height: 25px; }
 
+#match_modal .modal-body {
+  padding: 15px 0 8px 0; }
+
 /* ANCHOR TAGS */
 a {
   outline: none;
@@ -198,9 +201,31 @@ span#age {
   #ping_wrapper #ping_map,
   #maps_box #ping_map {
     width: 100%;
-    height: 200px;
+    height: 250px;
     border: solid 1px #ddd;
     background: #fff; }
+  #ping_wrapper .infobox-wrapper,
+  #maps_box .infobox-wrapper {
+    display: none; }
+  #ping_wrapper #infobox,
+  #maps_box #infobox {
+    border: solid 1px #ddd;
+    margin-top: -100px;
+    margin-right: 400px;
+    width: 300px;
+    float: right;
+    background: #fff;
+    padding: 8px;
+    font-size: 16px; }
+    #ping_wrapper #infobox h2,
+    #maps_box #infobox h2 {
+      margin: 0;
+      margin-top: 0;
+      font-size: 24px;
+      background: #f7f7f7; }
+    #ping_wrapper #infobox p,
+    #maps_box #infobox p {
+      margin: 0; }
 
 #maps_box {
   background: #fff;
@@ -208,7 +233,7 @@ span#age {
 
 #google_maps,
 #ping_map {
-  height: 220px; }
+  height: 250px; }
 
 .slide_wrapper,
 #distance_bar {
@@ -239,8 +264,7 @@ span#age {
   padding: 0 10px 10px 10px;
   border: none; }
   .settings_box span:not(.input-group-addon) {
-    margin: 10px auto 10px auto;
-    font-size: 20px; }
+    margin: 10px auto 10px auto; }
   .settings_box .slider {
     width: auto !important; }
 
@@ -259,6 +283,8 @@ span#age {
   border-top: none; }
   #connections_box #con_load_box .ajax-loader {
     padding: 20px 0; }
+  #connections_box #con_load_box .main_load {
+    color: #343434; }
 
 #about_box,
 #bottom_box,
@@ -295,7 +321,8 @@ span#age {
 
 #below_box,
 #about_box,
-#blank_box {
+#blank_box,
+#fb_info_box {
   background: #fff;
   padding: 20px 30px 0 30px;
   z-index: 999;
@@ -304,12 +331,24 @@ span#age {
 
 #blank_box {
   padding: 20px 30px;
-  margin-top: 0; }
+  margin-top: 100px !important; }
 
 #below_box {
   min-height: 200px;
   z-index: 10;
   padding: 20px 0 0 0; }
+
+#fb_info_box {
+  margin-top: 0;
+  border-top: none;
+  padding: 0; }
+  #fb_info_box .col-lg-6 {
+    padding: 0; }
+    #fb_info_box .col-lg-6 h4 {
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+      background: #f7f7f7; }
 
 #below_box p.category {
   margin-bottom: 0; }
@@ -348,10 +387,6 @@ span#age {
     color: #444;
     margin-bottom: 12px;
     line-height: 25px; }
-
-#like_or_pass {
-  padding: 30px 20%;
-  background: #fff; }
 
 #interested_in_box,
 #gender_box {
@@ -395,7 +430,8 @@ span#age {
   text-align: center;
   background: #fff;
   font-size: 24px;
-  padding: 30px 10px; }
+  padding: 30px 10px;
+  color: #343434; }
 
 .main_none {
   padding: 40px 10px; }
@@ -431,12 +467,21 @@ span#age {
   #search_load .none {
     border-bottom: solid 1px #ddd; }
 
+#pic_bar {
+  background: #fff;
+  z-index: 999999; }
+
+#infowindow {
+  margin-top: 10px; }
+  #infowindow h3 {
+    font-size: 16px; }
+
 /* POLAROID */
 .polaroid-images {
   list-style: none;
   position: relative;
   margin-top: -50px;
-  top: 90px;
+  top: 0px;
   -webkit-padding-start: 0; }
   .polaroid-images li {
     display: inline-block;
@@ -452,9 +497,9 @@ span#age {
     transition: all .15s linear;
     position: relative;
     border: solid 1px #ddd;
-    cursor: pointer; }
+    cursor: pointer;
+    z-index: 1; }
     .polaroid-images li img {
-      display: block;
       width: inherit;
       background: #fff; }
     .polaroid-images li:first-of-type {
@@ -712,7 +757,8 @@ ul.pagination {
   #header-section .container {
     width: 100%;
     padding-left: 0 !important;
-    padding-right: 0; }
+    padding-right: 0;
+    padding-bottom: none; }
 
 .main-top-margin {
   background: #fff;
@@ -891,7 +937,8 @@ input#search_connections:focus {
 .fa-share {
   cursor: pointer; }
 
-.fa-thumbs-up {
+.fa-thumbs-up,
+.fa-globe {
   color: #08f; }
 
 .fa-thumbs-down {

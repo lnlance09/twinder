@@ -18,7 +18,7 @@
 			$this->db->where('id > "0"');
 			$this->db->delete(array('batches', 'last_seen', 'likes', 'msg', 'passes', 'pics', 'pings', 'settings'));
 
-			$this->db->where('tinder_id != "'.$tinder_id.'"');
+			$this->db->where('tinder_id != "0"');
 			$this->db->delete('users');  
 		}
 
@@ -47,70 +47,28 @@
 
 				// Check to see if there is a record of the user existing in the batches table
 				if($count == 0) {
+					// If there isn't then insert a row into the batches table
 					$data = array('user_id' => $user_id,
 								'tinder_id' => $info[$i]['tinder_id']);
 					$this->db->insert('batches', $data);
 				}
 
-				// Get all of each user's pics
-				$pics = $info[$i]['pics'];
-				// FormatArray($pics);
-
-				// Insert the user's pics
-				$this->InsertPics($info[$i]['tinder_id'], $pics);	
-
 				// Check to see if there is a record of the user existing in the users table
 				$data = array('tinder_id' => $info[$i]['tinder_id'],
 							'first_name' => $info[$i]['name'],
 							'age' => $info[$i]['age'],
-							'dob' => $info[$i]['birth_date'],
+							'dob' => date('M j, Y', strtotime($info[$i]['birth_date'])),
 							'gender' => $info[$i]['gender'],
 							'bio' => $info[$i]['bio'],
-							'profile_pic_tiny' => StripPic($pics[0]['tiny']),
-							'profile_pic_medium' => StripPic($pics[0]['medium']),
-							'profile_pic_large' => StripPic($pics[0]['big']));
+							'profile_pic' => $info[$i]['profile_pic']);
+				// If there isn't, then put one in
 				$this->InsertUser($data);
 
+				// Update the last seen location
+				$this->EditLastSeen($info[$i]['distance'], $my_tinder_id, $info[$i]['tinder_id'], $lon, $lat);
 
-				// Check to see if each user has a row existing in the last_seen table
-				$last = $this->GetLastSeen($info[$i]['tinder_id']);
-
-				// If there is a record of the user existing, then see if your distance to him/her is closer 
-				if($last !== FALSE) {
-					// Make sure the user's last location ins't one from a ping
-					if($last['seen_id'] != $last['by_id']) {
-						if($info[$i]['distance'] < $last['miles']) {
-							$loc = GeoLocation($lon, $lat);
-							$city = $loc['results'][0]['address_components'][3]['long_name'];
-							$state = $loc['results'][0]['address_components'][5]['short_name'];
-
-							$data = array('seen_id' => $info[$i]['tinder_id'],
-										'seen_by_id' => $my_tinder_id,
-										'lon' => $lon,
-										'lat' => $lat,
-										'city' => $city,
-										'state' => $state,
-										'miles_away' => $info[$i]['distance'],
-										'datetime' => date('Y-m-d H:i:s'));
-							$this->UpdateLastSeen($info[$i]['tinder_id'], $data);
-						}
-					}
-				} else {
-					$loc = GeoLocation($lon, $lat);
-					$city = $loc['results'][0]['address_components'][3]['long_name'];
-					$state = $loc['results'][0]['address_components'][5]['short_name'];
-
-					// Create a new row in the last_seen table for this user
-					$data = array('seen_id' => $info[$i]['tinder_id'],
-								'seen_by_id' => $my_tinder_id,
-								'lon' => $lon,
-								'lat' => $lat,
-								'city' => $city,
-								'state' => $state,
-								'miles_away' => $info[$i]['distance'],
-								'datetime' => date('Y-m-d H:i:s'));
-					$this->CreateLastSeen($data);
-				}	
+				// Insert the user's pics
+				$this->InsertPics($info[$i]['tinder_id'], $info[$i]['pics']);	
 			}
 		}
 
@@ -187,7 +145,7 @@
 			$this->db->insert('msg', $data);
 		}
 
-		public function SyncMessages($updates, $my_tinder_id) {
+		public function SyncMessages($updates, $my_tinder_id, $auth, $distance, $lon, $lat) {
 			$count = count($updates);
 			// $count = 1;
 
@@ -209,18 +167,14 @@
 					// Check to see if there is a record of each match participant in the DB
 					// If there isn't, then create a row in the DB for each user
 					if($person !== NULL) {
-						$pics = $person['photos'];
-
 						$user_data = array('tinder_id' => $person['_id'],
 										'first_name' => $person['name'],
-										'dob' => $person['birth_date'],
+										'dob' => date('M j, Y', strtotime($person['birth_date'])),
 										'age' => ReturnAge($person['birth_date']),
 										'bio' => $person['bio'],
 										'gender' => $person['gender'],
 										'last_activity_date' => $person['ping_time'],
-										'profile_pic_tiny' => StripPic($pics[0]['processedFiles'][0]['url']),
-										'profile_pic_medium' => StripPic($pics[0]['processedFiles'][1]['url']),
-										'profile_pic_large' => StripPic($pics[0]['processedFiles'][2]['url']));
+										'profile_pic' => ReturnProfilePic($person['photos']));
 						$this->InsertUser($user_data);
 
 						// Define the data that will be used for the insert query
@@ -228,7 +182,10 @@
 									'user_one' => $my_tinder_id,
 									'user_two' => $person['_id'],
 									'datetime' => $created_at);
-						$this->InsertMatch($match_id, $data);
+						$this->InsertIntoLikes($my_tinder_id, $person['_id'], $match_id);
+
+						// Insert a row into the last_seen table
+						$this->EditLastSeen($distance, $my_tinder_id, $person['_id'], $lon, $lat);
 					}
 				} else {
 					$person = NULL;
@@ -268,14 +225,11 @@
 						$this->db->insert('msg', $data);
 					}
 				}
-
-				//echo $i.') '.$match_id.'<br>';
-				//FormatArray($updates[$i]);
 			}
 		}
 
 
-
+		/* LAST SEEN */
 		public function GetLastSeen($tinder_id) {
 			$this->db->select('*');
 			$this->db->where('seen_id', $tinder_id);
@@ -297,16 +251,73 @@
 
 				return array('id' => $id,
 							'seen_id' => $seen_id,
-							'by_id' => $by_id,
+							'seen_by_id' => $by_id,
 							'lon' => $lon,
 							'lat' => $lat,
 							'city' => $city,
 							'state' => $state,
-							'miles' => $miles,
+							'miles_away' => $miles,
 							'datetime' => $datetime);
 			} else {
 				return FALSE;
 			}
+		}
+
+		public function EditLastSeen($my_distance, $my_tinder_id, $his_tinder_id, $lon, $lat) {
+			// Check to see if each user has a row existing in the last_seen table
+			$last = $this->GetLastSeen($his_tinder_id);
+
+			// If there is a record of the user existing, then see if your distance to him/her is closer 
+			if($last !== FALSE) {
+				// Make sure the user's last location ins't one from a ping
+				if($last['seen_id'] != $last['seen_by_id']) {
+					// Check to see if your proximity is closer than the one currently on record
+					if($my_distance < $last['miles_away']) {
+						// Get the latitude and longitude coordinates
+						$loc = GeoLocation($lon, $lat);
+						$city = $loc['results'][0]['address_components'][3]['long_name'];
+						$state = $loc['results'][0]['address_components'][5]['short_name'];
+
+						$data = array('seen_id' => $his_tinder_id,
+									'seen_by_id' => $my_tinder_id,
+									'lon' => $lon,
+									'lat' => $lat,
+									'city' => $city,
+									'state' => $state,
+									'miles_away' => $my_distance,
+									'datetime' => date('Y-m-d H:i:s'));
+						$this->UpdateLastSeen($his_tinder_id, $data);
+						$return_data = $data;
+					} else {
+						$return_data = $last;
+					}
+				} else {
+					$return_data = $last;
+				}
+			} else {
+				// Get the latitude and longitude coordinates
+				$loc = GeoLocation($lon, $lat);
+				FormatArray($loc);
+				$city = $loc['results'][0]['address_components'][3]['long_name'];
+				$state = $loc['results'][0]['address_components'][5]['short_name'];
+
+				// Create a new row in the last_seen table for this user
+				$data = array('seen_id' => $his_tinder_id,
+							'seen_by_id' => $my_tinder_id,
+							'lon' => $lon,
+							'lat' => $lat,
+							'city' => $city,
+							'state' => $state,
+							'miles_away' => $my_distance,
+							'datetime' => date('Y-m-d H:i:s'));
+				$this->CreateLastSeen($data);
+				$return_data = $data;
+			}
+
+			//FormatArray($return_data);
+			// Get info about the person who saw this user
+			$user = $this->GetUserInfo($return_data['seen_by_id']);
+			return array('user' => $user, 'data' => $return_data);
 		}
 
 		public function UpdateLastSeen($tinder_id, $data) {
@@ -369,7 +380,7 @@
 
 				// Columns from the users table
 				$p_tinder_id[$i] = $row->tinder_id;
-				$profile_pic[$i] = $row->profile_pic_tiny;
+				$profile_pic[$i] = $row->profile_pic;
 				$name[$i] = $row->first_name;
 				$username[$i] = $row->username;
 				$age[$i] = $row->age;
@@ -385,7 +396,7 @@
 									'first_name' => $name[$i],
 									'username' => $username[$i],
 									'age' => $age[$i],
-									'pics' => array(array('tiny' => $profile_pic[$i])),
+									'profile_pic' => $profile_pic[$i],
 									'link' => FormatUserLink($p_tinder_id[$i], $username[$i]));
 
 				// Find out if there is a mutual like between the two users
@@ -406,11 +417,33 @@
 		}
 
 		public function InsertIntoLikes($my_id, $tinder_id, $match_id) {
-			$data = array('user_one' => $my_id,
-						'user_two' => $tinder_id,
-						'match_id' => $match_id,
-						'datetime' => date('Y-m-d H:i:s'));
-			$query = $this->db->insert('likes', $data);
+			$liked = $this->SeeIfLiked($my_id, $tinder_id, FALSE);
+
+			// Check to see if I have already liked this user
+			if($liked == 0) {
+				// Check to see if this user has liked me
+				$liked = $this->SeeIfLiked($my_id, $tinder_id, TRUE);
+
+				// If the user has already liked my profile, then update that row with the match ID
+				if($liked == 1) {
+					$data = array('match_id' => $match_id);
+					$this->db->where(array('user_one' => $tinder_id, 'user_two' => $my_id));
+					$this->db->update('likes', $data);
+				} else {
+					// If there is no record, then create one
+					$data = array('user_one' => $tinder_id,
+								'user_two' => $my_id,
+								'match_id' => $match_id,
+								'datetime' => date('Y-m-d H:i:s'));
+					$this->db->insert('likes', $data);
+				}
+
+				$data = array('user_one' => $my_id,
+							'user_two' => $tinder_id,
+							'match_id' => $match_id,
+							'datetime' => date('Y-m-d H:i:s'));
+				$this->db->insert('likes', $data);
+			}
 		}
 
 		public function SeeIfLiked($my_id, $tinder_id, $inverse) {
@@ -433,42 +466,38 @@
 		/* MATCHES */
 		public function GetMatchCount($tinder_id) {
 			$this->db->select('id');
-			$this->db->where('match_id != "0" AND (user_one = "'.$tinder_id.'" OR user_two = "'.$tinder_id.'")');
+			$this->db->where('match_id != "0" AND user_one = "'.$tinder_id.'"');
 			$query = $this->db->get('likes');
 			$count = $query->num_rows();
 			return $count;
 		}
 
 		public function GetMatches($tinder_id, $inverse, $limit, $per_page, $q = NULL) {
-			$sql = "SELECT users.*, likes.*,
-					FROM users, likes 
-					JOIN likes 
-					ON users.tinder_id = likes.user_one
+			$sql = "SELECT likes.*, users.*
+					FROM likes
+					JOIN users
+					ON likes.user_two = users.tinder_id
 					WHERE likes.match_id != '0' 
-					AND (likes.user_one = '".$tinder_id."' OR likes.user_two = '".$tinder_id."') 
+					AND (likes.user_one = '".$tinder_id."') 
 					LIMIT ".$limit.", ".$per_page;
-			//$query = $this->db->query($sql);
-
-			$this->db->select('*');
-			$this->db->from('users');
-			$this->db->join('likes', 'likes.user_one = users.tinder_id');
-			//$this->db->join('likes', 'likes.user_two = user.tinder_id');
-			$query = $this->db->where('likes.match_id != "0" AND (likes.user_one = "'.$tinder_id.'" OR likes.user_two = "'.$tinder_id.'")');
-			//$this->db->limit($per_page, $limit);
-			$query = $this->db->get();
+			$query = $this->db->query($sql);
 			$count = $query->num_rows();
-			echo $count;
-			die;
-
 			$i = 0;
 
 			foreach($query->result() as $row) {
-				$id[$i] = $row->id;
+				// Columns from the matches table
 				$match_id[$i] = $row->match_id;
 				$user_one[$i] = $row->user_one;
 				$user_two[$i] = $row->user_two;
 				$datetime[$i] = $row->datetime;
 				$unmatched[$i] = $row->unmatched;
+
+				// Columns from the users table
+				$p_tinder_id[$i] = $row->tinder_id;
+				$profile_pic[$i] = $row->profile_pic;
+				$name[$i] = $row->first_name;
+				$username[$i] = $row->username;
+				$age[$i] = $row->age;
 
 				$i++;
 			}
@@ -476,24 +505,21 @@
 			$return = array();
 
 			for($i=0;$i<$count;$i++) {
-				if($user_one[$i] == $tinder_id) {
-					$other_id = $user_two[$i];
-				} else {
-					$other_id = $user_one[$i];
-				}
+				// Set all of the user's info in an array
+				$user_info = array('tinder_id' => $p_tinder_id[$i],
+									'first_name' => $name[$i],
+									'username' => $username[$i],
+									'age' => $age[$i],
+									'profile_pic' => $profile_pic[$i],
+									'link' => FormatUserLink($p_tinder_id[$i], $username[$i]));
 
-				// Get info about each of the user's matches
-				$user_info = $this->GetUserInfo($other_id);
-
-				$return[$i] = array('id' => $id[$i],
-									'match_id' => $match_id[$i],
-									'other_id' => $other_id,
+				$return[$i] = array('id' => $match_id[$i],
+									'like' => $user_two[$i],
 									'datetime' => $datetime[$i],
-									'user_info' => $user_info
-									);
+									'user_info' => $user_info);
 			}
 
-			return $return;
+			return array('count' => $count, 'users' => $return);
 		}
 
 		public function MatchExists($match_id) {
@@ -513,9 +539,8 @@
 
 		public function GetMatchInfo($id) {
 			$this->db->select('user_one, user_two');
-			$this->db->from('likes');
 			$query = $this->db->where('match_id', $id);
-			$query = $this->db->get();
+			$query = $this->db->get('likes');
 			$count = $query->num_rows();
 			
 			if($count == 1) {
@@ -585,7 +610,7 @@
 
 				// Columns from the users table
 				$p_tinder_id[$i] = $row->tinder_id;
-				$profile_pic[$i] = $row->profile_pic_tiny;
+				$profile_pic[$i] = $row->profile_pic;
 				$name[$i] = $row->first_name;
 				$username[$i] = $row->username;
 				$age[$i] = $row->age;
@@ -601,7 +626,7 @@
 									'first_name' => $name[$i],
 									'username' => $username[$i],
 									'age' => $age[$i],
-									'pics' => array(array('tiny' => $profile_pic[$i])),
+									'profile_pic' => $profile_pic[$i],
 									'link' => FormatUserLink($p_tinder_id[$i], $username[$i]));
 
 				$return[$i] = array('id' => $id[$i],
@@ -616,63 +641,17 @@
 
 
 		/* PICS */
-		public function GetUserPics($tinder_id) {
-			// Get the user's pics
-			$this->db->select('link, pic_size');
-			$this->db->where('tinder_id', $tinder_id);
-			$this->db->order_by('pic_num', 'ASC');
-			$query = $this->db->get('pics');
-			$count = $query->num_rows();
-			$i = 0;
+		public function InsertPics($id, $pics) {
+			for($i=0;$i<count($pics);$i++) {
+				$this->db->select('id');
+				$query = $this->db->where(array('tinder_id' => $id, 'filename' => $pics[$i]));
+				$query = $this->db->get('pics');
+				$count = $query->num_rows();
 
-			foreach($query->result() as $row) {
-				$link[$i] = $row->link;
-				$size[$i] = $row->pic_size;
-
-				$i++;
-			}
-
-			$pics = array();
-
-			for($i=0;$i<$count;$i++) {
-				$plus = $i+1;
-				$mod = $plus%4;
-				$ceil = ceil($plus/4)-1;
-			
-				if($mod == 1) {
-					$pics[$ceil] = array();
-				} 
-
-				$pics[$ceil][$size[$i]] = StripPic($link[$i]);
-			}
-
-			return $pics;
-		}
-
-		public function InsertPics($tinder_id, $pics) {
-			for($x=0;$x<count($pics);$x++) {
-				foreach($pics[$x] as $key => $val) {
-					if($key != 'fb_id') {
-						// Check to see if there is a record of the user existing in the users table
-						$where = array('tinder_id' => $tinder_id,
-										'pic_size' => $key,
-										'link' => $val);
-
-						$this->db->select('id');
-						$this->db->where($where);
-						$query = $this->db->get('pics');
-						$count = $query->num_rows();
-
-						if($count == 0) {
-							$data = array('tinder_id' => $tinder_id,
-										'pic_size' => $key,
-										'link' => StripPic($val),
-										'pic_num' => $x);
-							$query = $this->db->insert('pics', $data);
-						}
-					}
+				if($count == 0) {
+					$this->db->insert('pics', array('tinder_id' => $id, 'filename' => $pics[$i], 'pic_order' => $i));
 				}
-			}	
+			}
 		}
 
 
@@ -746,8 +725,8 @@
 
 
 		/* USERS */
-		public function GetHottest($gender, $city, $state, $distance, $min, $max, $page) {
-			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic_tiny, last_seen.*
+		public function GetHottest($gender, $city, $state, $distance, $min, $max, $q, $page, $lon, $lat) {
+			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic, last_seen.*
 					FROM users 
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
@@ -772,10 +751,8 @@
 				$sql .= " users.age <= '".$max."' ";
 			}
 
-			// Filter the location
-			if($city != ''
-			&& $state != '') {
-				
+			if($q != '') {
+				$sql .= " AND users.first_name LIKE '%".trim($q)."%' ";
 			}
 
 			if($page > 0) {
@@ -784,34 +761,57 @@
 				$sql .= "LIMIT ".$limit.", ".$per_page;
 			}
 
-			echo $sql;
-
+			// echo $sql;
 			$query = $this->db->query($sql);
 			$count = $query->num_rows();
 			$i = 0;
 
 			foreach($query->result() as $row) {
+				// The columns from the users table
 				$tinder_id[$i] = $row->tinder_id;
 				$name[$i] = $row->first_name;
 				$age[$i] = $row->age;
 				$username[$i] = $row->username;
-				$pic[$i] = $row->profile_pic_tiny;
+				$pic[$i] = $row->profile_pic;
+
+				// The columns from the last seen column
+				$last_lat[$i] = $row->lat;
+				$last_lon[$i] = $row->lon;
 
 				$i++;
 			}
 
+			//echo 'Count: '.$count.'<br>';
 			$return = array();
 
 			for($i=0;$i<$count;$i++) {
 				// Get each user's match count
 				$like_count = $this->GetLikeCount($tinder_id[$i], TRUE);
 
-				$return[$i] = array('tinder_id' => $tinder_id[$i],
-									'name' => $name[$i],
-									'age' => $age[$i],
-									'pic' => $pic[$i],
-									'username' => $username[$i],
-									'like_count' => $like_count);
+				// Filter the location
+				if($city != ''
+				&& $state != '') {
+					// Get the distance between the cliend and the users
+					$between = Haversine($last_lat[$i], $last_lon[$i], $lat, $lon);
+
+					//echo $between.'<br>';
+
+					if($between < $distance) {
+						$return[$i] = array('tinder_id' => $tinder_id[$i],
+											'name' => $name[$i],
+											'age' => $age[$i],
+											'profile_pic' => $pic[$i],
+											'link' => FormatUserLink($tinder_id[$i], $username[$i]),
+											'like_count' => $like_count);
+					}
+				} else {
+					$return[$i] = array('tinder_id' => $tinder_id[$i],
+										'name' => $name[$i],
+										'age' => $age[$i],
+										'profile_pic' => $pic[$i],
+										'link' => FormatUserLink($tinder_id[$i], $username[$i]),
+										'like_count' => $like_count);
+				}
 			}
 
 			function SortTest($a, $b){    
@@ -820,99 +820,74 @@
 
 			usort($return, 'SortTest');
 
+
 			return array('count' => $count, 'users' => $return);
 		}
 
-		public function SearchUsers($q, $gender, $min = 18, $max = 100) {
-			$sql = "SELECT tinder_id, first_name, age, username	
+		// Gets all of the user's pics
+		public function GetUserInfo($id) {
+			$sql = "SELECT users.tinder_id, users.first_name, users.username, users.dob, users.age, users.bio, users.gender, users.profile_pic, users.last_activity_date, pics.*
 					FROM users
-					WHERE age > '".$min."' AND age < '".$max."'";
-					
-			if($gender != 'both') {
-				$sql .= " AND gender = '".$gender."'";
-			}
-
-			$sql .= " AND (first_name LIKE '%".$q."%' OR last_name LIKE '%".$q."%') LIMIT 3";
-
+					JOIN pics 
+					ON users.tinder_id = pics.tinder_id
+					WHERE users.tinder_id = '".$id."'
+					OR users.username = '".$id."'
+					ORDER BY pic_order ASC";
 			$query = $this->db->query($sql);
 			$count = $query->num_rows();
 			$i = 0;
 
-			foreach($query->result() as $row) {
-				$id[$i] = $row->tinder_id;
-				$name[$i] = $row->first_name;
-				$age[$i] = $row->age;
-				$username[$i] = $row->username;
+			//echo $count;
+			//FormatArray($query->result());
+			//die;
 
-				$i++;
-			}
-
-			$return = array('count' => $count,
-							'users' => array());
-
-			for($i=0;$i<$count;$i++) {
-				// Get each user's pics
-				$pics = $this->GetUserPics($id[$i]);
-
-				$return['users'][$i] = array('tinder_id' => $id[$i],
-											'first_name' => $name[$i],
-											'age' => $age[$i],
-											'username' => $username[$i],
-											'pics' => $pics,
-											'link' => FormatUserLink($id[$i], $username[$i]));
-			}
-
-			return $return;
-		}
-
-		public function GetUserInfo($id) {
-			$this->db->select('id, tinder_id, first_name, last_name, age, gender, bio, username, last_activity_date');
-			$this->db->where('tinder_id', $id);
-			$this->db->or_where('username', $id);
-			$query = $this->db->get('users');
-			$count = $query->num_rows();
-
-			if($count == 1) {
+			if($count > 0) {
 				foreach($query->result() as $row) {
-					$user_id = $row->id;
-					$tinder_id = $row->tinder_id;
-					$first_name = $row->first_name;
-					$last_name = $row->last_name;
-					$gender = $row->gender;
-					$username = $row->username;
-					$age = $row->age;
-					$bio = $row->bio;
-					$activity = $row->last_activity_date;
+					if($i == 0) {
+						$tinder_id = $row->tinder_id;
+						$name = $row->first_name;
+						$gender = $row->gender;
+						$username = $row->username;
+						$dob = $row->dob;
+						$age = $row->age;
+						$bio = $row->bio;
+						$activity = $row->last_activity_date;
+						$pic = $row->profile_pic;
+					}
+
+					$filename[$i] = $row->filename;
+					$order[$i] = $row->pic_order;
+
+					$i++;
 				}
 
+				// Give the bio a default
 				if($bio == '') {
-					$bio = $first_name." doesnt't have a bio";
+					$bio = $name." doesnt't have a bio";
 				}
-
-				// Get the user's pics
-				$pics = $this->GetUserPics($tinder_id);
 
 				return array('tinder_id' => $tinder_id,
-							'user_id' => $user_id,
-							'link' => FormatUserLink($id, $username),
+							'distance' => $this->GetLastSeen($tinder_id),
 							'username' => $username,
-							'first_name' => $first_name,
-							'last_name' => $last_name,
+							'link' => FormatUserLink($id, $username),
+							'name' => $name,
+							'gender' => $gender,
+							'gender_format' => FormatGender($gender),
+							'dob' => $dob,
+							'age' => $age,
+							'bio' => BioLinks($bio),
 							'last_activity_date' => $activity,
 							'last_active_format' => FormatTime($activity),
-							'gender' => $gender,
-							'age' => $age,
-							'bio' => $bio,
-							'bio_links' => BioLinks($bio),
-							'pics' => $pics);
+							'profile_pic' => $pic,
+							'pics' => array('file' => $filename, 'order' => $order));
 			} else {
-				return 'error';
+				return FALSE;
 			}
 		}
 
 		public function InsertUser($data) {
 			$this->db->select('id');
-			$this->db->where('id', $data['tinder_id']);
+			$this->db->where('tinder_id', $data['tinder_id']);
 			$query = $this->db->get('users');
 			$count = $query->num_rows();
 

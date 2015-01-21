@@ -2,6 +2,7 @@ $(document).ready(function() {
     var base_url = $('#base_url').text();
     var url = base_url +'search/Autocomplete';
 
+    /*
     // Search autocomplete
     $('#users_autocomplete').keyup(function(e) {
         var val = $(this).val().trim();
@@ -30,6 +31,7 @@ $(document).ready(function() {
             $('#autocomplete').slideUp('fast');
         }
     });
+    */
 
     // Query to check for any updates and/or matches/messages
     /*

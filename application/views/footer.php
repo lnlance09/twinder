@@ -82,6 +82,7 @@
     if(in_array($controller, $maps_pages)) {
 ?>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
 <?php
     }
     if(in_array($controller, $slider_pages)) {
@@ -92,7 +93,19 @@
     }
 ?>
     <!-- The JavaScript for each page -->
+
+<?php 
+    if($controller == 'users'
+    && strtolower($method) == 'discover') {
+?>
+    <script src="<?php echo $js_url; ?>discover.js"></script>
+<?php
+    } else {
+?>
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
+<?php
+    }
+?>
 
     <!--
     <script type="text/javascript">

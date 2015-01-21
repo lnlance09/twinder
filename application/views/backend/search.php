@@ -25,14 +25,8 @@
 			$name = $users['users'][$i]['first_name'];
 			$id = $users['users'][$i]['tinder_id'];
 			$age = $users['users'][$i]['age'];
-			$username = $users['users'][$i]['username'];
-			$img = $users['users'][$i]['pics'][0]['medium'];
-
-			if($username != '') {
-                $link = $base_url.'users/'.$username;
-            } else {
-                $link = $base_url.'users/'.$id;
-            }
+			$img = $users['users'][$i]['profile_pic'];
+			$link = $users['users'][$i]['link'];
 ?>
 		<li class="list-group-item" onclick="location.href='<?php echo $link; ?>'">
 			<img src="http://images.gotinder.com/<?php echo $id.'/'.$img; ?>" width="110" height="110" class="img-circle" alt="<?php echo $name; ?>" />

@@ -26,6 +26,10 @@
 
 			public function Test() {
 				$this->database_model->FlushDB();
+
+				//$data = $this->database_model->GetUserInfo('50ef5be9a8cf55801f0000ad');
+				//FormatArray($data);
+
 				//$auth = $this->session->userdata('token');
 				//$info = $this->users_model->ReportUser('52cbac34fe5f7abb63000661', $auth, 1, NULL);
 

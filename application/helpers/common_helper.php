@@ -48,7 +48,6 @@
 		if(!function_exists('GeoLocation')) {
 			function GeoLocation($lon, $lat) {
 				// $api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
-
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$lat.','.$lon.'&sensor=false');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -64,6 +63,7 @@
 		// Find the Distance between two places
 		if(!function_exists('Haversine')) {
 			function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
+				$radius = 6371000;
 				$delta_lat = deg2rad($lat_to - $lat_from);
 				$delta_lon = deg2rad($lon_to - $lon_from);
 				
@@ -71,8 +71,7 @@
 					cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) *
 					sin($delta_lon/2) * sin($delta_lon/2);
 				$c = 2*atan2(sqrt($a), sqrt(1-$a));
-				
-				return ceil((6371000*$c)*0.000621371);
+				return ceil(($radius*$c)*0.000621371);
 			}
 		}
 
@@ -85,7 +84,7 @@
 				// Make links out of he Instagram usernames and Twitter hashtags
 				$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
 				$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
-				return $hash_bio;
+				return trim($hash_bio);
 			}
 		}
 
@@ -221,6 +220,62 @@
 			}
 		}
 
+		// Return an array containing all of the user's pics (smallest size)
+		if(!function_exists('ReturnPicsArray')) {
+			function ReturnPicsArray($photos) {
+				$pics = array();
+
+				for($i=0;$i<count($photos);$i++) {
+					$pics[$i] = $photos[$i]['fileName']; 
+				}
+
+				return $pics;
+			}
+		}
+
+		// Find out which of the user's pics is their profile pic
+		if(!function_exists('ReturnProfilePic')) {
+			function ReturnProfilePic($photos) {
+				for($i=0;$i<count($photos);$i++) {
+					if($photos[$i]['fileName'] !== FALSE) {
+						return $photos[$i]['fileName']; 
+						break;
+					}
+				}
+			}
+		}
+
+		// Find out which of the user's pics is their profile pic
+		if(!function_exists('FormatLastSeenText')) {
+			function FormatLastSeenText($data, $base_url) {
+				$user_info = $data['user'];
+				$tinder_id = $user_info['tinder_id'];
+				$name = $user_info['name'];
+				$link = $user_info['link'];
+				$gender = $user_info['gender'];
+				$pic = $user_info['profile_pic'];
+
+				if($gender == 0) {
+					$subject = "he";
+				} elseif($gender == 1) {
+					$subject = "she";
+				}
+
+				$raw_data = $data['data'];
+				$time = $raw_data['datetime'];
+				$distance = $raw_data['miles_away'];
+				$city = $raw_data['city'];
+				$state = $raw_data['state'];
+				$lon = $raw_data['lon'];
+				$lat = $raw_data['lat'];
+
+				$text = "<div id='infowindow'><h3><img src='http://images.gotinder.com/".$tinder_id."/84x84_".$pic."' width='50' height='50' alt='".$name."' class='img-circle'> <a href='".$base_url.$link."'>".$name."</a>
+						</h3> <p>".FormatTime($time)." <br> ".$distance." miles away <br>".$city.", ".$state." <br> ".$lon.", ".$lat."</p></div>";
+				return trim($text);
+			}
+
+		}
+
 		// Return the link to the user's cookie file
 		if(!function_exists('CookieFile')) {
 			function CookieFile($email) {
@@ -234,15 +289,6 @@
 
 				// Define the path to the cookies
 			    return $file.'.txt';
-			}
-		}
-
-		// Strip the path to the user's pic
-		if(!function_exists('StripPic')) {
-			function StripPic($pic_name) {
-				$exp = explode('/', $pic_name);
-				$pic = $exp[count($exp)-1];
-				return $pic;
 			}
 		}
 

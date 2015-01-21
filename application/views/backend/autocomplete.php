@@ -20,10 +20,10 @@
 			$id = $users['users'][$i]['tinder_id'];
 			$link = $users['users'][$i]['link'];
 			$age = $users['users'][$i]['age'];
-			$img = $users['users'][$i]['pics'][0]['tiny'];
+			$img = $users['users'][$i]['profile_pic'];
 ?>
 		<li class="list-group-item" onclick="location.href='<?php echo $base_url.$link; ?>'">
-			<img src="<?php echo 'http://images.gotinder.com/'.$id.'/'.$img; ?>" width="55" height="55" class="img-circle" alt="<?php echo $name; ?>" />
+			<img src="http://images.gotinder.com/<?php echo $id.'/84x84_'.$img; ?>" width="55" height="55" class="img-circle" alt="<?php echo $name; ?>" />
 
 			<div> 
 				<span>

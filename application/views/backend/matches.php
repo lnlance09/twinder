@@ -28,7 +28,7 @@
 				$name = $user['first_name'];
 				$tinder_id = $user['tinder_id'];
 				$age = $user['age'];
-				$pic = $tinder_id.'/'.$user['pics'][0]['tiny'];
+				$pic = $user['profile_pic'];
 			} else {
 				$name = '';
 			}
@@ -46,7 +46,7 @@
 			}
 ?>
 			<li class="list-group-item" onclick="location.href='<?php echo $base_url.'matches/'.$matches['likes'][$i]['match_id']; ?>'">
-				<img src="http://images.gotinder.com/<?php echo $pic; ?>" width="84" height="84" class="img-circle" alt="<?php echo $name; ?>" />
+				<img src="http://images.gotinder.com/<?php echo $tinder_id.'/84x84_'.$pic; ?>" width="84" height="84" class="img-circle" alt="<?php echo $name; ?>" />
 
 				<div> 
     				<span>

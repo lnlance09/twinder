@@ -23,10 +23,23 @@
 
                 <div id="matches_load">
                     <div class="ajax-loader">
-                        <i class="icon-spinner icon-spin icon-3x"></i>
+                        
                     </div>
                 </div>
 
                 <div class="hidden" id="match_type"><?php echo $type; ?></div>
+
+                <div id="fb-root"></div>
+                <script>
+                    (function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1551292908455322&version=v2.0";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    } (document, 'script', 'facebook-jssdk'));
+                </script>
+
+                <div class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/" data-numposts="10" data-colorscheme="light"></div>
             </div>
         </div>

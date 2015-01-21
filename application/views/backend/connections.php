@@ -4,7 +4,6 @@
     $per_page = 5;
     $pages = ceil($count/$per_page);
 
-    echo $pages;
     if($pages > 0) {
 ?>
 	<div class="hidden" id="matches_results_num"><?php echo $count; ?></div>
@@ -18,16 +17,16 @@
 				$name = $user['first_name'];
 				$tinder_id = $user['tinder_id'];
 				$age = $user['age'];
-				$pic = $tinder_id.'/'.$user['pics'][0]['tiny'];
+				$pic = $user['profile_pic'];
 				$link = $user['link'];
 			} else {
 				$name = '';
 			}
 ?>
 		<li class="list-group-item" onclick="location.href='<?php echo $base_url.$link; ?>'">
-			<img src="http://images.gotinder.com/<?php echo $pic; ?>" width="50" height="50" class="img-circle" alt="<?php echo $name; ?>" />
+			<img src="http://images.gotinder.com/<?php echo $tinder_id.'/84x84_'.$pic; ?>" width="50" height="50" class="img-circle" alt="<?php echo $name; ?>" />
 
-			<a href="<?php echo $base_url.'matches/'; ?>" title=""><?php echo $name; ?></a>, <?php echo $age; ?>
+			<a href="#" title=""><?php echo $name; ?></a>, <?php echo $age; ?>
 
 			<span class="pull-right">
 				<?php echo date('D, M j', strtotime($connections[$i]['datetime'])); ?>
@@ -62,8 +61,7 @@
 		var type = '<?php echo $type; ?>';
 		var tinder_id = '<?php echo $id; ?>';
 
-		$('.pagination li a').click(function(e) {
-            e.preventDefault();
+		$('.pagination li a').click(function() {
             var this_page = $(this).text().trim();
 
             if(this_page == 'Prev') {
@@ -74,6 +72,10 @@
                 var new_page = parseInt(this_page)-parseInt(1);
             }
 
-            $('#con_load_box').load(base_url +'users/GetConnections', 'type='+ type +'&page='+ new_page +'&id='+ tinder_id);
+            $('#con_load_box').load(base_url +'users/GetConnections', 'type='+ type +'&page='+ new_page +'&id='+ tinder_id, function() {
+
+            });
+
+            event.preventDefault();
         });
 	</script>	

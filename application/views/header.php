@@ -154,7 +154,7 @@
     </div>
 
     <div id="search_container">
-        <form method="GET" action="<?php echo $base_url; ?>search">
+        <form method="GET" action="<?php echo $base_url; ?>hot/both">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
 <?php

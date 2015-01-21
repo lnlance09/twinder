@@ -30,7 +30,8 @@
 				$distance = $this->uri->segment(5, $dist);
 				$min = $this->uri->segment(6, 18);
 				$max = $this->uri->segment(7, 50);
-				$page = $this->uri->segment(8, 0);
+				$q = $this->uri->segment(8, FALSE);
+				$page = $this->uri->segment(9, 0);
 
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
@@ -83,6 +84,7 @@
 									'meters' => MilesToMeters($distance),
 									'min' => $min,
 									'max' => $max,
+									'q' => $q,
 									'page' => $page);
 
 				//FormatArray($body_info);
@@ -103,10 +105,24 @@
 				}
 
 				// Get all of the hottest users
-				$hot = $this->database_model->GetHottest($gender, $city, $state, $distance, $min, $max, $page);
+				$hot = $this->database_model->GetHottest($gender, $city, $state, $distance, $min, $max, $q, $page, $lon, $lat);
+				//FormatArray($hot);
 
+				$params = array('gender' => $gender,
+								'city' => $city,
+								'state' => $state,
+								'distance' => $distance,
+								'min' => $min,
+								'max' => $max,
+								'q' => $q,
+								'page' => $page,
+								'lon' => $lon,
+								'lat' => $lat);
+
+				FormatArray($params);
+				
 				// Load all of the views
-				$this->load->view('backend/hot', array('hot' => $hot, 'page' => $page)); 
+				$this->load->view('backend/hot', array('hot' => $hot, 'q_string' => http_build_query($params), 'page' => $page)); 
 			}
 		}
 	}

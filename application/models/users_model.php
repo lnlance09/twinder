@@ -35,28 +35,27 @@
 				// Get all of the info about the user who just logged in
 				$user = $decode['user'];
 
-				// Get all of the user's matches since they have joined
-				$updates = $this->GetUpdates($user['api_token'], $user['create_date']);
-
-				// Sync all of the messages from the user's Tinder account
-				$this->database_model->SyncMessages($updates['matches'], $user['_id']);
-
 				// Seperate the first name from the last
 				$names = FormatNames($user['full_name']);
 
-				// Get the photos
-				$photos = $user['photos'];
+				// Get the user's latitude and longitude coordinates
+				$profile = $this->ProfileInfo($user['api_token']);
+				$loc = $profile['pos'];
+				//FormatArray($profile);
+				//die;
 
-				for($i=0;$i<count($photos);$i++) {
-					$pics[$i] = array('big' => StripPic($photos[$i]['processedFiles'][0]['url']),
-									'large' => StripPic($photos[$i]['processedFiles'][1]['url']),
-									'medium' => StripPic($photos[$i]['processedFiles'][2]['url']),
-									'tiny' => StripPic($photos[$i]['processedFiles'][3]['url']),
-									'fb_id' => $photos[$i]['fbId']); 
-				}
+				/* SYNC ALL OF THE USER'S DATA */
+				// Get all of the user's matches since they have joined
+				$updates = $this->GetUpdates($user['api_token'], $profile['create_date']);
+				//FormatArray($updates);
+				//sdie;
 
-				// Download and copy the user's pics on to the server
-				$this->database_model->InsertPics($user['_id'], $pics);
+				// Sync all of the messages from the user's Tinder account
+				$this->database_model->SyncMessages($updates['matches'], $user['_id'], $user['api_token'], $profile['distance_filter'], $loc['lon'], $loc['lat']);
+
+
+				// Insert the user's pics
+				$this->database_model->InsertPics($user['_id'], ReturnPicsArray($decode['user']['photos']));
 
 				// Define all of the user's info in an array
 				$users = array('tinder_id' => $user['_id'],
@@ -64,10 +63,9 @@
 							'first_name' => $names['first_name'],
 							'last_name' => $names['last_name'],
 							'age' => ReturnAge($user['birth_date']),
-							'dob' => $user['birth_date'],
+							'dob' => date('M j, Y', strtotime($user['birth_date'])),
 							'gender' => $user['gender'],
-							'profile_pic_tiny' => StripPic($pics[0]['tiny']),
-							'profile_pic_medium' => StripPic($pics[0]['medium']));
+							'profile_pic' => ReturnProfilePic($user['photos']));
 
 				// Define the settings array for the query on the settings table
 				$settings = array('age_min' => $user['age_filter_min'],
@@ -86,6 +84,7 @@
 					$this->db->insert('users', $users);
 					$user_id = $this->db->insert_id();
 
+
 					// Insert a row into the settings table
 					$settings['tinder_id'] = $user['_id'];
 					$this->db->insert('settings', $settings);
@@ -97,9 +96,11 @@
 					$user_id = $row['id'];
 					$username = $row['username'];
 
+
 					// Update the users table with the most recent info
 					$this->db->where('tinder_id', $user['_id']);
 					$this->db->update('users', $users);
+
 
 					// Update the settings table with the most recent info
 					$this->db->where('tinder_id', $user['_id']);
@@ -198,39 +199,32 @@
 		public function PresentUsers($auth) {
 			// Get a new batch of users
 			$users = $this->FindUsers($auth);
-			FormatArray($users);
-			$results = $users['results'];
+			
+			if(array_key_exists('message', $users)) {
+				if(trim($users['message']) == 'recs timeout') {
+					return FALSE;
+				} 
+			} else {
+				$results = $users['results'];
 
-			$users = array();
+				$users = array();
 
-			for($i=0;$i<count($results);$i++) {
-				$photos = $results[$i]['photos'];
-
-				$pics = array();
-
-				for($x=0;$x<count($photos);$x++) {
-					$pics[$x] = array('big' => $photos[$x]['processedFiles'][0]['url'],
-									'large' => $photos[$x]['processedFiles'][1]['url'],
-									'medium' => $photos[$x]['processedFiles'][2]['url'],
-									'tiny' => $photos[$x]['processedFiles'][3]['url'],
-									'fb_id' => NULL); 
+				for($i=0;$i<count($results);$i++){
+					$users[$i] = array('tinder_id' => $results[$i]['_id'],
+									'name' => $results[$i]['name'],
+									'bio' => BioLinks($results[$i]['bio']),
+									'gender' => $results[$i]['gender'],
+									'birth_date' => $results[$i]['birth_date'],
+									'age' => ReturnAge($results[$i]['birth_date']),
+									'distance' => $results[$i]['distance_mi'],
+									'ping_time' => date('M j @ g:i A', strtotime($results[$i]['ping_time'])),
+									'time_format' => FormatTime($results[$i]['ping_time']),
+									'profile_pic' => ReturnProfilePic($results[$i]['photos']),
+									'pics' => ReturnPicsArray($results[$i]['photos']));
 				}
 
-				//FormatArray($results[$i]);
-				//die;
-				$users[$i] = array('tinder_id' => $results[$i]['_id'],
-								'name' => $results[$i]['name'],
-								'bio' => BioLinks($results[$i]['bio']),
-								'gender' => $results[$i]['gender'],
-								'birth_date' => $results[$i]['birth_date'],
-								'age' => ReturnAge($results[$i]['birth_date']),
-								'distance' => $results[$i]['distance_mi'],
-								'ping_time' => date('M j @ g:i A', strtotime($results[$i]['ping_time'])),
-								'time_format' => FormatTime($results[$i]['ping_time']),
-								'pics' => $pics);
+				return $users;
 			}
-
-			return $users;
 		}
 
 		public function ProfileInfo($auth) {
@@ -308,7 +302,32 @@
 		public function UserLookup($tinder_id, $auth) {
 			$info = SendRequest('user/'.$tinder_id, $auth, FALSE, FALSE);
 			$decode = @json_decode($info, TRUE);
-			return $decode;
+
+			if($decode['status'] == 200) {
+				$user = $decode['results'];
+				//FormatArray($user);
+				//die;
+
+				// FormatArray($user);
+				return array('tinder_id' => $user['_id'],
+							'distance' => $user['distance_mi'],
+							'name' => $user['name'],
+							'dob' => date('M j, Y', strtotime($user['birth_date'])),
+							'bio' => BioLinks($user['bio']),
+							'gender' => $user['gender'],
+							'gender_format' => FormatGender($user['gender']),
+							'age' => ReturnAge($user['birth_date']),
+							'last_activity_date' => $user['ping_time'],
+							'last_activity_format' => FormatTime($user['ping_time']),
+							'profile_pic' => ReturnProfilePic($user['photos']),
+							'pics' => ReturnPicsArray($user['photos']),
+							'fb_friend_count' => $user['common_friend_count'],
+							'fb_friends' => $user['common_friends'],
+							'fb_like_count' => $user['common_like_count'],
+							'fb_likes' => $user['common_likes']); 
+			} else {
+				return FALSE;
+			}
 		}
 
 		public function ValidateSMS($auth, $code) {
