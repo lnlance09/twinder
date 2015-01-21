@@ -25,6 +25,7 @@
                 <div class="clearfix"></div>
             </div>
 
+            <!-- The terms of service modal -->
             <div class="modal fade" id="terms_modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -44,6 +45,21 @@
 
                         <div class="modal-footer">
                             <button class="btn btn-success" type="button" id="accept_terms">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The syncing modal -->
+            <div class="modal fade" id="sync_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h3 class="modal-title">Syncing your Tinder account...</h3>
+                        </div>
+
+                        <div class="modal-body text-center">
+                            <i class="fa fa-refresh fa-2x fa-spin"></i>
                         </div>
                     </div>
                 </div>

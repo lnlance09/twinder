@@ -54,6 +54,9 @@
 				$this->database_model->SyncMessages($updates['matches'], $user['_id'], $user['api_token'], $profile['distance_filter'], $loc['lon'], $loc['lat']);
 
 
+				// Insert a record in the DB for their last seen location
+				$this->database_model->EditLastSeen(0, $user['_id'], NULL, $loc['lon'], $loc['lat']); 
+
 				// Insert the user's pics
 				$this->database_model->InsertPics($user['_id'], ReturnPicsArray($decode['user']['photos']));
 
@@ -234,7 +237,7 @@
 		}
 
 		public function ReportUser($tinder_id, $auth, $cause, $text = NULL) {
-			$data = array('cause' => $cause);
+			$data = array('cause' => (int)$cause);
 
 			if($text !== NULL) {
 				$data['text'] = $text;

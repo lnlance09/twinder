@@ -177,6 +177,9 @@
 										'profile_pic' => ReturnProfilePic($person['photos']));
 						$this->InsertUser($user_data);
 
+						// Insert each user's pics
+						$this->InsertPics($person['_id'], ReturnPicsArray($person['photos']));
+
 						// Define the data that will be used for the insert query
 						$data = array('match_id' => $match_id,
 									'user_one' => $my_tinder_id,
@@ -297,7 +300,7 @@
 			} else {
 				// Get the latitude and longitude coordinates
 				$loc = GeoLocation($lon, $lat);
-				FormatArray($loc);
+				// FormatArray($loc);
 				$city = $loc['results'][0]['address_components'][3]['long_name'];
 				$state = $loc['results'][0]['address_components'][5]['short_name'];
 

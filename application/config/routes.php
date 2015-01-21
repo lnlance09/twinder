@@ -87,11 +87,8 @@ $route['hot/(:any)/(:any)/(:any)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5';
 // Maximum age
 $route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6';
 
-// Search parameter
-$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)/(:any)'] = 'hot/index/$1/$2/$3/$4/$5/$6/$7';
-
 // Page number
-$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)/(:any)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6/$7/$8';
+$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6/$7';
 
 // Get hottest method
 $route['hot/GetHottest'] = 'hot/GetHottest';

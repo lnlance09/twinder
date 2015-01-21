@@ -30,8 +30,10 @@
 				$distance = $this->uri->segment(5, $dist);
 				$min = $this->uri->segment(6, 18);
 				$max = $this->uri->segment(7, 50);
-				$q = $this->uri->segment(8, FALSE);
-				$page = $this->uri->segment(9, 0);
+				$page = $this->uri->segment(8, 0);
+
+				// Get the search parameter from the URL
+				$q = $this->input->get('q');
 
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
@@ -120,7 +122,7 @@
 								'lat' => $lat);
 
 				FormatArray($params);
-				
+
 				// Load all of the views
 				$this->load->view('backend/hot', array('hot' => $hot, 'q_string' => http_build_query($params), 'page' => $page)); 
 			}

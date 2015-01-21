@@ -67,12 +67,12 @@
 						//FormatArray($this->session->all_userdata());
 						//die;
 
-						header('Location: '.$this->base_url.'users/discover');
+						echo TRUE;
 					} else {
-						header('Location: '.$this->base_url.'signin');
+						echo 'error';
 					}
 				} else {
-					header('Location: '.$this->base_url);	
+					echo FALSE;	
 				}
 			}
 		}

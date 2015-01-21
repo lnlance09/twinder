@@ -423,9 +423,19 @@
 				$this->database_model->InsertIntoPasses($tinder_id, $id);
 			}
 
-			public function ReportUser($tinder_id) {
-				$report = $this->users_model->ReportUser($tinder, $this->session->userdata('token'));
-				return $report;
+			public function ReportUser() {
+				// Get the Tinder ID from the URL
+				$id = $this->input->get('id');
+				$reason = $this->input->get('reason');
+				$text = $this->input->get('text');
+
+				if($text == '') {
+					$text = NULL;
+				}
+				var_dump($id);
+
+				$report = $this->users_model->ReportUser($id, $this->session->userdata('token'), $reason, $text);
+				FormatArray($report);
 			}
 
 			public function SendMessage() {

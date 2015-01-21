@@ -58,6 +58,27 @@ $(document).ready(function() {
         $('ul#sub_pics').sortable();
     }
 
+    // Report the user
+    $('#report_modal ul li').click(function() {
+        var reason = $(this).attr('name');
+
+        if(reason == 0) {
+
+        } else {
+            $.ajax({
+                url : base_url +'users/ReportUser',
+                data : {
+                    id: tinder_id,
+                    reason: reason
+                },
+                success: function(data) {
+                    console.log(data);
+                
+                }
+            });
+        }
+    });
+
     // Load the connections
     $('#con_load_box').load(base_url +'users/GetConnections', 'type=matches&page=0&id='+ tinder_id);
 
@@ -157,6 +178,3 @@ $(document).ready(function() {
 
     initialize(lat, lon);
 });
-
-
-
