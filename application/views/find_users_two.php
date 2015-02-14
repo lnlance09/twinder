@@ -3,7 +3,7 @@
     $public_url = $base_url.'public/';
     $img_url = $public_url.'img/';
 
-    //FormatArray($pics);
+    // FormatArray($pics);
 ?>
             <div class="col-lg-12" id="focus_box">
                 <div class="col-lg-4">

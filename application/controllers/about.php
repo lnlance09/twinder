@@ -61,9 +61,9 @@
 									'profile_link' => $profile_link);
 
 				// Load all of the views
-				$this->load->view('header', $header_info); 
+				$this->load->view('templates/header', $header_info); 
 				$this->load->view('about'); 
-				$this->load->view('footer'); 
+				$this->load->view('templates/footer'); 
 			}
 		}
 	}

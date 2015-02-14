@@ -1,7 +1,5 @@
 <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/';
 ?>
 		<div id="header-section">
             <div id="signin">
@@ -30,9 +28,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h3 class="modal-title">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 
-                            <h3 class="modal-title">Terms of Service</h3>
+                                Terms of Service
+                            </h3>
                         </div>
 
                         <div class="modal-body">
@@ -54,12 +54,18 @@
             <div class="modal fade" id="sync_modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header text-center">
-                            <h3 class="modal-title">Syncing your Tinder account...</h3>
+                        <div class="modal-header">
+                            <h3 class="modal-title">
+                                Syncing your account...
+
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            </h3>
                         </div>
 
                         <div class="modal-body text-center">
-                            <i class="fa fa-refresh fa-2x fa-spin"></i>
+                            <div class="ajax-loader">
+                                <i class="fa fa-cog fa-4x fa-spin"></i>
+                            </div>
                         </div>
                     </div>
                 </div>

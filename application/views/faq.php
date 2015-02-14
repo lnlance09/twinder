@@ -1,7 +1,5 @@
 <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/';
 ?>
 		<div id="header-section">
             <div id="signin">
@@ -9,7 +7,7 @@
                     <?php echo $header; ?>
                 </h1>
 
-                <div class="col-lg-12" id="faq">
+                <div id="faq">
                     <h2>
                         What is WeTinder?
                     </h2>
@@ -38,19 +36,10 @@
                     </h2>
 
                     <p>
-                        WeTinder features a few distinctive elements that help give it a reputation that simply cannot be replicated on the mobile app.
-                    </p>
-
-                    <p>
-                        Search for anyone: You can search for people by their names and ages insted of just by location.
-                    </p>
-
-                    <p>
-                        Keep Records: Keep track of all of the people that you have liked/passed.
-                    </p>
-
-                    <p>
-                        Find the most popular users: See the users that have gotten the most matches and likes.
+                        WeTinder features a few distinctive elements that help give it a reputation that simply cannot be replicated on the mobile app. <br>
+                        Search for anyone: You can search for people by their names and ages insted of just by location. <br>
+                        Keep Records: Keep track of all of the people that you have liked/passed. <br>
+                        Find the most popular users: See the users that have gotten the most matches and likes. <br>
                     </p>
 
 
@@ -106,7 +95,5 @@
                         WeTinder will not allow you to use anything other than your real location.
                     </p>
                 </div>
-
-                <div class="clearfix"></div>
             </div>
         </div>

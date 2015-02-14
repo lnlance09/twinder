@@ -39,11 +39,13 @@
 |
 */
 
+// Default controller
 $route['default_controller'] = 'hot';
 
+// 404 controller
 $route['404_override'] = 'error';
 
-/* Sitemap */
+// Sitemap 
 $route['seo/sitemap\.xml'] = 'seo/sitemap';
 
 /* Users page */
@@ -68,28 +70,7 @@ $route['matches/(:any)'] = 'matches/index/$1';
 $route['matches/MatchesBackend'] = 'matches/MatchesBackend/';
 $route['matches/ThreadBackend'] = 'matches/ThreadBackend/';
 
-// Hot page
-// Gender
-$route['hot/(:any)'] = 'hot/index/$1'; 
-
-// City or Longitude
-$route['hot/(:any)/(:any)'] = 'hot/index/$1/$2';
-
-// State or Latitude
-$route['hot/(:any)/(:any)/(:any)'] = 'hot/index/$1/$2/$3';
-
-// Distance
-$route['hot/(:any)/(:any)/(:any)/(:num)'] = 'hot/index/$1/$2/$3/$4';
-
-// Minimum age
-$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5';
-
-// Maximum age
-$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6';
-
-// Page number
-$route['hot/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)/(:num)'] = 'hot/index/$1/$2/$3/$4/$5/$6/$7';
-
-// Get hottest method
+/* Hot page */
+$route['hot/gender/(:any)'] = 'hot/index/$1';
 $route['hot/GetHottest'] = 'hot/GetHottest';
 $route['hot/GetHottest/(:any)'] = 'hot/GetHottest/$1';

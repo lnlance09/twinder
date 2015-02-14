@@ -11,7 +11,7 @@
 					</div>
 	            </div>
 
-				<div class="col-lg-12 text-center" id="blank_box">
+				<div class="col-lg-12 text-center" id="like_or_pass">
 					<div class="col-lg-6">
             			<img class="svg pull-right" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey"/>
             		</div>
@@ -24,7 +24,6 @@
            	 	</div>
 
 				<div class="hidden" id="user_at_num">0</div>
-
 
 				<!-- Modal -->
 				<div class="modal fade" id="match_modal">

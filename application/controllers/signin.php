@@ -20,6 +20,7 @@
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
+				// Check to make sure the user is logged in
 				if(is_numeric($user_id)) {
 					header('Location: '.$this->base_url);
 				} else {
@@ -32,27 +33,29 @@
 					$header_info = array('title' => 'Sign In',
 										'session' => FALSE,
 										'header' => 'Sign in to Facebook',
-										'meta' => $meta_info);
+										'meta' => $meta_info,
+										'auth' => '');
 
 					// Set all of the info that needs to be passed to the dashboard view
 					$body_info = array();
 
 					// Load all of the views
-					$this->load->view('header', $header_info); 
+					$this->load->view('templates/header', $header_info); 
 					$this->load->view('signin'); 
-					$this->load->view('footer'); 
+					$this->load->view('templates/footer'); 
 				}
 			}
 
 			public function Login() {
 				$submit = $this->input->post('submit');
 
+				// Make sure the form was submitted
 				if($submit == 'submit') {
 					$username = $this->input->post('username');
 					$password = $this->input->post('password');
 
 					// Log the user in and get the auth token
-					$login = $this->users_model->AuthToken($username, $password);
+					$login = $this->users_model->SyncAccount($username, $password);
 
 					// Use if internet not available
 					// $login = $this->database_model->GetUserInfo('5495df819983685e07f138f2');
@@ -64,10 +67,10 @@
 
 						// Set the session for 1 day
 						$this->config->set_item('sess_expiration', 86400);
-						//FormatArray($this->session->all_userdata());
-						//die;
+						// FormatArray($this->session->all_userdata());
+						// die;
 
-						echo TRUE;
+						echo 'true';
 					} else {
 						echo 'error';
 					}

@@ -1,9 +1,6 @@
  <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/';
-
-    //FormatArray($user_info);
+    // FormatArray($user_info);
     $img_path = 'http://images.gotinder.com/'.$user_info['tinder_id'].'/'; 
 ?>
         <div id="header-section">
@@ -39,7 +36,7 @@
 <?php 
     echo $user_info['name'].', '.$user_info['age'];
 
-    if($edit == 'true') {
+    if($edit === TRUE) {
 ?>
 		                                <button class="btn btn-default pull-right" type="button" id="click_to_edit">Edit</button>
 		                                <span class="clearfix"></span>
@@ -83,36 +80,36 @@
 		                </ul>
 		            </div>
 
-		            <div class="hidden" id="pic_path"><?php echo $img_url.'users/'.$user_info['tinder_id'].'/'; ?></div>
-
 		            <div class="col-lg-12 text-center" id="below_box">
-		                <div class="col-lg-4">
-		                    <div class="timer_box" name="likes">
-		                        <h3><?php echo $like_count; ?></h3>
-		                        <p><i class="fa fa-thumbs-up fa-2x" id="like"></i></p>
-		                    </div>
-		                </div>
+<?php
+	// Loop thru all of the stats
+	for($i=0;$i<count($stats['results']);$i++) {
+		if($i == 0) {
+			$id = 'active';
+		} else {
+			$id = '';
+		}
+?>
+		                <div class="col-lg-2 timer_box" id="<?php echo $id; ?>" name="<?php echo $stats['results'][$i]['name']; ?>">
+		                	<div class="inside">
+		                    	<h3><?php echo strtoupper($stats['results'][$i]['name']); ?></h3>
+		                    	<p><?php echo $stats['results'][$i]['count']; ?></p>
+							</div>
 
-		                <div class="col-lg-4">
-		                    <div class="timer_box" name="matches" id="connection_active">
-		                        <h3><?php echo $match_count; ?></h3>
-		                        <p><i class="fa fa-heart fa-2x" id="matches"></i></p>
-		                    </div>
+		                    <div class="border_active"></div>
 		                </div>
-
-		                <div class="col-lg-4">
-		                    <div class="timer_box" name="passes">
-		                        <h3><?php echo $pass_count; ?></h3>
-		                        <p><i class="fa fa-thumbs-down fa-2x" id="pass"></i></p>
-		                    </div>
-		                </div>
+<?php
+	}
+?>
 
 		                <div class="clearfix"></div>
 
 		                <div class="input-group" id="search_wrapper">
-		                    <div class="input-group-addon"><i class="fa fa-heart fa-lg" id="fa_type"></i></div>
+		                    <div class="input-group-addon">
+		                    	<i class="fa fa-heart fa-lg" id="fa_type"></i>
+		                    </div>
+		                    
 		                    <input type="text" class="form-control" placeholder="Search matches" id="search_connections" autocomplete="off">
-		                    <div class="input-group-addon"><i class="fa fa-share fa-lg" id="inverse_trigger"></i></div>
 		                </div>
 		            </div>
 
@@ -130,8 +127,7 @@
                 </div>
 <?php
     // If the user is logged in and they aren't viewing their own profile, then display a link to report them along with a modal
-    if($session !== FALSE
-    && $user_info['tinder_id'] != $this->session->userdata('tinder_id')) {
+    if($report === TRUE) {
 ?>
 				<div class="col-lg-12" id="fb_info_box">
 					<div class="col-lg-6">
@@ -171,9 +167,9 @@
 		                        	</ul>
 
 									<div id="other_box">
-		                        		<textarea class="form-control" placeholder="Why are you reporting this?" id="other_comment"></textarea>
+		                        		<textarea class="form-control" placeholder="Why are you reporting this?" id="other_comment"></textarea><br>
 
-		                        		<br><button class="btn btn-primary pull-right" type="submit" id="accept_terms">Submit</button>
+		                        		<button class="btn btn-primary pull-right" type="button" id="report_text">Submit</button>
 
 		                        		<div class="clearfix"></div>
 		                        	</div>

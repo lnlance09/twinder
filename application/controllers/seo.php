@@ -18,29 +18,25 @@
 
 			public function Index() {
 				// Set all of the info that needs to be passed to the header view
-				$info = $this->database_model->GetHottest();
+				$info = $this->database_model->GetAllUsers();
 
 				// Load all of the views
-				$this->load->view('sitemap', array('users' => $info)); 
+				$this->load->view('sitemap', array('links' => $info)); 
 			}
 
 			public function Test() {
-				$this->database_model->FlushDB();
+				// $this->database_model->FlushDB();
 
-				//$data = $this->database_model->GetUserInfo('50ef5be9a8cf55801f0000ad');
-				//FormatArray($data);
+				$info = $this->database_model->HottestByState(1, 'NY');
+			
+				//$my_id = '54697f0c99a146cd3cc80b05';
+				//$his_id = '5495df819983685e07f138f2';
+				//$info = $this->database_model->GetMutualLikes($my_id, $his_id, 'eli');
 
-				//$auth = $this->session->userdata('token');
-				//$info = $this->users_model->ReportUser('52cbac34fe5f7abb63000661', $auth, 1, NULL);
-
-				/*
-				$center_lat = 40.7590;
-				$center_lng = -73.9844;
-				$lat = 34.0617;
-				$lng = -118.2458;
-				$info = Haversine($center_lat, $center_lng, $lat, $lng);
-				echo $info;
-				*/
+				// $info = $this->location_model->PlaceExists('', 'AZ');
+				// $info = $this->facebook_model->FacebookOAuth('mia_falco92');
+				//$info = $this->facebook_model->FacebookCheck();
+				FormatArray($info);
 
 				// Get all of the user's matches since they have joined
 				//$updates = $this->users_model->GetUpdates('b3b5096f-b4ec-4604-ade0-34583b22200a', '-100 days');
@@ -49,11 +45,7 @@
 
 				//$token = $this->facebook_model->FacebookToken('mia_falco92@mail.com', 'Codecall87!');
 				//$info = $this->facebook_model->ScrapePage($token, 1043010065);
-				//FormatArray($info);
-				die;
-
-				// Flush the DB
-				//$this->database_model->FlushDB();   
+				//FormatArray($token);
 				//die;
 			}
 		}

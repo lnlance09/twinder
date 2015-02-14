@@ -1,7 +1,6 @@
 <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $js_url = $public_url.'js/';
+    $js_url = $base_url.'public/js/';
 
     // Get the controller name
     $controller = $this->router->fetch_class();
@@ -9,7 +8,6 @@
     // Get the method
     $method = $this->router->fetch_method();
 
-    $fancy_pages = array('users', 'index');
     $maps_pages = array('users', 'settings', 'search', 'hot');
     $slider_pages = array('users', 'settings', 'search', 'hot');
 ?>
@@ -32,8 +30,8 @@
             </div>
 
             <div class="col-lg-4">
-                <!-- Twitter Button -->
                 <ul>
+                    <!-- Twitter Button -->
                     <li>Follow Us</li>
 
                     <li>
@@ -44,6 +42,7 @@
                         </script>
                     </li>
 
+                    <!-- Facebook Button -->
                     <li id="fb_like_button">
                         <div id="fb-root"></div>
 
@@ -54,12 +53,11 @@
                                 js = d.createElement(s); js.id = id;
                                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
                                 fjs.parentNode.insertBefore(js, fjs);
-                            }(document, 'script', 'facebook-jssdk'));
+                            } (document, 'script', 'facebook-jssdk'));
                         </script>
 
                         <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
                     </li>
-                
                 </ul>
             </div>
 
@@ -73,30 +71,36 @@
         </div>
     </div>
 
-    <script src="<?php echo $js_url; ?>jquery.js"></script>
+    <!-- jQuery and Bootstrap JS files -->
+    <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
-    <script src="<?php echo $js_url; ?>bootstrap.min.js"></script>
+    <script src="<?php echo $js_url; ?>bootstrap/bootstrap.min.js"></script>
     <script src="<?php echo $js_url; ?>main.js"></script>
     
+    <!-- Google Maps JS -->
 <?php
     if(in_array($controller, $maps_pages)) {
 ?>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="<?php echo $js_url; ?>datamaps/datamaps.world.min.js"></script>
 <?php
     }
+
     if(in_array($controller, $slider_pages)) {
 ?>
-    <script src="<?php echo $js_url; ?>nouislider.all.min.js"></script>
-    <script src="<?php echo $js_url; ?>nouislider.min.js"></script>
+    <!-- Slider JS -->
+    <script src="<?php echo $js_url; ?>slider/nouislider.all.min.js"></script>
+    <script src="<?php echo $js_url; ?>slider/nouislider.min.js"></script>
 <?php
     }
 ?>
     <!-- The JavaScript for each page -->
-
 <?php 
-    if($controller == 'users'
-    && strtolower($method) == 'discover') {
+    if($controller == 'users' && strtolower($method) == 'discover') {
 ?>
     <script src="<?php echo $js_url; ?>discover.js"></script>
 <?php
@@ -107,6 +111,7 @@
     }
 ?>
 
+    <!-- StatCounter -->
     <!--
     <script type="text/javascript">
         var sc_project = 10187180; 

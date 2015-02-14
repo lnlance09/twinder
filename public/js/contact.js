@@ -7,9 +7,9 @@ $(document).ready(function() {
 		
 		if(msg != '') {
 			$.ajax({
-		        url : base_url +'contact/Send',
+		        url: base_url +'contact/Send',
 		        type: 'POST',
-		        data : {
+		        data: {
 		            msg: msg
 		        },
 		        success: function(data) {

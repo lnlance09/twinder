@@ -1,0 +1,290 @@
+<?php 
+	class Location_model extends CI_Model {
+		public function __construct() {       
+			parent:: __construct();
+
+			// Define the API key for Bing
+			$this->api_key = 'AsYr89sIN1M2BNmVi8279YDSTfmu-ueNl6LCPf1urkcLbYugk8wTcKdp7jt4OryS';
+		}
+
+		/**
+		 * Get the city and state of a location from Bing based upon its geographical coordinates 
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 */
+		public function BingLocation($lon, $lat) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, 'http://dev.virtualearth.net/REST/v1/Locations/'.$lat.','.$lon.'?o=json&key='.$this->api_key);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$data = curl_exec($ch);
+		    curl_close($ch);
+
+		    // Decode the response
+		    $decode = @json_decode($data, TRUE);
+
+		    if($decode['statusCode'] == 200) {
+		    	$city = $decode['resourceSets'][0]['resources'][0]['address']['locality'];
+		    	$state = $decode['resourceSets'][0]['resources'][0]['address']['adminDistrict'];
+		    	return array('city' => $city, 'state' => $state);
+		    } else {
+		    	return array('city' => NULL, 'state' => NULL);
+		    }
+		}
+
+		/**
+		 * Query the DB to see if a row exists containing a given city/state combo
+		 * @param {city} [city] The name of the city
+		 * @param {state} [state] The name of the state. Can either be the full name or its abbreviation
+		 */
+		public function CheckCityAndState($city, $state) {
+			$sql = "SELECT id 
+					FROM locations 
+					WHERE city = ? 
+					AND (state = ? OR state_abbrev = ?)"; 
+			$query = $this->db->query($sql, array($city, $state, $state));
+			$count = $query->num_rows();
+
+			if($count == 1) { 
+				foreach($query->result() as $row) {
+					$id = $row->id;
+				}
+
+				return $id;
+			} else {
+				return FALSE;
+			}
+		}
+
+		/**
+		 * Query the DB to see if a row exists contaning the given state
+		 * @param {string} [state] The name or two letter abbrevation of the state.
+		 */
+		public function CheckState($state) {
+			$sql = "SELECT id 
+					FROM locations 
+					WHERE state = ? 
+					OR state_abbrev = ?"; 
+			$query = $this->db->query($sql, array($state, $state));
+			return $query->num_rows();
+		}
+
+		/**
+		 * Get a state's abbreviation from its full name
+		 * @param {string} [key] The full name of the state
+		 */
+		public function ConvertState($key) {
+			$states = $this->States();
+		    $array = (strlen($key) == 2 ? $states : array_flip($states));
+		    $res = $array[strtoupper($key)];
+		    return strtolower($res);
+		}
+
+		/**
+		 * Get the full name of a state based upon it's abbreviation
+		 * @param {string} [state] The two letter abbreviation of the state
+		 */
+		public function FullFromAbbrev($state) {
+			$states = $this->States();
+
+			foreach($states as $key => $val) {
+				if($key == $state) {
+					if($state == 'Washington D.C.') {
+						return 'Washington D.C.';
+					} else {
+						return ucwords(strtolower($val));
+					}
+					break;
+				}
+			}
+		}
+
+		/**
+		 * Make a request to the Google Maps API to find out the names of a given location based upon its geographical location 
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 */
+		public function GeoLocation($lon, $lat) {
+			// $api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$lat.','.$lon.'&sensor=false');
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$data = curl_exec($ch);
+		    curl_close($ch);
+
+		    // Decode the response
+		    return @json_decode($data, TRUE);
+		}
+
+		/**
+		 * Query the DB to get matching states from the autocomplete form
+		 * @param {string} [state] The name of the state
+		 */
+		public function GetStates($state) {
+			$this->db->select('state, state_abbrev');
+			$this->db->like('state', $state);
+			$this->db->limit(5);
+			$this->db->distinct();
+			$query = $this->db->get('locations');
+			$count = $query->num_rows();
+			$i = 0;
+
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$name[$i] = $row->state;
+				$abbrev[$i] = $row->state_abbrev;
+
+				$i++;
+			}
+
+			for($i=0;$i<$count;$i++) {
+				$return[$i] = array('name' => $name[$i], 'abbrev' => strtolower($abbrev[$i]));
+			}
+
+			return array('count' => $count, 'states' => $return);
+		}
+
+		/**
+		 * Query the DB for cities in a given state that match the autocomplete form
+		 * @param {string} [state] The full name of the state
+		 * @param {string} [city] The name of the city. 
+		 */
+		public function GetCities($state, $city) {
+			$this->db->select('city');
+			$this->db->where('state', $state);
+			$this->db->like('city', $city);
+			$this->db->limit(5);
+			$query = $this->db->get('locations');
+			$count = $query->num_rows();
+			$i = 0;
+
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$name[$i] = $row->city;
+
+				$i++;
+			}
+
+			for($i=0;$i<$count;$i++) {
+				$return[$i] = array('name' => $name[$i]);
+			}
+
+			return array('count' => $count, 'cities' => $return);
+		}
+
+		/**
+		 * Calculate the distance between two geographical locations in miles
+		 * @param {decimal} [lat_from] The latitude coordinate of the first location
+		 * @param {decimal} [lon_from] The longitude coordinate of the first location
+		 * @param {decimal} [lat_to] The latitude coordinate of the second location
+		 * @param {decimal} [lon_to] The longitude coordinate of the second location
+		 */
+		public function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
+			$radius = 6371000;
+			$delta_lat = deg2rad($lat_to-$lat_from);
+			$delta_lon = deg2rad($lon_to-$lon_from);
+			
+			$a = sin($delta_lat/2) * sin($delta_lat/2) +
+				cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) *
+				sin($delta_lon/2) * sin($delta_lon/2);
+			$c = 2*atan2(sqrt($a), sqrt(1-$a));
+
+			// Convert the distance from meters to miles
+			return ceil(($radius*$c)*0.000621371);
+		}
+
+		/**
+		 * Make a request to Bing's API to see if a given city/state combo exists
+		 * @param {string} [city] The name of the city
+		 * @param {string} [state] The two letter abbreviation of the state
+		 */
+		public function PlaceExists($city, $state) {
+			if($city != NULL) {
+				$param = $state.'/'.rawurlencode($city);
+			} else {
+				$param = $state;
+			}
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, 'http://dev.virtualearth.net/REST/v1/Locations/US/'.$param.'?output=json&key='.$this->api_key);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$data = curl_exec($ch);
+		    curl_close($ch);
+
+		    // Decode the response
+		    $decode = @json_decode($data, TRUE);
+
+		    if($decode['authenticationResultCode'] == 'ValidCredentials') {
+		    	$set = $decode['resourceSets'][0]['resources'][0]['point']['coordinates'];
+		    	return array('lon' => $set[1], 'lat' => $set[0]);
+		    } else {
+		    	return array('lon' => NULL, 'lat' => NULL);
+		    }
+		}
+
+		/**
+		 * Return an array containing all 50 states
+		 */
+		public function States() {
+			return array('AL' => 'ALABAMA',
+						'AK' => 'ALASKA',
+						'AZ' => 'ARIZONA',
+						'AR' => 'ARKANSAS',
+						'CA' => 'CALIFORNIA',
+						'CO' => 'COLORADO',
+						'CT' => 'CONNECTICUT',
+						'DE' => 'DELAWARE',
+						'FL' => 'FLORIDA',
+						'GA' => 'GEORGIA',
+						'HI' => 'HAWAII',
+						'ID' => 'IDAHO',
+						'IL' => 'ILLINOIS',
+						'IN' => 'INDIANA',
+						'IA' => 'IOWA',
+						'KS' => 'KANSAS',
+						'KY' => 'KENTUCKY',
+						'LA' => 'LOUISIANA',
+						'ME' => 'MAINE',
+						'MD' => 'MARYLAND',
+						'MA' => 'MASSACHUSETTS',
+						'MI' => 'MICHIGAN',
+						'MN' => 'MINNESOTA',
+						'MS' => 'MISSISSIPPI',
+						'MO' => 'MISSOURI',
+						'MT' => 'MONTANA',
+						'NE' => 'NEBRASKA',
+						'NV' => 'NEVADA',
+						'NH' => 'NEW HAMPSHIRE',
+						'NJ' => 'NEW JERSEY',
+						'NM' => 'NEW MEXICO',
+						'NY' => 'NEW YORK',
+						'NC' => 'NORTH CAROLINA',
+						'ND' => 'NORTH DAKOTA',
+						'OH' => 'OHIO',
+						'OK' => 'OKLAHOMA',
+						'OR' => 'OREGON',
+						'PA' => 'PENNSYLVANIA',
+						'RI' => 'RHODE ISLAND',
+						'SC' => 'SOUTH CAROLINA',
+						'SD' => 'SOUTH DAKOTA',
+						'TN' => 'TENNESSEE',
+						'TX' => 'TEXAS',
+						'UT' => 'UTAH',
+						'VT' => 'VERMONT',
+						'VA' => 'VIRGINIA',
+						'WA' => 'WASHINGTON',
+						'DC' => 'WASHINGTON D.C.',
+						'WV' => 'WEST VIRGINIA',
+						'WI' => 'WISCONSIN',
+						'WY' => 'WYOMING');
+		}
+
+		/**
+		 * Validate either a latitude or longitude coordinate using regex
+		 * @param {decimal} [coordinate] The coordinate to be tested
+		 */
+		function ValidateCoordinate($coordinate) {
+			return preg_match('/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $coordinate);
+		}
+	}

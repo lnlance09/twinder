@@ -20,6 +20,7 @@
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
+				// Make sure the user is logged in
 				if(is_numeric($user_id)) {
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
@@ -38,14 +39,27 @@
 					// Get the user's profile link
 					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
+					// Store all of the gender filters in an array
+					$filters = array(array('num' => 0, 'name' => 'Men'),
+			                    	array('num' => 1, 'name' => 'Women'),
+			                    	array('num' => -1, 'name' => 'Both'));
+
+					// Store all of the gender values in an array
+					$genders = array(array('num' => 0, 'name' => 'Male'),
+									array('num' => 1, 'name' => 'Female'));
+
 					$settings_info = array('distance' => $info['distance_filter'],
 											'min' => $info['age_filter_min'],
 											'max' => $info['age_filter_max'],
 											'gender_filter' => $info['gender_filter'],
 											'gender' => $info['gender'],
 											'username' => $this->session->userdata('username'),
+											'city' => $city,
+											'state' => $state,
 											'lon' => $lon,
-											'lat' => $lat);
+											'lat' => $lat,
+										    'filters' => $filters,
+										    'genders' => $genders);
 
 					// Set all of the info that needs to be passed to the header view
 					$header_info = array('title' => 'Settings',
@@ -61,9 +75,9 @@
 										'profile_link' => $profile_link);
 
 					// Load all of the views
-					$this->load->view('header', $header_info); 
+					$this->load->view('templates/header', $header_info); 
 					$this->load->view('settings', $settings_info); 
-					$this->load->view('footer'); 
+					$this->load->view('templates/footer'); 
 				} else {
 					header('Location: '.$this->base_url);
 				}
@@ -85,9 +99,6 @@
 
 				// Update the username session variable
 				$this->session->set_userdata('username', $username);
-
-				// $this->database_model->Update
-				// header('Location: '.$this->base_url.'settings');
 			}
 
 			public function CheckUsername() {

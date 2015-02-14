@@ -1,0 +1,1 @@
+$(document).ready(function(){var t=$("#base_url").text();$("#contact_form").submit(function(a){a.preventDefault();var e=$("textarea").val();""!=e?$.ajax({url:t+"contact/Send",type:"POST",data:{msg:e},success:function(t){console.log(t),$("#contact_modal").modal("show"),$("#wipe_text").click(function(){$("textarea").val("")})}}):$("#contact_form").effect("shake")})});

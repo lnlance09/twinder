@@ -2,16 +2,8 @@
     $base_url = $this->config->base_url();
     $public_url = $base_url.'public/';
     $css_url = $public_url.'css/';
+    $js_url = $public_url.'js/';
     $img_url = $public_url.'img/';
-
-    // Get the controller name
-    $controller = $this->router->fetch_class();
-
-    // Get the method
-    $method = $this->router->fetch_method();
-    
-    $slider_pages = array('users', 'settings', 'search', 'hot');
-    $meta_pages = array('about', 'contact', 'faq', 'hot', 'search', 'signin', 'terms', 'users');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,51 +19,14 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
-<?php
-    if($controller == 'users'
-    && $method == 'index') {
-?>
-    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
-<?php
-    }
-?>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo $public_url; ?>font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
 
-<?php
-    if(in_array($controller, $slider_pages)) {
-?>
-    <!-- CSS for sliders --> 
-    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
-    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
-<?php
-    }
-
-    if(in_array($controller, $meta_pages)) {
-?>
-    <!-- Meta Tags -->
-    <meta name="description" content="<?php echo $meta['description']; ?>">
-
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="<?php echo $title; ?>"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:image" content="<?php echo $meta['img']; ?>"/>
-    <meta property="og:url" content="<?php echo $meta['url']; ?>"/>
-    <meta property="og:description" content="<?php echo $meta['description']; ?>"/>
-
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="<?php echo $title; ?>">
-    <meta name="twitter:url" content="<?php echo $meta['url']; ?>">
-    <meta name="twitter:title" content="<?php echo $title; ?>">
-    <meta name="twitter:description" content="<?php echo $meta['description']; ?>">
-    <meta name="twitter:image" content="<?php echo $meta['img']; ?>">
-<?php
-    }
-?>
-    <title><?php echo $title; ?> - WeTinder</title>
+    <title>Not Found - WeTinder</title>
 </head>
     
 <body>   
@@ -107,7 +62,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="<?php echo $base_url; ?>hot">so hot</a>
+                        <a href="<?php echo $base_url; ?>hot">browse</a>
                     </li>
 <?php
     if($session === FALSE) {
@@ -136,7 +91,7 @@
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?php echo $base_url; ?>users/Discover">Play</a></li>
+                            <li><a href="<?php echo $base_url; ?>users/discover">Play</a></li>
                             <li><a href="<?php echo $base_url.$profile_link; ?>">Profile</a></li>
 
                             <li class="divider"></li>
@@ -153,5 +108,94 @@
         </div>
     </div>
 
-    <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
+    <div id="search_container">
+        <form method="GET" action="<?php echo $base_url; ?>hot/both">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
+                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="" autocomplete="off">
+                <span class="input-group-addon"></span>
+
+                <div class="clearfix"></div>
+            </div>
+        </form>
+    </div>
+
+    <div id="header-section">
+        <div id="signin">
+            <h1 class="page-header">
+                It looks like that page doesn't exist.
+            </h1>
+
+            <div class="ajax-loader">
+                <img class="not_found" src="<?php echo $img_url; ?>svg/404.svg" width="200" height="200" alt="Page not found"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center" id="footer">
+        <div id="sub_footer">
+            <div class="col-lg-4">
+                <ul>
+                    <li>About</li>
+                    <li><a href="<?php echo $base_url; ?>about">about</a></li>
+                    <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
+                    <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
+                    <li><a href="<?php echo $base_url; ?>contact">contact</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <ul>
+                    <li>Trending</li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Twitter Button -->
+                <ul>
+                    <li>Follow Us</li>
+
+                    <li>
+                        <a href="https://twitter.com/WeTinder" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @WeTinder</a>
+
+                        <script>
+                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+                        </script>
+                    </li>
+
+                    <li id="fb_like_button">
+                        <div id="fb-root"></div>
+
+                        <script>
+                            (function(d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) return;
+                                js = d.createElement(s); js.id = id;
+                                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));
+                        </script>
+
+                        <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
+                    </li>
+                
+                </ul>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+            
+        <div id="copyright">
+            <p>
+                WeTinder © 2015 - a Lance Newman production
+            </p>
+        </div>
+    </div>
+
+    <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
+    <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
+    <script src="<?php echo $js_url; ?>bootstrap/bootstrap.min.js"></script>
+    <script src="<?php echo $js_url; ?>main.js"></script>
+</body>
+</html>
     

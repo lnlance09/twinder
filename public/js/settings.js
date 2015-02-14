@@ -19,7 +19,6 @@ $(document).ready(function() {
     // Age slider
     var min = $('#min').text();
     var max = $('#max').text();
-    var distance = $('#distance').text();
     // console.log(distance);
 
     $("#age_slider").noUiSlider({
@@ -38,6 +37,8 @@ $(document).ready(function() {
 
     $("#age_slider").Link('lower').to($('#lower-value'));
     $("#age_slider").Link('upper').to($('#upper-value'));
+
+    var distance = $('#distance').text();
 
     // Distance slider
     $("#distance_slider").noUiSlider({
@@ -70,9 +71,8 @@ $(document).ready(function() {
         $('#gender_button').val(value);
     });
 
-
     // Google Maps
-    function initialize(lat, lon, meters) {
+    function Initialize(lat, lon, meters) {
         var latlng = new google.maps.LatLng(lat, lon);
 
         var mapOptions = {
@@ -106,25 +106,35 @@ $(document).ready(function() {
         cityCircle.bindTo('center', marker, 'position');
     }
 
-    initialize(lat, lon, meters);
 
+    Initialize(lat, lon, meters);
+    
     $('#distance_slider').change(function() {
         var miles = $('#distance-value').text().trim();
         var meters = Math.round(parseInt(miles)*1609.344);
-        initialize(lat, lon, meters);
+        Initialize(lat, lon, meters);
     });
 
+    // Check to see if the username is available upon keyup of the input field
     $('#username').keyup(function() {
-       $.ajax({
-            url : base_url +'settings/CheckUsername',
-            data : {
+        var username = $(this).val().trim();
+        
+        $.ajax({
+            url: base_url +'settings/CheckUsername',
+            data: {
                 username: username
             },
             success: function(data) {
-                if(data == 0) {
-                    $(this).css('border')
-                } else {
+                console.log(data);
 
+                if(username != '') {
+                    if(data == 0) {
+                        $('#username_div .form-control').css('border', 'solid 1px green');
+                    } else {
+                        $('#username_div .form-control').css('border', 'solid 1px red');
+                    }
+                } else {
+                    $('#username_div .form-control').css('border', 'solid 1px #ccc');
                 }
             }
         }); 
@@ -138,13 +148,12 @@ $(document).ready(function() {
         var min = $('#lower-value').text();
         var interested = $('#interested_in_button').val();
         var gender = $('#gender_button').val();
-
         console.log('Distance: '+ distance +', Username: '+ username +', Max: '+ max +', Min: '+ min +', Interested In: '+ interested +', Gender: '+ gender);
         
         $.ajax({
-            url : base_url +'settings/UpdateSettings',
+            url: base_url +'settings/UpdateSettings',
             type: 'POST',
-            data : {
+            data: {
                 auth: auth,
                 username: username,
                 interested_in: interested,

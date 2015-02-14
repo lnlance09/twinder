@@ -22,14 +22,13 @@
                 -->
 
                 <div id="matches_load">
-                    <div class="ajax-loader">
-                        
-                    </div>
+                    <div class="ajax-loader"></div>
                 </div>
 
                 <div class="hidden" id="match_type"><?php echo $type; ?></div>
 
                 <div id="fb-root"></div>
+
                 <script>
                     (function(d, s, id) {
                         var js, fjs = d.getElementsByTagName(s)[0];

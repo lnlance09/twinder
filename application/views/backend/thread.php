@@ -1,11 +1,7 @@
 <?php
 	$base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/users/';
 
-    echo '<pre>';
-    print_r($messages);
-    echo '</pre>';
+    FormatArray($messages);
 ?>
 	<div class="messages-wrapper">
 <?php

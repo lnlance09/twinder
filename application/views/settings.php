@@ -1,14 +1,5 @@
 <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/';
-
-    $filters = array(array('num' => 0, 'name' => 'Men'),
-                    array('num' => 1, 'name' => 'Women'),
-                    array('num' => -1, 'name' => 'Both'));
-
-    $genders = array(array('num' => 0, 'name' => 'Male'),
-                    array('num' => 1, 'name' => 'Female'));
 ?>
 		<div id="header-section">
             <div class="container" id="signin">
@@ -18,9 +9,8 @@
 
                 <form method="POST" action="" id="settings_form">
                     <div class="col-lg-12 settings_box">
-                        <span>
-                            interested in
-                        </span>
+                        <!-- Interested In -->
+                        <span class="settings_field">interested in</span>
     
                         <div class="dropdown pull-right">
                             <button class="btn btn-default dropdown-toggle" type="button" id="interested_in_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender_filter; ?>"><?php echo FormatInterestedIn($gender_filter); ?> <span class="caret"></span></button>
@@ -29,7 +19,7 @@
 <?php
     for($i=0;$i<count($filters);$i++) {
 ?>
-                                <li><a tabindex="-1" href="#" title="<?php echo $filters[$i]['num']; ?>"><?php echo $filters[$i]['name']; ?></a></li>
+                                <li><a href="#" title="<?php echo $filters[$i]['num']; ?>"><?php echo $filters[$i]['name']; ?></a></li>
 <?php
     }
 ?>
@@ -40,9 +30,8 @@
                     </div>
 
                     <div class="col-lg-12 settings_box">
-                        <span>
-                            gender
-                        </span>
+                        <!-- Gender -->
+                        <span class="settings_field">gender</span>
 
                         <div class="dropdown pull-right">
                             <button class="btn btn-default dropdown-toggle" type="button" id="gender_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender; ?>"><?php echo FormatGender($gender); ?> <span class="caret"></span></button>
@@ -51,7 +40,7 @@
 <?php
     for($i=0;$i<count($genders);$i++) {
 ?>
-                                <li><a tabindex="-1" href="#" title="<?php echo $genders[$i]['num']; ?>"><?php echo $genders[$i]['name']; ?></a></li>
+                                <li><a href="#" title="<?php echo $genders[$i]['num']; ?>"><?php echo $genders[$i]['name']; ?></a></li>
 <?php
     }
 ?>
@@ -62,9 +51,8 @@
                     </div> 
 
                     <div class="col-lg-12 settings_box">
-                        <span>
-                            username
-                        </span>
+                        <!-- Username -->
+                        <span class="settings_field">username</span>
 
                         <div class="pull-right" id="username_div">
                             <div class="input-group pull-right">
@@ -76,9 +64,8 @@
                         <div class="clearfix"></div>
                     </div>
 
+                    <!-- Age -->
                     <div class="col-lg-12 text-center settings_box">
-                        <h2>age</h2>
-
                         <div id="age_slider" class="slider"></div>
 
                         <h2 id="age_settings">
@@ -86,23 +73,25 @@
                         </h2>
                     </div>
 
+                    <!-- Google Maps -->
                     <div class="col-lg-12" id="maps_bar">
                         <div id="google_maps"></div>
                     </div>
 
+                    <!-- Distance -->
                     <div class="col-lg-12 text-center" id="distance_bar">
-                        <h2>distance</h2>
-
+                        <span id="address_components"></span>
+                        
                         <div id="distance_slider" class="slider"></div>
 
                         <h2 id="distance_settings">
-                            <span class="example-val" id="distance-value"></span>
-                            miles
+                            <span class="example-val" id="distance-value"></span> miles
                         </h2>
                     </div>
 
                     <div class="clearfix"></div>
 
+                    <!-- Submit the form -->
                     <div id="settings_submit">
                         <button class="btn btn-primary pull-right" type="submit" name="submit" value="submit">Done</button>
                         <div class="clearfix"></div>
@@ -110,10 +99,11 @@
                 </form>
             </div>
 
+            <!-- Write all of the variables for the JS to work -->
             <div class="hidden" id="distance"><?php echo $distance; ?></div>
             <div class="hidden" id="min"><?php echo $min; ?></div>
             <div class="hidden" id="max"><?php echo $max; ?></div>
-            <div class="hidden" id="gender_filter"><?php echo $gender_filtr; ?></div>
+            <div class="hidden" id="gender_filter"><?php echo $gender_filter; ?></div>
             <div class="hidden" id="lon"><?php echo $lon; ?></div>
             <div class="hidden" id="lat"><?php echo $lat; ?></div>
         </div>

@@ -1,50 +1,21 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text();
-    var url = base_url +'search/Autocomplete';
-
-    /*
-    // Search autocomplete
-    $('#users_autocomplete').keyup(function(e) {
-        var val = $(this).val().trim();
-        
-        if(e.which == 27
-        || val == '') {
-            $('#autocomplete').slideUp('fast');
-        } else {
-            $('#autocomplete').slideDown('fast');
-            var data = 'q='+ val +'&gender=both';
-
-            $('#autocomplete').load(url, data, function() {
-                $('#autocomplete_submit').click(function() {
-                    window.location = base_url +'search?='+ val;
-                });
-            }); 
-        }
-    });
-
-    // Close autocomplete tab on click outside of tab
-    $('body').bind('click', function(e) {
-        var that = $('#autocomplete');
-
-        if($(e.target).attr('id') != that.attr('id')
-        && $(e.target).attr('id') != 'autocomplete_submit') {
-            $('#autocomplete').slideUp('fast');
-        }
-    });
-    */
+    var auth = $('#auth').text();
+    // console.log(auth);
 
     // Query to check for any updates and/or matches/messages
-    /*
-    window.setInterval(function() {
-         $.ajax({
-            url: base_url +'users/GetUpdates',
-            success: function(data) {
-                var obj = jQuery.parseJSON(data);
-                console.log(obj);
-            }
-        });
-    }, 10000);
-    */
+    if(auth != '') {
+        console.log('hey');
+        window.setInterval(function() {
+             $.ajax({
+                url: base_url +'users/GetUpdates',
+                success: function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    // console.log(obj);
+                }
+            });
+        }, 10000);
+    }
 
     // SVG script
     jQuery('img.svg').each(function() {
@@ -74,4 +45,35 @@ $(document).ready(function() {
 
         }, 'xml');
     });
+
+    /*
+    // Search autocomplete
+    $('#users_autocomplete').keyup(function(e) {
+        var val = $(this).val().trim();
+        
+        if(e.which == 27
+        || val == '') {
+            $('#autocomplete').slideUp('fast');
+        } else {
+            $('#autocomplete').slideDown('fast');
+            var data = 'q='+ val +'&gender=both';
+
+            $('#autocomplete').load(base_url +'search/Autocomplete', data, function() {
+                $('#autocomplete_submit').click(function() {
+                    window.location = base_url +'search?='+ val;
+                });
+            }); 
+        }
+    });
+
+    // Close autocomplete tab on click outside of tab
+    $('body').bind('click', function(e) {
+        var that = $('#autocomplete');
+
+        if($(e.target).attr('id') != that.attr('id')
+        && $(e.target).attr('id') != 'autocomplete_submit') {
+            $('#autocomplete').slideUp('fast');
+        }
+    });
+    */
 });

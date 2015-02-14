@@ -10,8 +10,14 @@
     // Get the method
     $method = $this->router->fetch_method();
     
-    $slider_pages = array('users', 'settings', 'search', 'hot');
-    $meta_pages = array('about', 'contact', 'faq', 'hot', 'search', 'signin', 'terms', 'users');
+    $slider_pages = array('settings', 'hot');
+    $meta_pages = array('about', 'contact', 'faq', 'hot', 'signin', 'terms', 'users');
+
+    if($controller == 'hot') {
+        $val = $q;
+    } else {
+        $val = NULL;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,26 +33,21 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
-<?php
-    if($controller == 'users'
-    && $method == 'index') {
-?>
-    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
-<?php
-    }
-?>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo $public_url; ?>font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
-
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>
     <!-- CSS for sliders --> 
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
+
+    <!-- Stateface Font CSS -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
 <?php
     }
 
@@ -107,13 +108,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="<?php echo $base_url; ?>hot">so hot</a>
+                        <a href="<?php echo $base_url; ?>hot">Browse</a>
                     </li>
 <?php
     if($session === FALSE) {
 ?>
                     <li class="active">
-                        <a href="<?php echo $base_url; ?>signin">sign in</a>
+                        <a href="<?php echo $base_url; ?>signin">Sign in</a>
                     </li>
 <?php
     } else {
@@ -136,7 +137,7 @@
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?php echo $base_url; ?>users/Discover">Play</a></li>
+                            <li><a href="<?php echo $base_url; ?>users/discover">Play</a></li>
                             <li><a href="<?php echo $base_url.$profile_link; ?>">Profile</a></li>
 
                             <li class="divider"></li>
@@ -154,20 +155,10 @@
     </div>
 
     <div id="search_container">
-        <form method="GET" action="<?php echo $base_url; ?>hot/both">
+        <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
-<?php
-    if($controller == 'search') {
-?>
-                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $q; ?>" autocomplete="off">
-<?php
-    } else {
-?>
-                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" autocomplete="off">
-<?php
-    }
-?>
+                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
                 <span class="input-group-addon"></span>
 
                 <div class="clearfix"></div>
@@ -175,15 +166,13 @@
         </form>
     </div>
 
+    <!--
     <div id="autocomplete_wrapper">
-        <div id="autocomplete">
-                    
-        </div>
+        <div id="autocomplete"></div>
     </div>
+    -->
 
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
-    <div id="controller" class="hidden"><?php echo $controller; ?></div>
-    <div id="method" class="hidden"><?php echo $method; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
     <div id="like_users_num" class="hidden">0</div>

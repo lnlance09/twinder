@@ -7,12 +7,8 @@ $(document).ready(function() {
     var lon = $('#lon').text().trim();
     var radius = Math.round(parseInt($('#radius').text())*1609.344);
     // console.log(radius);
+    // console.log(can_edit);
 
-    $('#other_trigger').click(function() {
-        $('#other_box').slideDown();
-    });
-
-    //console.log(can_edit);
     if(can_edit == 1) {
         // Edit the user's bio
         $('h1.static button').click(function(e) {
@@ -32,9 +28,9 @@ $(document).ready(function() {
                 });
 
                 $.ajax({
-                    url : base_url +'users/UpdateProfile',
+                    url: base_url +'users/UpdateProfile',
                     type: 'POST',
-                    data : {
+                    data: {
                         bio: bio,
                         pics: '',
                         submit: 'submit'
@@ -58,12 +54,39 @@ $(document).ready(function() {
         $('ul#sub_pics').sortable();
     }
 
+
     // Report the user
     $('#report_modal ul li').click(function() {
         var reason = $(this).attr('name');
 
         if(reason == 0) {
+            $('#other_box').slideDown();
+            
+            $('#report_text').click(function() {
+                var text = $('#other_comment').val().trim();
 
+                if(text != '') {
+                    $.ajax({
+                        url: base_url +'users/ReportUser',
+                        data: {
+                            id: tinder_id,
+                            reason: reason,
+                            text: text
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            var obj = jQuery.parseJSON(data);
+
+                            if(obj.status == 200) {
+                                $('#report_modal').modal('hide');
+                                $('#report_user').fadeOut('slow');
+                            }
+                        }
+                    });
+                } else {
+                    $('#other_comment').css('border', 'solid 1px red');
+                }
+            });
         } else {
             $.ajax({
                 url : base_url +'users/ReportUser',
@@ -73,7 +96,12 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     console.log(data);
-                
+                    var obj = jQuery.parseJSON(data);
+
+                    if(obj.status == 200) {
+                        $('#report_modal').modal('hide');
+                        $('#report_user').fadeOut('slow');
+                    }
                 }
             });
         }
@@ -81,58 +109,70 @@ $(document).ready(function() {
 
     // Load the connections
     $('#con_load_box').load(base_url +'users/GetConnections', 'type=matches&page=0&id='+ tinder_id);
+    
+
 
     // Search thru connections upon keyup of the input field
     $('#search_connections').keyup(function(e) {
         var q = $(this).val();
-        var type = $('#connection_active').attr('name');
+        var type = $('#active').attr('name');
         $('#con_load_box').load(base_url +'users/GetConnections', 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ q);
     });
 
     // Load the connections upon hover
     $('.timer_box').click(function() {
         $('.timer_box').attr('id', '');
-        $(this).attr('id', 'connection_active');
-        
+        $(this).attr('id', 'active');
+
         var type = $(this).attr('name');
         $('#type_name').text(type);
         $('#search_connections').attr('placeholder', 'Search '+ type);
 
         // Change the font-awesome icon
         if(type == 'likes') {
-            var font_awesome = 'thumbs-up';
+            var fa = 'thumbs-up';
         } else if(type == 'passes') {
-            var font_awesome = 'thumbs-down';   
+            var fa = 'thumbs-down';   
         } else {
-            var font_awesome = 'heart';
+            var fa = 'heart';
         }
 
-        $('#fa_type').attr('class', 'fa fa-'+ font_awesome +' fa-2x');
+        $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');
 
-        $('#con_load_box').load(base_url +'users/GetConnections', 'type='+ type + '&page=0&id='+ tinder_id, function() {
+        // Define the query string
+        var data = 'type='+ type + '&page=0&id='+ tinder_id;
+        $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
            
         });
     });
 
     // Change the pic upon click
-    $('ul#sub_pics li').click(function(d) {
-        d.preventDefault();
+    $('ul#sub_pics li').click(function(e) {
+        e.preventDefault();
         var pic = $(this).attr('name');
         $('#main_img').attr('src', pic);
     });
 
-    function initialize(lat, lon) {
+    // Google Maps
+    function Initialize(lat, lon) {
+        // Set the styling for the map
+        var styles = [{"stylers":[{"saturation":-100}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]},{"elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{}];
         var latlng = new google.maps.LatLng(lat, lon);
 
         var mapOptions = {
+            mapTypeControlOptions: {  
+                mapTypeIds: ['Styled']  
+            },  
+            mapTypeId: 'Styled',
             center: latlng,
-            zoom: 6,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            zoom: 16,
             position: latlng
         };
 
         var el = document.getElementById('ping_map');
         var map = new google.maps.Map(el, mapOptions);
+        var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled'});  
+        map.mapTypes.set('Styled', styledMapType);  
 
         // Set the marker
         var marker = new google.maps.Marker({
@@ -144,10 +184,10 @@ $(document).ready(function() {
         marker.setAnimation(google.maps.Animation.DROP);
 
         var sunCircle = {
-            strokeColor: '#c3fc49',
+            strokeColor: '#fd923a',
             strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#c3fc49',
+            strokeWeight: 1,
+            fillColor: '#fd923a',
             fillOpacity: 0.25,
             map: map,
             center: latlng,
@@ -165,16 +205,16 @@ $(document).ready(function() {
              boxStyle: {
                 width: '100%'
             },
-            closeBoxMargin: "12px 4px 2px 2px",
-            closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+            closeBoxMargin: '12px 4px 2px 2px',
+            closeBoxURL: 'http://www.google.com/intl/en_us/mapfiles/close.gif',
             infoBoxClearance: new google.maps.Size(1, 1)
         });
         
-
         google.maps.event.addListener(marker, 'click', function() {
             infobox.open(map, this);
         });
     }
 
-    initialize(lat, lon);
+    // Load the map
+    Initialize(lat, lon);
 });

@@ -12,7 +12,8 @@
 								'platform: ios',
 								'Content-Type: application/json; charset=utf-8');
 
-				if($auth != NULL) {
+				// Push the auth token headers into the array if necessary
+				if($auth !== NULL) {
 					array_push($headers, 'Authorization: Token token="'.$auth.'"', 'X-Auth-Token: '.$auth);
 				}
 
@@ -22,7 +23,7 @@
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-			    if($post === TRUE) {
+			    if($post) {
 			    	if($url == 'media') {
 			    		$encode = $post_data;
 			    	} else {
@@ -44,34 +45,25 @@
 			}
 		}
 
-		//  Get the formatted name of a location from its latitude and longitude coordinates
-		if(!function_exists('GeoLocation')) {
-			function GeoLocation($lon, $lat) {
-				// $api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$lat.','.$lon.'&sensor=false');
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-				$data = curl_exec($ch);
-			    curl_close($ch);
-
-			    // Decode the response
-			    $decode = @json_decode($data, TRUE);
-			    return $decode;
+		if(!function_exists('GetHTTPCode')) {
+			function GetHTTPCode($url) {
+				$ch = curl_init($url);
+			    curl_setopt($ch, CURLOPT_NOBODY, 1);
+				curl_exec($ch);
+				$http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+				curl_close($ch);
+				return $http;
 			}
 		}
 
-		// Find the Distance between two places
-		if(!function_exists('Haversine')) {
-			function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
-				$radius = 6371000;
-				$delta_lat = deg2rad($lat_to - $lat_from);
-				$delta_lon = deg2rad($lon_to - $lon_from);
-				
-				$a = sin($delta_lat/2) * sin($delta_lat/2) +
-					cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) *
-					sin($delta_lon/2) * sin($delta_lon/2);
-				$c = 2*atan2(sqrt($a), sqrt(1-$a));
-				return ceil(($radius*$c)*0.000621371);
+		// Format a user's bio to read a default message
+		if(!function_exists('BioDefault')) {
+			function BioDefault($bio, $name) {
+				if($bio == '') {
+					return $name." doesnt't have a bio";
+				} else {
+					return $bio;
+				}
 			}
 		}
 
@@ -138,6 +130,25 @@
 					default:
 
 						return 'both';
+						break;
+				}
+			}
+		}
+
+		// Format the user's title based upon their gender
+		if(!function_exists('GenderTitle')) {
+			function GenderTitle($gender) {
+				switch($gender) {
+					case 0;
+					case 'men';
+
+						return 'Mr.';
+						break;
+
+					case 1;
+					case'women';
+
+						return 'Mrs.';
 						break;
 				}
 			}
@@ -261,7 +272,9 @@
 					$subject = "she";
 				}
 
-				$raw_data = $data['data'];
+				$raw_data = $data[0]['data'];
+				// FormatArray($data);
+
 				$time = $raw_data['datetime'];
 				$distance = $raw_data['miles_away'];
 				$city = $raw_data['city'];
@@ -269,9 +282,8 @@
 				$lon = $raw_data['lon'];
 				$lat = $raw_data['lat'];
 
-				$text = "<div id='infowindow'><h3><img src='http://images.gotinder.com/".$tinder_id."/84x84_".$pic."' width='50' height='50' alt='".$name."' class='img-circle'> <a href='".$base_url.$link."'>".$name."</a>
-						</h3> <p>".FormatTime($time)." <br> ".$distance." miles away <br>".$city.", ".$state." <br> ".$lon.", ".$lat."</p></div>";
-				return trim($text);
+				return trim("<div id='infowindow'><h3><img src='http://images.gotinder.com/".$tinder_id."/84x84_".$pic."' width='50' height='50' alt='".$name."' class='img-circle'> <a href='".$base_url.$link."'>".$name."</a>
+						</h3> <p>".FormatTime($time)." <br> ".$distance." miles away <br>".$city.", ".$state." <br> ".$lon.", ".$lat."</p></div>");
 			}
 
 		}
@@ -288,11 +300,11 @@
 				}
 
 				// Define the path to the cookies
-			    return $file.'.txt';
+			    return 'cookies/'.$file.'.txt';
 			}
 		}
 
-		// Format an json decoded array
+		// Format a JSON decoded array
 		if(!function_exists('FormatArray')) {
 			function FormatArray($array, $style = NULL) {
 				if($style !== NULL) {
@@ -336,6 +348,7 @@
 			}
 		}
 
+		// Format the subject of the meta tag
 		if(!function_exists('MetaSubject')) {
 			function MetaSubject($username, $name) {
 				if($username == '') {
@@ -343,6 +356,35 @@
 				} else {
 					return $username;
 				}
+			}
+		}
+
+		// Format the title of a document
+		if(!function_exists('DefineTitle')) {
+			function DefineTitle($gender, $city, $state, $distance, $min, $max) {
+				$title = 'The hottest ';
+
+				// Format the gender
+				if($gender == 0 || $gender == 1) {
+					$title .= $gender.' ';
+				} 
+
+				// Format the distance
+				$title .= 'within '.$distance.' miles of ';
+
+				// Format the city
+				if($city != '') {
+					$title .= $city.', ';
+				}
+
+				// Format the state
+				if($state != '') {
+					$title .= $state.' ';
+				}
+
+				// Format the age
+				$title .= 'ages '.$min.' to '.$max;
+				return $title;
 			}
 		}
 
