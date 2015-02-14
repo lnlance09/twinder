@@ -118,22 +118,6 @@
 			return @json_decode($info, TRUE);
 		}
 
-		public function GetMoments($auth) {
-			$info = SendRequest('feed/moments', $auth, TRUE, array('last_activity_date' => NULL, 'last_moment_id' => NULL));
-			return @json_decode($info, TRUE);
-		}
-
-		public function GetMyMoments($auth) {
-			$time = RequestTime();
-			$info = SendRequest('user/moments', $auth, TRUE, array());
-			return @json_decode($info, TRUE);
-		}
-
-		public function GetMomentLikes($auth, $moment_id) {
-			$info = SendRequest('moments/'.$moment_id.'/likes', $auth, FALSE, NULL);
-			return @json_decode($info, TRUE);
-		}
-
 		/**
 		 * Get updates since a given point in time. This includes new matches and messages received
 		 * @param {string} [auth] The API token
@@ -144,11 +128,6 @@
 			$time = RequestTime($time);
 			// echo $time;
 			$info = SendRequest('updates', $auth, TRUE, array('last_activity_date' => $time));
-			return @json_decode($info, TRUE);
-		}
-
-		public function LikeMoment($auth, $moment_id) {
-			$info = SendRequest('moments/'.$moment_id.'/like', $auth, TRUE, NULL);
 			return @json_decode($info, TRUE);
 		}
 
@@ -268,11 +247,6 @@
 			return @json_decode($info, TRUE);
 		}
 
-		public function SendSMS($number, $auth) {
-			$info = SendRequest('send_token', $auth, TRUE, array('number' => '+1'.$number));
-			return @json_decode($info, TRUE);
-		}
-
 		/**
 		 * Sync the content of a user's Tinder account with their WeTinder account
 		 * @param {string} [email] The email of the person trying to log in
@@ -382,25 +356,6 @@
 		 */
 		public function UnmatchUser($match_id) {
 			$info = SendRequest('user/matches/'.$match_id.'/', $auth, "DELETE", FALSE);
-			return @json_decode($info, TRUE);
-		}
-
-		/**
-		 * Upload a pic from a user's Facebook photo album to their Tinder account
-		 * @param {string} [fb_pic_id] The ID of the picture on Facebook
-		 * @param {string} [auth] The API token
-		 */
-		public function UploadPic($fb_pic_id, $auth) {
-			$info = '{"transmit": "fb",
-						"assets": [{
-							"xdistance_percent": 0.75,
-							"id": "'.$fb_pic_id.'",
-							"xoffset_percent": 0.1253906,
-							"yoffset_percent": 0,
-							"ydistance_percent": 1,
-							"main": false
-						}]}';
-			$info = SendRequest('media', $auth, TRUE, $info);
 			return @json_decode($info, TRUE);
 		}
 
@@ -548,15 +503,5 @@
 						'min' => $min, 
 						'max' => $max, 
 						'page' => $page);
-		}
-
-		/**
-		 * Enter an SMS verification code that was supposed be sent via text message to a phone number
-		 * @param {string} [auth] The API token
-		 * @param {int} [code] The SMS code
-		 */
-		public function ValidateSMS($auth, $code) {
-			$info = SendRequest('validate', $auth, TRUE, array('token' => ''.$code.''));
-			return @json_decode($info, TRUE);
 		}
 	}
