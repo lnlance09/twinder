@@ -24,8 +24,6 @@
 			$this->db->delete('users'); 
 		}
 
-
-
 		/**
 		 * Get the user that is next in line to be either liked or passed
 		 * @param {int} id The user ID of the Tinder user 
@@ -214,7 +212,14 @@
 			}
 		}
 
-		// Insert or update a row in the last seen table
+		/**
+		 * Update/Insert row into last_seen table based upon what's currently in that table for a given user
+		 * @param {int} [my_distance] The distance in miles between the user who is logged in and the user defined as 'his_tinder_id'
+		 * @param {string} [my_tinder_id] The Tinder ID of the user who is currently logged in
+		 * @param {string} [his_tinder_id] The Tinder ID of the other user
+		 * @param {decimal} [lon] The longitude coordinate of the user who is logged in 
+		 * @param {decimal} [lat] The latitude coordinate of the user who is logged in 
+		 */
 		public function EditLastSeen($my_distance, $my_tinder_id, $his_tinder_id, $lon, $lat) {
 			// Check to see if each user has a row existing in the last_seen table
 			$last = $this->GetLastSeen($his_tinder_id);
@@ -292,21 +297,30 @@
 			return array('user' => $user, $return_data);
 		}
 
-		// Update a row in the last seen table
+		/**
+		 * Update a row existing in the last_seen table belonging to a user with the given Tinder ID
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {array} [data] The columans and values for the query
+		 */
 		public function UpdateLastSeen($tinder_id, $data) {
-			// Update the last seen table with new information
 			$this->db->where('seen_id', $tinder_id);
 			$this->db->update('last_seen', $data);
 		}
 
-		// Insert a row into the last seen table
+		/**
+		 * Create a row in the last_seen table
+		 * @param {array} [data] The values for the columns
+		 */
 		public function CreateLastSeen($data) {
 			$this->db->insert('last_seen', $data);
 		}
 
-
-		/* LIKES */
-		// Get the number of likes for a given user
+		/**
+		 * Get the number of likes a given user has or the number of users that like a given user
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {boolean} [inverse] Whether or not to get the user's like count or liked_by count. TRUE for liked_by count. FALSE for like_count
+		 * @param {string} [q] The query string to search the user's first name
+		 */
 		public function GetLikeCount($tinder_id, $inverse, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -326,7 +340,12 @@
 			return $query->num_rows();
 		}
 
-		// Get all of a given user's likes
+		/**
+		 * Return an array containing all of the info about each of a given user's likes or liked by
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {boolean} [inverse] Whether or not to get the user's like count or liked_by count. TRUE for liked_by count. FALSE for like_count
+		 * @param {string} [q] The query string to search the user's first name
+		 */
 		public function GetLikes($tinder_id, $inverse, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -393,7 +412,12 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
-		// Insert a row into the likes table
+		/**
+		 * Update/Insert a row into the likes table depending on if one currently exists
+		 * @param {string} [my_id] The Tinder ID of the user who is currently logged in
+		 * @param {string} [tinder_id] The Tinder ID of the user who is being liked
+		 * @param {string} [match_id] The match ID of the liking
+		 */
 		public function InsertIntoLikes($my_id, $tinder_id, $match_id) {
 			$liked = $this->SeeIfLiked($my_id, $tinder_id, FALSE);
 
@@ -407,8 +431,6 @@
 					$data = array('match_id' => $match_id);
 					$this->db->where(array('user_one' => $tinder_id, 'user_two' => $my_id));
 					$this->db->update('likes', $data);
-
-					echo 'UPDATE <br>';
 				} else {
 					// If there is no record, then create one
 					$data = array('user_one' => $tinder_id,
@@ -427,7 +449,12 @@
 			}
 		}
 
-		// See if I have liked a user or that user has liked me
+		/**
+		 * See if one user has already liked another user on WeTinder
+		 * @param {string} [my_id] The Tinder ID of the user is currently logged in
+		 * @param {string} [tinder_id] The Tinder ID of the user who is being liked
+		 * @param {boolean} [inverse] Whether or not to do the opposite. 
+		 */
 		public function SeeIfLiked($my_id, $tinder_id, $inverse) {
 			$this->db->select('match_id');
 
@@ -441,6 +468,12 @@
 			return $query->num_rows();
 		}
 
+		/**
+		 * Return a number representing that two users have both liked
+		 * @param {string} [my_id] The Tinder ID of the user is currently logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match users' first names with
+		 */
 		public function GetMutualLikeCount($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -456,7 +489,12 @@
 			return $query->num_rows();
 		}
 
-		// Get mutual likes between two users
+		/**
+		 * Return an array containing the users that two users have both liked
+		 * @param {string} [my_id] The Tinder ID of the user is currently logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match users' first names with
+		 */
 		public function GetMutualLikes($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -519,9 +557,11 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
-
-		/* MATCHES */
-		// Get the number of matches that belong to a given user
+		/**
+		 * Get the number of matches that a given user has
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {string} [q] The query string to match the user's first name with
+		 */
 		public function GetMatchCount($tinder_id, $q = NULL) {
 			$sql = "SELECT likes.id, users.id
 					FROM likes
@@ -538,8 +578,12 @@
 			return $query->num_rows();
 		}
 
-		// Get all of the matches that belong to a given user
-		public function GetMatches($tinder_id, $inverse, $q = NULL) {
+		/**
+		 * Return an array containing all of the users that have matched with a given user
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {string} [q] The query string to match the user's first name with
+		 */
+		public function GetMatches($tinder_id, $q = NULL) {
 			$sql = "SELECT likes.*, users.*
 					FROM likes
 					JOIN users
@@ -593,6 +637,12 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
+		/**
+		 * Get the number of matches that two user have in common
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match the user's first name with
+		 */
 		public function GetMutualMatchCount($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -608,6 +658,12 @@
 			return $query->num_rows();
 		}	
 
+		/**
+		 * Return an array contaning the users that two user have in common
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match the user's first name with
+		 */
 		public function GetMutualMatches($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, likes.*
 					FROM users
@@ -670,7 +726,10 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
-		// See if a match exists between two users
+		/**
+		 * Query the DB to see if a match with a given match ID exists
+		 * @param {string} [match_id] The match ID being targetted
+		 */
 		public function MatchExists($match_id) {
 			$this->db->select('id');
 			$this->db->where('match_id', $match_id);
@@ -678,7 +737,11 @@
 			return $query->num_rows();
 		}
 
-		// Insert a match into the likes table
+		/**
+		 * Insert a match into the DB if a row doesn't already exist in there with the same match ID
+		 * @param {string} [match_id] The match ID being targetted
+		 * @param {array} [data] An array containing the values for the columns
+		 */
 		public function InsertMatch($match_id, $data) {
 			$check = $this->MatchExists($match_id);
 
@@ -687,7 +750,10 @@
 			}
 		}
 
-		// Query the DB for info about a given match
+		/**
+		 * Querty the DB to get info about a given match
+		 * @param {string} [id] The match ID being targetted
+		 */
 		public function GetMatchInfo($id) {
 			$this->db->select('user_one, user_two');
 			$query = $this->db->where('match_id', $id);
@@ -705,9 +771,11 @@
 			} 
 		}
 
-
-		/* PASSES */
-		// Insert a row into the passes table
+		/**
+		 * Insert a row into the passes table
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 * @param {string} [tinder_id] The Tinder ID of the user who is being passes
+		 */
 		public function InsertIntoPasses($my_id, $tinder_id) {
 			$data = array('user_one' => $my_id,
 						'user_two' => $tinder_id,
@@ -715,7 +783,12 @@
 			$query = $this->db->insert('passes', $data);
 		}
 
-		// Get the number of passes that belong to a given user
+		/**
+		 * Get the number of passes that a given user has gotten or the number of users that have passed a given user
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {boolean} [inverse] Whether or not to get the number of passes that a given user has gotten. 
+		 * @param {string} [q] The query string to match the users' first names with
+		 */
 		public function GetPassCount($tinder_id, $inverse, $q = NULL) {
 			$sql = "SELECT users.*, passes.*
 					FROM users
@@ -736,7 +809,12 @@
 			return $query->num_rows();
 		}
 
-		// Get all of the passes that belong to a given user
+		/**
+		 * Return an array containing the users that have passed a given user or the inverse
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {boolean} [inverse] Whether or not to get the number of passes that a given user has gotten. 
+		 * @param {string} [q] The query string to match the users' first names with
+		 */
 		public function GetPasses($tinder_id, $inverse, $q = NULL) {
 			$sql = "SELECT users.*, passes.*
 					FROM users
@@ -794,6 +872,12 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
+		/**
+		 * Get the number of passes that two users have in common
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match the users' first names with
+		 */
 		public function GetMutualPassCount($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, passes.*
 					FROM users
@@ -809,6 +893,12 @@
 			return $query->num_rows();
 		}
 
+		/**
+		 * Return an array containing the passes that two users have in common
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 * @param {string} [his_id] The Tinder ID of the other user
+		 * @param {string} [q] The query string to match the users' first names with
+		 */
 		public function GetMutualPasses($my_id, $his_id, $q = NULL) {
 			$sql = "SELECT users.*, passes.*
 					FROM users
@@ -861,9 +951,11 @@
 			return array('count' => $count, 'users' => $return);
 		}
 
-
-		/* PICS */
-		// Insert all of a user's pics into the DB
+		/**
+		 * Insert a user's picture into the pics table
+		 * @param {string} [id] The Tinder ID of the user whose pics are being inserted
+		 * @param {array} [pics] An array containing all the user's pictures
+		 */
 		public function InsertPics($id, $pics) {
 			for($i=0;$i<count($pics);$i++) {
 				$this->db->select('tinder_id');
@@ -876,9 +968,12 @@
 			}
 		}
 
-
-		/* PINGS */
-		// Insert a row into the pings table
+		/**
+		 * Insert a row into the pings table
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 * @param {string} [tinder_id] The Tinder ID of the user who is pinging
+		 */
 		public function InsertPing($lon, $lat, $tinder_id) {
 			// Call the Google Maps function to find out the city, state and country
 			$location = GeoLocation($lon, $lat);
@@ -897,7 +992,10 @@
 			$this->db->insert('pings', $data);
 		}
 
-		// Get all of a user's pings
+		/**
+		 * Return an array containing all of the pings that a given user has made
+		 * @param {string} [tinder_id] The Tinder Id of the user being targetted
+		 */
 		public function GetPings($tinder_id) {
 			$this->db->select('lon, lat, city, state, country, datetime');
 			$this->db->where('tinder_id', $tinder_id);
@@ -930,9 +1028,11 @@
 			return array('count' => $count, 'pings' => $return);
 		}
 
-
-		/* REPORTS */
-		// Check to see if a user has already reported a given user
+		/**
+		 * Check to see if there is a record existing of a given user reporting another user
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in 
+		 * @param {string} [his_id] The Tinder ID of the targetted user
+		 */
 		public function CheckReport($my_id, $his_id) {
 			$this->db->select('id');
 			$this->db->where(array('reported_by' => $my_id, 'user_reported' => $his_id));
@@ -940,15 +1040,20 @@
 			return $query->num_rows();
 		}
 
-		// Insert a row into the reports table
+		/**
+		 * Insert a row into the reports table. This reflects that one user has reported another
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in 
+		 * @param {string} [his_id] The Tinder ID of the targetted user
+		 */
 		public function InsertReport($my_id, $his_id) {
 			$data = array('reported_by' => $my_id, 'user_reported' => $his_id, 'datetime' => date('Y-m-d H:i:s'));
 			$this->db->insert('reports', $data);
 		}
 
-
-		/* STATS */
-		// Get the like, pass and match counts for a given user
+		/**
+		 * Get the like, match and pass counts of a given user
+		 * @param {string} [id] The Tinder ID of a given user
+		 */
 		public function GetThreeStats($id) {
 			// Get the like count
 			$like_count = $this->database_model->GetLikeCount($id, FALSE);
@@ -962,6 +1067,11 @@
 						'pass_count' => NULL);
 		}
 
+		/**
+		 * Return an array containing the counts of all of a given user's categories
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {string} [my_id] The Tinder ID of the user who is logged in
+		 */
 		public function GetUserStats($tinder_id, $my_id = NULL) {
 			// Determine which stats to get
 			if($my_id !== NULL) {
@@ -1045,8 +1155,13 @@
 			return $params;
 		}
 
-
-		/* USERS */
+		/**
+		 * Query the DB to get all of the hottest user who fit the specfied criteria except for the distance which cannot be done with MySQL
+		 * @param {int} [gender] The gender filter. 0 for men. 1 for women. -1 for both
+		 * @param {int} [min] The age minimum
+		 * @param {int} [max] The age maximum
+		 * @param {string} [q] The query string to match each user's first name with
+		 */
 		public function HotQuery($gender, $min, $max, $q) {
 			$params = [];
 
@@ -1091,7 +1206,13 @@
 			return array('count' => $query->num_rows(), 'result' => $query->result());
 		}
 
-		// Query the DB for users of a given gender, distance, age, location and name
+		/**
+		 * Return an array contaning users that have been filtered by their location
+		 * @param {string} [sql] The results from the query
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 * @param {int} [distance] The distance filter value in miles
+		 */
 		public function GetHottest($sql, $lon, $lat, $distance) {
 			$i = 0;
 
@@ -1145,7 +1266,11 @@
 			return array('count' => count($return), 'users' => $return);
 		}
 
-		// Get the hottest user in a given state
+		/**
+		 * Get the hottest male or female in a given state
+		 * @param {int} [sex] The gender code. 0 for men. 1 for women
+		 * @param {string} [state] The state to target
+		 */
 		public function HottestByState($sex, $state) {
 			$sql = "SELECT users.*, last_seen.*
 					FROM likes 
@@ -1211,7 +1336,10 @@
 			}
 		}
 
-		// Gets all of the user's info
+		/**
+		 * Query the DB to get info about a given user
+		 * @param {string} [id] The Tinder ID of the targetted user
+		 */
 		public function GetUserInfo($id) {
 			$sql = "SELECT users.tinder_id, users.first_name, users.username, users.dob, users.age, users.bio, users.gender, users.profile_pic, users.last_activity_date, pics.*
 					FROM users
@@ -1269,7 +1397,11 @@
 			}
 		}
 
-		// Insert a row into the users table
+		/**
+		 * Update/Insert rows into the users and/or settings table
+		 * @param {array} [user_data] An array containing info about a given user. Contains info that will be inserted into the users table 
+		 * @param {array} [settings_data] An array containing info about a given user. Contains info that will be inserted into the settings table 
+		 */
 		public function InsertUser($user_data, $settings_data = NULL) {
 			$this->db->select('id, username');
 			$this->db->where('tinder_id', $user_data['tinder_id']);
@@ -1307,7 +1439,9 @@
 			}
 		}
 
-		// Get all users in the DB
+		/**
+		 * Query the DB to get all the users from the users table
+		 */
 		public function GetAllUsers() {
 			$sql = "SELECT username, tinder_id FROM users";
 			$query = $this->db->query($sql);
@@ -1332,13 +1466,20 @@
 			}
 		}
 
-		// Update a row in the users table
+		/**
+		 * Update the users table
+		 * @param {string} [tinder_id] The Tinder ID of the targetted user
+		 * @param {array} [data] An array containing the column values
+		 */
 		public function UpdateUser($tinder_id, $data) {
 			$this->db->where('tinder_id', $tinder_id);
 			$this->db->update('users', $data);
 		}
 
-		// Check to see if a username is available
+		/**
+		 * Check to see if a given username is available
+		 * @param {string} [username] The username
+		 */
 		public function CheckUsername($username) {
 			$this->db->select('id');
 			$this->db->where('username', $username);
@@ -1346,7 +1487,10 @@
 			return $query->num_rows();
 		}
 
-		// Check to see if a user with a certain Tinder ID exists
+		/**
+		 * Query the DB to see if a user with a given Tinder ID exist in the users table
+		 * @param {string} [id] The Tinder ID of the targetted user
+		 */
 		public function UserExists($id) {
 			$this->db->select('id');
 			$this->db->where('tinder_id', $id);
