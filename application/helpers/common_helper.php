@@ -2,9 +2,15 @@
 	if(!defined('BASEPATH')) {
 		exit('No direct script access allowed');
 	} else {
-		// Send the request to one of Tinder's API endpoints
 		if(!function_exists('SendRequest')) {
-			function SendRequest($url, $auth = NULL, $post, $post_data) {
+			/**
+			 * Send a request to Tinder's API with cURL
+			 * @param {string} [url] The API endpoint
+			 * @param {string} [auth] The API token
+			 * @param {boolean} [post] Whether or not he request is a post request
+			 * @param {array} [post_data] An associative array containing the post data
+			 */
+			function SendRequest($url, $auth, $post, $post_data) {
 				// Define the HTTP headers
 				$headers = array('app-version: 123',
 								'os_version: 80000100001',
@@ -13,7 +19,7 @@
 								'Content-Type: application/json; charset=utf-8');
 
 				// Push the auth token headers into the array if necessary
-				if($auth !== NULL) {
+				if($auth) {
 					array_push($headers, 'Authorization: Token token="'.$auth.'"', 'X-Auth-Token: '.$auth);
 				}
 
@@ -46,6 +52,10 @@
 		}
 
 		if(!function_exists('GetHTTPCode')) {
+			/**
+			 * Return the HTTP code of a request to a given URL
+			 * @param {string} [url] The URL to send a request to
+			 */
 			function GetHTTPCode($url) {
 				$ch = curl_init($url);
 			    curl_setopt($ch, CURLOPT_NOBODY, 1);
@@ -56,8 +66,12 @@
 			}
 		}
 
-		// Format a user's bio to read a default message
 		if(!function_exists('BioDefault')) {
+			/**
+			 * Format a user's bio to read a default message if he/she doesn't have one
+			 * @param {string} [bio] The user's bio
+			 * @param {string} [name] The user's name
+			 */
 			function BioDefault($bio, $name) {
 				if($bio == '') {
 					return $name." doesnt't have a bio";
@@ -67,8 +81,12 @@
 			}
 		}
 
-		// Format the user's bios to link to their Instagram profiles and Twitter hashtags
 		if(!function_exists('BioLinks')) {
+			/**
+			 * Format a user's bio include links to any Instagram pages.
+			 * Return links to Twitter that include any hashtags
+			 * @param {string} [bio] The user's bio
+			 */
 			function BioLinks($bio) {
 				$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA');
 				$string = implode('|', $terms);
@@ -80,8 +98,12 @@
 			}
 		}
 
-		// Format a user's WeTinder link according to their username
 		if(!function_exists('FormatUserLink')) {
+			/**
+			 * Return a link to a user's profile page on WeTinder based upon whether or not they have a username
+			 * @param {string} [tinder_id] The Tinder ID of the user
+			 * @param {username} [username] The username of the user
+			 */
 			function FormatUserLink($tinder_id, $username) {
 				if(strlen($username) > 0) {
 					return 'users/'.$username;
@@ -91,8 +113,11 @@
 			}
 		}
 
-		// Format the user's gender name
 		if(!function_exists('FormatGender')) {
+			/**
+			 * Return the actual name of a gender based upon its numeric code
+			 * @param {int} [num] The gender code
+			 */
 			function FormatGender($num) {
 				if($num == 0) {
 					return 'male';
@@ -102,8 +127,11 @@
 			}
 		}
 
-		// Get the gender's number from its name
 		if(!function_exists('ReverseGender')) {
+			/**
+			 * Return the numeric code of a gender based upon its name
+			 * @param {string} [name] The gender's name
+			 */
 			function ReverseGender($name) {
 				if($name == 'male') {
 					return 0;
@@ -113,8 +141,11 @@
 			}
 		}
 
-		// Format the user's interested in
 		if(!function_exists('FormatInterestedIn')) {
+			/**
+			 * Return the name of the interested in code
+			 * @param {int} [num] The interested in code
+			 */
 			function FormatInterestedIn($num) {
 				switch($num) {
 					case 0;
@@ -135,27 +166,11 @@
 			}
 		}
 
-		// Format the user's title based upon their gender
-		if(!function_exists('GenderTitle')) {
-			function GenderTitle($gender) {
-				switch($gender) {
-					case 0;
-					case 'men';
-
-						return 'Mr.';
-						break;
-
-					case 1;
-					case'women';
-
-						return 'Mrs.';
-						break;
-				}
-			}
-		}
-
-		// Get the user's interested in number from the name
 		if(!function_exists('ReverseInterestedIn')) {
+			/**
+			 * Return the interested in code based upon its anme
+			 * @param {string} [name] The name of the interested in
+			 */
 			function ReverseInterestedIn($name) {
 				switch($name) {
 					case 'men';
@@ -176,8 +191,11 @@
 			}
 		}
 
-		// Format a user's likes, passes and matches numbers
 		if(!function_exists('FormatNumber')) {
+			/**
+			 * Format a number so that it reads 'k' instead of 1,000
+			 * @param {int} [num] The number to be formatted
+			 */
 			function FormatNumber($num) {
 				if($num > 1000) {
 					$floor = floor($num/1000);
@@ -189,8 +207,11 @@
 			}
 		}
 
-		// Format the time that the user was last online
 		if(!function_exists('FormatTime')) {
+			/**
+			 * Find out how long ago a given time was
+			 * @param {string} [time] The time
+			 */
 			function FormatTime($time) {
 				// Find out the difference between now and the given date
 				$time = date_diff(date_create(), date_create($time));
@@ -223,18 +244,24 @@
 			}
 		}
 
-		// Find out a user's age from their date of birth
 		if(!function_exists('ReturnAge')) {
+			/**
+			 * Format a user's birthday
+			 * @param {string} [birthday] The timestamp of the birthday
+			 */
 			function ReturnAge($birthday) {
 				$dob = date('M j, Y', strtotime($birthday));
 				return date_diff(date_create(), date_create($dob))->format('%y');
 			}
 		}
 
-		// Return an array containing all of the user's pics (smallest size)
 		if(!function_exists('ReturnPicsArray')) {
+			/**
+			 * Return an array containing all of a user's pictures' filename
+			 * @param {array} [photos] An array of a user's photos from Tinder's API
+			 */
 			function ReturnPicsArray($photos) {
-				$pics = array();
+				$pics = [];
 
 				for($i=0;$i<count($photos);$i++) {
 					$pics[$i] = $photos[$i]['fileName']; 
@@ -244,8 +271,11 @@
 			}
 		}
 
-		// Find out which of the user's pics is their profile pic
 		if(!function_exists('ReturnProfilePic')) {
+			/**
+			 * Return a user's profile pic
+			 * @param {array} [photos] An array contaning a user's photos
+			 */
 			function ReturnProfilePic($photos) {
 				for($i=0;$i<count($photos);$i++) {
 					if($photos[$i]['fileName'] !== FALSE) {
@@ -256,8 +286,12 @@
 			}
 		}
 
-		// Find out which of the user's pics is their profile pic
 		if(!function_exists('FormatLastSeenText')) {
+			/**
+			 * Format the popup window for the Google Maps API
+			 * @param {array} [data] An array containg info about the user
+			 * @param {string} [base_url] The base URL of WeTinder
+			 */
 			function FormatLastSeenText($data, $base_url) {
 				$user_info = $data['user'];
 				$tinder_id = $user_info['tinder_id'];
@@ -288,8 +322,11 @@
 
 		}
 
-		// Return the link to the user's cookie file
 		if(!function_exists('CookieFile')) {
+			/**
+			 * Return the path to a users' cookie file
+			 * @param {string} [email] The user's email
+			 */
 			function CookieFile($email) {
 				$exp = explode('@', $email);
 
@@ -299,15 +336,18 @@
 					$file = $email;
 				}
 
-				// Define the path to the cookies
 			    return 'cookies/'.$file.'.txt';
 			}
 		}
 
-		// Format a JSON decoded array
 		if(!function_exists('FormatArray')) {
-			function FormatArray($array, $style = NULL) {
-				if($style !== NULL) {
+			/**
+			 * Format an array and style it if necessary
+			 * @param {array} [array] The array to be preformatted
+			 * @param {boolean} [style] Whether or not to style the preformatted array
+			 */
+			function FormatArray($array, $style = FALSE) {
+				if($style) {
 					echo '<div style="color: #090127;text-shadow:none;text-align:left;">';
 				}
 
@@ -315,21 +355,27 @@
 				print_r($array);
 				echo '</pre>';
 
-				if($style !== NULL) {
+				if($style) {
 					echo '</div>';
 				}
 			}
 		}
 
-		// Convert miles to meters
 		if(!function_exists('MilesToMeters')) {
+			/**
+			 * Convert miles to meters
+			 * @param {int} [miles] The number of miles to be conerted
+			 */
 			function MilesToMeters($miles) {
 				return ceil($miles/0.000621371);
 			}
 		}	
 
-		// Format the time that was 5 minutes ago
 		if(!function_exists('RequestTime')) {
+			/**
+			 * Format a time so that it's correct to be sent to Tinder's 'updates' API endpoint
+			 * @param {string} [time] The time
+			 */
 			function RequestTime($time) {
 				if($time === NULL) {
 					return $time;
@@ -339,8 +385,11 @@
 			}
 		}
 
-		// Get a user's first and last names
 		if(!function_exists('FormatNames')) {
+			/**
+			 * Return both the first and last names from a full name
+			 * @param {string} [name] The name to be parsed
+			 */
 			function FormatNames($name) {
 				$exp = explode(' ', $name);
 				$exp_num = count($exp);
@@ -348,8 +397,12 @@
 			}
 		}
 
-		// Format the subject of the meta tag
 		if(!function_exists('MetaSubject')) {
+			/**
+			 * Return the subject for the meta tag based upon whether or not the user has a username
+			 * @param {string} [username] The username of the user
+			 * @param {string} [name] The name of the user
+			 */
 			function MetaSubject($username, $name) {
 				if($username == '') {
 					return $name;
@@ -359,8 +412,16 @@
 			}
 		}
 
-		// Format the title of a document
 		if(!function_exists('DefineTitle')) {
+			/**
+			 * Define the title for the 'Hot' page
+			 * @param {int} [gender] The gender from the URL
+			 * @param {string} [city] The city
+			 * @param {string} [state] The state
+			 * @param {int} [distance] The distance filter in miles
+			 * @param {int} [min] The minimum age filter
+			 * @param {int} [max] The maxmimum age filter
+			 */
 			function DefineTitle($gender, $city, $state, $distance, $min, $max) {
 				$title = 'The hottest ';
 
@@ -387,42 +448,5 @@
 				return $title;
 			}
 		}
-
-		// Print out pagination links
-		if(!function_exists('Pagination')) {
-			function Pagination($page, $pages) {
-				$each = 5;
-				$low_point = $page-$each;
-				$high_point = $page+$each;
-
-				if($low_point < 0) {
-					$low_point = 0;
-				}
-
-				if($high_point > $pages) {
-					$high_point = $pages;
-				}
-
-		        if($page > 0) {
-		            echo '<li><a href="#">Prev</a></li>';
-		        }
-
-		        // Loop thru all of the previous pages
-		        for($i=$low_point;$i<$page;$i++) {
-		            echo '<li><a href="#">'.($i+1).'</a></li>';
-		        }
-
-		        echo '<li class="active"><a href="#">'.($page+1).'</a></li>';;
-
-		        // Loop thru all of the next pages
-		        for($i=($page+1);$i<$high_point;$i++) {
-		            echo '<li><a href="#">'.($i+1).'</a></li>';
-		        }
-
-		        if($page < ($pages-1)) {
-		            echo '<li><a href="#">Next</a></li>';
-		        }
-			}
-		}	
 	}
 ?>
