@@ -5,12 +5,14 @@
 ?>
 		<div id="header-section">
             <div class="container" id="profile_top">
+            	<!-- Radiating circle where new users will be loaded -->
             	<div id="users_load" class="text-center">
             		<div id="user_circle">
 						<img src="http://images.gotinder.com/<?php echo $this->session->userdata('tinder_id').'/172x172_'.$this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar" />
 					</div>
 	            </div>
 
+				<!-- Like or Pass buttons -->
 				<div class="col-lg-12 text-center" id="like_or_pass">
 					<div class="col-lg-6">
             			<img class="svg pull-right" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey"/>
@@ -48,8 +50,6 @@
 									</div>
 				        		</div>
 
-				        		<div class="clearfix"></div>
-
 				        		<div class="col-lg-12 text-center">
 				        			<h3>
 										<a href="<?php echo $base_url.'users/'.$this->session->userdata('tinder_id'); ?>"><?php echo $this->session->userdata('first_name'); ?></a> <span style="font-size: 24px;">&</span> <a href="" id="match_name"></a>
@@ -68,3 +68,4 @@
 				</div>
             </div>
 		</div>
+		

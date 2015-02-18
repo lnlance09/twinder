@@ -4,75 +4,17 @@ $(document).ready(function() {
     var auth = $('#auth').text();
     var method = $('#method').text();
 
-    // Get the latitude and longitude coordinates
-    var lon = $('#lon').text();
-    var lat = $('#lat').text();
-    var distance = $('#distance').text();
-    var meters = Math.round(parseInt(distance)*1609.344);
-    // console.log(meters);
-
     // Write the CSS 'left' value to a span.
     function leftValue(value, handle, slider) {
         $(this).text(handle.parent()[0].style.left);
     }
 
-    // Age slider
-    var min = $('#min').text();
-    var max = $('#max').text();
-    // console.log(distance);
-
-    $("#age_slider").noUiSlider({
-        connect: true,
-        behaviour: 'tap',
-        start: [min, max],
-        step: 1,
-        format: wNumb({
-            decimals: 0
-        }),
-        range: {
-            'min': [18],
-            'max': [50]
-        }
-    });
-
-    $("#age_slider").Link('lower').to($('#lower-value'));
-    $("#age_slider").Link('upper').to($('#upper-value'));
-
-    var distance = $('#distance').text();
-
-    // Distance slider
-    $("#distance_slider").noUiSlider({
-        start: distance,
-        connect: 'lower',
-        step: 1,
-        format: wNumb({
-            decimals: 0
-        }),
-        range: {
-          'min': 1,
-          'max': 100
-        }
-    });
-
-    $("#distance_slider").Link('lower').to($('#distance-value'));
-
-    
-    $('#interested_in li a').click(function() {
-        var value = $(this).attr('title');
-        var key = $(this).text().trim();
-        $('#interested_in_button').text(key);
-        $('#interested_in_button').val(value);
-    });
-
-    $('#gender li a').click(function() {
-        var value = $(this).attr('title');
-        var key = $(this).text().trim();
-        $('#gender_button').text(key);
-        $('#gender_button').val(value);
-    });
-
     // Google Maps
-    function Initialize(lat, lon, meters) {
+    function Initialize(lat, lon, miles) {
+        // Convert the miles to meters
+        var meters = Math.ceil(miles/0.000621371);
+
+        // Set the longitude and latitude
         var latlng = new google.maps.LatLng(lat, lon);
 
         var mapOptions = {
@@ -106,16 +48,90 @@ $(document).ready(function() {
         cityCircle.bindTo('center', marker, 'position');
     }
 
+    // Get the latitude and longitude coordinates
+    var lon = $('#lon').text();
+    var lat = $('#lat').text();
+    var distance = $('#distance').text();
 
+    // Load the Google Maps
     Initialize(lat, lon, meters);
-    
-    $('#distance_slider').change(function() {
-        var miles = $('#distance-value').text().trim();
-        var meters = Math.round(parseInt(miles)*1609.344);
-        Initialize(lat, lon, meters);
+
+
+    /**
+     * Age Slider
+     * 
+     */
+    $("#age_slider").noUiSlider({
+        connect: true,
+        behaviour: 'tap',
+        start: [$('#min').text(), $('#max').text()],
+        step: 1,
+        format: wNumb({
+            decimals: 0
+        }),
+        range: {
+            'min': [18],
+            'max': [50]
+        }
     });
 
-    // Check to see if the username is available upon keyup of the input field
+    $("#age_slider").Link('lower').to($('#lower-value'));
+    $("#age_slider").Link('upper').to($('#upper-value'));
+
+    
+    /**
+     * Distance Slider
+     * 
+     */
+    $("#distance_slider").noUiSlider({
+        start: distance,
+        connect: 'lower',
+        step: 1,
+        format: wNumb({
+            decimals: 0
+        }),
+        range: {
+          'min': 1,
+          'max': 100
+        }
+    });
+
+    $("#distance_slider").Link('lower').to($('#distance-value'));
+
+    // Change the radius on the map each time its changed
+    $('#distance_slider').change(function() {
+        var miles = $('#distance-value').text().trim();
+        Initialize(lat, lon, miles);
+    });
+    
+
+    /**
+     * Insterested In
+     * 
+     */
+    $('#interested_in li a').click(function() {
+        var value = $(this).attr('title');
+        var key = $(this).text().trim();
+        $('#interested_in_button').text(key);
+        $('#interested_in_button').val(value);
+    });
+
+
+    /**
+     * Gender Filter
+     * 
+     */
+    $('#gender li a').click(function() {
+        var value = $(this).attr('title');
+        var key = $(this).text().trim();
+        $('#gender_button').text(key);
+        $('#gender_button').val(value);
+    });
+
+
+    /**
+     * Check to see if a username is available upon keyup of the input field
+     */
     $('#username').keyup(function() {
         var username = $(this).val().trim();
         
@@ -140,15 +156,19 @@ $(document).ready(function() {
         }); 
     });
 
+
+    /**
+     * Submit the form with AJAX
+     */
     $('#settings_form').submit(function(e) {
         e.preventDefault();
-        var distance = $('#distance-value').text();
-        var username = $('#username').val();
-        var max = $('#upper-value').text();
-        var min = $('#lower-value').text();
+        var distance = $('#distance-value').text().trim();
+        var username = $('#username').val().trim();
+        var max = $('#upper-value').text().trim();
+        var min = $('#lower-value').text().trim();
         var interested = $('#interested_in_button').val();
         var gender = $('#gender_button').val();
-        console.log('Distance: '+ distance +', Username: '+ username +', Max: '+ max +', Min: '+ min +', Interested In: '+ interested +', Gender: '+ gender);
+        // console.log('Distance: '+ distance +', Username: '+ username +', Max: '+ max +', Min: '+ min +', Interested In: '+ interested +', Gender: '+ gender);
         
         $.ajax({
             url: base_url +'settings/UpdateSettings',

@@ -1,0 +1,84 @@
+/**
+ * Navbar
+ */
+.navbar {
+    position: fixed;
+    background: $orange-one;
+    padding: 0 $side-padding; 
+    margin: 0 auto; 
+    border-bottom: solid 1px #fff;
+    z-index: 99999;
+
+    .navbar-toggle {
+        border: solid 1px $white;
+        border-radius: 0;
+
+        &:hover {
+            background: $white;
+        }
+    }
+
+    .navbar-brand {
+        z-index: 99999;
+        color: $white;
+        text-shadow: none;
+        font-family: Tinder;
+        font-size: 32px;
+        letter-spacing: 3px;
+        padding: 0 8px;
+
+        span#we {
+            margin-left: -8px;
+        }
+
+        &:hover {
+             transition: 0.8s;
+             color: $border-color;
+
+             .svg {
+                path {
+                    fill: #fff;
+                }
+            }
+        }
+    }
+
+    .navbar-nav > li {
+        a {
+            background: inherit;
+            color: $white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        &.active,
+        &:hover,
+        &:focus {
+            color: $white;
+
+            a {
+                background: $light-blue;
+                color: $white;
+            }
+        }
+    }
+
+    > .container {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0 15px 0 15px;
+        z-index: 9999;
+    }
+}
+
+.navbar-inverse .navbar-nav > .active > a, 
+.navbar-inverse .navbar-nav > .active > a:hover, 
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background: $light-blue;
+}
+
+.navbar-inverse .navbar-nav > .open > a {  
+    background-color: $orange-one;
+}

@@ -30,16 +30,14 @@
             <div class="col-lg-2" onclick="location.href='<?php echo $base_url.$link; ?>'">
                 <div class="pic_wrap"> 
                     <object data="<?php echo $img_url; ?>" type="image/jpeg">
-                        <img class="svg" src="<?php echo $base_url; ?>public/img/svg/kanye.svg" width="100" height="100" alt="<?php echo $name; ?>" />
+                        <img class="svg" src="<?php echo $base_url; ?>public/img/svg/kanye.svg" width="120" height="120" alt="<?php echo $name; ?>" />
                     </object>
+
+                    <p>
+                        <a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo trim($name); ?></a>, <?php echo $age; ?>
+                        <!--<span class="sub_info"><?php echo $likes; ?></span>-->
+                    </p>
                 </div>
-
-                <p class="text-center">
-                    <a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo trim($name); ?></a>,
-                    <?php echo $age; ?><br>
-
-                    <span class="sub_info"><?php echo $likes; ?> matches</span>
-                </p>
             </div>
 <?php
             }
@@ -53,6 +51,7 @@
        if($new_page != $pages) {
 ?>
     <hr>
+
     <div class="text-center">
         <button type="button" class="btn btn-success" id="see_more">See more (<?php echo $left_over; ?>)</button>
     </div>
@@ -85,47 +84,7 @@
 	</div>
 <?php
 	}
-?>
-    <!-- Datamaps JS -->
-    <script>
-        var map = new Datamap({
-                    element: document.getElementById('datamaps'),
-                    scope: 'usa',
-                    responsive: true,
-                    fills: {
-                        defaultFill: '#08f'
-                    },
-                    geographyConfig: {
-                        borderWidth: 2,
-                        borderColor: '#fff',
-                        highlightFillColor: '#07f',
-                        highlightBorderColor: '#f0f0f0',
-                        highlightBorderWidth: 2,
-                    },
-                    done: function(datamap) {
-                        // console.log(datamap);
-                    }
-                });
-
-        // Fill in the state that is currently being searched
-        map.updateChoropleth({<?php echo strtoupper($abbrev); ?>: 'green'});
-
-        map.svg.selectAll('.datamaps-subunit').on('click', function(geo) {
-            var m = {}
-            var state = geo.id;
-            m[state] = '#07f';
-            map.updateChoropleth(m);
-
-            // Change the stateface font
-            $('.mrs_state .stateface').attr('class', 'stateface stateface-'+ state.toLowerCase());
-        });
-
-        // Make the map responsive
-        $(window).on('resize', function() {
-           map.resize();
-        });
-    </script>
-    
+?>  
     <hr>
 
     <div class="container-fluid">
@@ -156,3 +115,6 @@
     <div id="datamaps"></div>
     
     <hr><br>
+
+    <!-- Draw the pie chart -->
+    <canvas id="my_chart" width="100" height="100"></canvas>

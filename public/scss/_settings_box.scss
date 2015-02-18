@@ -1,0 +1,95 @@
+.settings_box {
+    padding: 10px;
+    border: none;
+
+    span {
+        &:not(.input-group-addon) {
+            margin: 10px 10px;
+            
+        }
+
+        &.settings_field {
+            font-size: 24px;
+        }
+    }
+
+    #gender_button,
+    #interested_in_button {
+        margin-top: 0 !important;
+        width: 100px;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .slider {
+        width: auto !important;
+    }
+
+    #username_div {
+        width: 300px;
+        margin-top: 6px;
+
+        .input-group-addon {
+            background: $off-white;
+            border: solid 1px $border-color;
+            border-left: none;
+        }
+
+        .form-control:focus,
+        .form-control:active {
+            outline: none;
+            border: solid 1px $border-color;
+            box-shadow: none;
+        }
+    }
+}
+
+#settings_form {
+    .settings_box {
+        padding: 10px 0;
+
+        button {
+            text-align: right !important;
+        }
+    }
+}
+
+#maps_box {
+    border-left: none !important;
+}
+
+#gender_box,
+#interested_in_box {
+    height: auto;
+    padding: 0px 0;
+    border-bottom: none !important;
+
+    h2 {
+        margin-bottom: 5px;
+    }
+
+    .btn-group {
+        width: 100%;
+
+        button {
+            background: #eee !important;
+            width: 100%;
+        }
+    }
+}
+
+#maps_bar {
+    height: auto;
+    background: #fff;
+    border-top: solid 1px $border-color;
+    border-bottom: solid 1px $border-color;
+    padding: 0;
+
+    #google_maps {
+        height: auto;
+
+        .ajax-loader {
+            margin-top: 0;
+        }
+    }
+}

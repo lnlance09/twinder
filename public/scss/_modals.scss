@@ -1,0 +1,66 @@
+/**
+ * Modal
+ */
+.modal {
+    z-index: 999999;
+
+    .modal-content {
+        margin-top: 60px;
+        border-radius: 0;
+
+        .modal-header {
+            padding: 4px 9px;
+
+            h3 {
+                font-size: 28px;
+                margin: 0;
+                padding: 0;
+
+                .close {
+                    font-size: inherit;
+                    margin-top: 5px;
+                }
+            }
+
+            i {
+                color: green;   
+            }
+        }
+
+        h4 {
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .modal-body {
+            background: $white;
+            padding: 0;
+
+            a {
+                font-size: 24px;
+            }
+
+            #other_box {
+                margin: 0;
+                padding: 0 10px 10px 10px;
+                display: none;
+            }
+        }
+
+        .modal-footer {
+            text-align: right;
+        }
+    }
+}
+
+#contact_modal {
+    p {
+        line-height: 25px;
+    }
+}
+
+#match_modal {
+    .modal-body {
+        padding: 15px 0 8px 0; 
+    }
+}

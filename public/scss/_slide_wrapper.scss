@@ -1,0 +1,114 @@
+.slide_wrapper {
+    background: $white;
+    min-height: 40px;
+    border: solid 1px $border-color;
+
+    .settings_box {
+        padding: 15px 30px 25px 30px;
+        border: none;
+
+        h2 {
+            margin-top: 12px;
+            font-size: 24px;
+
+            span {
+                margin: 0;
+            }
+        }
+
+        #address_components {
+            font-size: 20px;
+        }
+    
+        &:nth-of-type(2) {
+            border-left: solid 1px $border-color;
+        }
+    }
+
+    #age_box {
+        min-height: 40px;
+    }
+
+    .gender_filter {
+        border-top: solid 1px $border-color;
+        padding: 18px;
+        font-size: 24px;
+        cursor: pointer;
+
+        &:hover {
+            background: #eee;
+        }
+
+        &:nth-of-type(1) {
+            border-right: solid 1px $border-color !important;
+        }
+    }
+
+    .active {
+        background: #f0f0f0;
+    }
+
+    #location_select_box {
+        padding: 15px 0 !important;
+        width: 100%;
+
+        .col-lg-6 {
+            width: 50%;
+
+            .form-group {
+                margin-bottom: 0;
+                width: 100%;
+
+                .input-group-addon {
+                    padding: 6px;
+                    border: solid 1px #ddd;
+                    border-right: none;
+                    width: 50px !important;
+
+                    span {
+                        font-size: 20px;
+                    }
+                }
+
+                #city_addon {
+                    padding: 6px 21px;
+                }
+            }
+        }
+    }
+
+    #gender_box,
+    #interested_in_box {
+        height: auto;
+        padding: 0px 0;
+        border-bottom: none !important;
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        .btn-group {
+            width: 100%;
+
+            button {
+                background: #eee !important;
+                width: 100%;
+            }
+        }
+    }
+
+    #maps_box {
+        padding: 0;
+        background: $off-white;
+    }
+
+    #state_autocomplete,
+    #city_autocomplete {
+        ul.list-group {
+            li {
+                border: solid 1px #ddd !important;
+                border-top: none;
+            }
+        }
+    } 
+}

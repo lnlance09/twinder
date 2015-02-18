@@ -40,7 +40,7 @@
 */
 
 // Default controller
-$route['default_controller'] = 'hot';
+$route['default_controller'] = 'home';
 
 // 404 controller
 $route['404_override'] = 'error';

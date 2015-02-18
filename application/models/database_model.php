@@ -54,16 +54,7 @@
 				$this->db->select('id');
 				$this->db->where(array('tinder_id' => $info[$i]['tinder_id'], 'user_id' => $user_id));
 				$query = $this->db->get('batches');
-				$count = $query->num_rows();
-
-				// Check to see if there is a record of the user existing in the batches table
-				if($count == 0) {
-					// If there isn't then insert a row into the batches table
-					$data = array('user_id' => $user_id,
-								'tinder_id' => $info[$i]['tinder_id']);
-					$this->db->insert('batches', $data);
-				}
-
+				
 				// Check to see if there is a record of the user existing in the users table
 				$data = array('tinder_id' => $info[$i]['tinder_id'],
 							'first_name' => $info[$i]['name'],
@@ -74,6 +65,12 @@
 							'profile_pic' => $info[$i]['profile_pic']);
 				// If there isn't, then put one in
 				$this->InsertUser($data);
+
+				// Check to see if there is a record of the user existing in the batches table
+				if($query->num_rows() == 0) {
+					$data = array('user_id' => $user_id, 'tinder_id' => $info[$i]['tinder_id']);
+					$this->db->insert('batches', $data);
+				}
 
 				// Update the last seen location
 				$this->EditLastSeen($info[$i]['distance'], $my_tinder_id, $info[$i]['tinder_id'], $lon, $lat);
@@ -131,7 +128,6 @@
 					$person = $updates[$i]['person'];
 
 					// Check to see if there is a record of each match participant in the DB
-					// If there isn't, then create a row in the DB for each user
 					if($person !== NULL) {
 						// Insert a row into the users table if necessary
 						$user_data = array('tinder_id' => $person['_id'],
@@ -160,7 +156,6 @@
 
 						// If there is a record of the user existing, then see if your distance to him/her is closer 
 						if($last === FALSE) {
-							// Create a new row in the last_seen table for this user
 							$data = array('seen_id' => $person['_id'],
 										'seen_by_id' => $my_tinder_id,
 										'lon' => $lon,
@@ -185,9 +180,8 @@
 			$this->db->select('*');
 			$this->db->where('seen_id', $tinder_id);
 			$query = $this->db->get('last_seen');
-			$count = $query->num_rows();
 
-			if($count == 1) {
+			if($query->num_rows() == 1) {
 				foreach($query->result() as $row) {
 					$seen_id = $row->seen_id;
 					$by_id = $row->seen_by_id;
@@ -743,9 +737,7 @@
 		 * @param {array} [data] An array containing the values for the columns
 		 */
 		public function InsertMatch($match_id, $data) {
-			$check = $this->MatchExists($match_id);
-
-			if($check == 0) {
+			if($this->MatchExists($match_id) == 0) {
 				$this->db->insert('likes', $data);
 			}
 		}

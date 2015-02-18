@@ -213,7 +213,6 @@
 			 * @param {string} [time] The time
 			 */
 			function FormatTime($time) {
-				// Find out the difference between now and the given date
 				$time = date_diff(date_create(), date_create($time));
 
 				// Format the date difference by minutes, hours, days and months
@@ -301,9 +300,9 @@
 				$pic = $user_info['profile_pic'];
 
 				if($gender == 0) {
-					$subject = "he";
+					$subject = 'he';
 				} elseif($gender == 1) {
-					$subject = "she";
+					$subject = 'she';
 				}
 
 				$raw_data = $data[0]['data'];
@@ -320,24 +319,6 @@
 						</h3> <p>".FormatTime($time)." <br> ".$distance." miles away <br>".$city.", ".$state." <br> ".$lon.", ".$lat."</p></div>");
 			}
 
-		}
-
-		if(!function_exists('CookieFile')) {
-			/**
-			 * Return the path to a users' cookie file
-			 * @param {string} [email] The user's email
-			 */
-			function CookieFile($email) {
-				$exp = explode('@', $email);
-
-				if(count($exp) > 1) {
-					$file = $exp[0];
-				} else {
-					$file = $email;
-				}
-
-			    return 'cookies/'.$file.'.txt';
-			}
 		}
 
 		if(!function_exists('FormatArray')) {

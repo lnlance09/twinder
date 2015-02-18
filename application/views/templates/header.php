@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="<?php echo $public_url; ?>font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
+    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>
@@ -111,17 +111,11 @@
                         <a href="<?php echo $base_url; ?>hot">Browse</a>
                     </li>
 <?php
-    if($session === FALSE) {
-?>
-                    <li class="active">
-                        <a href="<?php echo $base_url; ?>signin">Sign in</a>
-                    </li>
-<?php
-    } else {
+    if($session) {
 ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <?php echo $first_name; ?>
+                            <?php echo $name; ?>
 
                             <span id="like_count">
                                 <!-- The match count -->
@@ -147,6 +141,12 @@
                         </ul>
                     </li>
 <?php
+    } else {
+?>
+                    <li class="active">
+                        <a href="<?php echo $base_url; ?>signin">Sign in</a>
+                    </li>
+<?php
     }
 ?>
                 </ul>
@@ -159,7 +159,6 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
                 <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
-                <span class="input-group-addon"></span>
 
                 <div class="clearfix"></div>
             </div>

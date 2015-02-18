@@ -13,7 +13,7 @@ $(document).ready(function() {
 		            msg: msg
 		        },
 		        success: function(data) {
-		        	console.log(data);
+		        	// console.log(data);
 		            $('#contact_modal').modal('show');
 
 		            $('#wipe_text').click(function() {

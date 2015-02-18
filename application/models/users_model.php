@@ -124,10 +124,7 @@
 		 * @param {time} [time] The time to get updates since. 
 		 */
 		public function GetUpdates($auth, $time = NULL) {
-			// Format the time
-			$time = RequestTime($time);
-			// echo $time;
-			$info = SendRequest('updates', $auth, TRUE, array('last_activity_date' => $time));
+			$info = SendRequest('updates', $auth, TRUE, array('last_activity_date' => RequestTime($time)));
 			return @json_decode($info, TRUE);
 		}
 
@@ -235,15 +232,14 @@
 		}
 
 		/**
-		 * Send a message to another user
+		 * Send a message to another user. Add the signature to each message
 		 * @param {string} [id] The Tinder ID of the user who is meant to receive the message
 		 * @param {string} [msg] The content of the message
 		 * @param {string} [auth] The API token of the user who is currently logged in
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			// Add the signature to each message
-			$signed_msg = $msg."\r\n \r\n Sent from <a href='http://wetinder.com'>WeTinder</a> - Tinder for Web";
-			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $signed_msg));
+			$sig = "Sent from <a href='http://wetinder.com'>WeTinder</a> - Tinder for Web";
+			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
 			return @json_decode($info, TRUE);
 		}
 
@@ -253,7 +249,7 @@
 		 * @param {string} [password] The password of the person trying to log in
 		 */
 		public function SyncAccount($email, $password) {
-			// Get the auth token
+			// Get the Tinder API token
 			$auth = $this->AuthToken($email, $password);
 			// FormatArray($auth);
 
@@ -286,14 +282,14 @@
 								'distance_filter' => $profile['distance_filter'],
 								'interested_in' => $profile['gender_filter']);
 
-				// Query the DB to see if there is a record of this user existing
-				$user_info = $this->database_model->InsertUser($user, $settings);
+				// Insert/update this user into the DB
+				$info = $this->database_model->InsertUser($user, $settings);
 				// FormatArray($user_info);
 				// die;
 
 				// Define the user_id and username keys of the data array
-				$user['user_id'] = $user_info['user_id'];
-				$user['username'] = $user_info['username'];
+				$user['user_id'] = $info['user_id'];
+				$user['username'] = $info['username'];
 
 				// Insert a record in the DB for their last seen location
 				$this->database_model->EditLastSeen(0, $auth['_id'], $auth['_id'], $lon, $lat); 
@@ -307,7 +303,6 @@
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
 				// FormatArray($updates);
-				// die;
 
 				// Sync all of the messages from the user's Tinder account
 				$this->database_model->SyncMessages($updates['matches'], $auth['_id'], $profile['distance_filter'], $lon, $lat, $loc['city'], $loc['state']);
@@ -326,8 +321,7 @@
 		 * @param {int} [gender] The gender submitted by the user
 		 */
 		public function UpdateProfile($auth, $bio, $gender) {
-			$data = array('bio' => $bio, 'gender' => (int)$gender);
-			$info = SendRequest('profile', $auth, TRUE, $data);
+			$info = SendRequest('profile', $auth, TRUE, array('bio' => $bio, 'gender' => (int)$gender));
 			return @json_decode($info, TRUE);
 		}
 
@@ -427,7 +421,7 @@
 						if($val != '') {
 							// If the state is set, then query the DB to see if the city in the given state exists
 							if(isset($params['state'])) {
-								$check = $this->location_model->CheckCityAndState(urldecode($val), $params['state']);
+								$check = $this->location_model->CheckCityAndState(urldecode($val), urldecode($params['state']));
 								// var_dump($check);
 
 								// If the place exists, then decode it
@@ -435,7 +429,7 @@
 									$city['name'] = urldecode($val);
 
 									// Get the lat & lon coordinates
-									$coords = $this->location_model->PlaceExists(urldecode($val), $state['name']);
+									$coords = $this->location_model->PlaceExists(urldecode($val), urldecode($state['name']));
 									// FormatArray($coords);
 									$city['lon'] = $coords['lon'];
 									$city['lat'] = $coords['lat'];
@@ -450,7 +444,7 @@
 						// The default state is NULL
 						if($val != '') {
 							// Check to see if the state exists
-							$check = $this->location_model->CheckState($val);
+							$check = $this->location_model->CheckState(urldecode($val));
 
 							// If the state exists, then decode it
 							if($check > 0) {

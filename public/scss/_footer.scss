@@ -1,0 +1,109 @@
+/**
+ * Footer
+ */
+#footer {
+    z-index: 999999;
+
+    #sub_footer {
+        background: $footer-color;
+        padding: 25px $side-padding;
+        text-align: left;
+
+        ul {
+            list-style: none;
+            margin-bottom: 7px;
+            float: left;
+            -webkit-padding-start: 0;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            li {
+                color: $white;
+                text-align: left !important;
+                font-size: 14px;
+
+                .twitter-follow-button {
+                    margin-left: 0px;
+                }
+
+                .fb-like-box {
+                    margin-top: 7px;
+                    background: $off-white;
+                }
+
+                a {
+                    font-size: 13px;
+                    color: $white;
+        
+                    &:hover {
+                        color: $border-color;
+                    }
+                }
+
+                &:first-of-type {
+                    font-size: 20px;
+                    margin-bottom: 12px;
+
+                    a {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+
+        .col-lg-4 {
+            &:nth-of-type(3) {
+                ul {
+                    float: right;
+
+                    li {
+                        text-aling: right;
+                    }
+                }
+            }
+
+            &:nth-of-type(2) {
+                ul {
+                    width: 100%;
+
+                    li {
+                        text-align: center;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    #copyright {
+        background: $copyright-color;
+        padding: 20px;
+
+        p {
+            color: $white;
+            margin: 0;
+        }
+    }
+
+    /**
+     * Facebook Like button
+     */
+    #fb_info_box {
+        margin-top: 0;
+        border-top: none;
+        padding: 0;
+
+        .col-lg-6 {
+            padding: 0;
+
+            h4 {
+                margin: 0;
+                padding: 10px;
+                text-align: center;
+                background: $off-white;
+            }
+        }
+    }
+}

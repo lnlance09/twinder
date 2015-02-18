@@ -27,8 +27,9 @@
 			public function Test() {
 				// $this->database_model->FlushDB();
 
-				$info = $this->database_model->HottestByState(1, 'NY');
-			
+				// $info = $this->database_model->HottestByState(1, 'NY');
+				$info = $this->location_model->MapquestLatLon('40.7665111', '-73.9874572');
+
 				//$my_id = '54697f0c99a146cd3cc80b05';
 				//$his_id = '5495df819983685e07f138f2';
 				//$info = $this->database_model->GetMutualLikes($my_id, $his_id, 'eli');

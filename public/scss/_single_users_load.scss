@@ -1,0 +1,101 @@
+#users_load,
+#single_users_load {
+    #focus_box {
+        padding: 0;
+        background: $off-white;
+        border: solid 1px #ccc;
+        text-align: left;
+
+        #ping_wrapper {
+            padding: 25px;
+            background: $off-white;
+
+            #ping_map {
+                width: 100%;
+                height: 300px;
+                border: solid 1px $border-color;
+                background: $white;
+
+                .ajax-loader {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        #profile_page_info {
+            margin-top: -80px;
+            padding: 0 20px;
+            min-height: 300px !important;
+        }
+
+        #profile_info,
+        #profile_discover {
+             h1.static {
+                margin: 0;
+            }
+
+            padding: 0 5px;
+            margin-top: 70px;
+
+            #profile_right_side {
+                padding: 20px 35px 10px 12px;
+
+                p {
+                    font-size: 20px;
+                    float: left;
+                }
+            }
+        }
+
+        #profile_discover {
+            margin-top: 0;
+            padding: 0 12px;
+        }
+
+        #profile_edit {
+            font-size: 16px;
+            float: right;
+        }
+
+        #profile_edit_done {
+            margin-top: -8px;
+        }
+
+        #pic_bar {
+            background: $white;
+            z-index: 999999999;
+        }
+
+        #main_img {
+            cursor: pointer;
+            background: $off-white;
+            display: block;
+            border: solid 1px #ccc;
+        }
+
+        #about_quote {
+            font-size: 20px;
+            display: block;
+            color: #555;
+            line-height: 28px;
+            margin-top: 10px;
+            z-index: 9999;
+        }
+
+        #gender_button {
+            width: 100px;
+            margin-top: 12px;
+            font-size: 16px;
+        }
+    }
+    
+    @import 'polaroid';
+    @import 'timer_box';
+
+    ul#sub_pics {
+        list-style: none;
+        position: relative;
+        margin-top: -30px;
+        top: 5px !important;
+    }
+}

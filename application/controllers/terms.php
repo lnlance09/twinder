@@ -55,8 +55,7 @@
 									'like_count' => $like_count,
 									'match_count' => $match_count,
 									'pass_count' => $pass_count,
-									'first_name' => $this->session->userdata('first_name'),
-									'last_name' => $this->session->userdata('last_name'),
+									'name' => $this->session->userdata('first_name'),
 									'meta' => $meta_info,
 									'profile_link' => $profile_link);
 

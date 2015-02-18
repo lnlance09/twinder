@@ -1,0 +1,35 @@
+/**
+ * Font-Awesome
+ */
+#heart_icon,
+#match_icon {
+    margin-left: 12px;
+    margin-right: 7px;
+}
+
+.fa-heart {
+    color: #ff69b4;
+}
+
+.fa-share {
+    cursor: pointer;
+}
+
+.fa-thumbs-up,
+.fa-globe,
+.fa-refresh {
+    color: #08f;
+}
+
+.fa-thumbs-down {
+    color: #b4ff69;
+}
+
+.fa-map_marker {
+    color: red;
+}
+
+.fa-bullhorn,
+.fa-ban  {
+    color: $copyright-color;
+}

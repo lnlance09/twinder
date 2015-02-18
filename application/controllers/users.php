@@ -14,6 +14,9 @@
 
 				// Load all of the models
 				$this->load->model('users_model');
+
+				// Load the URL helper
+				$this->load->helper('url');
 			}
 
 			public function Index() {
@@ -147,7 +150,7 @@
 										'header' => $user_info['name'],
 										'auth' => $this->session->userdata('token'),
 										'tinder_id' => $this->session->userdata('tinder_id'),
-										'first_name' => $this->session->userdata('first_name'),
+										'name' => $this->session->userdata('first_name'),
 										'like_count' => $like_count,
 										'match_count' => $match_count,
 										'pass_count' => $pass_count,
@@ -184,7 +187,7 @@
 					$this->load->view('profile', $body_info); 
 					$this->load->view('templates/footer'); 
 				} else {
-					header('Location: '.$this->base_url);
+					redirect('', 'location');
 				}
 			} 
 
@@ -193,12 +196,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get all of the stats of the user who is logged in
 					$stats = $this->database_model->GetThreeStats($this->session->userdata('tinder_id'));
 					$like_count = $stats['like_count'];
@@ -221,12 +218,12 @@
 										'like_count' => $like_count,
 										'match_count' => $match_count,
 										'pass_count' => $pass_count,
-										'first_name' => $this->session->userdata('first_name'),
+										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
 										'profile_link' => $profile_link);
 
 					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = array('pic' => $tinder_id.'/'.$this->session->userdata('profile_pic_medium'));
+					$body_info = array('pic' => $this->session->userdata('tinder_id').'/'.$this->session->userdata('profile_pic_medium'));
 
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
@@ -242,12 +239,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get all of the parameters from the URL
 					$params = $this->input->get();
 							
@@ -406,12 +397,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get the match ID from the URL
 					$id = $this->input->get('match_id');
 
@@ -431,12 +416,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Call the GetUpdates function in the users model 
 					$updates = $this->users_model->GetUpdates($this->session->userdata('token'), 'now');
 					echo json_encode($updates);
@@ -448,12 +427,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get the user ID from the URL
 					$id = $this->input->get('id');
 
@@ -481,12 +454,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Log the user out of Tinder
 					$logout = $this->users_model->Logout($this->session->userdata('token'));
 
@@ -503,12 +470,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get the user ID from the URL
 					$id = $this->input->get('id');
 
@@ -524,14 +485,7 @@
 			public function ReportUser() {
 				$user_id = $this->session->userdata('user_id');
 
-				// Find out if the user is logged in or not
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get the Tinder ID from the URL
 					$id = $this->input->get('id');
 					$reason = $this->input->get('reason');
@@ -565,12 +519,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Get the match ID and the message from the URL
 					$id = $this->input->post('id');
 					$msg = $this->input->post('msg');
@@ -586,12 +534,6 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {
-					$session = TRUE;
-				} else {
-					$session = FALSE;
-				}
-
-				if($session) {
 					// Update the pic order
 					// $this->users_model->ChangePicOrder($pics, $auth);
 
@@ -602,7 +544,7 @@
 
 					// Update the user's row in the DB
 					$this->database_model->UpdateUser($this->session->userdata('tinder_id'), array('bio' => $bio, 'gender' => $gender));
-					FormatArray($update);
+					// FormatArray($update);
 				}
 			}
 		}

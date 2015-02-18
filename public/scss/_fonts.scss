@@ -1,0 +1,16 @@
+/**
+ * Fonts
+ */
+@font-face {
+    font-family: Tinder;
+    src: url('fonts/angry_birds.ttf');
+}
+
+@font-face {
+    font-family: 'StateFaceRegular';
+    src: url('fonts/stateface/webfont/stateface-regular-webfont.eot');
+    src: url('fonts/stateface/webfont/stateface-regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('fonts/stateface/webfont/stateface-regular-webfont.woff') format('woff'),
+        url('fonts/stateface/webfont/stateface-regular-webfont.ttf') format('truetype'),
+        url('fonts/stateface/webfont/stateface-regular-webfont.svg#StateFaceRegular') format('svg');
+}

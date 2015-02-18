@@ -84,9 +84,15 @@
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
 
+    <!-- Datamaps -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="<?php echo $js_url; ?>datamaps/datamaps.world.min.js"></script>
+
+    <!-- Charts.js -->
+    <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
+
+    <!--<script src="<?php echo $base_url; ?>public/js/chart.js"></script>-->
 <?php
     }
 

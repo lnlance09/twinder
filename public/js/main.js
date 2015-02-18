@@ -3,7 +3,7 @@ $(document).ready(function() {
     var auth = $('#auth').text();
     // console.log(auth);
 
-    // Query to check for any updates and/or matches/messages
+    // Query to check for any updates and/or matches/messages every 10 seconds
     if(auth != '') {
         console.log('hey');
         window.setInterval(function() {

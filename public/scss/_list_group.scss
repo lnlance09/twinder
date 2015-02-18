@@ -1,0 +1,48 @@
+/**
+ * List group
+ */
+ul.list-group {
+    li {
+        border: none;
+        border-bottom: solid 1px $border-color;
+        border-radius: 0 !important;
+        cursor: pointer;
+
+        &:nth-child(even) {
+            background: #f7f7f7;
+        }
+
+        &:last-of-type  {
+            border-bottom: none !important;
+        }
+
+        &:hover {
+            background: #06f;
+            color: $white;
+            transition: 0.4s;
+
+            a,
+            span {
+                color: #fff;
+                transition: 0.4s;
+            }
+        }
+
+        img {
+            border: none;
+            vertical-align: middle;
+        }
+
+        span {
+            font-size: 24px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        div {
+            margin-left: 15px;
+            display: inline-block; 
+            vertical-align: top;
+        }
+    }
+}

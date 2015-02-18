@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 	var data = 'id='+ match_id;
 
-	// Load the previous threads
+	// Load the previous threads in the conversation
     $('#thread_load').load(base_url +'matches/ThreadBackend', data, function() {
     	$('.ajax-loader').fadeOut();
 	});

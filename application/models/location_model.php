@@ -5,30 +5,12 @@
 
 			// Define the API key for Bing
 			$this->api_key = 'AsYr89sIN1M2BNmVi8279YDSTfmu-ueNl6LCPf1urkcLbYugk8wTcKdp7jt4OryS';
-		}
 
-		/**
-		 * Get the city and state of a location from Bing based upon its geographical coordinates 
-		 * @param {decimal} [lon] The longitude coordinate
-		 * @param {decimal} [lat] The latitude coordinate
-		 */
-		public function BingLocation($lon, $lat) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'http://dev.virtualearth.net/REST/v1/Locations/'.$lat.','.$lon.'?o=json&key='.$this->api_key);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			$data = curl_exec($ch);
-		    curl_close($ch);
+			// Define the API key for MapQuest
+			$this->mapquest_key = 'Cmjtd|luur2108n1,7w=o5-gz8a';
 
-		    // Decode the response
-		    $decode = @json_decode($data, TRUE);
-
-		    if($decode['statusCode'] == 200) {
-		    	$city = $decode['resourceSets'][0]['resources'][0]['address']['locality'];
-		    	$state = $decode['resourceSets'][0]['resources'][0]['address']['adminDistrict'];
-		    	return array('city' => $city, 'state' => $state);
-		    } else {
-		    	return array('city' => NULL, 'state' => NULL);
-		    }
+			// Define the URL for the MapQuest API
+			$this->mapquest_url = 'http://www.mapquestapi.com/geocoding/v1/address?';
 		}
 
 		/**
@@ -42,9 +24,8 @@
 					WHERE city = ? 
 					AND (state = ? OR state_abbrev = ?)"; 
 			$query = $this->db->query($sql, array($city, $state, $state));
-			$count = $query->num_rows();
-
-			if($count == 1) { 
+			
+			if($query->num_rows() == 1) { 
 				foreach($query->result() as $row) {
 					$id = $row->id;
 				}
@@ -96,23 +77,6 @@
 					break;
 				}
 			}
-		}
-
-		/**
-		 * Make a request to the Google Maps API to find out the names of a given location based upon its geographical location 
-		 * @param {decimal} [lon] The longitude coordinate
-		 * @param {decimal} [lat] The latitude coordinate
-		 */
-		public function GeoLocation($lon, $lat) {
-			// $api_key = 'AIzaSyCy6LbgbzAqWNbPnUQx_lH60pTuurk43Cs';
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$lat.','.$lon.'&sensor=false');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			$data = curl_exec($ch);
-		    curl_close($ch);
-
-		    // Decode the response
-		    return @json_decode($data, TRUE);
 		}
 
 		/**
@@ -195,32 +159,46 @@
 		}
 
 		/**
-		 * Make a request to Bing's API to see if a given city/state combo exists
+		 * Make a request to MapQuest's API endpoing to get the lat & lon coordinates from the a city and/or state name/abbreviation
 		 * @param {string} [city] The name of the city
-		 * @param {string} [state] The two letter abbreviation of the state
+		 * @param {string} [state] The name of the state
 		 */
-		public function PlaceExists($city, $state) {
-			if($city != NULL) {
-				$param = $state.'/'.rawurlencode($city);
+		public function MapquestLocation($city, $state) {
+			if($city !== NULL && trim($city) != '') {
+				$param = $state.','.$city;
 			} else {
 				$param = $state;
 			}
 
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'http://dev.virtualearth.net/REST/v1/Locations/US/'.$param.'?output=json&key='.$this->api_key);
+			curl_setopt($ch, CURLOPT_URL, $this->mapquest_url.'location='.urlencode($param).'&key='.$this->mapquest_key);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
 
 		    // Decode the response
 		    $decode = @json_decode($data, TRUE);
+			return $decode['results'][0]['locations'][0]['latlng'];
+		}
 
-		    if($decode['authenticationResultCode'] == 'ValidCredentials') {
-		    	$set = $decode['resourceSets'][0]['resources'][0]['point']['coordinates'];
-		    	return array('lon' => $set[1], 'lat' => $set[0]);
-		    } else {
-		    	return array('lon' => NULL, 'lat' => NULL);
-		    }
+		/**
+		 * Make a request to MapQuest's API endpoing to get the name of the city and the name/abbreviation of the state from lon & lat coordinates
+		 * @param {decimal} [lat] The latitude coordinate
+		 * @param {decimal} [lon] The longitude coordinate
+		 */
+		public function MapquestLatLon($lat, $lon) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $this->mapquest_url.'location='.urlencode($lat.','.$lon).'&key='.$this->mapquest_key);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$data = curl_exec($ch);
+		    curl_close($ch);
+
+		    // Decode the response
+		    $decode = @json_decode($data, TRUE);
+		    $location = $decode['results'][0]['locations'][0];
+		    return array('city' => $location['adminArea5'], 
+		    			'state' => $location['adminArea3'],
+		    			'full_name' => $this->FullFromAbbrev($location['adminArea3']));
 		}
 
 		/**

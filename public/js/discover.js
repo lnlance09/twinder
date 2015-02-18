@@ -1,12 +1,11 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text();
-    var user_id = $('#user_id').text();
+    var tinder_id = $('#user_tinder_id').text();
     var auth = $('#auth').text();
     
-    var tinder_id = $('#user_tinder_id').text();
-    var likes = $('#like_count_num').text();
-    var matches = $('#match_count_num').text();
-
+    /**
+     * Draw the radiating circle while loading a new batch of users
+     */
     function AddCircle() {
         var $circle = $('<div class="circle"></div>');
         
@@ -28,6 +27,8 @@ $(document).ready(function() {
     AddCircle();
     setInterval(AddCircle, 1200);
 
+
+
     // Get the longitude and latitude coordinates
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(LoadUsers);
@@ -42,25 +43,21 @@ $(document).ready(function() {
         var user_url = base_url +'users/DiscoverLoad';
         var data = 'auth='+ auth +'&lon='+ lon +'&lat='+ lat +'&index=0&type=new';
 
+        // Load the results
         $('#users_load').load(user_url, data, function() {
+            // Fade the radiating circle out
             $('#user_circle').fadeOut();
 
+            // Make each users pics clickable
             $('ul#sub_pics li').click(function() {
                 var pic = $(this).attr('name');
                 $('#main_img').attr('src', pic);
             });
 
+            // Upon like or pass of a user
             $('#like_user, #pass_user').click(function() {
-                var button = $(this).attr('id');
-
-                if(button == 'pass_user') {
-                    var endpoint = 'PassUser';
-                } else {
-                    var endpoint = 'LikeUser';
-                }
-
+                // If it's the 11th like, then load a fresh batch
                 var index = $('#user_at_num').text();
-                var tinder_id = $('#user_tinder_id').text();
                 var new_index = parseInt(index)+parseInt(1);
                 var mod = parseInt(new_index)%parseInt(11);
                 $('#user_at_num').text(new_index);
@@ -68,6 +65,13 @@ $(document).ready(function() {
                 if(mod == 0) {
                     $('#users_load').load(user_url, data);
                     console.log('loaded again');
+                }
+
+                // Determine the API endpoint
+                if($(this).attr('id') == 'pass_user') {
+                    var endpoint = 'PassUser';
+                } else {
+                    var endpoint = 'LikeUser';
                 }
 
                 $.ajax({
@@ -125,12 +129,12 @@ $(document).ready(function() {
                             $('#like_count_num').text(new_like_count);
                         }
 
+                        // Load the next user in the batch
                         $('#users_load').load(user_url, 'index='+ new_index +'&type=old', function(data) {
                             $('#like_or_pass').fadeIn('slow');
 
                             $('#sub_pics li').click(function() {
-                                var pic = $(this).attr('name');
-                                $('#main_user_pic').attr('src', pic);
+                                $('#main_user_pic').attr('src', $(this).attr('name'));
                             });
                         });
                     }

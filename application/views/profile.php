@@ -6,7 +6,6 @@
         <div id="header-section">
             <div class="container" id="profile_top">
                 <div id="single_users_load">
-                	
                 	<div class="col-lg-12" id="focus_box">
 		                <!-- Ping the user's last location -->
 		                <div id="ping_wrapper">

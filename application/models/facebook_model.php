@@ -13,13 +13,29 @@
 		}
 
 		/**
+		 * Return the path to a users' cookie file
+		 * @param {string} [email] The user's email
+		 */
+		public function CookieFile($email) {
+			$exp = explode('@', $email);
+
+			if(count($exp) > 1) {
+				$file = $exp[0];
+			} else {
+				$file = $email;
+			}
+
+		    return 'cookies/'.$file.'.txt';
+		}
+
+		/**
 		 * Log into Facebook
 		 * @param {string} [email] The email of the user tring to log in
 		 * @param {string} [password] The password of the user trying to log in
 		 */
 		public function FacebookLogin($email, $password) {  
 			// Define the cookies files
-			$cookies = CookieFile($email);
+			$cookies = $this->CookieFile($email);
 		    
 		    // Build the query
 		    $data = array('charset_test' => htmlspecialchars("&euro;,&acute;,â‚¬,Â´,æ°´,Ð”,Ð„"),
@@ -57,7 +73,7 @@
 
 			if($login == 200) {
 				// Define the cookies file
-				$cookies = CookieFile($email);
+				$cookies = $this->CookieFile($email);
 			    $uri = 'https://www.facebook.com/connect/login_success.html';
 				$url = 'https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.urlencode($uri).'&scope='.implode(',', $this->permissions).'&response_type=token';
 						

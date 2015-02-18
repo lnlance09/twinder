@@ -23,10 +23,10 @@
 				// Get all of the URL parameters
 				$params = $this->uri->uri_to_assoc(2);
 				// FormatArray($params);
+				// die;
 
 				// Get the validated query parameters
 				$valids = $this->users_model->ValidateParams($params);
-				// FormatArray($valids);
 
 				$gender = $valids['gender'];
 				$city = $valids['city'];
@@ -57,12 +57,18 @@
 				}
 				
 				// Determine whether to use the coordinates of the city or the state
-				if($city['name'] != '') {
-					$lon = $city['lon'];
-					$lat = $city['lat'];
+				if($state['lon'] !== NULL && $state['lat'] !== NULL) {
+					if($city['lon'] !== NULL && $city['lat'] !== NULL) {
+						$lon = $city['lon'];
+						$lat = $city['lat'];
+					} else {
+						$lon = $state['lon'];
+						$lat = $state['lat'];
+					}
+
+					$set = 'true';
 				} else {
-					$lon = $state['lon'];
-					$lat = $state['lat'];
+					$set = 'false';
 				}
 
 				// echo $lon.', '.$lat.'<br>';
@@ -135,7 +141,8 @@
 									'min' => $min,
 									'max' => $max,
 									'q' => $q,
-									'page' => $page);
+									'page' => $page,
+									'set' => $set);
 				// FormatArray($body_info);
 				// die;
 
