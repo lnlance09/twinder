@@ -1,5 +1,6 @@
 $(document).ready(function() {
-	var base_url = $('#base_url').text();
+	var base_url = '/wetinder/';
+	// $('#sync_modal').modal('show'); 
 
 	/**
 	 * Validate the login form and get the auth token and sync the user's account with AJAX
@@ -21,9 +22,10 @@ $(document).ready(function() {
 	                submit: 'submit'
 	            },
 	            success: function(data) {
-	                // console.log(data);
+	                console.log(data);
 	                if(data.trim() == 'true') {
-	                	window.location = base_url +'users/discover';
+	                	// console.log('true');
+	                	// window.location = base_url +'users/discover';
 	                } else if(data == 'error') {
 	                	$('#sync_modal').modal('hide');
 	                } else {
@@ -40,7 +42,6 @@ $(document).ready(function() {
 	 * Show the modal width of the terms of service upon click of the terms of serice link
 	 */
     $('#accept_terms').click(function(e) {
-    	$(this).addClass('btn-success');
     	$(this).text('Accepted');
     	$(this).prepend('<i class="fa fa-check"></i> ');
     	$('#terms_modal').modal('hide');

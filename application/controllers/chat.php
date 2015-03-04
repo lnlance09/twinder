@@ -38,7 +38,7 @@
 				// Get the info about the chat
 				$info = $this->users_model->GetMatchInfo($id, $token);
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
@@ -60,9 +60,9 @@
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 				// Define the meta tags
-				$meta_info = array('description' => ,
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'terms');
+				$meta_info = array('description' => '',
+								'img' => $this->base_url.'public/img/',
+								'url' => $this->base_url.'terms');
 
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => 'Terms of Service',
@@ -81,7 +81,7 @@
 				// Load all of the views
 				$this->load->view('header', $header_info); 
 				$this->load->view('terms'); 
-				$this->load->view('footer'); 
+				$this->load->view('footer', $footer_info); 
 			}
 		}
 	}

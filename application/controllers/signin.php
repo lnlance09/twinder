@@ -21,7 +21,7 @@
 				$user_id = $this->session->userdata('user_id');
 
 				// Check to make sure the user is logged in
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					header('Location: '.$this->base_url);
 				} else {
 					// Define the meta tags
@@ -39,10 +39,15 @@
 					// Set all of the info that needs to be passed to the dashboard view
 					$body_info = array();
 
+					// Get all of the data for the footer view
+					$locations = $this->location_model->RandomLocations();
+					$rand_users = $this->database_model->GetAllUsers();
+					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
 					$this->load->view('signin'); 
-					$this->load->view('templates/footer'); 
+					$this->load->view('templates/footer', $footer_info); 
 				}
 			}
 

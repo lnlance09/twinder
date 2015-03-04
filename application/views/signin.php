@@ -64,7 +64,7 @@
 
                         <div class="modal-body text-center">
                             <div class="ajax-loader">
-                                <i class="fa fa-cog fa-4x fa-spin"></i>
+                                <i class="fa fa-refresh fa-spin fa-4x"></i>
                             </div>
                         </div>
                     </div>

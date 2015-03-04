@@ -23,13 +23,11 @@
 			<a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>
         </li>
 <?php
-			}
+		}
 ?>
     </ul>
 <?php
-		}
-
-       	if($new_page != $pages) {
+        if($new_page != $pages) {
 ?>
     <div class="text-center">
         <button type="button" class="btn btn-primary" id="see_more">See more (<?php echo $left_over; ?>)</button>

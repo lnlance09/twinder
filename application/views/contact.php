@@ -9,7 +9,7 @@
 
                 <form method="POST" id="contact_form" action="<?php echo $base_url; ?>contact/send">
                     <textarea class="form-control" rows="5" id="contact_us" name="contact_us" placeholder="Tell us what you think" autocomplete="off"></textarea><br>
-                    <button class="btn btn-primary pull-right" type="submit" name="submit" value="submit">Send</button>
+                    <button class="btn btn-success pull-right" type="submit" name="submit" value="submit">Send</button>
                     <div class="clearfix"></div>
                 </form>
             </div>

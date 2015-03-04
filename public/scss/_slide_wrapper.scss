@@ -15,10 +15,6 @@
                 margin: 0;
             }
         }
-
-        #address_components {
-            font-size: 20px;
-        }
     
         &:nth-of-type(2) {
             border-left: solid 1px $border-color;
@@ -70,6 +66,11 @@
                     }
                 }
 
+                .form-control {
+                    outline: none;
+                    box-shadow: none;
+                }
+
                 #city_addon {
                     padding: 6px 21px;
                 }
@@ -99,15 +100,26 @@
 
     #maps_box {
         padding: 0;
-        background: $off-white;
+        background: #f0f0f0;
+        border-top: solid 1px #ccc;
+        border-bottom: solid 1px #ccc;
     }
 
     #state_autocomplete,
     #city_autocomplete {
+        border: none;
+
         ul.list-group {
+            margin-bottom: 0;
+            border-top: none;
+
             li {
-                border: solid 1px #ddd !important;
+                border: solid 1px #ddd;
                 border-top: none;
+
+                &:last-of-type {
+                    border-bottom: solid 1px #ddd;
+                }
             }
         }
     } 

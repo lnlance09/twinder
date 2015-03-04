@@ -20,7 +20,7 @@
 			}
 
 			public function Index() {
-				// Get the ID from the URL
+				// Get the user's Tinder ID from the URL
 				$id = $this->uri->segment(2, NULL);
 
 				// Get the info about the user
@@ -29,40 +29,43 @@
 				// die;
 
 				// If the user actually exists in the DB
-				if($user_info !== FALSE) {
-					//FormatArray($user_info);
-					//die;
-
-					// Set the session data
+				if(is_array($user_info)) {
+					// Find out if the client is logged in or not
 					$user_id = $this->session->userdata('user_id');
 
-					// Find out if the user is logged in or not
-					if(is_numeric($user_id)) {
+					if($user_id) {
 						$session = TRUE;
 					} else {
 						$session = FALSE;
 					}
 
-					// If the client is logged in, then get their stats
+					// If the client is logged in
 					if($session) {
+						// Save all of the session variables as variables
+						$my_tinder_id = $this->session->userdata('tinder_id');
+						$username = $this->session->userdata('username');
+						$token = $this->session->userdata('token');
+						$name = $this->session->userdata('first_name');
+						$lon = $this->session->userdata('lon');
+						$lat = $this->session->userdata('lat');
+
 						// Get the stats of the user who is logged in
-						$stats = $this->database_model->GetThreeStats($this->session->userdata('tinder_id'));
+						$stats = $this->database_model->GetThreeStats($my_tinder_id);
 						$like_count = $stats['like_count'];
 						$match_count = $stats['match_count'];
 						$pass_count = $stats['pass_count'];
 
 						// Format the user's profile link
-						$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+						$profile_link = FormatUserLink($my_tinder_id, $username);
 
 						/* UPDATE THE USER'S PROFILE */
 						// Make a request to Tinder to get the most recent info about this user
-						$live_info = $this->users_model->UserLookup($user_info['tinder_id'], $this->auth);
+						$live_info = $this->users_model->UserLookup($user_info['tinder_id'], $token);
+						// FormatArray($live_info);
+						// die;
 
 						// If the user actually exists according to Tinder, then get their info and update the profile
-						if($live_info !== FALSE) {
-							// FormatArray($live_info);
-							// die;
-
+						if($live_info) {
 							// Update the users table with the most recent info about this user
 							$data = array('first_name' => $live_info['name'],
 										'bio' => $live_info['bio'],
@@ -74,73 +77,74 @@
 							$this->database_model->UpdateUser($live_info['tinder_id'], $data);
 
 							// Update the user's last seen position
-							$last_seen = $this->database_model->EditLastSeen($live_info['distance'], // The distance
-																			$this->session->userdata('tinder_id'), // The Tinder ID of the user who is logged in
-																			$live_info['tinder_id'], // The Tinder ID of the profile
-																			$this->session->userdata('lon'), // The lon & lat coordinates of the user who is logged in
-																			$this->session->userdata('lat'));
+							$last_seen = $this->database_model->EditLastSeen($live_info['distance'], $my_tinder_id, $live_info['tinder_id'], $lon, $lat);
 
 							// Add these elements to the array
-							$user_info['name'] = $live_info['name'];
-							$user_info['bio'] = $live_info['bio'];
-							$user_info['distance'] = $live_info['distance'];
-							$user_info['age'] = $live_info['age'];
-							$user_info['gender'] = $live_info['gender'];
-							$user_info['gender_format'] = $live_info['gender_format'];
-							$user_info['last_activity_date'] = $live_info['last_activity_format'];
-							$user_info['profile_pic'] = $live_info['profile_pic'];
-							$user_info['fb_like_count'] = $live_info['fb_like_count'];
-							$user_info['fb_likes'] = $live_info['fb_likes'];
-							$user_info['fb_friend_count'] = $live_info['fb_friend_count'];
-							$user_info['fb_friends'] = $live_info['fb_friends'];
-							// FormatArray($user_info);
-							// die;
+							$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 
+										'fb_like_count', 'fb_likes', 'fb_friend_count', 'fb_friends');
 
-							// Check to see if this user is allowed to report this user
-							$report = $this->database_model->CheckReport($this->session->userdata('tinder_id'), $user_info['tinder_id']);
-
-							if($report == 0) {
-								$report = TRUE;
-							} else {
-								$report = FALSE;
+							foreach($keys as $key) {
+								$user_info[$key] = $live_info[$key];
 							}
 
+							$last_data = array('user' => $user_info, $last_seen);
+
+							// Check to see if this user is allowed to report this user
+							$report = $this->database_model->CheckReport($my_tinder_id, $user_info['tinder_id']);
+
 							// Determine whether or not the client is able to like the given user
-							$like = $this->users_model->CanLike($user_info['tinder_id'], $this->session->userdata('tinder_id'), $session);
+							$like = $this->users_model->CanLike($user_info['tinder_id'], $my_tinder_id, $session);
 
 							// Determine whether or not the client is able to edit the bio for the profile
-							$edit = $this->users_model->CanEdit($user_info['tinder_id'], $this->session->userdata('tinder_id'));
+							$edit = $this->users_model->CanEdit($user_info['tinder_id'], $my_tinder_id);
 						}
 					} else {
-						// If the user ins't logged in, then set all of the variables as NULL
 						$like_count = NULL;
 						$match_count = NULL;
 						$pass_count = NULL;
-						$profile_link = NULL;
+
 						$report = FALSE;
 						$like = FALSE;
 						$edit = FALSE;
 
+						$name = NULL;
+						$token = NULL;
+						$my_tinder_id = NULL;
+						$profile_link = NULL;
+
 						// Look up the user's last seen location
 						$last_seen = $this->database_model->GetLastSeen($user_info['tinder_id']);
-						$last_data = array('user' => $user_info, $last_seen);
+						$last_data = array('user' => $user_info, 0 => $last_seen);
 					}
 
-					// var_dump($session);
-					// echo '<br><br><br><br>';
+					// echo '<br><br><br><br><br><br>';
 					// FormatArray($last_seen);
+					// FormatArray($last_data);
 					// die;
 
+					/*
+					echo 'Can Edit: ';
+					var_dump($edit);
+					echo '<br>';
+
+					echo 'Can Like: ';
+					var_dump($like);
+					echo '<br>';
+
+					echo 'Can Report: ';
+					var_dump($report);
+					echo '<br>';
+					
+					FormatArray($last_seen);
+					*/
+				
 					// Get the text for the popup window on the google maps marker
-					// FormatArray($last_seen);
-					// die;
-
 					$last = FormatLastSeenText($last_data, $this->base_url);
 					// echo $last;
 					// die;
 
 					// Define the meta tags
-					$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on WeTinder',
+					$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on Twinder',
 									'img' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/'.$user_info['profile_pic'],
 									'url' => $this->base_url.$user_info['link']);
 
@@ -148,21 +152,24 @@
 					$header_info = array('title' => $user_info['name'],
 										'session' => $session,
 										'header' => $user_info['name'],
-										'auth' => $this->session->userdata('token'),
-										'tinder_id' => $this->session->userdata('tinder_id'),
-										'name' => $this->session->userdata('first_name'),
+										'auth' => $token,
+										'tinder_id' => $my_tinder_id,
+										'name' => $name,
 										'like_count' => $like_count,
 										'match_count' => $match_count,
 										'pass_count' => $pass_count,
 										'meta' => $meta_info,
 										'profile_link' => $profile_link);
-					// var_dump($edit);
-					// die;
 
 					// Get all of the stats of the user who is being viewed
-					$stats = $this->database_model->GetThreeStats($user_info['tinder_id']);
+					$user_stats = $this->database_model->GetUserStats($user_info['tinder_id'], $my_tinder_id);
 
-					$user_stats = $this->database_model->GetUserStats($user_info['tinder_id'], '5495df819983685e07f138f2');
+					if($user_stats['num'] == 6) {
+						$con_view = 1;
+					} else {
+						$con_view = 0;
+					}
+
 					// FormatArray($user_stats);
 					// die;
 
@@ -172,22 +179,26 @@
 										'report' => $report,
 										'like' => $like,
 										'edit' => $edit,
-										'lat' => $last_seen['data']['lat'],
-										'lon' => $last_seen['data']['lon'],
-										'distance' => $last_seen['data']['miles_away'],
+										'lat' => $last_data[0]['user']['distance']['data']['lat'],
+										'lon' => $last_data[0]['user']['distance']['data']['lon'],
+										'distance' => $last_data[0]['user']['distance']['data']['miles_away'],
 										'last_seen' => $last,
 										'stats' => $user_stats,
-										'like_count' => $stats['like_count'],
-										'match_count' => $stats['match_count'],
-										'pass_count' => $this->database_model->GetPassCount($id, FALSE));
+										'con_view' => $con_view);
+
+					// FormatArray($body_info);
+					// Get all of the data for the footer view
+					$locations = $this->location_model->RandomLocations();
+					$rand_users = $this->database_model->GetAllUsers();
+					$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 					// FormatArray($body_info);
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
 					$this->load->view('profile', $body_info); 
-					$this->load->view('templates/footer'); 
+					$this->load->view('templates/footer', $footer_info); 
 				} else {
-					redirect('', 'location');
+					redirect('about', 'location');
 				}
 			} 
 
@@ -195,7 +206,7 @@
 				// Make sure the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get all of the stats of the user who is logged in
 					$stats = $this->database_model->GetThreeStats($this->session->userdata('tinder_id'));
 					$like_count = $stats['like_count'];
@@ -225,10 +236,15 @@
 					// Set all of the info that needs to be passed to the dashboard view
 					$body_info = array('pic' => $this->session->userdata('tinder_id').'/'.$this->session->userdata('profile_pic_medium'));
 
+					// Get all of the data for the footer view
+					$locations = $this->location_model->RandomLocations();
+					$rand_users = $this->database_model->GetAllUsers();
+					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
 					$this->load->view('find_users', $body_info); 
-					$this->load->view('templates/footer'); 
+					$this->load->view('templates/footer', $footer_info); 
 				} else {
 					header('Location: '.$this->base_url);
 				}
@@ -238,7 +254,7 @@
 				// Make sure the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get all of the parameters from the URL
 					$params = $this->input->get();
 							
@@ -343,6 +359,8 @@
 						break;
 				}
 
+				FormatArray($results);
+
 				// Get the stats for the pagination
 				$count = $results['count'];
 				$per_page = 20;
@@ -372,31 +390,16 @@
 								'page' => $page,
 								'new_page' => $new_page);
 
-				FormatArray($view_info);
+				// FormatArray($view_info);
 				// Load the view
 				$this->load->view('backend/connections', $view_info);
-			}
-
-			public function GetCouple() {
-				// Get the parameters from the URL
-				$sex = $this->input->get('sex');
-				$state = $this->input->get('state');
-
-				// Get the hottest user from the given state
-				$info = $this->database_model->HottestByState($sex, $state);
-
-				if($info) {
-					echo json_encode($info);
-				} else {
-					echo 'error';
-				}
 			}
 
 			public function GetMatchInfo() {
 				// Make sure the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get the match ID from the URL
 					$id = $this->input->get('match_id');
 
@@ -415,7 +418,7 @@
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Call the GetUpdates function in the users model 
 					$updates = $this->users_model->GetUpdates($this->session->userdata('token'), 'now');
 					echo json_encode($updates);
@@ -426,7 +429,7 @@
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get the user ID from the URL
 					$id = $this->input->get('id');
 
@@ -437,7 +440,7 @@
 					if($like['match'] > 1) {
 						$match_id = $like['match']['_id'];
 					} else {
-						$match_id = NULL;
+						$match_id = '';
 					}
 
 					// Remove the batch user from the DB and then insert him/her into the likes table
@@ -453,23 +456,23 @@
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Log the user out of Tinder
 					$logout = $this->users_model->Logout($this->session->userdata('token'));
 
 					// Destroy the session
 					$this->session->sess_destroy();
-
-					// Redirect the user to the home page
-					header('Location: '.$this->base_url);
 				}
+
+				// Redirect the user to the home page
+				header('Location: '.$this->base_url);
 			}
 
 			public function PassUser() {
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get the user ID from the URL
 					$id = $this->input->get('id');
 
@@ -480,13 +483,15 @@
 					$this->database_model->RemoveBatchUser($id, $this->session->userdata('user_id'));
 					$this->database_model->InsertIntoPasses($this->session->userdata('tinder_id'), $id);
 				}
+
+				echo 'done';
 			}
 
 			public function ReportUser() {
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
-					// Get the Tinder ID from the URL
+				if($user_id) {
+					// Get the form parameters from the URL
 					$id = $this->input->get('id');
 					$reason = $this->input->get('reason');
 					$text = $this->input->get('text');
@@ -518,7 +523,7 @@
 				// Find out if the user is logged in or not
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Get the match ID and the message from the URL
 					$id = $this->input->post('id');
 					$msg = $this->input->post('msg');
@@ -533,7 +538,7 @@
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					// Update the pic order
 					// $this->users_model->ChangePicOrder($pics, $auth);
 

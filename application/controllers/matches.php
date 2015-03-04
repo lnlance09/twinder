@@ -17,7 +17,6 @@
 			}
 
 			public function Index() {
-				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
 				if(is_numeric($user_id)) {

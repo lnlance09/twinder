@@ -75,7 +75,9 @@
 				} else {
 					$like = 'liked';
 				}
-			} 
+			} else {
+				$like = FALSE;
+			}
 
 			return $like;
 		}
@@ -145,6 +147,11 @@
 		public function Logout($auth) {
 			$device_id = '513340ce4df0f6bb011feb8a10aece07780808414d8a95bce442712bba6896cd';
 			$info = SendRequest('user/devices/ios/'.$device_id, $auth, 'DELETE', FALSE);
+			return @json_decode($info, TRUE);
+		}
+
+		public function Passport($auth, $lon, $lat) {
+			$info = SendRequest('passport/user/travel', $auth, TRUE, array('lon' => $lon, 'lat' => $lat));
 			return @json_decode($info, TRUE);
 		}
 
@@ -238,7 +245,7 @@
 		 * @param {string} [auth] The API token of the user who is currently logged in
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			$sig = "Sent from <a href='http://wetinder.com'>WeTinder</a> - Tinder for Web";
+			$sig = "Sent from <a href='http://twinder.io'>WeTinder</a> - Twitter meets Tinder";
 			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
 			return @json_decode($info, TRUE);
 		}
@@ -253,7 +260,7 @@
 			$auth = $this->AuthToken($email, $password);
 			// FormatArray($auth);
 
-			if($auth !== FALSE) {
+			if($auth) {
 				// Seperate the first name from the last
 				$names = FormatNames($auth['full_name']);
 
@@ -298,7 +305,7 @@
 				$this->database_model->InsertPics($auth['_id'], ReturnPicsArray($auth['photos']));
 
 				// Get the name of the city and state based upon the user's longitude and latitude coordinates
-				$loc = $this->location_model->BingLocation($lon, $lat);
+				$loc = $this->location_model->MapquestLatLon($lat, $lon);
 
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
@@ -367,7 +374,8 @@
 				// FormatArray($user);
 				// die;
 
-				return array('tinder_id' => $user['_id'],
+				return array(
+							'tinder_id' => $user['_id'],
 							'distance' => $user['distance_mi'],
 							'name' => $user['name'],
 							'dob' => date('M j, Y', strtotime($user['birth_date'])),
@@ -375,14 +383,14 @@
 							'gender' => $user['gender'],
 							'gender_format' => FormatGender($user['gender']),
 							'age' => ReturnAge($user['birth_date']),
-							'last_activity_date' => $user['ping_time'],
-							'last_activity_format' => FormatTime($user['ping_time']),
+							'last_activity_date' => FormatTime($user['ping_time']),
 							'profile_pic' => ReturnProfilePic($user['photos']),
 							'pics' => ReturnPicsArray($user['photos']),
 							'fb_friend_count' => $user['common_friend_count'],
 							'fb_friends' => $user['common_friends'],
 							'fb_like_count' => $user['common_like_count'],
-							'fb_likes' => $user['common_likes']); 
+							'fb_likes' => $user['common_likes']
+							); 
 			} else {
 				return FALSE;
 			}
@@ -429,9 +437,9 @@
 									$city['name'] = urldecode($val);
 
 									// Get the lat & lon coordinates
-									$coords = $this->location_model->PlaceExists(urldecode($val), urldecode($state['name']));
+									$coords = $this->location_model->MapquestLocation($city['name'], urldecode($params['state']));
 									// FormatArray($coords);
-									$city['lon'] = $coords['lon'];
+									$city['lon'] = $coords['lng'];
 									$city['lat'] = $coords['lat'];
 								}
 							}
@@ -461,8 +469,8 @@
 								// echo $state['abbrev'];
 
 								// Get the place's lat & lon coordinates
-								$coords = $this->location_model->PlaceExists(NULL, $state['abbrev']);
-								$state['lon'] = $coords['lon'];
+								$coords = $this->location_model->MapquestLocation(NULL, $state['abbrev']);
+								$state['lon'] = $coords['lng'];
 								$state['lat'] = $coords['lat'];
 							}
 						}

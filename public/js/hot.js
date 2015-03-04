@@ -1,81 +1,163 @@
 $(document).ready(function() {
-    // Define the base URL
-    var base_url = $('#base_url').text();
-
-    var styles;
+    var base_url = '/wetinder/'; // $('#base_url').text();
+    var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
+    
     // Check to see if the user's browser supports GeoLocation
     if(navigator.geolocation) {
-         // Set the styling of Google Maps
-        $.ajax({
-            url: '/wetinder/public/js/maps.json',
-            dataType: 'json',
-            success: function(data) {
-                styles = data;
-                navigator.geolocation.getCurrentPosition(ShowPosition);
-            }
-        });
+        // Get the user's current location
+        navigator.geolocation.getCurrentPosition(ShowPosition, ShowError);
     } else {
         alert('Geolocation is not supported by this browser');
     }
 
-    function leftValue(value, handle, slider) {
-        $(this).text(handle.parent()[0].style.left);
+    /**
+     * Load Google Maps and load the results based upon the given criteria
+     * @param {int} [miles] The number of miles. The distance filter
+     * @param {decimal} [lat] The latitude coordinate
+     * @param {decimal} [lon] The longitude coordinate
+     * @param {int} [zoom] The zoom value
+     */
+    function FinalizeMap(miles, lat, lon, zoom) {
+        if(zoom == null) {
+            var tenth = miles*0.05;
+            var zoom = parseInt(10)-parseInt(tenth);
+        } 
+
+        // Create a new position based upon lat & lon
+        var LatLon = new google.maps.LatLng(lat, lon);
+        var options = {
+            center: LatLon,
+            zoom: zoom,
+            mapTypeControlOptions: {
+                mapTypeIds: ['map_style']
+            }
+        };
+
+        var map = new google.maps.Map(document.getElementById('google_maps'), options);
+        map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Twinder Radar'}));
+        map.setMapTypeId('map_style');
+
+        var marker = new google.maps.Marker({
+                map: map,
+                position: LatLon,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+            });
+
+        // Make the marker draggable
+        google.maps.event.addListener(marker, 'dragend', function(marker) { 
+            lat = marker.latLng.lat();
+            lon = marker.latLng.lng();
+
+            // Update the new coordinates on the map
+            $('#drag_lat').text(lat);
+            $('#drag_lon').text(lon);
+            var loc = GetLocationName(lon, lat);
+            console.log('Log: '+ loc);
+
+            // If the location is in the US, then center the marker
+            if(loc == 'true') {
+                map.setCenter(new google.maps.LatLng(lat, lon));
+            } else {
+                // Show a modal saying that WeTinder is limited to the US
+                $('#bounds_modal').modal('show');
+            }
+        });
+
+        // Zoom in and center the marker upon click of the marker
+        google.maps.event.addListener(marker, 'click', function() {
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+        });
+
+        // Convert the miles to meters and draw the radius
+        var radius = {
+            strokeColor: '#ad5',
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
+            fillColor: '#ad5',
+            fillOpacity: 0.35,
+            map: map,
+            center: LatLon,
+            radius: Math.ceil(miles/0.000621371)
+        };
+
+        circle = new google.maps.Circle(radius);
+        circle.bindTo('center', marker, 'position');
+
+        // Resize the map accordingly
+        google.maps.event.trigger(map, 'resize');
+
+        // Adjust the height of the map
+        $('#google_maps').css('height', '250px');
     }
 
     /**
      * Get the state and city names of a place from its lat & lon coordinates
-     * @param {string} [base_url] The base URL of WeTinder
      * @param {decimal} [lon] The longitude coordinate
      * @param {decimal} [lat] The latitude coordinate
      */
-    function GetLocationName(base_url, lon, lat) {
+    function GetLocationName(lon, lat) {
+        var result = '';
+
         $.ajax({
-            url: '/wetinder/home/LocationFromCoords',
+            url: base_url +'home/LocationFromCoords',
+            async: false, 
             data: {
                 lon: lon,
                 lat: lat
             },
             success: function(data) {
                 var obj = JSON.parse(data);
+                var country = obj.country;
                 var city = obj.city;
                 var abbrev = obj.state;
                 var state = obj.full_name;
+                // console.log('Country '+ country);
 
-                // Update the city and state
-                $('#state').val(state);
-                $('#state_ref').text(state);
-                $('#abbrev').text(abbrev);
-                $('span.stateface').attr('class', 'stateface stateface-'+ abbrev.toLowerCase());
-                $('#city').val(city);
+                if(country == 'US') {
+                    // Update the city and state
+                    $('#state').val(state);
+                    $('#state_ref').text(state);
+                    $('#abbrev').text(abbrev);
+                    $('#top_stateface').attr('class', 'stateface stateface-'+ abbrev.toLowerCase());
+                    $('h2 .stataface').text(state);
+                    $('#city').val(city);
 
-                // Define the query string
-                var params = GetParams();
-                console.log('State or City change: '+ params);
+                    // Set the result to true
+                    result = 'true';
 
-                // Load the results
-                $('#hot_load').load(base_url +'hot/GetHottest', params, function() {
-                    ChangeTitleURL();
-                });
+                    // Load the new results
+                    RefreshResults();
+
+                    // Load the pie chart
+                    LoadChart(abbrev);
+                } else {
+                    result = 'false';
+                }
             }
         }); 
+
+        return result;
     }
 
     /**
      * Get the longitude and latitude coordinates of a place from its city and state
-     * @param {string} [base_url] The base URL of WeTinder
      * @param {string} [city] The name of the city
      * @param {string} [state] The full name of the state
+     * @param {string} [abbrev] The state's abbreviation
      */
-    function CoordsFromLocation(base_url, city, state, abbrev) {
+    function CoordsFromLocation(city, state, abbrev) {
         $.ajax({
-            url: '/wetinder/home/LocationFromCity',
+            url: base_url +'home/LocationFromCity',
             data: {
                 city: city,
-                state: abbrev
+                state: state
             },
             success: function(data) {
                 var obj = JSON.parse(data);
-                var lon = obj.lon;
+                // console.log(obj);
+                var lon = obj.lng;
                 var lat = obj.lat;
 
                 // Update the lat & lon coordinates
@@ -87,23 +169,32 @@ $(document).ready(function() {
                 $('#state_ref').text(state);
                 $('#abbrev').text(abbrev);
                 $('#top_stateface').attr('class', 'stateface stateface-'+ abbrev.toLowerCase());
+                $('h2 .stateface').text(state);
                 
-                if(city === null) {
+                if(city == null) {
                     $('#city').val('');
+                    var zoom = 6;
+                } else {
+                    $('#city').val(city);
+                    var zoom = 14;
                 }
 
                 // Reload the map
-                Initialize($('#distance-value').text(), lat, lon);
+                FinalizeMap($('#distance-value').text(), lat, lon, zoom);
 
-                // Define the query string
-                var params = GetParams();
-                console.log('State or City change: '+ params);
+                // Load the new results
+                RefreshResults();
 
-                // Load the results
-                $('#hot_load').load(base_url +'hot/GetHottest', params, function() {
-                    ChangeTitleURL();
-                });
+                // Load the pie chart
+                LoadChart(abbrev);
             }
+        });
+    }
+
+    function LoadChart(state) {
+        var data = 'state='+ state;
+        $('#chart_load').load(base_url +'home/DrawPieChart', data, function() {
+            $('#chart_load .ajax-loader').fadeOut();
         });
     }
 
@@ -111,9 +202,9 @@ $(document).ready(function() {
      * Change the title and URL of a document without reloading the page
      */
     function ChangeTitleURL() {
-        // var title = 'The hottest '+ key +' - WeTinder';
-        var title = DefineTitle();
-        var new_url = base_url +'hot/'+ GetFullURL();
+        var title = DefineTitle() +' - WeTinder';
+        var url = GetFullURL();
+        var new_url = base_url +'hot/'+ url;
         
         // Change the URL
         window.history.replaceState('', title, new_url);
@@ -138,29 +229,46 @@ $(document).ready(function() {
                 };
 
         for(var index in params) {
-            if(index == 'city') {
-                var value = params[index].val();
+            switch(index) {
+                case'city':
 
-                if(value == '') {
-                    var value = 'null';
-                }
-            } else if(index == 'state') {
-                var value = params[index].val();
+                    var val = params[index].val();
 
-                if(value == '') {
-                    var value = 'new york';
-                }
-            } else if(index == 'gender') {
-                var value = params[index].text().trim().toLowerCase();
+                    // Set the default value of the city to 'null'
+                    if(val == '') {
+                        var val = 'null';
+                    }
+                    break;
 
-                if(value === undefined) {
-                    var value = 'both';
-                }
-            } else {
-                var value = params[index].text().trim();
+                case'state':
+
+                    var val = params[index].text().trim();
+
+                    // Set the default value of the state to 'new york'
+                    if(val == '') {
+                        var val = 'new york';
+                    }
+                    break;
+
+                case'gender':
+
+                    var val = params[index].text().trim().toLowerCase();
+
+                    if(val === undefined) {
+                        var val = 'both';
+                    }
+                    break;
+
+                case'page':
+
+                    var val = parseInt(params[index].val() + parseInt(1));
+                    break;
+
+                default:
+                    var val = params[index].text().trim();
             }
 
-            str += index +'/'+ value +'/';
+            str += index +'/'+ val +'/';
         }
 
         var q = $('#users_autocomplete').val();
@@ -184,15 +292,27 @@ $(document).ready(function() {
                 };
 
         for(var index in params) {
-            if(index == 'gender') {
-                var value = params[index];
-            } else if(index == 'q') {
-                var value = params[index].val();
-            } else {
-                var value = params[index].text().trim();
+            switch(index) {
+                case'gender':
+
+                    var val = params[index];
+                    break;
+
+                case'q':
+
+                    var val = params[index].val();
+                    break;
+
+                case'page':
+
+                    var val = params[index].val();
+                    break;
+
+                default:
+                    var val = params[index].text().trim();
             }
 
-            str += index +'='+ value +'&';
+            str += index +'='+ val +'&';
         }
 
         return str.substr(9, str.length-10);
@@ -230,103 +350,52 @@ $(document).ready(function() {
     }
 
     /**
-     * Load Google Maps and load the results based upon the given criteria
-     * @param {int} [miles] The number of miles. The distance filter
-     * @param {decimal} [lat] The latitude coordinate
-     * @param {decimal} [lon] The longitude coordinate
+     * Load the new results with the updated parameters in the #hot_load div
      */
-    function Initialize(miles, lat, lon) {
-        // Adjust the height of the map
-        $('#google_maps').css('height', '250px');
+    function RefreshResults() {
+        // console.log(GetParams());
+        $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
 
-        // Convert the miles to meters
-        var meters = Math.ceil(miles/0.000621371);
-        console.log(meters);
+        $('#hot_load').load(base_url +'hot/GetHottest', GetParams(), function() {
+            $('#hot_load .ajax-loader').fadeOut();
+            ChangeTitleURL();
 
-        // Set the position via latitude and longitude
-        var latlng = new google.maps.LatLng(lat, lon);
-
-        var mapOptions = {
-            mapTypeControlOptions: {  
-                mapTypeIds: ['Styled']  
-            },  
-            mapTypeId: 'Styled',
-            center: latlng,
-            zoom: 9,
-        };
-
-        // Select the Google Maps ID
-        var el = document.getElementById('google_maps');
-        var map = new google.maps.Map(el, mapOptions);
-
-        // Style the map
-        var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled'});  
-        map.mapTypes.set('Styled', styledMapType); 
-
-        // Define the marker properties
-        var marker = new google.maps.Marker({
-            map: map,
-            position: latlng,
-            draggable: true,
-            title: 'Lance'
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top',
+                html: true,
+            });
         });
-
-        // Bounce the marker
-        marker.setAnimation(google.maps.Animation.toggleBounce);
-
-        /**
-         * Make the marker draggable
-         * 1
-         */
-        google.maps.event.addListener(marker, 'dragend', function(marker) { 
-            console.log(marker);
-            lat = marker.latLng.lat();
-            lon = marker.latLng.lng();
-
-            var new_pos = new google.maps.LatLng(lat, lon);
-            //map.setCenter(new_pos);
-            //marker.setAnimation(google.maps.Animation.toggleBounce);
-
-            // Update the new coordinates on the map
-            $('#drag_lat').text(lat);
-            $('#drag_lon').text(lon);
-
-            // Get the name of the new location and mark it on the page
-            GetLocationName(base_url, lon, lat);
-        });
-
-        // Zoom in upon click of the marker
-        google.maps.event.addListener(marker, 'click', function() {
-            map.setZoom(17);
-            map.setCenter(marker.getPosition());
-        });
-
-        // Get the zoom level upon zoom in/out
-        google.maps.event.addListener(map, 'zoom_changed', function() { 
-            var zoom = map.getZoom();
-            console.log('zoom: '+ zoom);
-        });
-
-        // Draw the radius circle
-        var radius = {
-            strokeColor: '#fd923a',
-            strokeOpacity: 0.8,
-            strokeWeight: 1,
-            fillColor: '#fd923a',
-            fillOpacity: 0.25,
-            map: map,
-            center: latlng,
-            radius: meters
-        };
-
-        circle = new google.maps.Circle(radius);
-        circle.bindTo('center', marker, 'position');
-
-        // Resize the map accordingly
-        google.maps.event.trigger(map, 'resize');
     }
 
+    /**
+     * Reflect the changes from the sliders on the document
+     */
+    function leftValue(value, handle, slider) {
+        $(this).text(handle.parent()[0].style.left);
+    }
 
+    /*
+     * In the event of a GeoLocation error, reference the error 
+     */
+    function ShowError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation.";
+                break;
+
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable.";
+                break;
+
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out.";
+                break;
+
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred.";
+                break;
+        }
+    }
 
     /**
      * Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
@@ -337,7 +406,7 @@ $(document).ready(function() {
         var set_location = $('#set_location').text().trim();
         var lon = $('#drag_lon').text();
         var lat = $('#drag_lat').text();
-        console.log('Lon: '+ lon +', Lat: '+ lat);
+        // console.log('Lon: '+ lon +', Lat: '+ lat);
 
         // If the location parameters aren't set, then get the user's current location
         if(set_location == 'false') {
@@ -350,8 +419,8 @@ $(document).ready(function() {
         } 
 
         // Load the initial results
-        GetLocationName(base_url, lon, lat);
-        Initialize($('#distance-value').text().trim(), lat, lon, styles);
+        GetLocationName(lon, lat);
+        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
 
         /**
          * State Autocomplete
@@ -372,22 +441,30 @@ $(document).ready(function() {
                         var abbrev = $(this).attr('name');
                         var state = $(this).text().trim();
 
-                        // Slide the state's autocomplete panel up
+                        // Slide up the autocomplete panelx
                         $('#state_autocomplete').slideUp();
-
-                        // Close the city's autocomplete panel up too incase it was open
                         $('#city_autocomplete').slideUp();
 
                         // Update the latitude and longitude coordinates
-                        CoordsFromLocation(base_url, null, state, abbrev);
+                        CoordsFromLocation(null, state, abbrev);
+
+                        $.ajax({
+                            url: '/wetinder/hot/HottestUser',
+                            data: {
+                                gender: 1,
+                                state: abbrev
+                            },
+                            success: function(data) {
+                                // var obj = JSON.parse(data);
+                                console.log(data);
+                            }
+                        });
                     });
                 });
             } else {
                  $('#state_autocomplete').slideUp();
             }
         });
-
-
 
         /**
          * City Autocomplete
@@ -398,8 +475,6 @@ $(document).ready(function() {
                 // Get the value of the city and the state
                 var state = $('#state_ref').text().trim();
                 var abbrev = $('#abbrev').text().trim();
-
-                // Define the query string
                 var data = 'state='+ state +'&city='+ $(this).val();
                 
                 // Load the results
@@ -409,17 +484,11 @@ $(document).ready(function() {
 
                     // Upon click of one of the items from the autocomplete panel
                     $('#city_autocomplete ul li').click(function() {
-                        // Get the city's name
-                        var city = $(this).text().trim();
-
-                        // Set the text field's value to the city's name
-                        $('#city').val(city);
-
                         // Slide up the autocomplete panel
                         $('#city_autocomplete').slideUp();
 
                         // Update the latitude and longitude coordinates
-                        CoordsFromLocation(base_url, city, state, abbrev);
+                        CoordsFromLocation($(this).text().trim(), state, abbrev);
                     });
                 });
             } else {
@@ -427,25 +496,15 @@ $(document).ready(function() {
             }
         });
 
-
-
         /**
          * Q Filter
          * 4
          */
         $('#users_autocomplete').keyup(function(e) {
             if(e.which != 27) {
-                var data = GetParams();
-                console.log('Q change: '+ data);
-                
-                $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
-                    $('#hot_load .ajax-loader').fadeOut();
-                    ChangeTitleURL();
-                });
+                RefreshResults();
             } 
         });
-
-
 
         /**
          * Gender Filter
@@ -454,19 +513,12 @@ $(document).ready(function() {
         $('.gender_filter').click(function() {
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
-
             $(this).siblings().attr('name', '');
             $(this).attr('name', 'gender');
 
-            var data = GetParams();
-                        
-            $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
-                $('#hot_load .ajax-loader').fadeOut();
-                ChangeTitleURL();
-            });
+            // Load the new results
+            RefreshResults();
         });
-
-
 
         /**
          * Age Slider
@@ -493,16 +545,8 @@ $(document).ready(function() {
          * 6
          */
         $('#age_slider').click(function() {
-            var data = GetParams();
-            console.log('Age change: '+ data);
-
-            $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
-                $('#hot_load .ajax-loader').fadeOut();
-                ChangeTitleURL();
-            });
+            RefreshResults();
         });
-
-
 
         /**
          * Distance Filter Slider
@@ -527,23 +571,14 @@ $(document).ready(function() {
          *  7
          */
         $('#distance_slider').change(function() {
-            var data = GetParams();
-            console.log('Distance change: '+ data);
-
+            // Load the map again
+            var lon = $('#drag_lon').text();
+            var lat = $('#drag_lat').text();
+            var distance = $('#distance-value').text();
+            FinalizeMap(distance, lat, lon, null);
+            
             // Load the new results
-            $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
-                $('#hot_load .ajax-loader').fadeOut();
-
-                // Get the lon & lat coordinates plus the distance value
-                var lon = $('#drag_lon').text();
-                var lat = $('#drag_lat').text();
-                var distance = $('#distance-value').text();
-                // console.log(lon +', '+ lat);
-
-                // Reload the map again with the new radius circle 
-                Initialize(distance, lat, lon);
-                ChangeTitleURL();
-            });
+            RefreshResults();
         });
     }
 });

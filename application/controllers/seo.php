@@ -21,14 +21,16 @@
 				$info = $this->database_model->GetAllUsers();
 
 				// Load all of the views
-				$this->load->view('sitemap', array('links' => $info)); 
+				$this->load->view('sitemap', array('users' => $info)); 
 			}
 
 			public function Test() {
 				// $this->database_model->FlushDB();
 
+				$info = $this->users_model->Passport('5059d96c-5c35-4e15-921d-0547d6a82500', '-73.9844', '40.7590');
+
 				// $info = $this->database_model->HottestByState(1, 'NY');
-				$info = $this->location_model->MapquestLatLon('40.7665111', '-73.9874572');
+				// $info = $this->location_model->MapquestLatLon('40.7665111', '-73.9874572');
 
 				//$my_id = '54697f0c99a146cd3cc80b05';
 				//$his_id = '5495df819983685e07f138f2';

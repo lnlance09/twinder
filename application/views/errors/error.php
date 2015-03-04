@@ -123,7 +123,7 @@
     <div id="header-section">
         <div id="signin">
             <h1 class="page-header">
-                It looks like that page doesn't exist.
+                That page doesn't exist
             </h1>
 
             <div class="ajax-loader">

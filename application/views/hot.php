@@ -55,7 +55,7 @@
                             <div class="col-lg-12 settings_box" id="maps_box">
                                 <div id="google_maps">
                                     <div class="ajax-loader">
-                                        <i class="fa fa-cog fa-2x fa-spin"></i>
+                                        <i class="fa fa-cog fa-4x fa-spin"></i>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +105,33 @@
                 <!-- Where all of the users will be loaded -->
                 <div id="hot_load">
                     <div class="ajax-loader">
-                        <i class="fa fa-cog fa-2x fa-spin"></i>
+                        <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div id="chart_load">
+                    <div class="ajax-loader">
+                        <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The out-of-bounds modal -->
+        <div class="modal fade" id="bounds_modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">
+                            WeTinder only works in 'Murica
+
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        </h3>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <img class="svg" id="error" src="<?php echo $base_url; ?>public/img/svg/404.svg" width="200" height="200" alt="error"/>
                     </div>
                 </div>
             </div>

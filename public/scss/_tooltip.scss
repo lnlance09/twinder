@@ -1,0 +1,35 @@
+span.tip {
+	font-size: 24px;
+	display: block;
+}
+
+span.sub_tip {
+	font-size: 14px;
+	display: block;
+	margin-top: 5px;
+	text-align: left;
+	padding-left: 4px;
+	opacity: 1;
+}
+
+.tooltip.in {
+	opacity: 1;
+}
+
+.tooltip-inner {
+	border-radius: 0 !important;
+	background: $black;
+	color: $white;
+	z-index: 1;
+	padding: 5px 15px 10px 15px;
+	line-height: 1;
+	opacity: 1 !important;
+}
+
+.tooltip.top .tooltip-arrow {
+	margin-left: -12px;
+	bottom: -7px;
+	border-width: 12px 12px 0;
+	border-top-color: $black;
+	z-index: 9999;
+}

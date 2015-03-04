@@ -3,11 +3,6 @@
     border: none;
 
     span {
-        &:not(.input-group-addon) {
-            margin: 10px 10px;
-            
-        }
-
         &.settings_field {
             font-size: 24px;
         }
@@ -24,13 +19,63 @@
     .slider {
         width: auto !important;
     }
+}
+
+#settings_form {
+    .settings_box {
+        padding: 0;
+        border: solid 1px #ddd;
+        border-bottom: none;
+
+        &:last-of-type {
+            border-bottom: solid 1px #ddd;
+        }
+
+        p {
+            background: #f0f0f0;
+            font-size: 24px;
+            padding: 4px 9px;
+            border-bottom: solid 1px #ddd;
+        }
+
+        .compartment {
+            padding: 20px 26px;
+
+            h2 {
+                margin-bottom: 0;
+                margin-top: 10px;
+            }
+        }
+
+        .selector {
+            padding: 20px;
+            font-size: 22px;
+            border-right: solid 1px #ddd;
+            cursor: pointer;
+            transition: 0.3s;
+
+            &:last-of-type {
+                border: none;
+            }
+
+            &:hover,
+            &.active {
+                color: #fff;
+                background: $green;
+            }
+        }
+    }
+
+    p {
+        margin-bottom: 0;
+    }
 
     #username_div {
-        width: 300px;
-        margin-top: 6px;
+        padding: 10px;
+        margin: 0;
 
         .input-group-addon {
-            background: $off-white;
+            background: $white;
             border: solid 1px $border-color;
             border-left: none;
         }
@@ -42,15 +87,10 @@
             box-shadow: none;
         }
     }
-}
 
-#settings_form {
-    .settings_box {
-        padding: 10px 0;
-
-        button {
-            text-align: right !important;
-        }
+    #google_maps {
+        height: 300px;
+        padding: 0;
     }
 }
 

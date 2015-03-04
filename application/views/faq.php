@@ -32,7 +32,7 @@
 
 
                     <h2>
-                        How is it Different than the app?
+                        How is it different than the app?
                     </h2>
 
                     <p>

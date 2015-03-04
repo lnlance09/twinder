@@ -1,14 +1,12 @@
 <?php
     $base_url = $this->config->base_url();
-    $public_url = $base_url.'public/';
-    $img_url = $public_url.'img/';
 
     // FormatArray($pics);
 ?>
             <div class="col-lg-12" id="focus_box">
                 <div class="col-lg-4">
                     <div id="polaroid_wrap">
-                        <img src="http://images.gotinder.com/<?php echo $tinder_id.'/172x172_'.$profile_pic; ?>" width="250" height="250" alt="<?php echo $name; ?>" id="main_img" />
+                        <img src="http://images.gotinder.com/<?php echo $tinder_id.'/172x172_'.$profile_pic; ?>" alt="<?php echo $name; ?>" id="main_img" />
                     </div>
                 </div>
 
@@ -46,7 +44,7 @@
 ?>
                         <li name="http://images.gotinder.com/<?php echo $tinder_id.'/172x172_'.$pics[$i]; ?>">
                             <a href="#">
-                                <img src="http://images.gotinder.com/<?php echo $tinder_id.'/84x84_'.$pics[$i]; ?>" width="100" height="100" class="" alt="<?php echo $name; ?>" />
+                                <img src="http://images.gotinder.com/<?php echo $tinder_id.'/84x84_'.$pics[$i]; ?>" alt="<?php echo $name; ?>" />
                             </a>
                         </li>
 <?php

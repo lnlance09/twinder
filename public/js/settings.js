@@ -1,61 +1,64 @@
 $(document).ready(function() {
-    var base_url = $('#base_url').text();
-    var user_id = $('#user_id').text();
-    var auth = $('#auth').text();
-    var method = $('#method').text();
+    var base_url = '/wetinder/'; 
+    var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
 
-    // Write the CSS 'left' value to a span.
+    // Write the CSS 'left' value to a span
     function leftValue(value, handle, slider) {
         $(this).text(handle.parent()[0].style.left);
     }
 
     // Google Maps
     function Initialize(lat, lon, miles) {
-        // Convert the miles to meters
-        var meters = Math.ceil(miles/0.000621371);
+        var tenth = miles*0.05;
+        var zoom = parseInt(10)-parseInt(tenth);
 
         // Set the longitude and latitude
         var latlng = new google.maps.LatLng(lat, lon);
-
-        var mapOptions = {
+        var options = {
             center: latlng,
-            zoom: 7,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: zoom,
+            mapTypeControlOptions: {
+                mapTypeIds: ['map_style']
+            }
         };
 
-        var el = document.getElementById('google_maps');
-        var map = new google.maps.Map(el, mapOptions);
+        var map = new google.maps.Map(document.getElementById('google_maps'), options);
+        map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Distance Filter'}));
+        map.setMapTypeId('map_style');
 
         var marker = new google.maps.Marker({
             map: map,
-            position: latlng
+            position: latlng,
+            animation: google.maps.Animation.DROP,
         });
 
-        marker.setAnimation(google.maps.Animation.BOUNCE);
+        // Zoom in and center the marker upon click of the marker
+        google.maps.event.addListener(marker, 'click', function() {
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+        });
 
-        var sunCircle = {
-            strokeColor: "#c3fc49",
+        var radius = {
+            strokeColor: '#ad5',
             strokeOpacity: 0.8,
             strokeWeight: 2,
-            fillColor: "#c3fc49",
-            fillOpacity: 0.25,
+            fillColor: '#ad5',
+            fillOpacity: 0.35,
             map: map,
             center: latlng,
-            radius: meters
+            radius: Math.ceil(miles/0.000621371),
         };
 
-        cityCircle = new google.maps.Circle(sunCircle)
-        cityCircle.bindTo('center', marker, 'position');
+        circle = new google.maps.Circle(radius);
+        circle.bindTo('center', marker, 'position');
     }
 
-    // Get the latitude and longitude coordinates
-    var lon = $('#lon').text();
-    var lat = $('#lat').text();
+    var lon = $('#lon').text().trim();
+    var lat = $('#lat').text().trim();
     var distance = $('#distance').text();
 
     // Load the Google Maps
-    Initialize(lat, lon, meters);
-
+    Initialize(lat, lon, distance);
 
     /**
      * Age Slider
@@ -78,7 +81,6 @@ $(document).ready(function() {
     $("#age_slider").Link('lower').to($('#lower-value'));
     $("#age_slider").Link('upper').to($('#upper-value'));
 
-    
     /**
      * Distance Slider
      * 
@@ -104,30 +106,14 @@ $(document).ready(function() {
         Initialize(lat, lon, miles);
     });
     
-
     /**
-     * Insterested In
+     * Insterested In & Gender
      * 
      */
-    $('#interested_in li a').click(function() {
-        var value = $(this).attr('title');
-        var key = $(this).text().trim();
-        $('#interested_in_button').text(key);
-        $('#interested_in_button').val(value);
+    $('#interested_in div.selector, #gender div.selector').click(function() {
+        $(this).siblings('.active').removeClass('active');
+        $(this).addClass('active');
     });
-
-
-    /**
-     * Gender Filter
-     * 
-     */
-    $('#gender li a').click(function() {
-        var value = $(this).attr('title');
-        var key = $(this).text().trim();
-        $('#gender_button').text(key);
-        $('#gender_button').val(value);
-    });
-
 
     /**
      * Check to see if a username is available upon keyup of the input field
@@ -145,7 +131,7 @@ $(document).ready(function() {
 
                 if(username != '') {
                     if(data == 0) {
-                        $('#username_div .form-control').css('border', 'solid 1px green');
+                        $('#username_div .form-control').css('border', 'solid 1px #ad5');
                     } else {
                         $('#username_div .form-control').css('border', 'solid 1px red');
                     }
@@ -156,7 +142,6 @@ $(document).ready(function() {
         }); 
     });
 
-
     /**
      * Submit the form with AJAX
      */
@@ -166,15 +151,14 @@ $(document).ready(function() {
         var username = $('#username').val().trim();
         var max = $('#upper-value').text().trim();
         var min = $('#lower-value').text().trim();
-        var interested = $('#interested_in_button').val();
-        var gender = $('#gender_button').val();
+        var interested = $('#interested_in').find('.active').attr('title');
+        var gender = $('#gender').find('.active').attr('title');
         // console.log('Distance: '+ distance +', Username: '+ username +', Max: '+ max +', Min: '+ min +', Interested In: '+ interested +', Gender: '+ gender);
         
         $.ajax({
             url: base_url +'settings/UpdateSettings',
             type: 'POST',
             data: {
-                auth: auth,
                 username: username,
                 interested_in: interested,
                 gender: gender,

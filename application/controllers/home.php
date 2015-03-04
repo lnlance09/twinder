@@ -12,18 +12,20 @@
 				// Load the session library
 				$this->load->library('session');
 
+				// Load the URL helper
+				$this->load->helper('url');
+
 				// Load all of the models
 				$this->load->model('users_model');
 			}
 
 			public function Index() {
 				redirect('hot', 'location');
-				die;
-				
+			
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 			
-				if(!is_numeric($user_id)) {
+				if(!$user_id) {
 					// header('Location: '.$this->base_url.'users/'.$this->session->userdata('tinder_id'));
 					redirect('hot', 'location');
 				} else {
@@ -45,6 +47,46 @@
 					$this->load->view('templates/header', $header_info); 
 					$this->load->view('main'); 
 					$this->load->view('templates/footer'); 
+				}
+			}
+
+			public function DrawPieChart() {
+				// Get the state abbreviation from the URL
+				$state = $this->input->get('state');
+				
+				// Query the DB to see if the state is an acceptable value
+				$valid = $this->location_model->CheckState($state);
+
+				if($valid > 0) {
+					// Get info about the state for each gender
+					$all = $this->database_model->GetUsersInState($state);
+					$male = $this->database_model->GetUsersInState($state, 0);
+					$female = $this->database_model->GetUsersInState($state, 1);
+
+					// Get the hottest user from the given state
+					$mr = $this->database_model->HottestByState(0, $state);
+					$mrs = $this->database_model->HottestByState(1, $state);
+
+					// Get the state's rank
+					$rank = 1;
+					
+					$data = array('total_count' => FormatNumber($all['count']),
+								'male_count' => $male['count'],
+								'female_count' => $female['count'],
+								'avg' => $all['avg_age'],
+
+								'mr_link' => FormatUserLink($mr['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
+								'mrs_link' => FormatUserLink($mrs['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
+								'mr_pic' => 'http://images.gotinder.com/'.$mr['hot'][0]['tinder_id'].'/84x84_'.$mr['hot'][0]['pic'],
+								'mrs_pic' => 'http://images.gotinder.com/'.$mrs['hot'][0]['tinder_id'].'/84x84_'.$mrs['hot'][0]['pic'],
+								'mr_name' => $mr['hot'][0]['name'],
+								'mrs_name' => $mrs['hot'][0]['name'],
+
+								'state' => $this->location_model->FullFromAbbrev(strtoupper($state)),
+								'abbrev' => $state,
+								'state_rank' => $rank);
+					// FormatArray($data);
+					$this->load->view('backend/chart', $data); 
 				}
 			}
 

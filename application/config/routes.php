@@ -74,3 +74,4 @@ $route['matches/ThreadBackend'] = 'matches/ThreadBackend/';
 $route['hot/gender/(:any)'] = 'hot/index/$1';
 $route['hot/GetHottest'] = 'hot/GetHottest';
 $route['hot/GetHottest/(:any)'] = 'hot/GetHottest/$1';
+$route['hot/HottestUser'] = 'hot/HottestUser';

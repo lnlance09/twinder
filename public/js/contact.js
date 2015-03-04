@@ -1,9 +1,9 @@
 $(document).ready(function() {
-	var base_url = $('#base_url').text();
+	var base_url = '/wetinder/'; 
 
 	$('#contact_form').submit(function(e) {
 		e.preventDefault();
-        var msg = $('textarea').val();
+        var msg = $('textarea').val().trim();
 		
 		if(msg != '') {
 			$.ajax({

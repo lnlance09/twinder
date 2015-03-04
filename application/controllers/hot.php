@@ -27,6 +27,7 @@
 
 				// Get the validated query parameters
 				$valids = $this->users_model->ValidateParams($params);
+				// FormatArray($valids);
 
 				$gender = $valids['gender'];
 				$city = $valids['city'];
@@ -57,8 +58,8 @@
 				}
 				
 				// Determine whether to use the coordinates of the city or the state
-				if($state['lon'] !== NULL && $state['lat'] !== NULL) {
-					if($city['lon'] !== NULL && $city['lat'] !== NULL) {
+				if($state['lon'] != NULL && $state['lat'] != NULL) {
+					if($city['lon'] != NULL && $city['lat'] != NULL) {
 						$lon = $city['lon'];
 						$lat = $city['lat'];
 					} else {
@@ -68,6 +69,8 @@
 
 					$set = 'true';
 				} else {
+					$lon = $this->session->userdata('lon');
+					$lat = $this->session->userdata('lat');
 					$set = 'false';
 				}
 
@@ -76,10 +79,10 @@
 
 				// The number of user that meet this criteria
 				$query = $this->database_model->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database_model->GetHottest($query, $this->session->userdata('lon'), $this->session->userdata('lat'), $distance);
+				$hot = $this->database_model->GetHottest($query, $lon, $lat, $distance);
 
 				// Check to see if the client is logged in
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
@@ -100,6 +103,14 @@
 
 				// Format the user's profile link
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+
+				// Get all of the state data for the pie chart
+				$all_chart = $this->database_model->GetUsersInState($state['abbrev']);
+				$male_chart = $this->database_model->GetUsersInState($state['abbrev'], 0);
+				$female_chart = $this->database_model->GetUsersInState($state['abbrev'], 1);
+
+				// FormatArray($chart_data);
+				// die;
 
 				// Store all of the gender filters in an array
 				$genders = array(array('num' => 0, 'name' => 'men'),
@@ -125,8 +136,8 @@
 									'match_count' => $match_count,
 									'name' => $this->session->userdata('first_name'),
 									'meta' => $meta_info,
-									'profile_link' => $profile_link,
-									'q' => $q);
+									'q' => $q,
+									'profile_link' => $profile_link);
 
 				// Define the body info
 				$body_info = array('hot_count' => $hot['count'],
@@ -142,14 +153,22 @@
 									'max' => $max,
 									'q' => $q,
 									'page' => $page,
-									'set' => $set);
+									'set' => $set,
+									'chart_data' => $all_chart,
+									'male_percentage' => $male_chart['count'],
+									'female_percentage' => $female_chart['count']);
 				// FormatArray($body_info);
 				// die;
+
+				// Get all of the data for the footer view
+				$locations = $this->location_model->RandomLocations();
+				$rand_users = $this->database_model->GetAllUsers();
+				$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 				// Load all of the views
 				$this->load->view('templates/header', $header_info); 
 				$this->load->view('hot', $body_info); 
-				$this->load->view('templates/footer'); 
+				$this->load->view('templates/footer', $footer_info); 
 			}
 
 			public function GetHottest() {
@@ -161,13 +180,16 @@
 					$$key = $value;
 				}
 
+				// var_dump($page);
+
 				// Get all of the hottest users
 				$query = $this->database_model->HotQuery($gender, $min, $max, $q);
 				$hot = $this->database_model->GetHottest($query, $lon, $lat, $distance);
+				$count = $hot['count'];
 				// FormatArray($hot);
 
 				// Get the city and state
-				$location = $this->location_model->BingLocation($lon, $lat);
+				$location = $this->location_model->MapquestLatLon($lat, $lon);
 				$state = $location['state'];
 
 				$params = array('gender' => $gender,
@@ -178,32 +200,25 @@
 								'max' => $max,
 								'q' => $q,
 								'page' => $page,
-								'count' => $hot['count']);
+								'count' => $count);
 				// FormatArray($params);
 
 				// Calculate all of the info for the pagination in the view
-				$count = $hot['count'];
 				$per_page = 30;
 				$per_row = 6;
 				$pages = ceil($count/$per_page);
 				$start = $page*$per_page;
 
-				if($page == ($pages-1)) {
-					$mod = $count/$per_page;
-
-					if($mod > 0) {
-						$end = $start+$mod;
-						$end_col = ($end-$start)%$per_row;
-					} else {
-						$end = $start+$per_page;
-						$end_col = $end;
-					}
+				if($count > 0) {
+					$points = RowPagination($count, $per_row, $per_page, $page, $pages, $start);
+					$end = $points['end'];
+					$num_rows = $points['num_rows'];
+					$end_col = $points['end_col'];
 				} else {
-					$end = $start+$per_page;
-					$end_col = $end;
+					$end = 0;
+					$num_rows = 0;
+					$end_col = 0;
 				}
-
-				$num_rows = ceil($end/$per_row);
 
 				$view_info = array('q_string' => http_build_query($params), 
 									'hot' => $hot, 
@@ -220,7 +235,17 @@
 									'new_page' => $page+1);
 				// FormatArray($view_info);
 
+				// Load the views
 				$this->load->view('backend/hot', $view_info); 
+			}
+
+			public function HottestUser() {
+				$gender = $this->input->get('gender');
+				$state = $this->input->get('state');
+
+				// Get the hottest user
+				$user = $this->database_model->HottestByState($gender, $state);
+				echo json_encode($user);
 			}
 		}
 	}

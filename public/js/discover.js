@@ -1,7 +1,6 @@
 $(document).ready(function() {
-    var base_url = $('#base_url').text();
-    var tinder_id = $('#user_tinder_id').text();
-    var auth = $('#auth').text();
+    var base_url = '/wetinder/'; 
+    var auth = $('#auth').text().trim();
     
     /**
      * Draw the radiating circle while loading a new batch of users
@@ -27,15 +26,6 @@ $(document).ready(function() {
     AddCircle();
     setInterval(AddCircle, 1200);
 
-
-
-    // Get the longitude and latitude coordinates
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(LoadUsers);
-    } else {
-        alert('Geolocation is not supported by this browser');
-    }
-
     function LoadUsers(position) {
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
@@ -50,12 +40,13 @@ $(document).ready(function() {
 
             // Make each users pics clickable
             $('ul#sub_pics li').click(function() {
-                var pic = $(this).attr('name');
-                $('#main_img').attr('src', pic);
+                $('#main_img').attr('src', $(this).attr('name'));
             });
 
             // Upon like or pass of a user
             $('#like_user, #pass_user').click(function() {
+                var tinder_id = $('#user_tinder_id').text();
+
                 // If it's the 11th like, then load a fresh batch
                 var index = $('#user_at_num').text();
                 var new_index = parseInt(index)+parseInt(1);
@@ -68,7 +59,9 @@ $(document).ready(function() {
                 }
 
                 // Determine the API endpoint
-                if($(this).attr('id') == 'pass_user') {
+                var el_id = $(this).attr('id');
+
+                if(el_id == 'pass_user') {
                     var endpoint = 'PassUser';
                 } else {
                     var endpoint = 'LikeUser';
@@ -80,7 +73,8 @@ $(document).ready(function() {
                         id: tinder_id
                     },
                     success: function(data) {
-                        if(data !== null) {
+                        // console.log(data);
+                        if(data != 'done') {
                             var match_id = data;
 
                             // Change the match count number
@@ -114,19 +108,18 @@ $(document).ready(function() {
 
                                     // Make the button clickable
                                     $('#msg_match').click(function() {
-                                        window.location.href = base_url +'matches/'+ match_id; 
+                                        window.location.href = 'matches/'+ match_id; 
                                     });  
                                 }
                             });
                         } 
 
                         // Update the user's stats in the upper right hand corner
-                        if(button == 'pass_user') {
+                        if(el_id == 'pass_user') {
                             $('#users_load').effect('toggle');
                         } else {
                             var like_count = $('#like_count_num').text();
-                            var new_like_count = parseInt(like_count)+parseInt(1);
-                            $('#like_count_num').text(new_like_count);
+                            $('#like_count_num').text(parseInt(like_count)+parseInt(1));
                         }
 
                         // Load the next user in the batch
@@ -141,5 +134,32 @@ $(document).ready(function() {
                 });
             });
         });
+    }
+
+    function ShowError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation.";
+                break;
+
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable.";
+                break;
+
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out.";
+                break;
+
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred.";
+                break;
+        }
+    }
+
+    // Get the longitude and latitude coordinates
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(LoadUsers, ShowError);
+    } else {
+        alert('Geolocation is not supported by this browser');
     }
 });

@@ -434,20 +434,38 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/application\/views\/backend\/autocomplete.php": {
+	"\/application\/views\/autocomplete\/cities.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/application\/views\/backend\/autocomplete.php",
+		"inputAbbreviatedPath": "\/application\/views\/autocomplete\/cities.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/application\/views\/backend\/cities.php": {
+	"\/application\/views\/autocomplete\/states.php": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/application\/views\/backend\/cities.php",
+		"inputAbbreviatedPath": "\/application\/views\/autocomplete\/states.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/application\/views\/autocomplete\/users.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/application\/views\/autocomplete\/users.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/application\/views\/backend\/chart.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/application\/views\/backend\/chart.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -466,15 +484,6 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/application\/views\/backend\/hot.php",
-		"outputAbbreviatedPath": "No Output Path",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0
-		},
-	"\/application\/views\/backend\/states.php": {
-		"fileType": 8192,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/application\/views\/backend\/states.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -1231,6 +1240,22 @@
 		"shouldRunBless": 0,
 		"useLibsass": 0
 		},
+	"\/public\/scss\/_chart.scss": {
+		"createSourceMap": 0,
+		"debugStyle": 0,
+		"decimalPrecision": 10,
+		"fileType": 4,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scss\/_chart.scss",
+		"outputAbbreviatedPath": "\/public\/css\/_chart.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"useLibsass": 0
+		},
 	"\/public\/scss\/_chat.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
@@ -1455,6 +1480,22 @@
 		"shouldRunBless": 0,
 		"useLibsass": 0
 		},
+	"\/public\/scss\/_profile.scss": {
+		"createSourceMap": 0,
+		"debugStyle": 0,
+		"decimalPrecision": 10,
+		"fileType": 4,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scss\/_profile.scss",
+		"outputAbbreviatedPath": "\/public\/css\/_profile.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"useLibsass": 0
+		},
 	"\/public\/scss\/_radar.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
@@ -1480,22 +1521,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/scss\/_settings_box.scss",
 		"outputAbbreviatedPath": "\/public\/css\/_settings_box.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"useLibsass": 0
-		},
-	"\/public\/scss\/_single_users_load.scss": {
-		"createSourceMap": 0,
-		"debugStyle": 0,
-		"decimalPrecision": 10,
-		"fileType": 4,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/public\/scss\/_single_users_load.scss",
-		"outputAbbreviatedPath": "\/public\/css\/_single_users_load.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -1544,6 +1569,38 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/scss\/_timer_box.scss",
 		"outputAbbreviatedPath": "\/public\/css\/_timer_box.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"useLibsass": 0
+		},
+	"\/public\/scss\/_tooltip.scss": {
+		"createSourceMap": 0,
+		"debugStyle": 0,
+		"decimalPrecision": 10,
+		"fileType": 4,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scss\/_tooltip.scss",
+		"outputAbbreviatedPath": "\/public\/css\/_tooltip.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"useLibsass": 0
+		},
+	"\/public\/scss\/_users_load.scss": {
+		"createSourceMap": 0,
+		"debugStyle": 0,
+		"decimalPrecision": 10,
+		"fileType": 4,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scss\/_users_load.scss",
+		"outputAbbreviatedPath": "\/public\/css\/_users_load.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,

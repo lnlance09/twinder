@@ -7,7 +7,7 @@
     vertical-align: middle;
 
     path {
-        fill: $copyright-color;
+        fill: $green;
         transition: 0.8s;
     }
 }
@@ -20,13 +20,13 @@
 
 #like_user {
     path {
-        fill: #b4ff69;
+        fill: #ad5;
     }
 }
 
 #like_user:hover {
     path {
-        fill: #a4cc89;
+        fill: #bc5;
     }
 }
 
@@ -50,4 +50,9 @@
     path {
         fill: orange;
     }
+}
+
+#error {
+    width: 150px;
+    height: 150px;
 }

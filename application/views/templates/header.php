@@ -39,15 +39,15 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
+
+    <!-- Stateface Font CSS -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>
     <!-- CSS for sliders --> 
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
-
-    <!-- Stateface Font CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
 <?php
     }
 
@@ -72,26 +72,26 @@
 <?php
     }
 ?>
-    <title><?php echo $title; ?> - WeTinder</title>
+    <title><?php echo $title; ?> - Twinder</title>
 </head>
     
 <body>   
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 <?php
-    if($session === FALSE) {
+    if($session) {
+?>
+                    <span class="icon-bar">Play</span>
+                    <span class="icon-bar">Profile</span>
+<?php
+    } else {
 ?>
                     <span class="icon-bar">Sign In</span>
                     <span class="icon-bar">About</span>
                     <span class="icon-bar">Terms</span>
-                    <span class="icon-bar">FAQ</span>
-<?php
-    } else {
-?>
-                    <span class="icon-bar">Play</span>
-                    <span class="icon-bar">Profile</span>
+                    <span class="icon-bar">FAQ</span>                  
 <?php
     }
 ?>
@@ -99,7 +99,7 @@
 
                 <a class="navbar-brand" href="<?php echo $base_url; ?>">
                     <img class="svg" src="<?php echo $img_url; ?>svg/match.svg" width="50" height="50" alt="logo"/>
-                    <span id="we">WeTinder</span>
+                    <span id="we">Twinder</span>
                 </a>
 
                 <div class="clearfix"></div>
@@ -107,9 +107,6 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="<?php echo $base_url; ?>hot">Browse</a>
-                    </li>
 <?php
     if($session) {
 ?>
@@ -121,13 +118,7 @@
                                 <!-- The match count -->
                                 <i class="fa fa-heart" id="heart_icon"></i> 
                                 <span id="match_count_num"><?php echo $match_count; ?></span>
-
-                                <!-- The like count -->
-                                <i class="fa fa-thumbs-up" id="match_icon"></i> 
-                                <span id="like_count_num"><?php echo $like_count; ?></span>
-                            </span>
-
-                            <span class="caret"></span>
+                            </span> 
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
@@ -144,7 +135,7 @@
     } else {
 ?>
                     <li class="active">
-                        <a href="<?php echo $base_url; ?>signin">Sign in</a>
+                        <button class="btn btn-primary" type="button" onclick="location.href='<?php echo $base_url; ?>signin'">Sign In</button>
                     </li>
 <?php
     }
@@ -158,6 +149,7 @@
         <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
+
                 <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
 
                 <div class="clearfix"></div>

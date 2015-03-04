@@ -8,14 +8,14 @@
     // Get the method
     $method = $this->router->fetch_method();
 
-    $maps_pages = array('users', 'settings', 'search', 'hot');
-    $slider_pages = array('users', 'settings', 'search', 'hot');
+    $maps_pages = array('users', 'settings', 'hot');
+    $slider_pages = array('users', 'settings', 'hot');
 ?>
     <div class="text-center" id="footer">
         <div id="sub_footer">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <ul>
-                    <li>About</li>
+                    <li><i class="fa fa-rocket"></i> About</li>
                     <li><a href="<?php echo $base_url; ?>about">about</a></li>
                     <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
                     <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
@@ -23,19 +23,47 @@
                 </ul>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <ul>
-                    <li>Trending</li>
+                    <li><i class="fa fa-random"></i> Random People</li>
+<?php
+    // Loop thru the random users
+    for($i=0;$i<4;$i++) {
+?>
+                    <li>
+                        <a href="<?php echo $base_url.$users[$i]['link']; ?>"><?php echo $users[$i]['name'].', '.$users[$i]['age']; ?></a>
+                    </li>
+<?php
+    }
+?>
                 </ul>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
+                <ul>
+                    <li><i class="fa fa-map-marker"></i> Random Places</li>
+<?php
+    // Loop thru the random locations
+    for($i=0;$i<4;$i++) {
+        $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
+?>
+                    <li>
+                        <span class="stateface stateface-<?php echo strtolower($locations[$i]['state']); ?>"></span>
+                        <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
+                    </li>
+<?php
+    }
+?>
+                </ul>
+            </div>
+
+            <div class="col-lg-3">
                 <ul>
                     <!-- Twitter Button -->
-                    <li>Follow Us</li>
+                    <li><i class="fa fa-twitter"></i> Follow Us</li>
 
                     <li>
-                        <a href="https://twitter.com/WeTinder" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @WeTinder</a>
+                        <a href="https://twitter.com/TwinderTweets" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderTweets</a>
 
                         <script>
                             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
@@ -43,6 +71,7 @@
                     </li>
 
                     <!-- Facebook Button -->
+                    <!--
                     <li id="fb_like_button">
                         <div id="fb-root"></div>
 
@@ -58,6 +87,7 @@
 
                         <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
                     </li>
+                    -->
                 </ul>
             </div>
 
@@ -66,7 +96,7 @@
             
         <div id="copyright">
             <p>
-                WeTinder © 2015 - a Lance Newman production
+                Twinder © 2015 - a Lance Newman production
             </p>
         </div>
     </div>
@@ -82,17 +112,7 @@
     if(in_array($controller, $maps_pages)) {
 ?>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
-
-    <!-- Datamaps -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    <script src="<?php echo $js_url; ?>datamaps/datamaps.world.min.js"></script>
-
-    <!-- Charts.js -->
-    <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
-
-    <!--<script src="<?php echo $base_url; ?>public/js/chart.js"></script>-->
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
 <?php
     }
 
@@ -104,19 +124,25 @@
 <?php
     }
 ?>
-    <!-- The JavaScript for each page -->
+    <!-- The JS for each page -->
 <?php 
     if($controller == 'users' && strtolower($method) == 'discover') {
 ?>
     <script src="<?php echo $js_url; ?>discover.js"></script>
 <?php
     } else {
+        if($controller == 'hot') {
+?>
+    <!-- Charts JS -->
+    <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
+    <!--<script src="<?php echo $js_url; ?>chart.js"></script>-->
+<?php
+        }
 ?>
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
 <?php
     }
 ?>
-
     <!-- StatCounter -->
     <!--
     <script type="text/javascript">

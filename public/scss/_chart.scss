@@ -1,0 +1,63 @@
+/* Chart Data */
+#chart_load {
+    border-top: solid 1px #ccc;
+    background: #f0f0f0;
+    padding-bottom: 0;
+    margin: 15px 0 25px 0;
+
+    #chart_data {
+
+        #glance {
+            border-bottom: solid 1px #ccc;
+            padding: 9px 6px;
+
+            h2 {
+                font-size: 36px !important;
+                margin: 0;
+            }
+        }
+
+        #chart_block {
+            padding: 10px;
+            border-bottom: solid 1px #ccc;
+            background: $white;
+        }
+
+        ul {
+            margin-bottom: 0;
+
+            li {
+                background: $white !important;
+                cursor: auto;
+                padding: 4px 12px;
+                line-height: 2.0;
+                cursor: auto;
+
+                span {
+                    font-size: 22px;
+                    line-height: 1.4;
+                    vertical-align: middle;
+                }
+
+                &:hover {
+                    color: $black !important;
+
+                    span {
+                        color: $black !important;
+                    }
+                }
+            }
+        }
+
+        #mr,
+        #mrs {
+            .hottest_name {
+                margin-left: 10px;
+
+                span {
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+}

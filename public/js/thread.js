@@ -8,7 +8,7 @@ $(document).ready(function() {
 	var data = 'id='+ match_id;
 
 	// Load the previous threads in the conversation
-    $('#thread_load').load(base_url +'matches/ThreadBackend', data, function() {
+    $('#thread_load').load('/wetinder/matches/ThreadBackend', data, function() {
     	$('.ajax-loader').fadeOut();
 	});
 
@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 	        if(msg != '') {
 		        $.ajax({
-		            url: base_url +'users/SendMessage',
+		            url: '/wetinder/users/SendMessage',
 		            type: 'POST',
 		            data: {
 		                id: match_id,
@@ -30,7 +30,7 @@ $(document).ready(function() {
 		            success: function(data) {
 		                // console.log(data);
 		                var string = 'id='+ match_id +'&page=0';
-		                $('#matches_load').load(base_url +'matches/ThreadBackend', string);
+		                $('#matches_load').load('/wetinder/matches/ThreadBackend', string);
 		            }
 		        });
 		   	} 

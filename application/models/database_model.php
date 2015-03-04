@@ -220,9 +220,9 @@
 			// FormatArray($last);
 
 			// If there is a record of the user existing, then see if your distance to him/her is closer 
-			if($last !== FALSE) {
+			if($last) {
 				// Get the latitude and longitude coordinates
-				$loc = $this->location_model->BingLocation($lon, $lat);
+				$loc = $this->location_model->MapquestLatLon($lat, $lon);
 
 				// In this case, the user is updating his own location
 				if($his_tinder_id == $my_tinder_id) {
@@ -237,12 +237,12 @@
 					$this->UpdateLastSeen($my_tinder_id, $data);
 					$return_data['data'] = $data;
 				} else {
-					// Make sure the user's last location ins't one from a ping
+					// Make sure the user's last location isn't one from a ping
 					if($last['data']['seen_id'] != $last['data']['seen_by_id']) {
 						// Check to see if your proximity is closer than the one currently on record
 						if($my_distance < $last['data']['miles_away']) {
 							// Get the latitude and longitude coordinates
-							$loc = $this->location_model->BingLocation($lon, $lat);
+							$loc = $this->location_model->MapquestLatLon($lat, $lon);
 
 							$data = array('seen_id' => $his_tinder_id,
 										'seen_by_id' => $my_tinder_id,
@@ -263,7 +263,7 @@
 				}
 			} else {
 				// Get the latitude and longitude coordinates
-				$loc = $this->location_model->BingLocation($lon, $lat);
+				$loc = $this->location_model->MapquestLatLon($lat, $lon);
 				// FormatArray($loc);
 
 				// Create a new row in the last_seen table for this user
@@ -968,7 +968,7 @@
 		 */
 		public function InsertPing($lon, $lat, $tinder_id) {
 			// Call the Google Maps function to find out the city, state and country
-			$location = GeoLocation($lon, $lat);
+			$location = $this->location_model->MapquestLatLon($lat, $lon);
 			$results = $location['results'][0]['address_components'];
 			$city = $results[4]['short_name'];
 			$state = $results[6]['short_name'];
@@ -1026,10 +1026,19 @@
 		 * @param {string} [his_id] The Tinder ID of the targetted user
 		 */
 		public function CheckReport($my_id, $his_id) {
-			$this->db->select('id');
-			$this->db->where(array('reported_by' => $my_id, 'user_reported' => $his_id));
-			$query = $this->db->get('reports');
-			return $query->num_rows();
+			if($my_id != $his_id) {
+				$this->db->select('id');
+				$this->db->where(array('reported_by' => $my_id, 'user_reported' => $his_id));
+				$query = $this->db->get('reports');
+				
+				if($query->num_rows() == 0) {
+					return TRUE;
+				} else {
+					return FALSE;
+				}
+			} else {
+				return FALSE;
+			}
 		}
 
 		/**
@@ -1064,84 +1073,65 @@
 		 * @param {string} [tinder_id] The Tinder ID of the targetted user
 		 * @param {string} [my_id] The Tinder ID of the user who is logged in
 		 */
-		public function GetUserStats($tinder_id, $my_id = NULL) {
-			// Determine which stats to get
-			if($my_id !== NULL) {
-				// This view if for if the user is logged in
-				$params = array('num' => 6, 
-								'results' => array(
-												array('key' => 'likes', 'name' => 'likes', 'count' => NULL),
-												array('key' => 'mutual_likes', 'name' => 'mutual likes', 'count' => NULL),
-												array('key' => 'matches', 'name' => 'matches', 'count' => NULL),
-												array('key' => 'mutual_matches', 'name' => 'mutual matches', 'count' => NULL),
-												array('key' => 'passes', 'name' => 'passes', 'count' => NULL),
-												array('key' => 'mutual_passes', 'name' => 'mutual passes', 'count' => NULL)
-											)
-								);
-			} else {
-				// This view is for if the user isn't logged in
-				$params = array('num' => 5, 
-								'results' => array(
-												array('key' => 'likes', 'name' => 'likes', 'count' => NULL),
-												array('key' => 'liked_by', 'name' => 'liked by', 'count' => NULL),
-												array('key' => 'matches', 'name' => 'matches', 'count' => NULL),
-												array('key' => 'passes', 'name' => 'passes', 'count' => NULL),
-												array('key' => 'passed_by', 'name' => 'passed by', 'count' => NULL)
-											)
-								);
-			}
+		public function GetUserStats($tinder_id, $my_id) {
+			// This view if for if the user is logged in
+			$params = array(
+							array('key' => 'tweets', 'name' => 'tweets', 'count' => NULL),
+							array('key' => 'likes', 'name' => 'likes', 'count' => NULL),
+							array('key' => 'matches', 'name' => 'matches', 'count' => NULL),
+							array('key' => 'passes', 'name' => 'passes', 'count' => NULL)
+						);
 
-			foreach($params as $key => $val) {
-				if($key == 'results') {
-					for($i=0;$i<count($val);$i++) {
-						$stat_key = $val[$i]['key'];
+			foreach($params as $key) {
+				switch($key['key']) {
+					case'likes';
 
-						switch($stat_key) {
-							case'likes';
+						$count = $this->GetLikeCount($tinder_id, FALSE);
+						break;
 
-								$count = $this->GetLikeCount($tinder_id, FALSE);
-								break;
+					case'mutual_likes';
 
-							case'mutual_likes';
+						$count = $this->GetMutualLikeCount($tinder_id, $my_id);
+						break;
 
-								$count = $this->GetMutualLikeCount($tinder_id, $my_id);
-								break;
+					case'liked_by';
 
-							case'liked_by';
+						$count = $this->GetLikeCount($tinder_id, TRUE);
+						break;
 
-								$count = $this->GetLikeCount($tinder_id, TRUE);
-								break;
+					case'matches';
 
-							case'matches';
+						$count = $this->GetMatchCount($tinder_id);
+						break;
 
-								$count = $this->GetMatchCount($tinder_id);
-								break;
+					case'mutual_matches';
 
-							case'mutual_matches';
+						$count = $this->GetMutualMatchCount($tinder_id, $my_id);
+						break;
 
-								$count = $this->GetMutualMatchCount($tinder_id, $my_id);
-								break;
+					case'passes';
 
-							case'passes';
+						$count = $this->GetPassCount($tinder_id, FALSE);
+						break;
 
-								$count = $this->GetPassCount($tinder_id, FALSE);
-								break;
+					case'mutual_passes';
 
-							case'mutual_passes';
+						$count = $this->GetMutualPassCount($tinder_id, $my_id);
+						break;
 
-								$count = $this->GetMutualPassCount($tinder_id, $my_id);
-								break;
+					case'passed_by';
 
-							case'passed_by';
+						$count = $this->GetPassCount($tinder_id, TRUE);
+						break;
 
-								$count = $this->GetPassCount($tinder_id, TRUE);
-								break;
-						}
+					case'tweets';
 
-						// Set the count key to each element in the array
-						$params['results'][$i]['count'] = $count;
-					}
+						$count = $this->twitter_model->GetTweets();
+						break;
 				}
+
+				// Set the count key to each element in the array
+				$params['results'][$i]['count'] = $count;
 			}
 
 			return $params;
@@ -1261,20 +1251,22 @@
 		/**
 		 * Get the hottest male or female in a given state
 		 * @param {int} [sex] The gender code. 0 for men. 1 for women
-		 * @param {string} [state] The state to target
+		 * @param {string} [state] The state's two letter abbreviation to target
 		 */
 		public function HottestByState($sex, $state) {
 			$sql = "SELECT users.*, last_seen.*
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
-					LEFT JOIN last_seen ON likes.user_one = last_seen.seen_id
-					WHERE likes.match_id != '' AND users.gender = ? AND last_seen.state = ?
+					RIGHT JOIN last_seen ON likes.user_one = last_seen.seen_id
+					WHERE likes.match_id != ? AND users.gender = ? AND last_seen.state = ?
 					GROUP BY likes.user_one
 					ORDER BY COUNT(*) DESC
 					LIMIT 1";
-			$query = $this->db->query($sql, array($sex, $state));
+			$query = $this->db->query($sql, array('', $sex, $state));
 			$count = $query->num_rows();
 			$i = 0;
+
+			// echo 'Count: '.$count;
 
 			if($count == 1) {
 				foreach($query->result() as $row) {
@@ -1295,7 +1287,7 @@
 					$lon[$i] = $row->lon;
 					$lat[$i] = $row->lat;
 					$city[$i] = $row->city;
-					$state[$i] = $row->state;
+					$n_state[$i] = $row->state;
 					$miles[$i] = $row->miles_away;
 					$datetime[$i] = $row->datetime;
 
@@ -1317,7 +1309,7 @@
 										'lon' => $lon[$i],
 										'lat' => $lat[$i],
 										'city' => $city[$i],
-										'state' => $state[$i],
+										'state' => $n_state[$i],
 										'miles_away' => $miles[$i],
 										'datetime' => $datetime[$i]);
 				}
@@ -1435,7 +1427,8 @@
 		 * Query the DB to get all the users from the users table
 		 */
 		public function GetAllUsers() {
-			$sql = "SELECT username, tinder_id FROM users";
+			$sql = "SELECT username, tinder_id, first_name, age 
+					FROM users";
 			$query = $this->db->query($sql);
 			$count = $query->num_rows();
 			$i = 0;
@@ -1444,18 +1437,58 @@
 				foreach($query->result() as $row) {
 					$id[$i] = $row->tinder_id;
 					$username[$i] = $row->username;
+					$name[$i] = $row->first_name;
+					$age[$i] = $row->age;
 
 					$i++;
 				}
 
+				$return = [];
+
 				for($i=0;$i<$count;$i++) {
-					$link[$i] = FormatUserLink($id[$i], $username[$i]);
+					$return[$i] = array('link' => FormatUserLink($id[$i], $username[$i]),
+										'name' => $name[$i],
+										'age' => $age[$i]);
 				}
 				
-				return $link;
+				shuffle($return);
+				return $return;
 			} else {
 				return FALSE;
 			}
+		}
+
+		/**
+		 * Return the users that were last seen in a given state
+		 * @param {string} [$state] The two letter abbreviation code of the given state
+		 */
+		public function GetUsersInState($state, $gender = NULL) {
+			$data = array($state);
+
+			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count
+					FROM users
+					JOIN last_seen
+					ON users.tinder_id = last_seen.seen_id
+					WHERE last_seen.state = ?";
+
+			if($gender !== NULL) {
+				$sql .= " AND users.gender = ?";
+				array_push($data, $gender);
+			}
+
+			$query = $this->db->query($sql, $data);
+			$result = $query->result();
+			$count = $result[0]->count;
+
+			return array('count' => $count, 'avg_age' => ceil($result[0]->age));
+		}
+
+		/**
+		 * Find out where a given state stands in an array containing the most popular states in descending order 
+		 * @param {string} [$state] The two letter abbreviation of the given state
+		 */
+		public function GetMostPopularState($state) {
+
 		}
 
 		/**

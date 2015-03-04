@@ -1,0 +1,61 @@
+#users_load {
+    #focus_box {
+        padding: 0;
+        background: $white;
+        border: solid 1px #ccc;
+        padding: 10px;
+        border-bottom: none;
+        text-align: left;
+
+        #profile_discover {
+            margin-top: 0;
+            padding: 0 12px;
+
+            #about_quote {
+                font-size: 20px;
+                display: block;
+                color: #555;
+                line-height: 28px;
+                margin-top: 10px;
+                z-index: 9999;
+            }
+        }
+
+        #pic_bar {
+            background: $white;
+            z-index: 999999999;
+
+            ul#sub_pics {
+                list-style: none;
+                position: relative;
+                margin-top: -30px;
+                top: 5px !important;
+            }
+        }
+
+        .col-lg-4 {
+            padding: 0;
+
+            #polaroid_wrap {
+                -webkit-transform: none !important;  
+                -moz-transform: none !important;  
+                transform: none !important; 
+
+                #main_img {
+                    cursor: pointer;
+                    background: $white;
+                    display: block;
+                    border: solid 1px #ccc;
+                }
+            }
+        }
+    }
+}
+
+#like_or_pass {
+    padding: 20px;
+    background: #fff;
+    z-index: 999;
+    margin-top: -70px;
+    border: solid 1px #ddd;
+}

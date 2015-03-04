@@ -47,10 +47,10 @@
 		<priority>0.4</priority>
 	</url>
 <?php 
-	for($i=0;$i<count($links);$i++) { 
+	for($i=0;$i<count($users);$i++) { 
 ?>
     <url>
-        <loc><?= $base_url.$links[$i]; ?></loc>
+        <loc><?= $base_url.$users[$i]['link']; ?></loc>
         <changefreq>never</changefreq>
         <priority>0.7</priority>
     </url>

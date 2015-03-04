@@ -7,8 +7,9 @@
     margin-right: 7px;
 }
 
-.fa-heart {
-    color: #ff69b4;
+.fa-heart,
+.fa-refresh {
+    color: $green;
 }
 
 .fa-share {
@@ -16,8 +17,7 @@
 }
 
 .fa-thumbs-up,
-.fa-globe,
-.fa-refresh {
+.fa-globe {
     color: #08f;
 }
 
@@ -25,11 +25,23 @@
     color: #b4ff69;
 }
 
-.fa-map_marker {
-    color: red;
+.fa-map-marker {
+    color: #c61931;
+}
+
+.fa-twitter {
+	color: $blue;
+}
+
+.fa-rocket {
+	color: #ffb300;
+}
+
+.fa-random {
+	color: #71456c;
 }
 
 .fa-bullhorn,
 .fa-ban  {
-    color: $copyright-color;
+    color: $black;
 }

@@ -8,85 +8,96 @@
                 </h1>
 
                 <form method="POST" action="" id="settings_form">
-                    <div class="col-lg-12 settings_box">
-                        <!-- Interested In -->
-                        <span class="settings_field">interested in</span>
-    
-                        <div class="dropdown pull-right">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="interested_in_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender_filter; ?>"><?php echo FormatInterestedIn($gender_filter); ?> <span class="caret"></span></button>
-
-                            <ul class="dropdown-menu" id="interested_in">
+                    <!-- Interested In -->
+                    <div class="col-lg-12 settings_box" id="interested_in">
+                        <p>
+                            Sexuality
+                        </p>
 <?php
     for($i=0;$i<count($filters);$i++) {
+        if($filters[$i]['num'] == $gender_filter) {
+            $class = ' active';
+        } else {
+            $class = '';
+        }
 ?>
-                                <li><a href="#" title="<?php echo $filters[$i]['num']; ?>"><?php echo $filters[$i]['name']; ?></a></li>
+                        <div class="col-lg-4 text-center selector<?php echo $class; ?>" title="<?php echo $filters[$i]['num']; ?>">
+                            <?php echo $filters[$i]['name']; ?>
+                        </div>
 <?php
     }
 ?>
-                            </ul>
-                        </div>
-
-                        <div class="clearfix"></div>
                     </div>
 
-                    <div class="col-lg-12 settings_box">
-                        <!-- Gender -->
-                        <span class="settings_field">gender</span>
-
-                        <div class="dropdown pull-right">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="gender_button" data-toggle="dropdown" aria-expanded="true" value="<?php echo $gender; ?>"><?php echo FormatGender($gender); ?> <span class="caret"></span></button>
-
-                            <ul class="dropdown-menu" id="gender">
+                    <!-- Gender -->
+                    <div class="col-lg-12 settings_box" id="gender">
+                        <p>
+                            Gender
+                        </p>
 <?php
     for($i=0;$i<count($genders);$i++) {
+        if($genders[$i]['num'] == $gender) {
+            $class = ' active';
+        } else {
+            $class = '';
+        }
 ?>
-                                <li><a href="#" title="<?php echo $genders[$i]['num']; ?>"><?php echo $genders[$i]['name']; ?></a></li>
+                        <div class="col-lg-6 text-center selector<?php echo $class; ?>" title="<?php echo $genders[$i]['num']; ?>">
+                            <?php echo $genders[$i]['name']; ?>
+                        </div>
 <?php
     }
 ?>
-                            </ul>
-                        </div>
-
-                        <div class="clearfix"></div>
                     </div> 
 
+                    <!-- Username -->
                     <div class="col-lg-12 settings_box">
-                        <!-- Username -->
-                        <span class="settings_field">username</span>
+                        <p>
+                            Username
+                        </p>
 
-                        <div class="pull-right" id="username_div">
-                            <div class="input-group pull-right">
+                        <div id="username_div">
+                            <div class="input-group">
                                 <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $username; ?>" autocomplete="off">
                                 <span class="input-group-addon">@</span>
                             </div>
-                        </div>
-    
-                        <div class="clearfix"></div>
+                        </div>                        
                     </div>
 
                     <!-- Age -->
-                    <div class="col-lg-12 text-center settings_box">
-                        <div id="age_slider" class="slider"></div>
+                    <div class="col-lg-12 settings_box">
+                        <p>
+                            Age
+                        </p>
 
-                        <h2 id="age_settings">
-                            <span class="example-val" id="lower-value"></span> - <span class="example-val" id="upper-value"></span>
-                        </h2>
-                    </div>
+                        <div class="compartment">
+                            <div id="age_slider" class="slider"></div>
 
-                    <!-- Google Maps -->
-                    <div class="col-lg-12" id="maps_bar">
-                        <div id="google_maps"></div>
+                            <h2 id="age_settings">
+                                <span class="example-val" id="lower-value"></span> - <span class="example-val" id="upper-value"></span>
+                            </h2>
+                        </div>
                     </div>
 
                     <!-- Distance -->
-                    <div class="col-lg-12 text-center" id="distance_bar">
-                        <span id="address_components"></span>
-                        
-                        <div id="distance_slider" class="slider"></div>
+                    <div class="col-lg-12 settings_box" id="distance_bar">
+                        <p>
+                            Distance
+                        </p>
 
-                        <h2 id="distance_settings">
-                            <span class="example-val" id="distance-value"></span> miles
-                        </h2>
+                        <div class="compartment">
+                            <div id="distance_slider" class="slider"></div>
+
+                            <h2 id="distance_settings">
+                                <span class="example-val" id="distance-value"><?php echo $distance; ?></span> miles of <span id="address_components"><?php echo $city.', '.$state; ?></span>
+                            </h2>
+                        </div>
+
+                        <div id="google_maps">
+                            <div class="ajax-loader">
+                                <i class="fa fa-cog fa-4x fa-spin"></i>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="clearfix"></div>

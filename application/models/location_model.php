@@ -3,9 +3,6 @@
 		public function __construct() {       
 			parent:: __construct();
 
-			// Define the API key for Bing
-			$this->api_key = 'AsYr89sIN1M2BNmVi8279YDSTfmu-ueNl6LCPf1urkcLbYugk8wTcKdp7jt4OryS';
-
 			// Define the API key for MapQuest
 			$this->mapquest_key = 'Cmjtd|luur2108n1,7w=o5-gz8a';
 
@@ -164,7 +161,7 @@
 		 * @param {string} [state] The name of the state
 		 */
 		public function MapquestLocation($city, $state) {
-			if($city !== NULL && trim($city) != '') {
+			if($city != NULL && trim($city) != '') {
 				$param = $state.','.$city;
 			} else {
 				$param = $state;
@@ -178,7 +175,12 @@
 
 		    // Decode the response
 		    $decode = @json_decode($data, TRUE);
-			return $decode['results'][0]['locations'][0]['latlng'];
+		    
+		    if($decode['info']['statuscode'] == 400) {
+		    	return array('lat' => NULL, 'lng' => NULL);
+		    } else {
+				return $decode['results'][0]['locations'][0]['latLng'];
+			}
 		}
 
 		/**
@@ -196,9 +198,37 @@
 		    // Decode the response
 		    $decode = @json_decode($data, TRUE);
 		    $location = $decode['results'][0]['locations'][0];
-		    return array('city' => $location['adminArea5'], 
+
+		    return array('country' => $location['adminArea1'],
+		    			'city' => $location['adminArea5'], 
 		    			'state' => $location['adminArea3'],
 		    			'full_name' => $this->FullFromAbbrev($location['adminArea3']));
+		}
+
+		/**
+		 * Query the DB to get a random array of locations
+		 */
+		public function RandomLocations() {
+			$this->db->select('city, state_abbrev');
+			$query = $this->db->get('locations');
+			$count = $query->num_rows();
+			$i = 0;
+
+			foreach($query->result() as $row) {
+				$city[$i] = $row->city;
+				$state[$i] = $row->state_abbrev;
+
+				$i++;
+			}
+
+			$return = [];
+
+			for($i=0;$i<$count;$i++) {
+				$return[$i] = array('city' => $city[$i], 'state' => $state[$i]);
+			}
+
+			shuffle($return);
+			return $return;
 		}
 
 		/**
@@ -262,7 +292,7 @@
 		 * Validate either a latitude or longitude coordinate using regex
 		 * @param {decimal} [coordinate] The coordinate to be tested
 		 */
-		function ValidateCoordinate($coordinate) {
+		public function ValidateCoordinate($coordinate) {
 			return preg_match('/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $coordinate);
 		}
 	}

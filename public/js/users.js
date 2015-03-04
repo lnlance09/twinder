@@ -1,81 +1,82 @@
 $(document).ready(function() {
-    var base_url = $('#base_url').text();
+    var base_url = '/wetinder/'; 
     var tinder_id = $('#user_tinder_id').text();
     var can_edit = $('#can_edit').text().trim();
+    var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
     // console.log(can_edit);
 
     // Google Maps
     function Initialize(lat, lon) {
-        // Set the styling for the map
-        var styles = [{"stylers":[{"saturation":-100}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]},{"elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{}];
-        
         // Set the position
-        var latlng = new google.maps.LatLng(lat, lon);
-
-        var mapOptions = {
-            mapTypeControlOptions: {  
-                mapTypeIds: ['Styled']  
-            },  
-            mapTypeId: 'Styled',
-            center: latlng,
-            zoom: 16,
-            position: latlng
+        var LatLon = new google.maps.LatLng(lat, lon);
+        var options = {
+            center: LatLon,
+            zoom: 10,
+            mapTypeControlOptions: {
+                mapTypeIds: ['map_style']
+            }
         };
 
-        var el = document.getElementById('ping_map');
-        var map = new google.maps.Map(el, mapOptions);
-        
-        // Style the map
-        var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled'});  
-        map.mapTypes.set('Styled', styledMapType);  
+        var map = new google.maps.Map(document.getElementById('ping_map'), options);
+        map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Last seen by '}));
+        map.setMapTypeId('map_style');
+
+        // Set the infobox options
+        infoBubble = new InfoBubble({
+            map: map,
+            content: $('#infobox').html(),
+            position: LatLon,
+            shadowStyle: 1,
+            padding: '6px',
+            backgroundColor: '#fff',
+            borderRadius: 0,
+            arrowSize: 5,
+            borderWidth: 1,
+            borderColor: '#000',
+            disableAutoPan: false,
+            hideCloseButton: true,
+            arrowPosition: 30,
+            backgroundClassName: 'transparent',
+            arrowStyle: 2,
+        });
 
         // Set the marker
         var marker = new google.maps.Marker({
             map: map,
-            position: latlng
+            position: LatLon,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
         });
 
-        // Bounce the marker
-        marker.setAnimation(google.maps.Animation.DROP);
-
-        // Covert the radius to meters
-        var radius = Math.round(parseInt($('#radius').text())*1609.344);
-
-        var circle = {
-            strokeColor: '#fd923a',
+        // Zoom in and center the marker upon click of the marker
+        google.maps.event.addListener(marker, 'click', function() {
+            map.setZoom(16);
+            map.setCenter(marker.getPosition());
+            
+            infoBubble.open();
+        });
+    
+        // Convert the miles to meters and draw the radius
+        var radius = {
+            strokeColor: '#ad5',
             strokeOpacity: 0.8,
             strokeWeight: 1,
-            fillColor: '#fd923a',
-            fillOpacity: 0.25,
+            fillColor: '#ad5',
+            fillOpacity: 0.35,
             map: map,
-            center: latlng,
-            radius: radius
+            center: LatLon,
+            radius: Math.round(parseInt($('#radius').text())*1609.344)
         };
 
-        cityCircle = new google.maps.Circle(circle)
-        cityCircle.bindTo('center', marker, 'position');
+        circle = new google.maps.Circle(radius);
+        circle.bindTo('center', marker, 'position');
 
-        // Set the infobox options
-        infobox = new InfoBox({
-             content: document.getElementById('infobox'),
-             disableAutoPan: true,
-             pixelOffset: new google.maps.Size(-140, 0),
-             zIndex: null,
-             boxStyle: {
-                width: '100%'
-            },
-            closeBoxMargin: '12px 4px 2px 2px',
-            closeBoxURL: 'http://www.google.com/intl/en_us/mapfiles/close.gif',
-            infoBoxClearance: new google.maps.Size(1, 1)
-        });
-        
-        // Show the infobox upon click of the marker
-        google.maps.event.addListener(marker, 'click', function() {
-            infobox.open(map, this);
-        });
+        // Resize the map accordingly
+        google.maps.event.trigger(map, 'resize');
+
+        // Adjust the height of the map
+        $('#google_maps').css('height', '250px');
     }
-
-
 
     if(can_edit == 1) {
         // Edit the user's bio
@@ -84,6 +85,9 @@ $(document).ready(function() {
             
             // If the form is being opened to be edited
             if($(this).attr('id') == 'click_to_edit') {
+                $('#about_quote').hide();
+                $('#bio_text').fadeIn();
+
                 $(this).attr('class', 'btn btn-success pull-right');
                 $(this).attr('type', 'submit');
                 $(this).attr('id', 'editing');
@@ -105,10 +109,12 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         console.log(data);
+                        $('#about_quote').fadeIn();
+                        $('#bio_text').hide();
                     }
                 });
 
-                $(this).attr('class', 'btn btn-default pull-right');
+                $(this).attr('class', 'btn btn-primary pull-right');
                 $(this).attr('type', 'button');
                 $(this).attr('id', 'click_to_edit');
                 $(this).text('Edit');
@@ -141,8 +147,8 @@ $(document).ready(function() {
                             text: text
                         },
                         success: function(data) {
-                            console.log(data);
-                            var obj = jQuery.parseJSON(data);
+                            // console.log(data);
+                            var obj = JSON.parse(data);
 
                             if(obj.status == 200) {
                                 $('#report_modal').modal('hide');
@@ -163,7 +169,7 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     console.log(data);
-                    var obj = jQuery.parseJSON(data);
+                    var obj = JSON.parse(data);
 
                     if(obj.status == 200) {
                         $('#report_modal').modal('hide');
@@ -206,8 +212,9 @@ $(document).ready(function() {
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
         // Load the new results
+        $('#con_load_box').html('')
         $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
-           
+           $('#con_load_box .ajax-loader').fadeOut();
         });
     });
 
@@ -217,8 +224,6 @@ $(document).ready(function() {
         var pic = $(this).attr('name');
         $('#main_img').attr('src', pic);
     });
-
-
 
     // Load the map
     var lat = $('#lat').text().trim();

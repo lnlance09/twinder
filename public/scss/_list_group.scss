@@ -13,11 +13,11 @@ ul.list-group {
         }
 
         &:last-of-type  {
-            border-bottom: none !important;
+            border-bottom: none;
         }
 
         &:hover {
-            background: #06f;
+            background: $blue;
             color: $white;
             transition: 0.4s;
 

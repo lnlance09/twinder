@@ -74,7 +74,7 @@
 			 */
 			function BioDefault($bio, $name) {
 				if($bio == '') {
-					return $name." doesnt't have a bio";
+					return $name." doesnt't have a bio.";
 				} else {
 					return $bio;
 				}
@@ -213,33 +213,37 @@
 			 * @param {string} [time] The time
 			 */
 			function FormatTime($time) {
-				$time = date_diff(date_create(), date_create($time));
+				if($time != 'Just now') {
+					$time = date_diff(date_create(), date_create($time));
 
-				// Format the date difference by minutes, hours, days and months
-				$mins = $time->format('%i');
-				$hours = $time->format('%h');
-				$days = $time->format('%d');
-				$months = $time->format('%m');
+					// Format the date difference by minutes, hours, days and months
+					$mins = $time->format('%i');
+					$hours = $time->format('%h');
+					$days = $time->format('%d');
+					$months = $time->format('%m');
 
-				if(ceil($mins/60) > 1) {
-					if(ceil($hours/24) > 1) {
-						if(ceil($days/30) > 1) {
-							$format = $days.' months ago';
+					if(ceil($mins/60) > 1) {
+						if(ceil($hours/24) > 1) {
+							if(ceil($days/30) > 1) {
+								$format = $days.' months ago';
+							} else {
+								$format = $days.' days ago';
+							}
 						} else {
-							$format = $days.' days ago';
+							$format = $hours.' hours ago';
 						}
 					} else {
-						$format = $hours.' hours ago';
+						if($mins == 0) {
+							$format = 'Just now';
+						} else {
+							$format = $mins.' mins ago';
+						}
 					}
-				} else {
-					if($mins == 0) {
-						$format = 'Just now';
-					} else {
-						$format = $mins.' mins ago';
-					}
-				}
 
-				return $format;
+					return $format;
+				} else {
+					return $time;
+				}
 			}
 		}
 
@@ -292,6 +296,7 @@
 			 * @param {string} [base_url] The base URL of WeTinder
 			 */
 			function FormatLastSeenText($data, $base_url) {
+				// Save the user's info as variables
 				$user_info = $data['user'];
 				$tinder_id = $user_info['tinder_id'];
 				$name = $user_info['name'];
@@ -299,15 +304,15 @@
 				$gender = $user_info['gender'];
 				$pic = $user_info['profile_pic'];
 
+				// Define the subject
 				if($gender == 0) {
 					$subject = 'he';
 				} elseif($gender == 1) {
 					$subject = 'she';
 				}
 
-				$raw_data = $data[0]['data'];
-				// FormatArray($data);
-
+				// Save the location data
+				$raw_data = $data[0][0]['data'];
 				$time = $raw_data['datetime'];
 				$distance = $raw_data['miles_away'];
 				$city = $raw_data['city'];
@@ -393,6 +398,35 @@
 			}
 		}
 
+		if(!function_exists('RowPagination')) {
+			function RowPagination($count, $per_row, $per_page, $page, $pages, $start) {
+				if($page == ($pages-1)) {
+					$mod = $count%$per_page;
+
+					if($mod > 0) {
+						$end = $mod;
+						$col_mod = $end%$per_row;
+
+						if($col_mod == 0) {
+							$end_col = $end;
+						} else {
+							$end_col = $col_mod;
+						}
+					} else {
+						$end = $start+$per_page;
+						$end_col = $end;
+					}
+				} else {
+					$end = $start+$per_page;
+					$end_col = $end;
+				}
+
+				$num_rows = ceil($end/$per_row);
+
+				return array('end' => $end, 'end_col' => $end_col, 'num_rows' => $num_rows);
+			}
+		}
+
 		if(!function_exists('DefineTitle')) {
 			/**
 			 * Define the title for the 'Hot' page
@@ -407,12 +441,12 @@
 				$title = 'The hottest ';
 
 				// Format the gender
-				if($gender == 0 || $gender == 1) {
+				if($gender == 'men' || $gender == 'women') {
 					$title .= $gender.' ';
 				} 
 
-				// Format the distance
-				$title .= 'within '.$distance.' miles of ';
+				// Format the age and distance
+				$title .= 'ages '.$min.' to '.$max.' within '.$distance.' miles of ';
 
 				// Format the city
 				if($city != '') {
@@ -424,8 +458,6 @@
 					$title .= $state.' ';
 				}
 
-				// Format the age
-				$title .= 'ages '.$min.' to '.$max;
 				return $title;
 			}
 		}

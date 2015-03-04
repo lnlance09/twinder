@@ -20,6 +20,7 @@
 
     li {
         z-index: 9999999 !important;
+        padding: 0;
 
         &:hover {
             background: $border-color !important;
@@ -39,7 +40,7 @@
             float: left;
             width: 100%;
             padding: 3px 10px;
-            color: $font-color !important;
+            color: $black !important;
             background: $white !important;
 
             &:hover {
