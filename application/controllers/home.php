@@ -90,22 +90,6 @@
 				}
 			}
 
-			// Return city and state from lat & lon coordinates
-			public function LocationFromCoords() {
-				$lon = $this->input->get('lon');
-				$lat = $this->input->get('lat');
-				$geo = $this->location_model->MapquestLatLon($lat, $lon);
-				echo json_encode($geo);
-			}
-
-			// Return lat & lon coordinates from the city and state
-			public function LocationFromCity() {
-				$city = $this->input->get('city');
-				$state = $this->input->get('state');
-				$geo = $this->location_model->MapquestLocation($city, $state);
-				echo json_encode($geo);
-			}
-
 			// Autocomplete for states
 			public function GetStates() {
 				// Get the state from the URL
@@ -131,6 +115,27 @@
 
 				// Load the autocomplete view
 				$this->load->view('autocomplete/cities', $cities); 
+			}
+
+			// Return city and state from lat & lon coordinates
+			public function LocationFromCoords() {
+				$lon = $this->input->get('lon');
+				$lat = $this->input->get('lat');
+				$geo = $this->location_model->MapquestLatLon($lat, $lon);
+				echo json_encode($geo);
+			}
+
+			// Return lat & lon coordinates from the city and state
+			public function LocationFromCity() {
+				$city = $this->input->get('city');
+				$state = $this->input->get('state');
+				$geo = $this->location_model->MapquestLocation($city, $state);
+				echo json_encode($geo);
+			}
+
+			public function Twitter() {
+				// Get the OAuth token from the URL
+				$lon = $this->input->get('oauth_token');
 			}
 		}
 	}

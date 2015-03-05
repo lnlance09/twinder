@@ -216,7 +216,7 @@
 					// Save the user's link to their profile
 					$profile_link = FormatUserLink($this->session->userdata('tinder_id'), $this->session->userdata('username'));
 
-					$meta_info = array('description' => 'Discover on WeTinder',
+					$meta_info = array('description' => 'Discover on Twinder',
 									'img' => $this->base_url.'public/img/',
 									'url' => $this->base_url.'users/Discover');
 

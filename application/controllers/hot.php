@@ -121,7 +121,7 @@
 				$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
 
 				// Define the meta tags
-				$meta_info = array('description' => 'See who the hottest, most popular users on WeTinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
+				$meta_info = array('description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
 									'img' => $this->base_url.'public/img/',
 									'url' => $url);
 

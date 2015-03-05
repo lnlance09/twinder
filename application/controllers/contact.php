@@ -42,7 +42,7 @@
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 				// Define the meta tags
-				$meta_info = array('description' => 'Contact WeTinder',
+				$meta_info = array('description' => 'Contact Twinder',
 									'img' => $this->base_url.'public/img/',
 									'url' => $this->base_url.'contact');
 
@@ -78,9 +78,9 @@
 				$msg = $this->input->post('msg');
 
 				if($msg != '') {
-					$this->email->from('WeTinder', 'contact@wetinder.com'); 
+					$this->email->from('Twinder', 'contact@twinder.com'); 
 					$this->email->to('lnlance09@gmail.com'); 
-					$this->email->subject('WeTinder Message');
+					$this->email->subject('Twinder Message');
 					$this->email->message($msg);	
 					$this->email->send();
 					echo 'done';

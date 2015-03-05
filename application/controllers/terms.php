@@ -42,7 +42,7 @@
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 				// Define the meta tags
-				$meta_info = array('description' => "WeTinder's Terms of Service",
+				$meta_info = array('description' => "Twinder's Terms of Service",
 									'img' => $this->base_url.'public/img/',
 									'url' => $this->base_url.'terms');
 

@@ -19,7 +19,7 @@
 			public function Index() {
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					$tinder_id = $this->session->userdata('tinder_id');
 					$auth = $this->session->userdata('token');
 
