@@ -25,7 +25,7 @@ $(document).ready(function() {
 	                console.log(data);
 	                if(data.trim() == 'true') {
 	                	// console.log('true');
-	                	// window.location = base_url +'users/discover';
+	                	window.location = base_url +'users/discover';
 	                } else if(data == 'error') {
 	                	$('#sync_modal').modal('hide');
 	                } else {

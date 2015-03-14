@@ -16,7 +16,7 @@
 				$this->load->helper('url');
 
 				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
@@ -41,7 +41,7 @@
 										'meta' => $meta_info);
 
 					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = array();
+					$body_info = [];
 
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
@@ -55,17 +55,17 @@
 				$state = $this->input->get('state');
 				
 				// Query the DB to see if the state is an acceptable value
-				$valid = $this->location_model->CheckState($state);
+				$valid = $this->loc->CheckState($state);
 
-				if($valid > 0) {
+				if($valid) {
 					// Get info about the state for each gender
-					$all = $this->database_model->GetUsersInState($state);
-					$male = $this->database_model->GetUsersInState($state, 0);
-					$female = $this->database_model->GetUsersInState($state, 1);
+					$all = $this->database->GetUsersInState($state);
+					$male = $this->database->GetUsersInState($state, 0);
+					$female = $this->database->GetUsersInState($state, 1);
 
 					// Get the hottest user from the given state
-					$mr = $this->database_model->HottestByState(0, $state);
-					$mrs = $this->database_model->HottestByState(1, $state);
+					$mr = $this->database->HottestByState(0, $state);
+					$mrs = $this->database->HottestByState(1, $state);
 
 					// Get the state's rank
 					$rank = 1;
@@ -77,12 +77,12 @@
 
 								'mr_link' => FormatUserLink($mr['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
 								'mrs_link' => FormatUserLink($mrs['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
-								'mr_pic' => 'http://images.gotinder.com/'.$mr['hot'][0]['tinder_id'].'/84x84_'.$mr['hot'][0]['pic'],
-								'mrs_pic' => 'http://images.gotinder.com/'.$mrs['hot'][0]['tinder_id'].'/84x84_'.$mrs['hot'][0]['pic'],
+								'mr_pic' => 'http://images.gotinder.com/'.$mr['hot'][0]['tinder_id'].'/172x172_'.$mr['hot'][0]['pic'],
+								'mrs_pic' => 'http://images.gotinder.com/'.$mrs['hot'][0]['tinder_id'].'/172x172_'.$mrs['hot'][0]['pic'],
 								'mr_name' => $mr['hot'][0]['name'],
 								'mrs_name' => $mrs['hot'][0]['name'],
 
-								'state' => $this->location_model->FullFromAbbrev(strtoupper($state)),
+								'state' => $this->loc->FullFromAbbrev(strtoupper($state)),
 								'abbrev' => $state,
 								'state_rank' => $rank);
 					// FormatArray($data);
@@ -96,7 +96,7 @@
 				$state = $this->input->get('state');
 
 				// Call this method to query the DB for matching states
-				$states = $this->location_model->GetStates($state);
+				$states = $this->loc->GetStates($state);
 				// FormatArray($states);
 
 				// Load the autocomplete view
@@ -110,7 +110,7 @@
 				$city = $this->input->get('city');
 
 				// Call this method to query the DB for matching states
-				$cities = $this->location_model->GetCities($state, $city);
+				$cities = $this->loc->GetCities($state, $city);
 				// FormatArray($cities);
 
 				// Load the autocomplete view
@@ -121,7 +121,7 @@
 			public function LocationFromCoords() {
 				$lon = $this->input->get('lon');
 				$lat = $this->input->get('lat');
-				$geo = $this->location_model->MapquestLatLon($lat, $lon);
+				$geo = $this->loc->MapquestLatLon($lat, $lon);
 				echo json_encode($geo);
 			}
 
@@ -129,13 +129,26 @@
 			public function LocationFromCity() {
 				$city = $this->input->get('city');
 				$state = $this->input->get('state');
-				$geo = $this->location_model->MapquestLocation($city, $state);
+				$geo = $this->loc->MapquestLocation($city, $state);
 				echo json_encode($geo);
 			}
 
 			public function Twitter() {
 				// Get the OAuth token from the URL
-				$lon = $this->input->get('oauth_token');
+				$token = $this->input->get('oauth_token');
+
+				$info = $this->twitter->Verify($token);
+				FormatArray($info);
+				die;
+				$this->twitter->FetchTweets($username);
+			}
+
+			public function TwitterRedirect() {
+				// Load the Twitter model
+				$this->load->model('twitter_model', 'twitter');
+
+				// Authenticate the user and redirect them to http://twitter.io/home/Twitter
+				$this->twitter->Authenticate();
 			}
 		}
 	}

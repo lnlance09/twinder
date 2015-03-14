@@ -13,20 +13,20 @@
 				$this->load->library('session');
 
 				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
-				if(is_numeric($user_id)) {
+				if($user_id) {
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
 
 					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$stats = $this->database->GetThreeStats($tinder_id);
 					$like_count = $stats['like_count'];
 					$match_count = $stats['match_count'];
 					$pass_count = $stats['pass_count'];
@@ -60,8 +60,8 @@
 									'profile_link' => $profile_link);
 
 				// Get all of the data for the footer view
-				$locations = $this->location_model->RandomLocations();
-				$rand_users = $this->database_model->GetAllUsers();
+				$locations = $this->loc->RandomLocations();
+				$rand_users = $this->database->GetAllUsers();
 				$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 				// Load all of the views

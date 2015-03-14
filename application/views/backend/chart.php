@@ -9,18 +9,18 @@
         $male_count = 1;
     }
 ?>
-<div id="chart_data">
-    <div class="col-lg-12" id="glance">
-        <h2>
+<div id="chart_data" class="panel panel-default">
+    <div class="panel-heading" id="glance">
+        <h3 class="panel-title">
             <span class="stateface stateface-<?php echo strtolower($abbrev); ?>"></span> 
             <span id="state_header"><?php echo $state; ?></span> at a glance...
-        </h2>
+        </h3>
     </div>
 
     <div class="clearfix"></div>
 
     <!-- Draw the pie chart -->
-    <div class="col-lg-12" id="chart_block">
+    <div class="panel-body" id="chart_block">
         <div class="col-lg-4">
             <canvas id="my_chart" class="pull-left" width="120" height="120"></canvas>
 

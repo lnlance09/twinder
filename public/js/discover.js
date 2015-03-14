@@ -11,7 +11,7 @@ $(document).ready(function() {
         $circle.animate({
             'width': '600px',
             'height': '600px',
-            'margin-top': '-350px',
+            'margin-top': '-370px',
             'margin-left': '-300px',
             'opacity': '0'
         }, 2000, 'easeOutCirc');
@@ -46,6 +46,11 @@ $(document).ready(function() {
             // Upon like or pass of a user
             $('#like_user, #pass_user').click(function() {
                 var tinder_id = $('#user_tinder_id').text();
+
+                // Swipe animations
+                $(this).addClass('rotate-left').delay(700).fadeOut(1);
+                $('.buddy').find('.status').remove();
+                $(this).append('<div class="status like">Like!</div>'); 
 
                 // If it's the 11th like, then load a fresh batch
                 var index = $('#user_at_num').text();

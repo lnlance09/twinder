@@ -13,7 +13,7 @@
 				$this->load->library('session');
 
 				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
@@ -24,26 +24,27 @@
 				if($user_id) {
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
+					$username = $this->session->userdata('username');
 
 					// Get the most recent info about the user from Tinder
-					$info = $this->users_model->ProfileInfo($auth);
+					$info = $this->user->ProfileInfo($auth);
 					$lon = $info['pos']['lon'];
 					$lat = $info['pos']['lat'];
 					// FormatArray($info);
 
 					// Get the city and state based upon the lon & lat coordinates
-					$loc = $this->location_model->MapquestLatLon($lat, $lon);
+					$loc = $this->loc->MapquestLatLon($lat, $lon);
 					// FormatArray($loc);
 					// die;
 
 					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$stats = $this->database->GetThreeStats($tinder_id);
 					$like_count = $stats['like_count'];
 					$match_count = $stats['match_count'];
 					$pass_count = $stats['pass_count'];
 
 					// Get the user's profile link
-					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+					$profile_link = FormatUserLink($tinder_id, $username);
 
 					// Store all of the gender filters in an array
 					$filters = array(array('num' => 0, 'name' => 'Straight'),
@@ -59,7 +60,7 @@
 											'max' => $info['age_filter_max'],
 											'gender_filter' => $info['gender_filter'],
 											'gender' => $info['gender'],
-											'username' => $this->session->userdata('username'),
+											'username' => $username,
 											'city' => $loc['city'],
 											'state' => $loc['full_name'],
 											'lon' => $lon,
@@ -80,8 +81,8 @@
 										'profile_link' => $profile_link);
 
 					// Get all of the data for the footer view
-					$locations = $this->location_model->RandomLocations();
-					$rand_users = $this->database_model->GetAllUsers();
+					$locations = $this->loc->RandomLocations();
+					$rand_users = $this->database->GetAllUsers();
 					$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 					// Load all of the views
@@ -104,11 +105,11 @@
 				$auth = $this->session->userdata('token');
 
 				// Update all of the settings
-				$info = $this->users_model->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
+				$info = $this->user->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
 				// FormatArray($info);
 
 				// Update the username in the DB
-				$this->database_model->UpdateUser($this->session->userdata('tinder_id'), array('username' => $username));
+				$this->database->UpdateUser($this->session->userdata('tinder_id'), array('username' => $username));
 
 				// Update the username session variable
 				$this->session->set_userdata('username', $username);
@@ -119,7 +120,7 @@
 				$username = $this->input->get('username');
 
 				// Check to see if the username exists
-				$check = $this->database_model->CheckUsername($username);
+				$check = $this->database->CheckUsername($username);
 				echo $check;
 			}
 		}

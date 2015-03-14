@@ -12,8 +12,17 @@
 		public $access_url = 'https://api.twitter.com/oauth/access_token';
 
 		// Define the user search URL
-		public $users_url = 'https://twitter.com/i/search/typeahead.json';
+		public $search_url = 'https://twitter.com/i/search/typeahead.json';
 
+		// Define the users statuses API endpoint
+		public $users_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+
+		// Define the verification URL
+		public $verify_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
+
+		/**
+		 * [__construct description]
+		 */
 		public function __construct() {       
 			parent:: __construct();
 
@@ -28,6 +37,7 @@
 		 * Convert the OAuth token into an access token
 		 * @param {string} [token] The OAuth token
 		 * @param {string} [verifier] The OAuth verifier
+		 * @return {string} The access token from Twitter's API
 		 */
 		public function AccessToken($token, $verifier) {
 			// Define the signature base string
@@ -49,6 +59,10 @@
 			echo $response;
 		}
 
+		/**
+		 * Redirect the user to the authentication page
+		 * @return 
+		 */
 		public function Authenticate() {
 			// Get the OAuth token
 			$request = $this->RequestToken();
@@ -74,8 +88,37 @@
 		}
 
 		/**
+		 * Get a given user's tweets
+		 * @param {string} [username] The Twitter user's username
+		 * @return {array} A JSON decoded array from Twitter's API
+		 */
+		public function FetchTweets($username) {
+			// Define the signature base string
+			$nonce = $this->OAuthNonce();
+			$data = array('oauth_consumer_key' => $this->api_key,
+						'oauth_nonce' => $nonce,
+						'oauth_signature_method' => 'HMAC-SHA1',
+						'oauth_timestamp' => time(),
+						'oauth_version' => '1.0',
+						'screen_name' => $username); 
+			$string = 'GET&'.urlencode($this->users_url).'&'.urlencode(http_build_query($data));
+			$sign_key = urlencode($this->api_secret).'&';
+			$sig = base64_encode(hash_hmac('sha1', $string, $sign_key, TRUE));
+			$header = array('Authorization: OAuth oauth_consumer_key="'.$this->api_key.'", oauth_nonce="'.$nonce.'", oauth_signature="'.urlencode($sig).'", oauth_signature_method="HMAC-SHA1", oauth_timestamp="'.time().'", oauth_version="1.0"');
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $this->users_url.'?screen_name='.$username);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+			$response = curl_exec($ch);
+			curl_close($ch);
+			return @json_decode($response, TRUE);
+		}
+
+		/**
 		 * Send an HTTP request to Twitter to get JSON of related users based upon what was searched for
 		 * @param {string} [q] The search query
+		 * @return {array} An array containing the list of relevant Twitter users
 		 */
 		public function FindUsers($q) {
 			$data = array('count' => 10,
@@ -98,6 +141,7 @@
 
 		/**
 		 * Generate the OAuth Nonce for Twitter's API request header. This will return a 32 character alphanumeric string
+		 * @return {string} A 32 character alphanumeric string
 		 */
 		public function OAuthNonce() {
 			// Define the length of the string
@@ -115,6 +159,7 @@
 
 		/**
 		 * Get a request token for Twitter's API
+		 * @return {array} An array containing the request token
 		 */
 		public function RequestToken() {
 			// Define the signature base string
@@ -142,5 +187,30 @@
 			return $array;
 		}
 
+		/**
+		 * Get a given user's tweets
+		 * @return {array} A JSON decoded array from Twitter's API
+		 */
+		public function Verify($token) {
+			// Define the signature base string
+			$nonce = $this->OAuthNonce();
+			$data = array('oauth_consumer_key' => $this->api_key,
+						'oauth_nonce' => $nonce,
+						'oauth_signature_method' => 'HMAC-SHA1',
+						'oauth_timestamp' => time(),
+						'oauth_token' => $token,
+						'oauth_version' => '1.0'); 
+			$string = 'GET&'.urlencode($this->verify_url).'&'.urlencode(http_build_query($data));
+			$sign_key = urlencode($this->api_secret).'&';
+			$sig = base64_encode(hash_hmac('sha1', $string, $sign_key, TRUE));
+			$header = array('Authorization: OAuth oauth_consumer_key="'.$this->api_key.'", oauth_nonce="'.$nonce.'", oauth_signature="'.urlencode($sig).'", oauth_signature_method="HMAC-SHA1", oauth_timestamp="'.time().'", oauth_token="'.$token.'", oauth_version="1.0"');
 
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $this->verify_url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+			$response = curl_exec($ch);
+			curl_close($ch);
+			return @json_decode($response, TRUE);
+		}
 	}

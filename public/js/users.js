@@ -2,6 +2,7 @@ $(document).ready(function() {
     var base_url = '/wetinder/'; 
     var tinder_id = $('#user_tinder_id').text();
     var can_edit = $('#can_edit').text().trim();
+    var twitter = $('#twitter_access').text().trim();
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
     // console.log(can_edit);
 
@@ -125,7 +126,7 @@ $(document).ready(function() {
         });
 
         // Make the pics sortable
-        $('ul#sub_pics').sortable();
+        // $('ul#sub_pics').sortable();
     }
 
     // Report the user
@@ -198,21 +199,43 @@ $(document).ready(function() {
         $('#search_connections').attr('placeholder', 'Search '+ type);
 
         // Change the font-awesome icon
-        if(type == 'likes') {
-            var fa = 'thumbs-up';
-        } else if(type == 'passes') {
-            var fa = 'thumbs-down';   
-        } else {
-            var fa = 'heart';
+        switch(type) {
+            case'likes':
+
+                var fa = 'thumbs-up';
+                break;
+
+            case'matches':
+
+                var fa = 'heart';
+                break;
+
+            case'passes':
+
+                var fa = 'thumbs-down';
+                break;
+
+            case'tweets':
+
+                var fa = 'twitter';
+                break;
         }
 
-        $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');
+        if(type == 'tweets' && twitter == 'false') {
+            $('#con_wrapper .input-group').hide();
+        } else {
+            $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');
+            $('#con_wrapper .input-group').fadeIn();
+        }
 
         // Define the query string
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
+        if(type == 'tweets') {
+            data += '&twitter='+ twitter;
+        }
+
         // Load the new results
-        $('#con_load_box').html('')
         $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
            $('#con_load_box .ajax-loader').fadeOut();
         });
@@ -222,7 +245,8 @@ $(document).ready(function() {
     $('ul#sub_pics li').click(function(e) {
         e.preventDefault();
         var pic = $(this).attr('name');
-        $('#main_img').attr('src', pic);
+        $('#gallery_img').attr('src', pic);
+        $('#gallery_modal').modal('show');
     });
 
     // Load the map
@@ -231,5 +255,7 @@ $(document).ready(function() {
     Initialize(lat, lon);
 
     // Load the connections
-    $('#con_load_box').load(base_url +'users/GetConnections', 'type=matches&page=0&id='+ tinder_id);
+    $('#con_load_box').load(base_url +'users/GetConnections', 'type=likes&page=0&id='+ tinder_id, function() {
+
+    });
 });

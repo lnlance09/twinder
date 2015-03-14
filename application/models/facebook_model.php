@@ -8,13 +8,13 @@
 		public function __construct() {       
 			parent:: __construct();
 
-			// Load the helpers file
 			$this->load->helper('common_helper');
 		}
 
 		/**
 		 * Return the path to a users' cookie file
 		 * @param {string} [email] The user's email
+		 * @return {string} The path too the cookies file
 		 */
 		public function CookieFile($email) {
 			$exp = explode('@', $email);
@@ -32,6 +32,7 @@
 		 * Log into Facebook
 		 * @param {string} [email] The email of the user tring to log in
 		 * @param {string} [password] The password of the user trying to log in
+		 * @return {int} The HTTP code of the request
 		 */
 		public function FacebookLogin($email, $password) {  
 			// Define the cookies files
@@ -67,6 +68,7 @@
 		 * Get a Facebook access token for Tinder so a user can log in
 		 * @param {string} [email] The email of the user trying to log in
 		 * @param {string} [password] The passwod of the user trying to log in
+		 * @return {string} Either an access token or a reason for the failure
 		 */
 		public function FacebookToken($email, $password) {
 			$login = $this->FacebookLogin($email, $password);
@@ -85,8 +87,8 @@
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);  
 				$data = curl_exec($ch);   
-
 				// echo $data;
+				
 			    $curl_info = curl_getinfo($ch);
 
 				// Get the headers and then the HTTP code
@@ -122,6 +124,7 @@
 		 * Get a Facebook page's name and profile picture. Can be used for Facebook pages and users
 		 * @param {string} [token] The Facebook access token
 		 * @param {string} [page] The page ID or user ID
+		 * @return {array} 
 		 */
 		public function ScrapePage($token, $page) {
 			$data = array('access_token' => $token,
@@ -136,8 +139,7 @@
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
 			$data = curl_exec($ch); 					 
-			curl_close($ch);
-				  	
+			curl_close($ch);  	
 			return @json_decode($data, TRUE);  
 		}
 	}

@@ -26,6 +26,7 @@
                 padding: 5px;
                 text-align: center;
                 cursor: pointer;
+                margin-bottom: 0;
 
                 img {
                    margin-bottom: 0;
@@ -46,16 +47,5 @@
     button#see_more {
         width: 100%;
         margin-top: 10px;
-    }
-}
-
-#con_load_box {
-    margin: 10px 0;
-    border-top: solid 1px $border-color;
-
-    .main_none {
-        border: solid 1px $border-color;
-        padding: 15px;
-        margin: 10px 0;
     }
 }

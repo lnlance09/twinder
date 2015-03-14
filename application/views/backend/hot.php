@@ -41,7 +41,7 @@
             // Get the status code for each user's profile pic
             $img_url = 'http://images.gotinder.com/'.$id.'/172x172_'.$img;
 ?>
-                <div class="col-lg-2" onclick="location.href='<?php echo $base_url.$link; ?>'" data-toggle="tooltip" data-original-title="<?php echo $tooltip; ?>">
+                <div class="col-lg-2 thumbnail" onclick="location.href='<?php echo $base_url.$link; ?>'" data-toggle="tooltip" data-original-title="<?php echo $tooltip; ?>">
                     <img class="img-responsive" src="<?php echo $img_url; ?>" alt="<?php echo $name; ?>" />
                     <!--
                     <object data="<?php echo $img_url; ?>" type="image/jpeg">
@@ -70,7 +70,7 @@
         if($new_page != $pages) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-success" id="see_more">See more (<?php echo $left_over; ?>)</button>
+        <button type="button" class="btn btn-success" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
     </div>
 <?php
         }

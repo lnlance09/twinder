@@ -13,7 +13,7 @@
 				$this->load->library('session');
 
 				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
@@ -26,7 +26,7 @@
 				// die;
 
 				// Get the validated query parameters
-				$valids = $this->users_model->ValidateParams($params);
+				$valids = $this->user->ValidateParams($params);
 				// FormatArray($valids);
 
 				$gender = $valids['gender'];
@@ -48,6 +48,7 @@
 								'min' => $min,
 								'max' => $max,
 								'page' => $page);
+				// FormatArray($city);
 
 				// Define the full URL with all of the parameters
 				$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
@@ -78,8 +79,8 @@
 				// die;
 
 				// The number of user that meet this criteria
-				$query = $this->database_model->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database_model->GetHottest($query, $lon, $lat, $distance);
+				$query = $this->database->HotQuery($gender, $min, $max, $q);
+				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
 
 				// Check to see if the client is logged in
 				if($user_id) {
@@ -88,7 +89,7 @@
 					$tinder_id = $this->session->userdata('tinder_id');
 
 					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database_model->GetThreeStats($tinder_id);
+					$stats = $this->database->GetThreeStats($tinder_id);
 					$like_count = $stats['like_count'];
 					$match_count = $stats['match_count'];
 					$pass_count = $stats['pass_count'];
@@ -105,9 +106,9 @@
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 				// Get all of the state data for the pie chart
-				$all_chart = $this->database_model->GetUsersInState($state['abbrev']);
-				$male_chart = $this->database_model->GetUsersInState($state['abbrev'], 0);
-				$female_chart = $this->database_model->GetUsersInState($state['abbrev'], 1);
+				$all_chart = $this->database->GetUsersInState($state['abbrev']);
+				$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
+				$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
 
 				// FormatArray($chart_data);
 				// die;
@@ -161,8 +162,8 @@
 				// die;
 
 				// Get all of the data for the footer view
-				$locations = $this->location_model->RandomLocations();
-				$rand_users = $this->database_model->GetAllUsers();
+				$locations = $this->loc->RandomLocations();
+				$rand_users = $this->database->GetAllUsers();
 				$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 				// Load all of the views
@@ -183,13 +184,13 @@
 				// var_dump($page);
 
 				// Get all of the hottest users
-				$query = $this->database_model->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database_model->GetHottest($query, $lon, $lat, $distance);
+				$query = $this->database->HotQuery($gender, $min, $max, $q);
+				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
 				$count = $hot['count'];
 				// FormatArray($hot);
 
 				// Get the city and state
-				$location = $this->location_model->MapquestLatLon($lat, $lon);
+				$location = $this->loc->MapquestLatLon($lat, $lon);
 				$state = $location['state'];
 
 				$params = array('gender' => $gender,
@@ -222,9 +223,9 @@
 
 				$view_info = array('q_string' => http_build_query($params), 
 									'hot' => $hot, 
-									'state' => $this->location_model->FullFromAbbrev($state),
+									'state' => $this->loc->FullFromAbbrev($state),
 									'abbrev' => $state,
-									'states' => $this->location_model->States(),
+									'states' => $this->loc->States(),
 									'count' => $count,
 									'left_over' => $count-(($page+1)*$per_page),
 									'end_col' => $end_col,
@@ -244,7 +245,7 @@
 				$state = $this->input->get('state');
 
 				// Get the hottest user
-				$user = $this->database_model->HottestByState($gender, $state);
+				$user = $this->database->HottestByState($gender, $state);
 				echo json_encode($user);
 			}
 		}

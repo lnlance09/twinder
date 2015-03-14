@@ -1,5 +1,5 @@
 span.tip {
-	font-size: 24px;
+	font-size: 22px;
 	display: block;
 }
 
@@ -17,19 +17,18 @@ span.sub_tip {
 }
 
 .tooltip-inner {
-	border-radius: 0 !important;
 	background: $black;
 	color: $white;
 	z-index: 1;
-	padding: 5px 15px 10px 15px;
+	padding: 7px 15px 10px 15px;
 	line-height: 1;
 	opacity: 1 !important;
 }
 
 .tooltip.top .tooltip-arrow {
-	margin-left: -12px;
-	bottom: -7px;
-	border-width: 12px 12px 0;
+	margin-left: -6px;
+	bottom: -1px;
+	border-width: 6px 6px 0;
 	border-top-color: $black;
 	z-index: 9999;
 }

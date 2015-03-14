@@ -6,7 +6,6 @@
 
     .modal-content {
         margin-top: 60px;
-        border-radius: 0;
 
         .modal-header {
             padding: 4px 9px;
@@ -23,7 +22,7 @@
             }
 
             i {
-                color: $green;   
+                color: $black;   
             }
         }
 
@@ -34,7 +33,7 @@
 
         .modal-body {
             background: $white;
-            padding: 0;
+            padding: 10px 0;
 
             a {
                 font-size: 24px;

@@ -123,7 +123,8 @@
     <div id="header-section">
         <div id="signin">
             <h1 class="page-header">
-                That page doesn't exist
+                <img src="" class="img-circle" id="error_pic" alt="<?php echo $name; ?>" />
+                <?php echo $name; ?> deleted his Tinder account... for now, at least.
             </h1>
 
             <div class="ajax-loader">

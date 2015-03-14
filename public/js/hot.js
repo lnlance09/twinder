@@ -113,7 +113,7 @@ $(document).ready(function() {
                 var city = obj.city;
                 var abbrev = obj.state;
                 var state = obj.full_name;
-                // console.log('Country '+ country);
+                console.log(obj);
 
                 if(country == 'US') {
                     // Update the city and state
@@ -202,7 +202,7 @@ $(document).ready(function() {
      * Change the title and URL of a document without reloading the page
      */
     function ChangeTitleURL() {
-        var title = DefineTitle() +' - WeTinder';
+        var title = DefineTitle() +' - Twinder';
         var url = GetFullURL();
         var new_url = base_url +'hot/'+ url;
         
@@ -406,7 +406,7 @@ $(document).ready(function() {
         var set_location = $('#set_location').text().trim();
         var lon = $('#drag_lon').text();
         var lat = $('#drag_lat').text();
-        // console.log('Lon: '+ lon +', Lat: '+ lat);
+        console.log('Lon: '+ lon +', Lat: '+ lat);
 
         // If the location parameters aren't set, then get the user's current location
         if(set_location == 'false') {
@@ -416,10 +416,16 @@ $(document).ready(function() {
             // Update the new lon & lat coordinates 
             $('#drag_lon').text(lon);
             $('#drag_lat').text(lat);
-        } 
+            GetLocationName(lon, lat);
+        } else {
+            // Load the new results
+            RefreshResults();
+
+            // Load the pie chart
+            LoadChart($('#abbrev').text());
+        }
 
         // Load the initial results
-        GetLocationName(lon, lat);
         FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
 
         /**

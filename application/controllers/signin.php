@@ -13,7 +13,7 @@
 				$this->load->library('session');
 
 				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
@@ -37,11 +37,11 @@
 										'auth' => '');
 
 					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = array();
+					$body_info = [];
 
 					// Get all of the data for the footer view
-					$locations = $this->location_model->RandomLocations();
-					$rand_users = $this->database_model->GetAllUsers();
+					$locations = $this->loc->RandomLocations();
+					$rand_users = $this->database->GetAllUsers();
 					$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 					// Load all of the views
@@ -60,13 +60,13 @@
 					$password = $this->input->post('password');
 
 					// Log the user in and get the auth token
-					$login = $this->users_model->SyncAccount($username, $password);
+					$login = $this->user->SyncAccount($username, $password);
 
 					// Use if internet not available
-					// $login = $this->database_model->GetUserInfo('5495df819983685e07f138f2');
+					// $login = $this->database->GetUserInfo('5495df819983685e07f138f2');
 					// FormatArray($login);
 
-					if(is_array($login)) {
+					if($login) {
 						// Set the session data
 						$this->session->set_userdata($login);
 

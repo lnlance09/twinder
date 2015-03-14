@@ -1,53 +1,16 @@
 #users_load {
-    #focus_box {
-        padding: 0;
-        background: $white;
-        border: solid 1px #ccc;
-        padding: 10px;
-        border-bottom: none;
+    .jumbotron {
         text-align: left;
 
+        h1 {
+            img {
+                vertical-align: middle !important;
+                display: inline;
+            }
+        }
+
         #profile_discover {
-            margin-top: 0;
-            padding: 0 12px;
-
-            #about_quote {
-                font-size: 20px;
-                display: block;
-                color: #555;
-                line-height: 28px;
-                margin-top: 10px;
-                z-index: 9999;
-            }
-        }
-
-        #pic_bar {
-            background: $white;
-            z-index: 999999999;
-
-            ul#sub_pics {
-                list-style: none;
-                position: relative;
-                margin-top: -30px;
-                top: 5px !important;
-            }
-        }
-
-        .col-lg-4 {
-            padding: 0;
-
-            #polaroid_wrap {
-                -webkit-transform: none !important;  
-                -moz-transform: none !important;  
-                transform: none !important; 
-
-                #main_img {
-                    cursor: pointer;
-                    background: $white;
-                    display: block;
-                    border: solid 1px #ccc;
-                }
-            }
+            
         }
     }
 }
@@ -56,6 +19,48 @@
     padding: 20px;
     background: #fff;
     z-index: 999;
-    margin-top: -70px;
+    margin-top: 0;
     border: solid 1px #ddd;
+}
+
+.rotate-left {
+  transform: rotate(30deg) scale(0.8);
+  transition: 1s;
+  margin-left: 400px;
+  cursor: e-resize;
+  opacity: 0;
+}
+
+.rotate-right {
+  transform: rotate(-30deg) scale(0.8);
+  transition: 1s;
+  opacity: 0;
+  margin-left: -400px;
+  cursor: w-resize;
+}
+
+.like {
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: 2px solid green;
+  color: green;
+  text-transform: uppercase;
+  font-size: 15px;
+  position: absolute;
+  top: 50px;
+  right: 40px;
+  text-shadow: none;
+}
+
+.dislike {
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: 2px solid red;
+  color: red;
+  text-transform: uppercase;
+  font-size: 15px;
+  position: absolute;
+  top: 50px;
+  left: 40px;
+  text-shadow: none;
 }

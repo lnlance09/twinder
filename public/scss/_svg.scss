@@ -45,7 +45,6 @@
 .not_found {
     width: 200px;
     height: 200px;
-    fill: orange;
 
     path {
         fill: orange;
@@ -53,6 +52,19 @@
 }
 
 #error {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
+
+    path {
+        fill: #c61931;
+    }
+}
+
+#twitter_svg {
+    width: 180px;
+    height: 180px;
+
+    path {
+        fill: $blue;
+    }
 }

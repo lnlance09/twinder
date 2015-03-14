@@ -9,7 +9,6 @@
         #focus_box {
             padding: 0;
             background: $white;
-            border: solid 1px #ccc;
             border-bottom: none;
             text-align: left;
             margin-top: 85px;
@@ -20,7 +19,7 @@
                 #ping_map {
                     width: 100%;
                     height: 300px;
-                    border: solid 1px $border-color;
+                    border: none;
                     background: $white;
 
                     .ajax-loader {
@@ -32,42 +31,55 @@
             #stripe {
                 position: absolute;
                 width: 100%;
-                height: 70px;
-                background: #f0f0f0;
+                top: 385px;
+                background: #fff;
                 padding: 0 $side-padding;
                 border-bottom: solid 1px #ddd;
 
+                .col-lg-8 {
+                    padding: 0;
+
+                    .row {
+                        padding-left: 0;
+                        margin-left: -35px;
+                    }
+                }
+
                 button {
-                    margin-top: 6px;
+                    margin-top: 16px;
                 }
             }
 
             #profile_page_info {
                 margin-top: -150px;
-                padding: 0 150px;
+                padding: 0 $side-padding;
                 min-height: 300px !important;
+                background: #f0f0f0;
 
                 h1.static {
-                    margin: 0;
-                    font-size: 24px;
-                    margin-top: 5px;
-                }
-
-                #main_img {
-                    cursor: pointer;
-                    margin-bottom: 0;
-                    width: 260px;
-                    height: 260px;
+                    font-size: 22px;
+                    margin: 0 0 0 5px !important;
                 }
 
                 #about_quote {
-                    font-size: 16px;
+                    font-size: 14px;
                     display: block;
                     color: $black;
                     line-height: 24px;
-                    margin-top: 6px;
+                    margin: 10px 0 0 5px;
                     z-index: 9999;
-                    width: 260px !important;
+                    width: 105%;
+                }
+
+                .thumbnail {
+                    margin-bottom: 9px;
+
+                    #main_img {
+                        cursor: pointer;
+                        margin-bottom: 0;
+                        width: 230px;
+                        height: 230px;
+                    }
                 }
 
                 textarea#bio_text {
@@ -78,43 +90,181 @@
                 ul#user_info {
                     list-style: none;
                     -webkit-padding-start: 0;
+                    margin-top: 10px;
+                    margin-bottom: 0;
 
                     li {
-                        font-size: 24px;
+                        font-size: 14px;
+                        line-height: 2.2;
+
+                        .fa {
+                            font-size: 24px;
+                            vertical-align: middle;
+                        }
                     }
                 }
-            }
 
-            .input-group {
-                height: auto;
-                border-bottom: solid 1px #ccc;
-                border-top: solid 1px #ccc;
-
-                .input-group-addon {
-                    height: auto;
-                    font-size: 14px;
-                }
-
-                .form-control {
+                .col-lg-9 {
+                    margin-top: 200px;
+                    z-index: 999;
+                    padding: 10px 0 10px 50px;
                     border: none;
-                    box-shadow: none;
-                    font-size: 22px;
-                    padding: 7px;
-                    height: auto;
+                    background: transparent;
+
+                    #con_wrapper {
+                        padding: 0;
+                        margin-top: 20px;
+
+                        .panel-heading {
+                            h3 {
+                                font-size: 24px;
+                            }
+                        }
+
+                        #twitter_sign_in {
+                            font-size: 22px;
+
+                            .fa {
+                                color: $blue;
+                            }
+
+                            + p {
+                                font-size: 18px;
+                                margin-top: 10px;
+                                text-align: left;
+                                margin: 0;
+                            }
+                        }
+
+                        .input-group {
+                            height: auto;
+                            border: solid 1px #ccc;
+
+                            .input-group-addon {
+                                height: auto;
+                                font-size: 14px;
+                            }
+
+                            .form-control {
+                                border: none;
+                                box-shadow: none;
+                                font-size: 22px;
+                                padding: 7px;
+                                height: auto;
+                            }
+                        }
+
+                        #connections_box {
+                            position: relative;
+                            top: 0;
+                            background: $white;
+                            box-shadow: none;
+
+                            #con_load_box {
+                                padding: 0;
+                                margin: 10px 0 0 0;
+
+                                .ajax-loader {
+                                    padding: 20px 0;
+                                }
+
+                                .main_load {
+                                    color: $black;
+                                }
+
+                                ul.list-group {
+                                    border: solid 1px #ccc;
+
+                                    li.list-group-item {
+                                        text-align: left;
+                                        padding: 7px 10px;
+                                        border-top: solid 1px #ddd;
+                                        font-size: 22px;
+
+                                        &:first-of-type {
+                                            border-top: none;
+                                        }
+
+                                        h4 {
+                                            margin: 0;
+
+                                            img {
+                                                width: 84px;
+                                                margin: 0;
+                                                vertical-align: text-top;
+                                                border: solid 1px #ccc;
+                                                padding: 5px;
+                                            }
+
+                                            a {
+                                                color: $blue;
+                                            }
+                                        }
+
+                                        &:hover {
+                                            background: #f0f0f0;
+
+                                            a {
+                                                color: $blue;
+                                            }
+
+                                            color: $black;
+                                        }
+                                    }
+
+                                    margin-bottom: 0;
+                                }
+
+                                button#see_more {
+                                    width: 100%;
+                                    margin-top: 10px;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
             ul#sub_pics {
                 list-style: none;
                 -webkit-padding-start: 0;
+                width: 300px;
 
                 li {
                     display: inline-block;
+                    margin-left: 10px;
+                    margin-top: 10px;
+
+                    &:nth-of-type(odd) {
+                        margin-left: 0;
+                    }
 
                     img {
                         margin-bottom: 0;
+                        width: 120px;
+                        height: 120px;
                     }
                 }
+            }
+        }
+    }
+
+    #gallery_modal {
+        .modal-backdrop {
+            opacity: 0.7;
+        }
+
+        .modal-dialog {
+            width: 350px;
+
+            .modal-header {
+                text-align: center;
+            }
+
+            #gallery_img {
+                width: 320px;
+                margin-bottom: 0;
+                display: inline;
             }
         }
     }

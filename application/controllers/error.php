@@ -8,21 +8,17 @@
 				
 				// Get the base URL
 				$this->base_url = $this->config->base_url();
-
-				// Load the session library
 				$this->load->library('session');
-
-				// Load all of the models
-				$this->load->model('users_model');
+				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
-				if(is_numeric($this->session->userdata('user_id'))) {
+				if($this->session->userdata('user_id')) {
 					$session = TRUE;
 					$name = $this->session->userdata('first_name'); 
 
 					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database_model->GetThreeStats($this->session->userdata('tinder_id'));
+					$stats = $this->database->GetThreeStats($this->session->userdata('tinder_id'));
 					$like_count = $stats['like_count'];
 					$match_count = $stats['match_count'];
 

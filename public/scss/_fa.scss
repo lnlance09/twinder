@@ -7,6 +7,10 @@
     margin-right: 7px;
 }
 
+.fa-facebook-square {
+    color: #3b5998;
+}
+
 .fa-heart,
 .fa-refresh {
     color: $green;
@@ -16,29 +20,26 @@
     cursor: pointer;
 }
 
-.fa-thumbs-up,
-.fa-globe {
+.fa-thumbs-up {
     color: #08f;
+}
+
+.fa-globe {
+    color: $green;
 }
 
 .fa-thumbs-down {
     color: #b4ff69;
 }
 
-.fa-map-marker {
+.fa-map-marker,
+.fa-rocket {
     color: #c61931;
 }
 
-.fa-twitter {
-	color: $blue;
-}
-
-.fa-rocket {
-	color: #ffb300;
-}
-
+.fa-twitter,
 .fa-random {
-	color: #71456c;
+	color: $blue;
 }
 
 .fa-bullhorn,

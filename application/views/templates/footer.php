@@ -12,10 +12,31 @@
     $slider_pages = array('users', 'settings', 'hot');
 ?>
     <div class="text-center" id="footer">
+        <div id="list_name">
+            <div class="col-lg-3">
+                <i class="fa fa-rocket"></i> About
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-globe"></i> People
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-map-marker"></i> Places
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-twitter"></i> Follow Us
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
         <div id="sub_footer">
             <div class="col-lg-3">
                 <ul>
-                    <li><i class="fa fa-rocket"></i> About</li>
                     <li><a href="<?php echo $base_url; ?>about">about</a></li>
                     <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
                     <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
@@ -25,13 +46,15 @@
 
             <div class="col-lg-3">
                 <ul>
-                    <li><i class="fa fa-random"></i> Random People</li>
 <?php
     // Loop thru the random users
     for($i=0;$i<4;$i++) {
+        $img_path = 'http://images.gotinder.com/'.$users[$i]['id'].'/'; 
 ?>
                     <li>
-                        <a href="<?php echo $base_url.$users[$i]['link']; ?>"><?php echo $users[$i]['name'].', '.$users[$i]['age']; ?></a>
+                        <a href="<?php echo $base_url.$users[$i]['link']; ?>">
+                            <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
+                        </a>
                     </li>
 <?php
     }
@@ -41,14 +64,12 @@
 
             <div class="col-lg-3">
                 <ul>
-                    <li><i class="fa fa-map-marker"></i> Random Places</li>
 <?php
     // Loop thru the random locations
     for($i=0;$i<4;$i++) {
         $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
 ?>
                     <li>
-                        <span class="stateface stateface-<?php echo strtolower($locations[$i]['state']); ?>"></span>
                         <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
                     </li>
 <?php
@@ -60,8 +81,6 @@
             <div class="col-lg-3">
                 <ul>
                     <!-- Twitter Button -->
-                    <li><i class="fa fa-twitter"></i> Follow Us</li>
-
                     <li>
                         <a href="https://twitter.com/TwinderTweets" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderTweets</a>
 
@@ -135,7 +154,6 @@
 ?>
     <!-- Charts JS -->
     <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
-    <!--<script src="<?php echo $js_url; ?>chart.js"></script>-->
 <?php
         }
 ?>

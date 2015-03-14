@@ -14,6 +14,7 @@
 		 * Query the DB to see if a row exists containing a given city/state combo
 		 * @param {city} [city] The name of the city
 		 * @param {state} [state] The name of the state. Can either be the full name or its abbreviation
+		 * @return {int|boolean} The location ID from the DB or FALSE
 		 */
 		public function CheckCityAndState($city, $state) {
 			$sql = "SELECT id 
@@ -35,7 +36,8 @@
 
 		/**
 		 * Query the DB to see if a row exists contaning the given state
-		 * @param {string} [state] The name or two letter abbrevation of the state.
+		 * @param {string} [state] The name or two letter abbrevation of the state
+		 * @return {int} The number of rows returned from the query
 		 */
 		public function CheckState($state) {
 			$sql = "SELECT id 
@@ -49,6 +51,7 @@
 		/**
 		 * Get a state's abbreviation from its full name
 		 * @param {string} [key] The full name of the state
+		 * @return {string} A two letter abbreviation of the state
 		 */
 		public function ConvertState($key) {
 			$states = $this->States();
@@ -60,6 +63,7 @@
 		/**
 		 * Get the full name of a state based upon it's abbreviation
 		 * @param {string} [state] The two letter abbreviation of the state
+		 * @return {string} The full name of the state from its two letter abbreviation
 		 */
 		public function FullFromAbbrev($state) {
 			$states = $this->States();
@@ -79,6 +83,7 @@
 		/**
 		 * Query the DB to get matching states from the autocomplete form
 		 * @param {string} [state] The name of the state
+		 * @return {array} An array containing the number of rows returned and the states
 		 */
 		public function GetStates($state) {
 			$this->db->select('state, state_abbrev');
@@ -108,7 +113,8 @@
 		/**
 		 * Query the DB for cities in a given state that match the autocomplete form
 		 * @param {string} [state] The full name of the state
-		 * @param {string} [city] The name of the city. 
+		 * @param {string} [city] The name of the city
+		 * @return {array} An array containing the number of rows and info about the cities
 		 */
 		public function GetCities($state, $city) {
 			$this->db->select('city');
@@ -140,6 +146,7 @@
 		 * @param {decimal} [lon_from] The longitude coordinate of the first location
 		 * @param {decimal} [lat_to] The latitude coordinate of the second location
 		 * @param {decimal} [lon_to] The longitude coordinate of the second location
+		 * @return {int} The number of miles between two locations
 		 */
 		public function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
 			$radius = 6371000;
@@ -159,10 +166,11 @@
 		 * Make a request to MapQuest's API endpoing to get the lat & lon coordinates from the a city and/or state name/abbreviation
 		 * @param {string} [city] The name of the city
 		 * @param {string} [state] The name of the state
+		 * @return {array} An array containing the results from MapQuest's API
 		 */
 		public function MapquestLocation($city, $state) {
-			if($city != NULL && trim($city) != '') {
-				$param = $state.','.$city;
+			if(!empty($city) && !empty($city)) {
+				$param = $city.','.$state;
 			} else {
 				$param = $state;
 			}
@@ -187,6 +195,7 @@
 		 * Make a request to MapQuest's API endpoing to get the name of the city and the name/abbreviation of the state from lon & lat coordinates
 		 * @param {decimal} [lat] The latitude coordinate
 		 * @param {decimal} [lon] The longitude coordinate
+		 * @return {array} An array containing the country, city and state of a location
 		 */
 		public function MapquestLatLon($lat, $lon) {
 			$ch = curl_init();
@@ -207,6 +216,7 @@
 
 		/**
 		 * Query the DB to get a random array of locations
+		 * @return An array containing random locations
 		 */
 		public function RandomLocations() {
 			$this->db->select('city, state_abbrev');
@@ -233,6 +243,7 @@
 
 		/**
 		 * Return an array containing all 50 states
+		 * @return {array} An array containing all 50 states
 		 */
 		public function States() {
 			return array('AL' => 'ALABAMA',
@@ -291,6 +302,7 @@
 		/**
 		 * Validate either a latitude or longitude coordinate using regex
 		 * @param {decimal} [coordinate] The coordinate to be tested
+		 * @return {boolean} 
 		 */
 		public function ValidateCoordinate($coordinate) {
 			return preg_match('/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $coordinate);

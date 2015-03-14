@@ -13,7 +13,7 @@
 				$this->load->library('session');
 
 				// Load all of the models
-				$this->load->model('admin_model');
+				$this->load->model('admin_model', 'admin');
 			}
 
 			public function Index() {
@@ -33,7 +33,7 @@
 				$password = $this->input->post('password');
 
 				// Check to see if the user is an admin
-				$login = $this->admin_model->Login($username, $password);
+				$login = $this->admin->Login($username, $password);
 
 				// If the login was successful, then redirect the user to the home page
 				if($login) {

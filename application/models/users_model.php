@@ -6,30 +6,25 @@
 			// Set the base URL
 			$this->base_url = $this->config->base_url();
 
-			// Load the database
+			// Load the DB and the helper
 			$this->load->database();
-
-			// Load the helpers file
 			$this->load->helper('common_helper');
 
-			// Load the location model
-			$this->load->model('location_model');
-
-			// Load the database model
-			$this->load->model('database_model');
-
-			// Load the facebook model
-			$this->load->model('facebook_model');
+			// Load the models
+			$this->load->model('database_model', 'database');
+			$this->load->model('location_model', 'loc');
+			$this->load->model('facebook_model', 'fb');
 		}
 
 		/**
 		 * Make a request to Tinder's API to get a token that will be used to send each request
 		 * @param {string} [email] The email of the person trying to log in
 		 * @param {string} [password] The password of the person trying to log in
+		 * @return {array|booean} An array from Tinder's API with an API token or FALSE
 		 */
 		public function AuthToken($email, $password) {
 			// Get the Facebook token
-			$token = $this->facebook_model->FacebookToken($email, $password);
+			$token = $this->fb->FacebookToken($email, $password);
 			
 			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
 				// Send a request to Tinder's auth endpoint to get a new token
@@ -50,6 +45,7 @@
 		 * Check to see if a given user has permission to edit a profile
 		 * @param {string} [my_id] The Tinder ID of the user who is logged in
 		 * @param {string} [his_id] The Tinder ID of the user whose page is being viewed
+		 * @return {boolean}
 		 */
 		public function CanEdit($my_id, $his_id) {
 			if($my_id == $his_id) {
@@ -64,11 +60,12 @@
 		 * Depends on whether or they have already liked that user before
 		 * @param {string} [my_id] The Tinder ID of the user who is currently logged in
 		 * @param {string} [his_id] The Tinder ID of the user who is trying to be liked
+		 * @return {boolean|string}
 		 */
 		public function CanLike($my_id, $his_id) {
 			if($my_id != $his_id) {
 				// See if there is already a liking between these two users
-				$me_like = $this->database_model->SeeIfLiked($my_id, $his_id, FALSE);
+				$me_like = $this->database->SeeIfLiked($my_id, $his_id, FALSE);
 
 				if($me_like == 0) {
 					$like = TRUE;
@@ -86,6 +83,7 @@
 		 * Change the order of a user's pics
 		 * @param {array} [pics] An array of pictures in the order that the user has selected
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function ChangePicOrder($pics, $auth) {
 			$info = SendRequest('media', $auth, 'PUT', array('change_order' => $pics));
@@ -95,6 +93,7 @@
 		/**
 		 * Delete a user's Tinder account
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function DeleteAccount($auth) {
 			$info = SendRequest('profile', $auth, 'DELETE', FALSE);
@@ -104,6 +103,7 @@
 		/**
 		 * Search for new users to like
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function FindUsers($auth) {
 			$info = SendRequest('user/recs', $auth, FALSE, FALSE);
@@ -114,6 +114,7 @@
 		 * Get information about a given match by making a request to Tinder's API.
 		 * @param {string} [match_id] The ID of the match
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function GetMatchInfo($match_id, $auth) {
 			$info = SendRequest('matches/'.$match_id, $auth, FALSE, FALSE);
@@ -123,7 +124,8 @@
 		/**
 		 * Get updates since a given point in time. This includes new matches and messages received
 		 * @param {string} [auth] The API token
-		 * @param {time} [time] The time to get updates since. 
+		 * @param {time} [time] The time to get updates since
+		 * @return {array} An array from Tinder's API
 		 */
 		public function GetUpdates($auth, $time = NULL) {
 			$info = SendRequest('updates', $auth, TRUE, array('last_activity_date' => RequestTime($time)));
@@ -134,6 +136,7 @@
 		 * Like another Tinder user
 		 * @param {string} [tinder_id] The Tinder ID of the user who is being liked
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function LikeUser($tinder_id, $auth) {
 			$info = SendRequest('like/'.$tinder_id, $auth, FALSE, FALSE);
@@ -143,6 +146,7 @@
 		/**
 		 * Log a user out of Tinder
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function Logout($auth) {
 			$device_id = '513340ce4df0f6bb011feb8a10aece07780808414d8a95bce442712bba6896cd';
@@ -159,6 +163,7 @@
 		 * Pass another Tinder user
 		 * @param {string} [tinder_id] The Tinder ID of the user who is being passed
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function PassUser($tinder_id, $auth) {
 			$info = SendRequest('pass/'.$tinder_id, $auth, FALSE, FALSE);
@@ -170,6 +175,7 @@
 		 * @param {decimal} [lon] The longitude coordinate
 		 * @param {decimal} [lat] The latitude coordinate
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function PingUser($lon, $lat, $auth) {
 			$info = SendRequest('user/ping', $auth, TRUE, array('lon' => $lon, 'lat' => $lat));
@@ -179,6 +185,7 @@
 		/**
 		 * Find a fresh batch of users to like/pass and return array containing only their relevant information
 		 * @param {string} [auth] The API token
+		 * @return {array} An containing all of the relevant info about each user
 		 */
 		public function PresentUsers($auth) {
 			// Get a new batch of users
@@ -187,10 +194,11 @@
 			if(array_key_exists('message', $users)) {
 				if(trim($users['message']) == 'recs timeout') {
 					return FALSE;
-				} 
+				} else {
+					return FALSE;
+				}
 			} else {
 				$results = $users['results'];
-
 				$users = [];
 
 				for($i=0;$i<count($results);$i++){
@@ -214,6 +222,7 @@
 		/**
 		 * Make a request to the profile API endpoint.
 		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
 		 */
 		public function ProfileInfo($auth) {
 			$info = SendRequest('profile', $auth, FALSE, FALSE);
@@ -226,11 +235,12 @@
 		 * @param {string} [auth] The API token
 		 * @param {int} [cause] The reason. Values include 1, 2 or 3
 		 * @param {string} [text] The message that goes along with the report
+		 * @return {array} An array from Tinder's API
 		 */
 		public function ReportUser($tinder_id, $auth, $cause, $text = NULL) {
 			$data = array('cause' => (int)$cause);
 
-			if($text !== NULL) {
+			if($text) {
 				$data['text'] = $text;
 			}
 
@@ -243,6 +253,7 @@
 		 * @param {string} [id] The Tinder ID of the user who is meant to receive the message
 		 * @param {string} [msg] The content of the message
 		 * @param {string} [auth] The API token of the user who is currently logged in
+		 * @return {array} An array from Tinder's API
 		 */
 		public function SendMessage($id, $msg, $auth) {
 			$sig = "Sent from <a href='http://twinder.io'>WeTinder</a> - Twitter meets Tinder";
@@ -254,6 +265,7 @@
 		 * Sync the content of a user's Tinder account with their WeTinder account
 		 * @param {string} [email] The email of the person trying to log in
 		 * @param {string} [password] The password of the person trying to log in
+		 * @return {array|boolean} An array containing a user's personal info and settings
 		 */
 		public function SyncAccount($email, $password) {
 			// Get the Tinder API token
@@ -290,7 +302,7 @@
 								'interested_in' => $profile['gender_filter']);
 
 				// Insert/update this user into the DB
-				$info = $this->database_model->InsertUser($user, $settings);
+				$info = $this->database->InsertUser($user, $settings);
 				// FormatArray($user_info);
 				// die;
 
@@ -299,20 +311,20 @@
 				$user['username'] = $info['username'];
 
 				// Insert a record in the DB for their last seen location
-				$this->database_model->EditLastSeen(0, $auth['_id'], $auth['_id'], $lon, $lat); 
+				$this->database->EditLastSeen(0, $auth['_id'], $auth['_id'], $lon, $lat); 
 
 				// Insert the user's pics
-				$this->database_model->InsertPics($auth['_id'], ReturnPicsArray($auth['photos']));
+				$this->database->InsertPics($auth['_id'], ReturnPicsArray($auth['photos']));
 
 				// Get the name of the city and state based upon the user's longitude and latitude coordinates
-				$loc = $this->location_model->MapquestLatLon($lat, $lon);
+				$loc = $this->loc->MapquestLatLon($lat, $lon);
 
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
 				// FormatArray($updates);
 
 				// Sync all of the messages from the user's Tinder account
-				$this->database_model->SyncMessages($updates['matches'], $auth['_id'], $profile['distance_filter'], $lon, $lat, $loc['city'], $loc['state']);
+				$this->database->SyncMessages($updates['matches'], $auth['_id'], $profile['distance_filter'], $lon, $lat, $loc['city'], $loc['state']);
 
 				// Merge the settings and users arrays
 				return array_merge($user, $settings);
@@ -326,6 +338,7 @@
 		 * @param {string} [auth] The API token of the user who is currently logged in
 		 * @param {string} [bio] The bio submitted by the user
 		 * @param {int} [gender] The gender submitted by the user
+		 * @return {array} An array from Tinder's API
 		 */
 		public function UpdateProfile($auth, $bio, $gender) {
 			$info = SendRequest('profile', $auth, TRUE, array('bio' => $bio, 'gender' => (int)$gender));
@@ -340,6 +353,7 @@
 		 * @param {int} [min] The minimum age
 		 * @param {int} [interested_in] The interested value. 0 for men. 1 for women. -1 for both
 		 * @param {int} [gender] The gender value. 0 for men. 1 for women
+		 * @return {array} An array from Tinder's API
 		 */
 		public function UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender) {
 			$data = array('distance_filter' => (int)$distance,
@@ -354,6 +368,7 @@
 		/**
 		 * Unmatch a user on Tinder
 		 * @param {string} [match_id] The match ID on Tinder
+		 * @return {array} An array from Tinder's API
 		 */
 		public function UnmatchUser($match_id) {
 			$info = SendRequest('user/matches/'.$match_id.'/', $auth, "DELETE", FALSE);
@@ -364,11 +379,14 @@
 		 * Lookup a Tinder user's information
 		 * @param {string} [tinder_id] The Tinder ID of the user targetted
 		 * @param {string} [auth] The API token
+		 * @return {array|boolean} An array from Tinder's API
 		 */
 		public function UserLookup($tinder_id, $auth) {
 			$info = SendRequest('user/'.$tinder_id, $auth, FALSE, FALSE);
 			$decode = @json_decode($info, TRUE);
-
+			// FormatArray($decode);
+			// die;
+			// 
 			if($decode['status'] == 200) {
 				$user = $decode['results'];
 				// FormatArray($user);
@@ -400,6 +418,7 @@
 		 * Validate all of the parameters from the Hot page. 
 		 * Make sure all of the parameters values are of accepted values
 		 * @param {array} [params] An array containing all of the URL parameters
+		 * @return {array} An array containing all of the validated params
 		 */
 		public function ValidateParams($params) {
 			// Set all of the param variables to their default values
@@ -415,7 +434,7 @@
 			foreach($params as $key => $val) {
 				switch($key) {
 					// Set the default gender
-					case'gender';
+					case'gender':
 						// The default is both
 						if($val == 0 || $val == 1) {
 							$gender = $val;
@@ -423,53 +442,55 @@
 						break;
 
 					// Set the default city
-					case'city';
+					case'city':
 
 						// The default city is NULL
-						if($val != '') {
+						if(!empty($val)) {
 							// If the state is set, then query the DB to see if the city in the given state exists
 							if(isset($params['state'])) {
-								$check = $this->location_model->CheckCityAndState(urldecode($val), urldecode($params['state']));
-								// var_dump($check);
+								$check = $this->loc->CheckCityAndState(urldecode($val), urldecode($params['state']));
+								//echo '<br><br><br><br><br><br>';
+								//var_dump($check);
 
 								// If the place exists, then decode it
 								if($check) {
 									$city['name'] = urldecode($val);
 
 									// Get the lat & lon coordinates
-									$coords = $this->location_model->MapquestLocation($city['name'], urldecode($params['state']));
-									// FormatArray($coords);
+									$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
 									$city['lon'] = $coords['lng'];
 									$city['lat'] = $coords['lat'];
+									//echo '<br><br><br>';
+									//FormatArray($coords);
+									//FormatArray($city);
 								}
 							}
 						}
 						break;
 
 					// Set the default state
-					case'state';
+					case'state':
 
 						// The default state is NULL
-						if($val != '') {
+						if(!empty($val)) {
 							// Check to see if the state exists
-							$check = $this->location_model->CheckState(urldecode($val));
+							$check = $this->loc->CheckState(urldecode($val));
 
 							// If the state exists, then decode it
-							if($check > 0) {
+							if($check) {
 								// If the state is the full name, get its abbreviation
 								if(strlen(urldecode($val)) != 2) {
-									$state['abbrev'] = $this->location_model->ConvertState(urldecode($val));
+									$state['abbrev'] = $this->loc->ConvertState(urldecode($val));
 									$state['name'] = ucwords(strtolower(urldecode($val)));
 								} else {
 									// If not, get its full name
 									$state['abbrev'] = strtolower(urldecode($val));
-									$state['name'] = $this->location_model->FullFromAbbrev(urldecode($val));
+									$state['name'] = $this->loc->FullFromAbbrev(urldecode($val));
 								}
-
 								// echo $state['abbrev'];
 
 								// Get the place's lat & lon coordinates
-								$coords = $this->location_model->MapquestLocation(NULL, $state['abbrev']);
+								$coords = $this->loc->MapquestLocation(NULL, $state['abbrev']);
 								$state['lon'] = $coords['lng'];
 								$state['lat'] = $coords['lat'];
 							}
@@ -477,7 +498,7 @@
 						break;
 
 					// Set the default distance
-					case'distance';
+					case'distance':
 
 						// If the distance is greater than 0 and less than 10,000 set it
 						if($val > 0 && $val < 5000) {
@@ -486,8 +507,8 @@
 						break;
 
 					// Set the min & max ages
-					case'min';
-					case'max';
+					case'min':
+					case'max':
 
 						// If the age is between 18 and 50, then set it
 						if($val > 17 && $val < 51) {
@@ -497,7 +518,6 @@
 				}
 			}
 
-			// Return an array containing all of the updated params
 			return array('gender' => $gender, 
 						'city' => $city, 
 						'state' => $state,  

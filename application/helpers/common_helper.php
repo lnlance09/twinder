@@ -312,7 +312,7 @@
 				}
 
 				// Save the location data
-				$raw_data = $data[0][0]['data'];
+				$raw_data = $data['data'];
 				$time = $raw_data['datetime'];
 				$distance = $raw_data['miles_away'];
 				$city = $raw_data['city'];

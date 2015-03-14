@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?php echo $public_url; ?>font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
@@ -79,26 +79,8 @@
     <div class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-<?php
-    if($session) {
-?>
-                    <span class="icon-bar">Play</span>
-                    <span class="icon-bar">Profile</span>
-<?php
-    } else {
-?>
-                    <span class="icon-bar">Sign In</span>
-                    <span class="icon-bar">About</span>
-                    <span class="icon-bar">Terms</span>
-                    <span class="icon-bar">FAQ</span>                  
-<?php
-    }
-?>
-                </button>
-
                 <a class="navbar-brand" href="<?php echo $base_url; ?>">
-                    <img class="svg" src="<?php echo $img_url; ?>svg/match.svg" width="50" height="50" alt="logo"/>
+                    <img class="svg" src="<?php echo $img_url; ?>svg/match.svg" width="50" height="50" alt="logo">
                     <span id="we">Twinder</span>
                 </a>
 
@@ -112,7 +94,9 @@
 ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <?php echo $name; ?>
+                            <img src="http://images.gotinder.com/54684adda591fd436cbbb718/84x84_56166cf5-fbc3-44d3-8879-42e8818f388b.jpg" alt="Me" class="thumbnail">
+
+                            <span id="header_name"><?php echo $name; ?></span>
 
                             <span id="like_count">
                                 <!-- The match count -->
@@ -167,3 +151,4 @@
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
     <div id="like_users_num" class="hidden">0</div>
+    
