@@ -55,12 +55,12 @@ $db['default']['password'] = 'root';
 $db['default']['database'] = 'webtinder';
 
 // Remote settings
-/*
+
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'lance';
 $db['default']['password'] = 'Codecall87!!';
 $db['default']['database'] = 'wetinder';
-*/
+
 
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
