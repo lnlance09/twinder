@@ -17,37 +17,43 @@
 			}
 
 			public function Index() {
-				// Get the user ID
-				$user_id = $this->session->userdata('user_id');
+				$admin_id = $this->session->userdata('admin_id');
 
-				// Check to make sure the user is logged in
-				if($user_id) {
-					header('Location: '.$this->base_url);
+				if($admin_id) {
+					// Get the user ID
+					$user_id = $this->session->userdata('user_id');
+
+					// Check to make sure the user is logged in
+					if($user_id) {
+						header('Location: '.$this->base_url);
+					} else {
+						// Define the meta tags
+						$meta_info = array('description' => 'Sign In to WeTinder',
+										'img' => $this->base_url.'public/img/',
+										'url' => $this->base_url.'signin');
+
+						// Set all of the info that needs to be passed to the header view
+						$header_info = array('title' => 'Sign In',
+											'session' => FALSE,
+											'header' => 'Sign in to Facebook',
+											'meta' => $meta_info,
+											'auth' => '');
+
+						// Set all of the info that needs to be passed to the dashboard view
+						$body_info = [];
+
+						// Get all of the data for the footer view
+						$locations = $this->loc->RandomLocations();
+						$rand_users = $this->database->GetAllUsers();
+						$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+						// Load all of the views
+						$this->load->view('templates/header', $header_info); 
+						$this->load->view('signin'); 
+						$this->load->view('templates/footer', $footer_info); 
+					}
 				} else {
-					// Define the meta tags
-					$meta_info = array('description' => 'Sign In to WeTinder',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'signin');
-
-					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Sign In',
-										'session' => FALSE,
-										'header' => 'Sign in to Facebook',
-										'meta' => $meta_info,
-										'auth' => '');
-
-					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = [];
-
-					// Get all of the data for the footer view
-					$locations = $this->loc->RandomLocations();
-					$rand_users = $this->database->GetAllUsers();
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
-
-					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('signin'); 
-					$this->load->view('templates/footer', $footer_info); 
+					header('Location: '.$this->base_url.'admin');
 				}
 			}
 

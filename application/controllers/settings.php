@@ -17,80 +17,86 @@
 			}
 
 			public function Index() {
-				// Get the user ID
-				$user_id = $this->session->userdata('user_id');
+				$admin_id = $this->session->userdata('admin_id');
 
-				// Make sure the user is logged in
-				if($user_id) {
-					$auth = $this->session->userdata('token');
-					$tinder_id = $this->session->userdata('tinder_id');
-					$username = $this->session->userdata('username');
+				if($admin_id) {
+					// Get the user ID
+					$user_id = $this->session->userdata('user_id');
 
-					// Get the most recent info about the user from Tinder
-					$info = $this->user->ProfileInfo($auth);
-					$lon = $info['pos']['lon'];
-					$lat = $info['pos']['lat'];
-					// FormatArray($info);
+					// Make sure the user is logged in
+					if($user_id) {
+						$auth = $this->session->userdata('token');
+						$tinder_id = $this->session->userdata('tinder_id');
+						$username = $this->session->userdata('username');
 
-					// Get the city and state based upon the lon & lat coordinates
-					$loc = $this->loc->MapquestLatLon($lat, $lon);
-					// FormatArray($loc);
-					// die;
+						// Get the most recent info about the user from Tinder
+						$info = $this->user->ProfileInfo($auth);
+						$lon = $info['pos']['lon'];
+						$lat = $info['pos']['lat'];
+						// FormatArray($info);
 
-					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database->GetThreeStats($tinder_id);
-					$like_count = $stats['like_count'];
-					$match_count = $stats['match_count'];
-					$pass_count = $stats['pass_count'];
+						// Get the city and state based upon the lon & lat coordinates
+						$loc = $this->loc->MapquestLatLon($lat, $lon);
+						// FormatArray($loc);
+						// die;
 
-					// Get the user's profile link
-					$profile_link = FormatUserLink($tinder_id, $username);
+						// Get all of the stats for the header if the client is logged in
+						$stats = $this->database->GetThreeStats($tinder_id);
+						$like_count = $stats['like_count'];
+						$match_count = $stats['match_count'];
+						$pass_count = $stats['pass_count'];
 
-					// Store all of the gender filters in an array
-					$filters = array(array('num' => 0, 'name' => 'Straight'),
-			                    	array('num' => 1, 'name' => 'Gay'),
-			                    	array('num' => -1, 'name' => 'Bi'));
+						// Get the user's profile link
+						$profile_link = FormatUserLink($tinder_id, $username);
 
-					// Store all of the gender values in an array
-					$genders = array(array('num' => 0, 'name' => 'Male'),
-									array('num' => 1, 'name' => 'Female'));
+						// Store all of the gender filters in an array
+						$filters = array(array('num' => 0, 'name' => 'Straight'),
+				                    	array('num' => 1, 'name' => 'Gay'),
+				                    	array('num' => -1, 'name' => 'Bi'));
 
-					$settings_info = array('distance' => $info['distance_filter'],
-											'min' => $info['age_filter_min'],
-											'max' => $info['age_filter_max'],
-											'gender_filter' => $info['gender_filter'],
-											'gender' => $info['gender'],
-											'username' => $username,
-											'city' => $loc['city'],
-											'state' => $loc['full_name'],
-											'lon' => $lon,
-											'lat' => $lat,
-										    'filters' => $filters,
-										    'genders' => $genders);
+						// Store all of the gender values in an array
+						$genders = array(array('num' => 0, 'name' => 'Male'),
+										array('num' => 1, 'name' => 'Female'));
 
-					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Settings',
-										'session' => TRUE,
-										'header' => 'Settings',
-										'name' => $this->session->userdata('first_name'),
-										'auth' => $auth,
-										'tinder_id' => $tinder_id,
-										'like_count' => $like_count,
-										'pass_count' => $pass_count,
-										'match_count' => $match_count,
-										'profile_link' => $profile_link);
+						$settings_info = array('distance' => $info['distance_filter'],
+												'min' => $info['age_filter_min'],
+												'max' => $info['age_filter_max'],
+												'gender_filter' => $info['gender_filter'],
+												'gender' => $info['gender'],
+												'username' => $username,
+												'city' => $loc['city'],
+												'state' => $loc['full_name'],
+												'lon' => $lon,
+												'lat' => $lat,
+											    'filters' => $filters,
+											    'genders' => $genders);
 
-					// Get all of the data for the footer view
-					$locations = $this->loc->RandomLocations();
-					$rand_users = $this->database->GetAllUsers();
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+						// Set all of the info that needs to be passed to the header view
+						$header_info = array('title' => 'Settings',
+											'session' => TRUE,
+											'header' => 'Settings',
+											'name' => $this->session->userdata('first_name'),
+											'auth' => $auth,
+											'tinder_id' => $tinder_id,
+											'like_count' => $like_count,
+											'pass_count' => $pass_count,
+											'match_count' => $match_count,
+											'profile_link' => $profile_link);
 
-					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('settings', $settings_info); 
-					$this->load->view('templates/footer', $footer_info); 
+						// Get all of the data for the footer view
+						$locations = $this->loc->RandomLocations();
+						$rand_users = $this->database->GetAllUsers();
+						$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+						// Load all of the views
+						$this->load->view('templates/header', $header_info); 
+						$this->load->view('settings', $settings_info); 
+						$this->load->view('templates/footer', $footer_info); 
+					} else {
+						header('Location: '.$this->base_url);
+					}
 				} else {
-					header('Location: '.$this->base_url);
+					header('Location: '.$this->base_url.'admin');
 				}
 			}
 

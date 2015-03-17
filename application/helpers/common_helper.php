@@ -74,7 +74,7 @@
 			 */
 			function BioDefault($bio, $name) {
 				if($bio == '') {
-					return $name." doesnt't have a bio.";
+					return $name." doesn't have a bio.";
 				} else {
 					return $bio;
 				}

@@ -1109,6 +1109,12 @@ span.sub_tip {
     color: #777;
     font-size: 26px; }
 
+/**
+ * Admin
+ */
+.admin {
+  padding-top: 55px !important; }
+
 body {
   font-family: 'Open Sans', sans-serif; }
 

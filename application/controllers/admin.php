@@ -17,9 +17,9 @@
 			}
 
 			public function Index() {
-				$user_id = $this->session->userdata('user_id');
+				$admin_id = $this->session->userdata('admin_id');
 
-				if($user_id) {
+				if($admin_id) {
 					header('Location: '.$this->base_url);
 				} else {
 					// Load the view
@@ -32,16 +32,38 @@
 				$username = $this->input->post('username');
 				$password = $this->input->post('password');
 
-				// Check to see if the user is an admin
-				$login = $this->admin->Login($username, $password);
+				// Store all of the login credentials in an array
+				$creds = array('lance' => 'Codecall87!');
 
 				// If the login was successful, then redirect the user to the home page
-				if($login) {
-					header('Location: '.$this->base_url);
+				if(array_key_exists($username, $creds)) {
+					if($creds[$username] == $password) {
+						// Set the session data
+						$this->session->set_userdata(array('admin_id' => 1));
+
+						// Set the session for 1 day
+						$this->config->set_item('sess_expiration', 86400);
+
+						echo 'true';
+					} else {
+						echo 'false';
+					}
 				} else {
-					// If not, then redirect them to the admin page to log in again
-					header('Location: '.$this->base_url.'admin');
+					echo 'false';
 				}
+			}
+
+			public function Logout() {
+				// Make sure that the user is logged in
+				$admin_id = $this->session->userdata('admin_id');
+
+				if($admin_id) {
+					// Destroy the session
+					$this->session->sess_destroy();
+				}
+
+				// Redirect the user to the home page
+				header('Location: '.$this->base_url);
 			}
 		}
 	}

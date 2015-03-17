@@ -14,187 +14,193 @@
 			}
 
 			public function Index() {
-				// Get the user's Tinder ID from the URL
-				$id = $this->uri->segment(2, NULL);
+				$admin_id = $this->session->userdata('admin_id');
 
-				// Get the info about the user
-				$user_info = $this->database->GetUserInfo($id);
-				// FormatArray($user_info);
-				// die;
+				if($admin_id) {
+					// Get the user's Tinder ID from the URL
+					$id = $this->uri->segment(2, NULL);
 
-				// If the user actually exists in the DB
-				if($user_info) {
-					// Find out if the client is logged in or not
-					$user_id = $this->session->userdata('user_id');
-
-					if($user_id) {
-						$session = TRUE;
-					} else {
-						$session = FALSE;
-					}
-
-					// If the client is logged in
-					if($session) {
-						// Save all of the session variables as variables
-						$my_tinder_id = $this->session->userdata('tinder_id');
-						$username = $this->session->userdata('username');
-						$token = $this->session->userdata('token');
-						$name = $this->session->userdata('first_name');
-						$lon = $this->session->userdata('lon');
-						$lat = $this->session->userdata('lat');
-
-						// Get the stats of the user who is logged in
-						$stats = $this->database->GetThreeStats($my_tinder_id);
-						$like_count = $stats['like_count'];
-						$match_count = $stats['match_count'];
-						$pass_count = $stats['pass_count'];
-
-						// Format the user's profile link
-						$profile_link = FormatUserLink($my_tinder_id, $username);
-
-						/* UPDATE THE USER'S PROFILE */
-						// Make a request to Tinder to get the most recent info about this user
-						$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
-						// FormatArray($live_info);
-						// die;
-
-						// If the user actually exists according to Tinder, then get their info and update the profile
-						if($live_info) {
-							$distance = $live_info['distance'];
-
-							// Update the users table with the most recent info about this user
-							$data = array('first_name' => $live_info['name'],
-										'bio' => $live_info['bio'],
-										'dob' => $live_info['dob'],
-										'age' => $live_info['age'],
-										'gender' => $live_info['gender'],
-										'first_name' => $live_info['name'],
-										'last_activity_date' => $live_info['last_activity_date']);
-							$this->database->UpdateUser($live_info['tinder_id'], $data);
-
-							// Add these elements to the array
-							$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 
-										'fb_like_count', 'fb_likes', 'fb_friend_count', 'fb_friends');
-
-							foreach($keys as $key) {
-								$user_info[$key] = $live_info[$key];
-							}
-
-							$user_info['last_active_format'] = $user_info['last_activity_date'];
-
-							// Check to see if this user is allowed to report this user
-							$report = $this->database->CheckReport($my_tinder_id, $user_info['tinder_id']);
-
-							// Determine whether or not the client is able to like the given user
-							$like = $this->user->CanLike($user_info['tinder_id'], $my_tinder_id, $session);
-
-							// Determine whether or not the client is able to edit the bio for the profile
-							$edit = $this->user->CanEdit($user_info['tinder_id'], $my_tinder_id);
-						} else {
-							// The user must have deleted their Tinder account
-							$view_info = array();
-
-							// Load the error view page and quit the script
-							$this->load->view('errors/account');
-							exit;
-						}
-					} else {
-						$like_count = NULL;
-						$match_count = NULL;
-						$pass_count = NULL;
-
-						$report = FALSE;
-						$like = FALSE;
-						$edit = FALSE;
-
-						$name = NULL;
-						$token = NULL;
-						$my_tinder_id = NULL;
-						$profile_link = NULL;
-
-						$lon = NULL;
-						$lat = NULL;
-						$distance = NULL;
-					}
-
-					// Find out if this user has authorized Twitter for their account
-					if(!empty($user_info['twitter_handle'])) {
-						$twitter_access = 'true';
-					} else {
-						$twitter_access = 'false';
-					}
-
-					// Update the user's last seen position
-					$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
-					// echo '<br><br><br><br><br><br>';
-					// FormatArray($last_seen);
-					// die;
-
-					/*
-					echo 'Can Like: ';
-					var_dump($like);
-					echo '<br>';
-					*/
-				
-					// Get the text for the popup window on the google maps marker
-					$last = FormatLastSeenText($last_seen, $this->base_url);
-					// echo $last;
-					// die;
-
-					// Define the meta tags
-					$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on Twinder',
-									'img' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/'.$user_info['profile_pic'],
-									'url' => $this->base_url.$user_info['link']);
-
-					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => $user_info['name'],
-										'session' => $session,
-										'header' => $user_info['name'],
-										'auth' => $token,
-										'tinder_id' => $my_tinder_id,
-										'name' => $name,
-										'like_count' => $like_count,
-										'match_count' => $match_count,
-										'pass_count' => $pass_count,
-										'meta' => $meta_info,
-										'profile_link' => $profile_link);
-
-					// Get all of the stats of the user who is being viewed
-					$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $my_tinder_id);
-					// FormatArray($user_stats);
-					// die;
-
+					// Get the info about the user
+					$user_info = $this->database->GetUserInfo($id);
 					// FormatArray($user_info);
 					// die;
-					// Set all of the info that needs to be passed to the body view
-					$body_info = array('user_info' => $user_info,
-									'pic_count' => count($user_info['pics']['file']),
-									'img_path' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/',
-									'session' => $session,
-									'report' => $report,
-									'like' => $like,
-									'edit' => $edit,
-									'twitter_access' => $twitter_access,
-									'lat' => $last_seen['data']['lat'],
-									'lon' => $last_seen['data']['lon'],
-									'city' => $last_seen['data']['city'],
-									'state' => $last_seen['data']['state'],
-									'distance' => $last_seen['data']['miles_away'],
-									'last_seen' => $last,
-									'stats' => $user_stats);
-					// FormatArray($body_info);
-				
-					// Get all of the data for the footer view
-					$locations = $this->loc->RandomLocations();
-					$rand_users = $this->database->GetAllUsers();
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
-					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('profile', $body_info); 
-					$this->load->view('templates/footer', $footer_info); 
+					// If the user actually exists in the DB
+					if($user_info) {
+						// Find out if the client is logged in or not
+						$user_id = $this->session->userdata('user_id');
+
+						if($user_id) {
+							$session = TRUE;
+						} else {
+							$session = FALSE;
+						}
+
+						// If the client is logged in
+						if($session) {
+							// Save all of the session variables as variables
+							$my_tinder_id = $this->session->userdata('tinder_id');
+							$username = $this->session->userdata('username');
+							$token = $this->session->userdata('token');
+							$name = $this->session->userdata('first_name');
+							$lon = $this->session->userdata('lon');
+							$lat = $this->session->userdata('lat');
+
+							// Get the stats of the user who is logged in
+							$stats = $this->database->GetThreeStats($my_tinder_id);
+							$like_count = $stats['like_count'];
+							$match_count = $stats['match_count'];
+							$pass_count = $stats['pass_count'];
+
+							// Format the user's profile link
+							$profile_link = FormatUserLink($my_tinder_id, $username);
+
+							/* UPDATE THE USER'S PROFILE */
+							// Make a request to Tinder to get the most recent info about this user
+							$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
+							// FormatArray($live_info);
+							// die;
+
+							// If the user actually exists according to Tinder, then get their info and update the profile
+							if($live_info) {
+								$distance = $live_info['distance'];
+
+								// Update the users table with the most recent info about this user
+								$data = array('first_name' => $live_info['name'],
+											'bio' => $live_info['bio'],
+											'dob' => $live_info['dob'],
+											'age' => $live_info['age'],
+											'gender' => $live_info['gender'],
+											'first_name' => $live_info['name'],
+											'last_activity_date' => $live_info['last_activity_date']);
+								$this->database->UpdateUser($live_info['tinder_id'], $data);
+
+								// Add these elements to the array
+								$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 
+											'fb_like_count', 'fb_likes', 'fb_friend_count', 'fb_friends');
+
+								foreach($keys as $key) {
+									$user_info[$key] = $live_info[$key];
+								}
+
+								$user_info['last_active_format'] = $user_info['last_activity_date'];
+
+								// Check to see if this user is allowed to report this user
+								$report = $this->database->CheckReport($my_tinder_id, $user_info['tinder_id']);
+
+								// Determine whether or not the client is able to like the given user
+								$like = $this->user->CanLike($user_info['tinder_id'], $my_tinder_id, $session);
+
+								// Determine whether or not the client is able to edit the bio for the profile
+								$edit = $this->user->CanEdit($user_info['tinder_id'], $my_tinder_id);
+							} else {
+								// The user must have deleted their Tinder account
+								$view_info = array();
+
+								// Load the error view page and quit the script
+								$this->load->view('errors/account');
+								exit;
+							}
+						} else {
+							$like_count = NULL;
+							$match_count = NULL;
+							$pass_count = NULL;
+
+							$report = FALSE;
+							$like = FALSE;
+							$edit = FALSE;
+
+							$name = NULL;
+							$token = NULL;
+							$my_tinder_id = NULL;
+							$profile_link = NULL;
+
+							$lon = NULL;
+							$lat = NULL;
+							$distance = NULL;
+						}
+
+						// Find out if this user has authorized Twitter for their account
+						if(!empty($user_info['twitter_handle'])) {
+							$twitter_access = 'true';
+						} else {
+							$twitter_access = 'false';
+						}
+
+						// Update the user's last seen position
+						$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
+						// echo '<br><br><br><br><br><br>';
+						// FormatArray($last_seen);
+						// die;
+
+						/*
+						echo 'Can Like: ';
+						var_dump($like);
+						echo '<br>';
+						*/
+					
+						// Get the text for the popup window on the google maps marker
+						$last = FormatLastSeenText($last_seen, $this->base_url);
+						// echo $last;
+						// die;
+
+						// Define the meta tags
+						$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on Twinder',
+										'img' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/'.$user_info['profile_pic'],
+										'url' => $this->base_url.$user_info['link']);
+
+						// Set all of the info that needs to be passed to the header view
+						$header_info = array('title' => $user_info['name'],
+											'session' => $session,
+											'header' => $user_info['name'],
+											'auth' => $token,
+											'tinder_id' => $my_tinder_id,
+											'name' => $name,
+											'like_count' => $like_count,
+											'match_count' => $match_count,
+											'pass_count' => $pass_count,
+											'meta' => $meta_info,
+											'profile_link' => $profile_link);
+
+						// Get all of the stats of the user who is being viewed
+						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $my_tinder_id);
+						// FormatArray($user_stats);
+						// die;
+
+						// FormatArray($user_info);
+						// die;
+						// Set all of the info that needs to be passed to the body view
+						$body_info = array('user_info' => $user_info,
+										'pic_count' => count($user_info['pics']['file']),
+										'img_path' => 'http://images.gotinder.com/'.$user_info['tinder_id'].'/',
+										'session' => $session,
+										'report' => $report,
+										'like' => $like,
+										'edit' => $edit,
+										'twitter_access' => $twitter_access,
+										'lat' => $last_seen['data']['lat'],
+										'lon' => $last_seen['data']['lon'],
+										'city' => $last_seen['data']['city'],
+										'state' => $last_seen['data']['state'],
+										'distance' => $last_seen['data']['miles_away'],
+										'last_seen' => $last,
+										'stats' => $user_stats);
+						// FormatArray($body_info);
+					
+						// Get all of the data for the footer view
+						$locations = $this->loc->RandomLocations();
+						$rand_users = $this->database->GetAllUsers();
+						$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+						// Load all of the views
+						$this->load->view('templates/header', $header_info); 
+						$this->load->view('profile', $body_info); 
+						$this->load->view('templates/footer', $footer_info); 
+					} else {
+						header('Location: '.$this->base_url);
+					}
 				} else {
-					header('Location: '.$this->base_url);
+					header('Location: '.$this->base_url.'admin');
 				}
 			} 
 

@@ -17,159 +17,165 @@
 			}
 
 			public function Index() {
-				// Get the user ID
-				$user_id = $this->session->userdata('user_id');
+				$admin_id = $this->session->userdata('admin_id');
 
-				// Get all of the URL parameters
-				$params = $this->uri->uri_to_assoc(2);
-				// FormatArray($params);
-				// die;
+				if($admin_id) {
+					// Get the user ID
+					$user_id = $this->session->userdata('user_id');
 
-				// Get the validated query parameters
-				$valids = $this->user->ValidateParams($params);
-				// FormatArray($valids);
+					// Get all of the URL parameters
+					$params = $this->uri->uri_to_assoc(2);
+					// FormatArray($params);
+					// die;
 
-				$gender = $valids['gender'];
-				$city = $valids['city'];
-				$state = $valids['state'];
-				$distance = $valids['distance'];
-				$min = $valids['min'];
-				$max = $valids['max'];
-				$page = $valids['page'];
+					// Get the validated query parameters
+					$valids = $this->user->ValidateParams($params);
+					// FormatArray($valids);
 
-				// Get the search parameter from the URL
-				$q = $this->input->get('q');
+					$gender = $valids['gender'];
+					$city = $valids['city'];
+					$state = $valids['state'];
+					$distance = $valids['distance'];
+					$min = $valids['min'];
+					$max = $valids['max'];
+					$page = $valids['page'];
 
-				// Get the full URL
-				$array = array('gender' => $gender,
-								'city' => $city['name'],
-								'state' => $state['name'],
-								'distance' => $distance,
-								'min' => $min,
-								'max' => $max,
-								'page' => $page);
-				// FormatArray($city);
+					// Get the search parameter from the URL
+					$q = $this->input->get('q');
 
-				// Define the full URL with all of the parameters
-				$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
-
-				// Add the search query parameter to the URL if necessary
-				if($q != '') {
-					$url .= '?q='.$q;
-				}
-				
-				// Determine whether to use the coordinates of the city or the state
-				if($state['lon'] != NULL && $state['lat'] != NULL) {
-					if($city['lon'] != NULL && $city['lat'] != NULL) {
-						$lon = $city['lon'];
-						$lat = $city['lat'];
-					} else {
-						$lon = $state['lon'];
-						$lat = $state['lat'];
-					}
-
-					$set = 'true';
-				} else {
-					$lon = $this->session->userdata('lon');
-					$lat = $this->session->userdata('lat');
-					$set = 'false';
-				}
-
-				// echo $lon.', '.$lat.'<br>';
-				// die;
-
-				// The number of user that meet this criteria
-				$query = $this->database->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
-
-				// Check to see if the client is logged in
-				if($user_id) {
-					$session = TRUE;
-					$auth = $this->session->userdata('token');
-					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database->GetThreeStats($tinder_id);
-					$like_count = $stats['like_count'];
-					$match_count = $stats['match_count'];
-					$pass_count = $stats['pass_count'];
-				} else {
-					$session = FALSE;
-					$auth = NULL;
-					$tinder_id = NULL;
-					$like_count = NULL;
-					$match_count = NULL;
-					$pass_count = NULL;
-				}
-
-				// Format the user's profile link
-				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-
-				// Get all of the state data for the pie chart
-				$all_chart = $this->database->GetUsersInState($state['abbrev']);
-				$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
-				$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
-
-				// FormatArray($chart_data);
-				// die;
-
-				// Store all of the gender filters in an array
-				$genders = array(array('num' => 0, 'name' => 'men'),
-		                    	array('num' => 1, 'name' => 'women'),
-		                    	array('num' => -1, 'name' => 'both'));
-
-				// Define the title of the document based upon the query parameters
-				$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
-
-				// Define the meta tags
-				$meta_info = array('description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
-									'img' => $this->base_url.'public/img/',
-									'url' => $url);
-
-				// Set all of the info that needs to be passed to the header view
-				$header_info = array('title' => $title,
-									'session' => $session,
-									'header' => 'The hottest',
-									'auth' => $auth,
-									'tinder_id' => $tinder_id,
-									'like_count' => $like_count,
-									'pass_count' => $pass_count,
-									'match_count' => $match_count,
-									'name' => $this->session->userdata('first_name'),
-									'meta' => $meta_info,
-									'q' => $q,
-									'profile_link' => $profile_link);
-
-				// Define the body info
-				$body_info = array('hot_count' => $hot['count'],
-									'genders' => $genders,
-									'gender' => strtolower($gender),
+					// Get the full URL
+					$array = array('gender' => $gender,
 									'city' => $city['name'],
 									'state' => $state['name'],
-									'abbrev' => $state['abbrev'],
-									'lon' => $lon,
-									'lat' => $lat,
 									'distance' => $distance,
 									'min' => $min,
 									'max' => $max,
-									'q' => $q,
-									'page' => $page,
-									'set' => $set,
-									'chart_data' => $all_chart,
-									'male_percentage' => $male_chart['count'],
-									'female_percentage' => $female_chart['count']);
-				// FormatArray($body_info);
-				// die;
+									'page' => $page);
+					// FormatArray($city);
 
-				// Get all of the data for the footer view
-				$locations = $this->loc->RandomLocations();
-				$rand_users = $this->database->GetAllUsers();
-				$footer_info = array('locations' => $locations, 'users' => $rand_users);
+					// Define the full URL with all of the parameters
+					$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
 
-				// Load all of the views
-				$this->load->view('templates/header', $header_info); 
-				$this->load->view('hot', $body_info); 
-				$this->load->view('templates/footer', $footer_info); 
+					// Add the search query parameter to the URL if necessary
+					if($q != '') {
+						$url .= '?q='.$q;
+					}
+					
+					// Determine whether to use the coordinates of the city or the state
+					if($state['lon'] != NULL && $state['lat'] != NULL) {
+						if($city['lon'] != NULL && $city['lat'] != NULL) {
+							$lon = $city['lon'];
+							$lat = $city['lat'];
+						} else {
+							$lon = $state['lon'];
+							$lat = $state['lat'];
+						}
+
+						$set = 'true';
+					} else {
+						$lon = $this->session->userdata('lon');
+						$lat = $this->session->userdata('lat');
+						$set = 'false';
+					}
+
+					// echo $lon.', '.$lat.'<br>';
+					// die;
+
+					// The number of user that meet this criteria
+					$query = $this->database->HotQuery($gender, $min, $max, $q);
+					$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
+
+					// Check to see if the client is logged in
+					if($user_id) {
+						$session = TRUE;
+						$auth = $this->session->userdata('token');
+						$tinder_id = $this->session->userdata('tinder_id');
+
+						// Get all of the stats for the header if the client is logged in
+						$stats = $this->database->GetThreeStats($tinder_id);
+						$like_count = $stats['like_count'];
+						$match_count = $stats['match_count'];
+						$pass_count = $stats['pass_count'];
+					} else {
+						$session = FALSE;
+						$auth = NULL;
+						$tinder_id = NULL;
+						$like_count = NULL;
+						$match_count = NULL;
+						$pass_count = NULL;
+					}
+
+					// Format the user's profile link
+					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+
+					// Get all of the state data for the pie chart
+					$all_chart = $this->database->GetUsersInState($state['abbrev']);
+					$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
+					$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
+
+					// FormatArray($chart_data);
+					// die;
+
+					// Store all of the gender filters in an array
+					$genders = array(array('num' => 0, 'name' => 'men'),
+			                    	array('num' => 1, 'name' => 'women'),
+			                    	array('num' => -1, 'name' => 'both'));
+
+					// Define the title of the document based upon the query parameters
+					$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
+
+					// Define the meta tags
+					$meta_info = array('description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
+										'img' => $this->base_url.'public/img/',
+										'url' => $url);
+
+					// Set all of the info that needs to be passed to the header view
+					$header_info = array('title' => $title,
+										'session' => $session,
+										'header' => 'The hottest',
+										'auth' => $auth,
+										'tinder_id' => $tinder_id,
+										'like_count' => $like_count,
+										'pass_count' => $pass_count,
+										'match_count' => $match_count,
+										'name' => $this->session->userdata('first_name'),
+										'meta' => $meta_info,
+										'q' => $q,
+										'profile_link' => $profile_link);
+
+					// Define the body info
+					$body_info = array('hot_count' => $hot['count'],
+										'genders' => $genders,
+										'gender' => strtolower($gender),
+										'city' => $city['name'],
+										'state' => $state['name'],
+										'abbrev' => $state['abbrev'],
+										'lon' => $lon,
+										'lat' => $lat,
+										'distance' => $distance,
+										'min' => $min,
+										'max' => $max,
+										'q' => $q,
+										'page' => $page,
+										'set' => $set,
+										'chart_data' => $all_chart,
+										'male_percentage' => $male_chart['count'],
+										'female_percentage' => $female_chart['count']);
+					// FormatArray($body_info);
+					// die;
+
+					// Get all of the data for the footer view
+					$locations = $this->loc->RandomLocations();
+					$rand_users = $this->database->GetAllUsers();
+					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+					// Load all of the views
+					$this->load->view('templates/header', $header_info); 
+					$this->load->view('hot', $body_info); 
+					$this->load->view('templates/footer', $footer_info); 
+				} else {
+					header('Location: '.$this->base_url.'admin');
+				}
 			}
 
 			public function GetHottest() {

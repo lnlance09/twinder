@@ -22,7 +22,7 @@ $(document).ready(function() {
 	            success: function(data) {
 	                // console.log(data);
 	                if(data.trim() == 'true') {
-	                	// window.location = base_url +'users/discover';
+	                	window.location = base_url +'hot';
 	                } else if(data == 'error') {
 	                	$('#signin_form').effect('shake');
 	                } else {
