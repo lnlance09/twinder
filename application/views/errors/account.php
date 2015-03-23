@@ -30,30 +30,12 @@
 </head>
     
 <body>   
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-<?php
-    if($session === FALSE) {
-?>
-                    <span class="icon-bar">Sign In</span>
-                    <span class="icon-bar">About</span>
-                    <span class="icon-bar">Terms</span>
-                    <span class="icon-bar">FAQ</span>
-<?php
-    } else {
-?>
-                    <span class="icon-bar">Play</span>
-                    <span class="icon-bar">Profile</span>
-<?php
-    }
-?>
-                </button>
-
                 <a class="navbar-brand" href="<?php echo $base_url; ?>">
-                    <img class="svg" src="<?php echo $img_url; ?>svg/match.svg" width="50" height="50" alt="logo"/>
-                    <span id="we">WeTinder</span>
+                    <img class="svg" src="<?php echo $img_url; ?>svg/match.svg" width="50" height="50" alt="logo">
+                    <span id="we">Twinder</span>
                 </a>
 
                 <div class="clearfix"></div>
@@ -61,33 +43,17 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="<?php echo $base_url; ?>hot">browse</a>
-                    </li>
-<?php
-    if($session === FALSE) {
-?>
-                    <li class="active">
-                        <a href="<?php echo $base_url; ?>signin">sign in</a>
-                    </li>
-<?php
-    } else {
-?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <?php echo $first_name; ?>
+                            <img src="<?php echo $profile_pic; ?>" alt="Me" class="thumbnail">
+
+                            <span id="header_name"><?php echo $name; ?></span>
 
                             <span id="like_count">
                                 <!-- The match count -->
                                 <i class="fa fa-heart" id="heart_icon"></i> 
                                 <span id="match_count_num"><?php echo $match_count; ?></span>
-
-                                <!-- The like count -->
-                                <i class="fa fa-thumbs-up" id="match_icon"></i> 
-                                <span id="like_count_num"><?php echo $like_count; ?></span>
-                            </span>
-
-                            <span class="caret"></span>
+                            </span> 
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
@@ -100,31 +66,34 @@
                             <li><a href="<?php echo $base_url; ?>users/Logout">Logout <i class="fa fa-sign-out"></i></a></li>
                         </ul>
                     </li>
-<?php
-    }
-?>
                 </ul>
             </div>
         </div>
     </div>
 
     <div id="search_container">
-        <form method="GET" action="<?php echo $base_url; ?>hot/both">
+        <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
+
                 <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="" autocomplete="off">
-                <span class="input-group-addon"></span>
 
                 <div class="clearfix"></div>
             </div>
         </form>
     </div>
 
+    <!--
+    <div id="autocomplete_wrapper">
+        <div id="autocomplete"></div>
+    </div>
+    -->
+
     <div id="header-section">
         <div id="signin">
             <h1 class="page-header">
-                <img src="" class="img-circle" id="error_pic" alt="<?php echo $name; ?>" />
-                <?php echo $name; ?> deleted his Tinder account... for now, at least.
+                <img src="<?php echo $user['pic']; ?>" class="img-circle" id="error_pic" alt="<?php echo $user['name']; ?>" />
+                <?php echo $user['name']; ?> has deleted his Tinder
             </h1>
 
             <div class="ajax-loader">
@@ -134,10 +103,31 @@
     </div>
 
     <div class="text-center" id="footer">
+        <div id="list_name">
+            <div class="col-lg-3">
+                <i class="fa fa-rocket"></i> About
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-globe"></i> People
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-map-marker"></i> Places
+            </div>
+
+            <div class="col-lg-3">
+                <i class="fa fa-twitter"></i> Follow Us
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
         <div id="sub_footer">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <ul>
-                    <li>About</li>
                     <li><a href="<?php echo $base_url; ?>about">about</a></li>
                     <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
                     <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
@@ -145,25 +135,53 @@
                 </ul>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <ul>
-                    <li>Trending</li>
+<?php
+    // Loop thru the random users
+    for($i=0;$i<4;$i++) {
+        $img_path = 'http://images.gotinder.com/'.$users[$i]['id'].'/'; 
+?>
+                    <li>
+                        <a href="<?php echo $base_url.$users[$i]['link']; ?>">
+                            <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
+                        </a>
+                    </li>
+<?php
+    }
+?>
                 </ul>
             </div>
 
-            <div class="col-lg-4">
-                <!-- Twitter Button -->
+            <div class="col-lg-3">
                 <ul>
-                    <li>Follow Us</li>
-
+<?php
+    // Loop thru the random locations
+    for($i=0;$i<4;$i++) {
+        $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
+?>
                     <li>
-                        <a href="https://twitter.com/WeTinder" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @WeTinder</a>
+                        <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
+                    </li>
+<?php
+    }
+?>
+                </ul>
+            </div>
+
+            <div class="col-lg-3">
+                <ul>
+                    <!-- Twitter Button -->
+                    <li>
+                        <a href="https://twitter.com/TwinderTweets" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderTweets</a>
 
                         <script>
                             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
                         </script>
                     </li>
 
+                    <!-- Facebook Button -->
+                    <!--
                     <li id="fb_like_button">
                         <div id="fb-root"></div>
 
@@ -174,12 +192,12 @@
                                 js = d.createElement(s); js.id = id;
                                 js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
                                 fjs.parentNode.insertBefore(js, fjs);
-                            }(document, 'script', 'facebook-jssdk'));
+                            } (document, 'script', 'facebook-jssdk'));
                         </script>
 
                         <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
                     </li>
-                
+                    -->
                 </ul>
             </div>
 

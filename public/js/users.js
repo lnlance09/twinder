@@ -1,10 +1,17 @@
 $(document).ready(function() {
-    var base_url = '/wetinder/'; 
+    var base_url = $('#base_url').text().trim(); 
     var tinder_id = $('#user_tinder_id').text();
+    var my_tinder_id = $('#my_tinder_id').text();
+    var first_name = $('#first_name').text();
+    var gender = $('#gender').text();
+    var active_tab = $('#active_tab').text();
     var can_edit = $('#can_edit').text().trim();
-    var twitter = $('#twitter_access').text().trim();
+    var twitter = $('#twitter').text().trim();
+    var can_like = $('#like').text().trim();
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
     // console.log(can_edit);
+
+    console.log(can_like);
 
     // Google Maps
     function Initialize(lat, lon) {
@@ -23,22 +30,8 @@ $(document).ready(function() {
         map.setMapTypeId('map_style');
 
         // Set the infobox options
-        infoBubble = new InfoBubble({
-            map: map,
-            content: $('#infobox').html(),
-            position: LatLon,
-            shadowStyle: 1,
-            padding: '6px',
-            backgroundColor: '#fff',
-            borderRadius: 0,
-            arrowSize: 5,
-            borderWidth: 1,
-            borderColor: '#000',
-            disableAutoPan: false,
-            hideCloseButton: true,
-            arrowPosition: 30,
-            backgroundClassName: 'transparent',
-            arrowStyle: 2,
+        var infowindow = new google.maps.InfoWindow({
+            content: $('#infobox').html()
         });
 
         // Set the marker
@@ -53,8 +46,7 @@ $(document).ready(function() {
         google.maps.event.addListener(marker, 'click', function() {
             map.setZoom(16);
             map.setCenter(marker.getPosition());
-            
-            infoBubble.open();
+            infowindow.open(map, marker);
         });
     
         // Convert the miles to meters and draw the radius
@@ -79,9 +71,20 @@ $(document).ready(function() {
         $('#google_maps').css('height', '250px');
     }
 
+    function ChangeURL(name, tab) {
+        var title = name +' - Twinder';
+        var link = location.pathname.match(/\/users\/(.*)/)[1];
+        var real = link.split('/');
+        var url = base_url + 'users/'+ real[0] +'/'+ tab;
+        
+        // Change the URL
+        window.history.replaceState('', title, url);
+    }
+
+    // Edit the profile
     if(can_edit == 1) {
         // Edit the user's bio
-        $('h1.static button').click(function(e) {
+        $('button#click_to_edit').click(function(e) {
             e.preventDefault();
             
             // If the form is being opened to be edited
@@ -94,11 +97,6 @@ $(document).ready(function() {
                 $(this).attr('id', 'editing');
                 $(this).text('Done');
             } else {
-                // If the form is being submitted
-                $('ul#sub_pics li').each(function(index) {
-                    // var link = $(this).attr('');
-                });
-
                 // Submit the form
                 $.ajax({
                     url: base_url +'users/UpdateProfile',
@@ -124,9 +122,6 @@ $(document).ready(function() {
             $('#about_quote span').attr('contenteditable', 'true');
             $('#about_quote span').css('font-style', 'italic');
         });
-
-        // Make the pics sortable
-        // $('ul#sub_pics').sortable();
     }
 
     // Report the user
@@ -183,14 +178,52 @@ $(document).ready(function() {
 
     // Search thru connections upon keyup of the input field
     $('#search_connections').keyup(function(e) {
-        var q = $(this).val();
         var type = $('#active').attr('name');
-        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ q;
-        $('#con_load_box').load(base_url +'users/GetConnections', data);
+        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ $(this).val();
+
+        $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
+            
+        }); 
     });
+
+    switch(can_like) {
+        // The users have already been matched
+        case'matched':
+
+            $('#unmatch_user').hover(function() {
+                $(this).removeClass('btn-warning');
+                $(this).addClass('btn-danger');
+                $(this).text('Unmatch');
+            });
+
+            $('#unmatch_user').mouseout(function() {
+                $(this).removeClass('btn-danger');
+                $(this).addClass('btn-warning');
+                $(this).text('Matched');
+            });
+
+            $('#unmatch_user').click(function() {
+                $.ajax({
+                    url: base_url +'users/UnmatchUser',
+                    data: {
+                        city: city,
+                        state: state
+                    },
+                    success: function(data) {
+
+                    }
+                });
+
+                $(this).removeClass('btn-warning');
+                $(this).addClass('btn-primary');
+                $(this).html('<i class="fa fa-heart"></i> Like');
+            });
+            break;
+    }
 
     // Load the connections upon hover
     $('.timer_box').click(function() {
+        // Set this element's ID to 'active'
         $('.timer_box').attr('id', '');
         $(this).attr('id', 'active');
 
@@ -198,26 +231,57 @@ $(document).ready(function() {
         $('#type_name').text(type);
         $('#search_connections').attr('placeholder', 'Search '+ type);
 
+        // Change the URL
+        ChangeURL(first_name, type);
+
         // Change the font-awesome icon
         switch(type) {
             case'likes':
 
                 var fa = 'thumbs-up';
+                var labels = {
+                    'likes': 'Likes',
+                    'liked_by': 'Liked by'
+                };
+
+                if(my_tinder_id != tinder_id && my_tinder_id != '') {
+                    labels['mutual_likes'] = 'Mutual likes';
+                }
                 break;
 
             case'matches':
 
                 var fa = 'heart';
+                var labels = {
+                    'matches': 'Matches'
+                };
+
+                if(my_tinder_id != tinder_id && my_tinder_id != '') {
+                    labels['mutual_matches'] = 'Mutual matches';
+                }
                 break;
 
             case'passes':
 
                 var fa = 'thumbs-down';
+                var labels = {
+                    'passes': 'Passes',
+                    'passed_by': 'Passed by'
+                };
+
+                if(my_tinder_id != tinder_id && my_tinder_id != '') {
+                    labels['mutual_passes'] = 'Mutual passes';
+                }
                 break;
 
             case'tweets':
 
                 var fa = 'twitter';
+                var labels = {
+                    'tweets': 'Tweets',
+                    'tweets_and_replies': 'Tweets and replies',
+                    'photos_and_videos': 'Photos and videos'
+                };
                 break;
         }
 
@@ -232,30 +296,72 @@ $(document).ready(function() {
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
         if(type == 'tweets') {
-            data += '&twitter='+ twitter;
+            data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
         }
 
         // Load the new results
         $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
-           $('#con_load_box .ajax-loader').fadeOut();
+            $('.panel-heading ul li').fadeOut();
+            $('.panel-heading ul li').remove();
+
+            for(var key in labels) {
+                $('.panel-heading ul').append("<li name='"+ key +"'>"+ labels[key] +"</li>");
+                $('.panel-heading ul li').fadeIn();
+            }
+
+            $('.panel-heading ul li:first-of-type').attr('id', 'active');
+
+            $('.panel-heading ul li').click(function() {
+                $(this).attr('id', 'active');
+                $(this).siblings().attr('id', '');
+                var type = $(this).attr('name');
+
+                // Change the URL
+                ChangeURL(first_name, $(this).attr('name'));
+
+                var data = 'type='+ type + '&page=0&id='+ tinder_id;
+
+                if(type == 'tweets' || type == 'tweets_and_replies' || type == 'photos_and_videos') {
+                    data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
+                }
+
+                $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
+                    console.log('loaded');
+                });
+            });
         });
     });
 
     // Change the pic upon click
     $('ul#sub_pics li').click(function(e) {
         e.preventDefault();
-        var pic = $(this).attr('name');
-        $('#gallery_img').attr('src', pic);
-        $('#gallery_modal').modal('show');
+        $('#gallery_img').attr('src', $(this).attr('name'));
     });
 
     // Load the map
-    var lat = $('#lat').text().trim();
-    var lon = $('#lon').text().trim();
-    Initialize(lat, lon);
+    Initialize($('#lat').text(), $('#lon').text());
 
     // Load the connections
-    $('#con_load_box').load(base_url +'users/GetConnections', 'type=likes&page=0&id='+ tinder_id, function() {
+    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter;
 
+    $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
+        $('.panel-heading ul li').click(function() {
+            $(this).attr('id', 'active');
+            $(this).siblings().attr('id', '');
+            var type = $(this).attr('name');
+
+            // Change the URL
+            ChangeURL(first_name, $(this).attr('name'));
+
+            var data = 'type='+ type + '&page=0&id='+ tinder_id;
+
+            if(type == 'tweets' || type == 'tweets_and_replies' || type == 'photos_and_videos') {
+                data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
+            }
+
+            $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
+                console.log('loaded');
+            });
+        });
     });
 });

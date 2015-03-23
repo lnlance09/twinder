@@ -73,7 +73,7 @@
 			 * @param {string} [name] The user's name
 			 */
 			function BioDefault($bio, $name) {
-				if($bio == '') {
+				if(empty($bio)) {
 					return $name." doesn't have a bio.";
 				} else {
 					return $bio;
@@ -91,8 +91,11 @@
 				$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA');
 				$string = implode('|', $terms);
 
+				// Turn the links to anchor tags
+				$link_bio = preg_replace('#(?<!href\=[\'"])(https?|ftp|file)://[-A-Za-z0-9+&@\#/%()?=~_|$!:,.;]*[-A-Za-z0-9+&@\#/%()=~_|$]#', 'regexp_url_search', $bio);
+				
 				// Make links out of he Instagram usernames and Twitter hashtags
-				$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
+				$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $link_bio);
 				$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
 				return trim($hash_bio);
 			}
@@ -173,12 +176,12 @@
 			 */
 			function ReverseInterestedIn($name) {
 				switch($name) {
-					case 'men';
+					case 'men':
 
 						return 0;
 						break;
 
-					case 'women';
+					case 'women':
 
 						return 1;
 						break;
@@ -197,7 +200,7 @@
 			 * @param {int} [num] The number to be formatted
 			 */
 			function FormatNumber($num) {
-				if($num > 1000) {
+				if($num > 10000) {
 					$floor = floor($num/1000);
 					$decimal = ceil($num/100)-($floor*10); 
 					return $floor.'.'.$decimal.'k';
@@ -267,7 +270,7 @@
 				$pics = [];
 
 				for($i=0;$i<count($photos);$i++) {
-					$pics[$i] = $photos[$i]['fileName']; 
+					$pics[$i] = $photos[$i]['processedFiles'][0]['url'];
 				}
 
 				return $pics;
@@ -280,11 +283,33 @@
 			 * @param {array} [photos] An array contaning a user's photos
 			 */
 			function ReturnProfilePic($photos) {
+				$key = 0;
+
 				for($i=0;$i<count($photos);$i++) {
-					if($photos[$i]['fileName'] !== FALSE) {
-						return $photos[$i]['fileName']; 
-						break;
+					if(array_key_exists('main', $photos[$i])) {
+						if($photos[$i]['main'] == 'main') {
+							$key = $i;
+							break;
+						}
 					}
+				}
+
+				return $photos[$key]['processedFiles'][0]['url'];
+			}
+		}
+
+		if(!function_exists('ChangePicSize')) {
+			/**
+			 * Return the path to a Tinder user's image
+			 * @param {string} [file] The name of the pic file
+			 * @param {int} [size] The size of the pic
+			 * @return {string} The path to the user's Tinder pic
+			 */
+			function ChangePicSize($file, $size) {
+				if($size == 84 || $size == 172 || $size == 320 || $size == 640) {
+					return str_replace('640x640_', $size.'x'.$size.'_', $file);
+				} else {
+					return $file;
 				}
 			}
 		}
@@ -302,14 +327,10 @@
 				$name = $user_info['name'];
 				$link = $user_info['link'];
 				$gender = $user_info['gender'];
-				$pic = $user_info['profile_pic'];
+				$pic = ChangePicSize($user_info['profile_pic'], 172);
 
 				// Define the subject
-				if($gender == 0) {
-					$subject = 'he';
-				} elseif($gender == 1) {
-					$subject = 'she';
-				}
+				$subject = FormatArticle($gender);
 
 				// Save the location data
 				$raw_data = $data['data'];
@@ -319,11 +340,79 @@
 				$state = $raw_data['state'];
 				$lon = $raw_data['lon'];
 				$lat = $raw_data['lat'];
+	
+				$text = '<div class="media" id="infowindow">
+				            <div class="media-left media-top">
+				                <a href="'.$base_url.$link.'">
+				                    <img src="'.$pic.'" class="media-object img-circle" alt="'.$name.'">
+				                </a>
+				            </div>
+				            
+				            <div class="media-body text-left">
+				                <h4 class="media-heading">
+				                    <a href="'.$base_url.$link.'" title="'.$name.'">'.$name.'</a>
+				                </h4>
 
-				return trim("<div id='infowindow'><h3><img src='http://images.gotinder.com/".$tinder_id."/84x84_".$pic."' width='50' height='50' alt='".$name."' class='img-circle'> <a href='".$base_url.$link."'>".$name."</a>
-						</h3> <p>".FormatTime($time)." <br> ".$distance." miles away <br>".$city.", ".$state." <br> ".$lon.", ".$lat."</p></div>");
+				                <p>
+				                    '.$distance.' miles away from '.$city.', '.$state.' <br>
+
+				                    '.FormatTime($time).'
+				                </p>
+				            </div>
+				        </div>';
+
+				return trim($text);
 			}
 
+		}
+
+		if(!function_exists('FormatPossesion')) {
+			function FormatPossesion($gender) {
+				if($gender == 0) {
+					return 'his';
+				} else {
+					return 'her';
+				}
+			}
+		}
+
+		if(!function_exists('ReturnFA')) {
+			function ReturnFA($type) {
+				switch($type) {
+		            case'likes':
+
+		                $fa = 'thumbs-up';
+		                break;
+
+		            case'matches':
+
+		                $fa = 'heart';
+		                break;
+
+		            case'passes':
+
+		                $fa = 'thumbs-down';
+		                break;
+
+		            case'tweets':
+
+		                $fa = 'twitter';
+		                break;
+		        }
+
+		        return $fa;
+		    }
+	    }
+
+
+		if(!function_exists('FormatArticle')) {
+			function FormatArticle($gender) {
+				if($gender == 0) {
+					return 'he';
+				} else {
+					return 'she';
+				}
+			}
 		}
 
 		if(!function_exists('FormatArray')) {
@@ -390,11 +479,55 @@
 			 * @param {string} [name] The name of the user
 			 */
 			function MetaSubject($username, $name) {
-				if($username == '') {
+				if(empty($username)) {
 					return $name;
 				} else {
 					return $username;
 				}
+			}
+		}
+
+		if(!function_exists('ReturnTabs')) {
+			function ReturnTabs($tab) {
+				switch($tab) {
+					case'likes':
+					case'liked_by':
+					case'mutual_likes':
+
+						$tabs = array('likes', 'liked_by', 'mutual_likes');
+						$active = 'likes';
+						break;
+
+					case'passes':
+					case'passed_by':
+					case'mutual_passes':
+
+						$tabs = array('passes', 'passed_by', 'mutual_passes');
+						$active = 'passes';
+						break;	
+
+					case'matches':
+					case'mutual_matches':
+
+						$tabs = array('matches', 'mutual_matches');
+						$active = 'matches';
+						break;
+
+					case'tweets':
+					case'tweets_and_replies':
+					case'photos_and_videos':
+
+						$tabs = array('tweets', 'tweets_and_replies', 'photos_and_videos');
+						$active = 'tweets';
+						break;
+
+					default:
+
+						$tabs = array('likes', 'liked_by', 'mutual_likes');
+						$active = 'likes';
+				}
+
+				return array('tabs' => $tabs, 'active' => $active);
 			}
 		}
 
@@ -410,7 +543,7 @@
 						if($col_mod == 0) {
 							$end_col = $end;
 						} else {
-							$end_col = $col_mod;
+							$end_col = $count-$col_mod;
 						}
 					} else {
 						$end = $start+$per_page;

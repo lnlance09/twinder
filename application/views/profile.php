@@ -12,10 +12,6 @@
 
 						<!-- Infobox for Google Maps -->
                     	<div id="infobox">
-                    		<h2 id="last_seen_marker">
-                    			Last seen by
-                    		</h2>
-
                     		<?php echo $last_seen; ?>
                     	</div>
 	                </div>
@@ -24,14 +20,7 @@
 
 					<!-- Stripe -->
 					<div id="stripe">
-<?php
-    if($edit) {
-    	echo "hye";
-?>
-                    	<button class="btn btn-primary pull-right" type="button" id="click_to_edit">Edit</button>
-<?php
-	}
-	
+<?php	
 	if($report) {
 ?>
 						<!-- Link to report the user -->
@@ -44,7 +33,7 @@
 							<div class="row">
 <?php
 	for($i=0;$i<count($stats);$i++) {
-		if($i == 0) {
+		if($stats[$i]['name'] == $tab_active) {
 			$id = 'active';
 		} else {
 			$id = '';
@@ -65,6 +54,30 @@
 	}
 ?>
 							</div>
+<?php
+	// Display the edit button
+    if($edit) {
+?>
+                    		<button class="btn btn-primary" type="button" id="click_to_edit">Edit</button>
+<?php
+	} 
+
+	if($like) {
+		if($like == 'liked') {
+?>
+							<button class="btn btn-success" type="button">Liked</button>
+<?php
+		} elseif($like == 'matched') {
+?>
+							<button class="btn btn-warning" type="button" id="unmatch_user">Matched</button>
+<?php
+		} else {
+?>
+							<button class="btn btn-primary" type="button" id="like_user"><i class="fa fa-heart"></i> Like</button>
+<?php
+		}
+	}
+?>
 						</div>
 			
 						<span class="clearfix"></span>
@@ -74,7 +87,7 @@
 	                	<!-- Profile Pic -->
 	                    <div class="col-lg-3">
 	                    	<a href="#" class="thumbnail">
-	                        	<img src="<?php echo $img_path.'172x172_'.$user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" id="main_img">
+	                        	<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" id="main_img">
 	                        </a>
 	                        
 		                    <form method="POST" action="<?php echo $base_url; ?>users/EditProfile" id="edit_profile">
@@ -95,7 +108,13 @@
 									<!-- City and state -->
 									<li><i class="fa fa-map-marker fa-fw"></i> Last seen near <a href="<?php echo $base_url.'hot/city/'.$city.'/state/'.$state.'/'; ?>"><?php echo $city.', '.$state; ?></a></li>
 									<li><i class="fa fa-clock-o fa-fw"></i> Last active <?php echo $user_info['last_active_format']; ?></li>
-									<li><i class="fa fa-twitter fa-fw"></i> </li>
+<?php
+	if($twitter['access'] == 'true') {
+?>
+									<li><i class="fa fa-twitter fa-fw"></i> <?php echo $twitter['handle']; ?></li>
+<?php
+	}
+?>
 									<li><i class="fa fa-camera-retro fa-fw"></i> <?php echo $pic_count; ?> photos</li>
 								</ul>
 		                    </form>
@@ -103,17 +122,13 @@
 	                		<ul id="sub_pics">
 <?php
 	// Loop thru the pics
-    if($pic_count >= 5) {
-        $end = 5;
-    } else {
-        $end = $pic_count;
-    }
-
-    for($i=0;$i<$end;$i++) {
+    for($i=0;$i<$pic_count;$i++) {
+    	$size_one = ChangePicSize($user_info['pics']['file'][$i], 172);
+    	$size_two = ChangePicSize($user_info['pics']['file'][$i], 320);
 ?>
-			                    <li name="<?php echo $img_path.'320x320_'.$user_info['pics']['file'][$i]; ?>">
+			                    <li name="<?php echo $size_two; ?>" data-toggle="modal" data-target="#gallery_modal">
 			                        <a href="#">
-			                            <img src="<?php echo $img_path.'172x172_'.$user_info['pics']['file'][$i]; ?>" width="115" height="115" class="thumbnail" alt="<?php echo $user_info['name']; ?>" />
+			                            <img src="<?php echo $size_one; ?>" width="115" height="115" class="thumbnail" alt="<?php echo $user_info['name']; ?>" />
 			                        </a>
 			                    </li>
 <?php
@@ -127,17 +142,29 @@
 			            <div class="col-lg-9 text-center">
 			            	<div id="con_wrapper" class="panel panel-default">
 			            		<div class="panel-heading">
-									<h3 class="panel-title text-left">
-										Tweets
-									</h3>
+									<ul>
+<?php
+	// Loop thru the connections tabs
+	for($i=0;$i<count($tabs);$i++) {
+		if($i == 0) {
+			$tab_id = 'id="active"';
+		} else {
+			$tab_id = '';
+		}
+?>
+										<li <?php echo $tab_id; ?> name="<?php echo $tabs[$i]; ?>"><?php echo str_replace('_', ' ', $tabs[$i]); ?></li>
+<?php
+	}
+?>
+									</ul>
 				            	</div>
 
 				            	<div class="panel-body">
 									<!-- Search bar for filtering connections -->
 									<div id="search_con_container">
 						                <div class="input-group">
-							                <span class="input-group-addon"><i class="fa fa-heart fa-lg" id="fa_type"></i></span>
-						                   	<input type="text" class="form-control" placeholder="Search matches" id="search_connections" autocomplete="off">
+							                <span class="input-group-addon"><i class="fa fa-<?php echo $con_icon; ?> fa-2x" id="fa_type"></i></span>
+						                   	<input type="text" class="form-control" placeholder="Search <?php echo $tab_active; ?>" id="search_connections" autocomplete="off">
 						            	</div>
 						            </div>
 					            
@@ -229,8 +256,13 @@
 
         <div class="hidden" id="user_tinder_id"><?php echo $user_info['tinder_id']; ?></div>
         <div class="hidden" id="can_edit"><?php echo $edit; ?></div>
+        <div class="hidden" id="like"><?php echo $like; ?></div>
         <div class="hidden" id="lon"><?php echo $lon; ?></div>
         <div class="hidden" id="lat"><?php echo $lat; ?></div>
         <div class="hidden" id="radius"><?php echo $distance; ?></div>
-        <div class="hidden" id="twitter_access"><?php echo $twitter_access; ?></div>
+        <div class="hidden" id="twitter"><?php echo $twitter['access']; ?></div>
+        <div class="hidden" id="handle"><?php echo $twitter['handle']; ?></div>
+        <div class="hidden" id="first_name"><?php echo $user_info['name']; ?></div>
+        <div class="hidden" id="gender"><?php echo $user_info['gender']; ?></div>
+        <div class="hidden" id="active_tab"><?php echo $tab_active; ?></div>
     </div>

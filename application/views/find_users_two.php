@@ -5,7 +5,7 @@
 ?>
     <div class="jumbotron">
         <h1>
-            <img src="http://images.gotinder.com/<?php echo $tinder_id.'/172x172_'.$profile_pic; ?>" alt="<?php echo $name; ?>" class="img-circle">
+            <img src="<?php echo ChangePicSize($profile_pic, 172); ?>" alt="<?php echo $name; ?>" class="img-circle">
             <?php echo $name.', '.$age; ?>
         </h1>
 
@@ -15,7 +15,7 @@
             </p>
 
             <p>
-                <button type="button" class="btn btn-primary">View profile</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='<?php echo $base_url; ?>users/<?php echo $tinder_id; ?>'">View profile</button>
                 <button type="button" class="btn btn-default"><?php echo number_format($distance); ?> miles away</button>
             </p>
         </div>

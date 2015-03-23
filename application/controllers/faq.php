@@ -43,6 +43,7 @@
 					}
 
 					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+					$profile_pic = 'http://images.gotinder.com/'.$tinder_id.'/84x84_'.$this->session->userdata('profile_pic');
 
 					// Define the meta tags
 					$meta_info = array('description' => 'Commonly asked questions about Twinder',
@@ -60,7 +61,8 @@
 										'pass_count' => $pass_count,
 										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
-										'profile_link' => $profile_link);
+										'profile_link' => $profile_link,
+										'profile_pic' => $profile_pic);
 
 					// Get all of the data for the footer view
 					$locations = $this->loc->RandomLocations();

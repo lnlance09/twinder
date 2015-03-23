@@ -49,6 +49,8 @@
 										'img' => $this->base_url.'public/img/',
 										'url' => $this->base_url.'about');
 
+					$profile_pic = 'http://images.gotinder.com/'.$tinder_id.'/84x84_'.$this->session->userdata('profile_pic');
+					
 					// Set all of the info that needs to be passed to the header view
 					$header_info = array('title' => 'About',
 										'session' => $session,
@@ -60,7 +62,8 @@
 										'pass_count' => $pass_count,
 										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
-										'profile_link' => $profile_link);
+										'profile_link' => $profile_link,
+										'profile_pic' => $profile_pic);
 
 					// Get all of the data for the footer view
 					$locations = $this->loc->RandomLocations();

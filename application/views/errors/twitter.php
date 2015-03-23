@@ -3,15 +3,18 @@
     $img_url = $base_url.'public/img/';
 ?>
 	<div class="container">
-		<img class="svg" id="twitter_svg" src="<?php echo $img_url; ?>svg/twitter.svg" alt="twitter"><br><br>
-
-		<button class="btn btn-default" type="button" id="twitter_sign_in"><i class="fa fa-twitter fa-lg"></i> Sign in with Twitter</button>
-	
+		<img class="svg" id="twitter_svg" src="<?php echo $img_url; ?>svg/twitter.svg" alt="twitter">
+<?php
+	if($can_link) {
+?>
+		<br><br><button class="btn btn-default" type="button" id="twitter_sign_in"><i class="fa fa-twitter fa-lg"></i> Sign in with Twitter</button>
+<?php
+	}
+?>	
 		<p>
 <?php
-	if($name) {
+	if($can_link) {
 		echo 'Hi, '.$name.'. <br><br>';
-	}
 ?>
 			It looks like you haven't signed up for Twinder on Twitter. 
 			To sync your Twitter account, just sign in. <br><br>
@@ -19,6 +22,11 @@
 			Cheers,<br><br>
 
 			The Twinder Team
+<?php
+	} else {
+		echo $name." hasn't linked ".$gender." Twitter yet...";
+	}
+?>
 		</p>
 	</div>
 

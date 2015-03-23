@@ -48,11 +48,20 @@
 
 						// Get the user's profile link
 						$profile_link = FormatUserLink($tinder_id, $username);
+						$profile_pic = 'http://images.gotinder.com/'.$tinder_id.'/84x84_'.$this->session->userdata('profile_pic');
+
+						if($info['gender'] == 0) {
+							$same = 'Gay';
+							$other = 1;
+						} else {
+							$same = 'Lesbian';
+							$other = 0;
+						}
 
 						// Store all of the gender filters in an array
-						$filters = array(array('num' => 0, 'name' => 'Straight'),
-				                    	array('num' => 1, 'name' => 'Gay'),
-				                    	array('num' => -1, 'name' => 'Bi'));
+						$filters = array(array('num' => $other, 'name' => 'Straight'),
+					                    array('num' => $info['gender'], 'name' => $same),
+					                    array('num' => -1, 'name' => 'Bi'));
 
 						// Store all of the gender values in an array
 						$genders = array(array('num' => 0, 'name' => 'Male'),
@@ -81,7 +90,8 @@
 											'like_count' => $like_count,
 											'pass_count' => $pass_count,
 											'match_count' => $match_count,
-											'profile_link' => $profile_link);
+											'profile_link' => $profile_link,
+											'profile_pic' => $profile_pic);
 
 						// Get all of the data for the footer view
 						$locations = $this->loc->RandomLocations();

@@ -49,7 +49,6 @@
 <?php
     // Loop thru the random users
     for($i=0;$i<4;$i++) {
-        $img_path = 'http://images.gotinder.com/'.$users[$i]['id'].'/'; 
 ?>
                     <li>
                         <a href="<?php echo $base_url.$users[$i]['link']; ?>">
@@ -131,7 +130,6 @@
     if(in_array($controller, $maps_pages)) {
 ?>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
 <?php
     }
 

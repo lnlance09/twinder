@@ -55,8 +55,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title">
-                            <i class="fa fa-sign-in"></i> Syncing your account...
-
+                            Syncing your account...
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </h3>
                     </div>

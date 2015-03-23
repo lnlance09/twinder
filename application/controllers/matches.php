@@ -18,84 +18,72 @@
 
 			public function Index() {
 				$admin_id = $this->session->userdata('admin_id');
-
+	
 				if($admin_id) {
+					$auth = $this->session->userdata('token');
 					$user_id = $this->session->userdata('user_id');
+					$tinder_id = $this->session->userdata('tinder_id');
+					$profile_pic = $this->session->userdata('profile_pic');
 
 					// Make sure the user is logged in
 					if($user_id) {
-						$auth = $this->session->userdata('token');
-						$tinder_id = $this->session->userdata('tinder_id');
+						$session = TRUE;
+					} else {
+						$session = FALSE;
+					}
 
-						// Get the ID from the URL
-						$id = $this->uri->segment(2, NULL);
+					// Get the ID from the URL
+					$id = $this->uri->segment(2, NULL);
 
-						// Get all of the stats for the header if the client is logged in
-						$stats = $this->database->GetThreeStats($tinder_id);
-						$like_count = $stats['like_count'];
-						$match_count = $stats['match_count'];
-						$pass_count = $stats['pass_count'];
+					if($id) {
+						// Check to see if there is a record of the match existing in the DB
+						$match = $this->database->GetMatchInfo($id);
 
-						$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+						if($match) {
+							if($tinder_id == $match['user_one'] || $tinder_id == $match['user_two']) {
+								// Get info about the given match
+								$live = $this->user->GetMatchInfo($id, $auth);
+								FormatArray($live);
 
-						// Set all of the info that needs to be passed to the header view
-						$header_info = array('session' => TRUE,
-											'name' => $this->session->userdata('first_name'),
-											'auth' => $auth,
-											'tinder_id' => $tinder_id,
-											'like_count' => $like_count,
-											'match_count' => $match_count,
-											'pass_count' => $pass_count,
-											'profile_link' => $profile_link);
+								// Make sure the match still exists
+								if($live['status'] == 200) {
+									// Update the thread
+									$messages = $live['results']['messages'];
+									$this->database->UpdateThread($id, $messages);
+								} 
+							} 
 
-						if($id) {
-							// Get info about the given match
-							$match = $this->user->GetMatchInfo($id, $auth);
-							// FormatArray($match);
+							// Get all of the stats for the header if the client is logged in
+							$stats = $this->database->GetThreeStats($tinder_id);
+							$like_count = $stats['like_count'];
+							$match_count = $stats['match_count'];
+							$pass_count = $stats['pass_count'];
 
-							if($match['status'] == 200) {
-								if(in_array($tinder_id, $match['results']['participants'])) {
-									$messages = $match['results']['messages'];
-									$activity = $match['results']['last_activity_date'];
+							// Format the user's profile pic and their page link
+							$profile_img = PicPath($profile_pic, $tinder_id).'172x172_'.$profile_pic;
+							$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
-									$tinder_match = $match['results']['person'];
-									$tinder_match_id = $tinder_match['_id'];
-									$tinder_name = $tinder_match['name'];
-									$tinder_bio = $tinder_match['bio'];
-									$tinder_birth = $tinder_match['birth_date'];
-									$tinder_pic = $tinder_match['photos'][0]['processedFiles'][0]['url'];
+							// Set all of the info that needs to be passed to the header view
+							$header_info = array('name' => $this->session->userdata('first_name'),
+												'auth' => $auth,
+												'session' => $session,
+												'tinder_id' => $tinder_id,
+												'like_count' => $like_count,
+												'match_count' => $match_count,
+												'pass_count' => $pass_count,
+												'profile_link' => $profile_link,
+												'profile_pic' => $profile_img);
 
-									// Define all of the info for the match view
-									$match_info = array('match_id' => $id,
-														'activity' => $activity,
-														'tinder_id' => $tinder_match_id,
-														'name' => $tinder_name,
-														'bio' => $tinder_bio,
-														'birth_date' => $tinder_birth,
-														'profile_pic' => $tinder_pic);
-								}
+							// Define the body info
+							$body_info = array('match_id' => $id);
 
-								$body = 'thread';
-								$match_info['type'] = 'single';
-								$header_info['header'] = $tinder_name;
-								$header_info['title'] = 'You and '.$tinder_name;
-							} else {
-								header('Location: '.$this->base_url);
-							}
+							// Load all of the views
+							$this->load->view('templates/header', $header_info); 
+							$this->load->view('match', $body_info); 
+							$this->load->view('templates/footer'); 
 						} else {
-							// Define all of the info for the match view
-							$match_info = [];
-
-							$body = 'matches';
-							$match_info['type'] = 'all';
-							$header_info['header'] = 'My Matches';
-							$header_info['title'] = 'My Matches';
+							header('Location: '.$this->base_url);
 						}
-
-						// Load all of the views
-						$this->load->view('header', $header_info); 
-						$this->load->view($body, $match_info); 
-						$this->load->view('footer'); 
 					} else {
 						header('Location: '.$this->base_url);
 					}
@@ -116,24 +104,7 @@
 				echo json_encode(array('pic' => $pic, 'name' => $name, 'id' => $id));
 			}
 
-			public function MatchesBackend() {
-				// Save the auth as a variable
-				$auth = $this->session->userdata('token');
-				$id = $this->session->userdata('tinder_id');
-
-				// Get the page num from the URL
-				$page = $this->input->get('page');
-
-				// Get all of the users sorted by the given filter
-				$matches = $this->database->GetMatches($id, $auth);
-				// FormatArray($match['results']['messages']);
-				// die;
-
-				// Load the users backend view
-				$this->load->view('backend/matches', array('matches' => $matches, 'page' => $page)); 
-			}
-
-			public function ThreadBackend() {
+			public function Thread() {
 				// Get the parameters from the URL
 				$id = $this->input->get('id');
 				$page = $this->input->get('page');
@@ -142,7 +113,11 @@
 				$match = $this->user->GetMatchInfo($id, $this->session->userdata('token'));
 
 				// Load the view
-				$data = array('messages' => $match['results']['messages'], 'page' => $page);
+				$data = array('messages' => $match['results']['messages'], 
+							'count' => count($match['results']['messages']),
+							'user_one' => '',
+							'user_two' => '',
+							'page' => $page);
 				$this->load->view('backend/thread', $data); 
 			}
 		}

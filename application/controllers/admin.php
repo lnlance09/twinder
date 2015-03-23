@@ -58,8 +58,8 @@
 				$admin_id = $this->session->userdata('admin_id');
 
 				if($admin_id) {
-					// Destroy the session
-					$this->session->sess_destroy();
+					// Unset the session
+					$this->session->unset_userdata('admin_id');
 				}
 
 				// Redirect the user to the home page

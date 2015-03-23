@@ -8,7 +8,7 @@
         	<!-- Radiating circle where new users will be loaded -->
         	<div id="users_load" class="text-center">
         		<div id="user_circle">
-					<img src="http://images.gotinder.com/<?php echo $this->session->userdata('tinder_id').'/172x172_'.$this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar">
+					<img src="<?php echo $this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar">
 				</div>
             </div>
 
@@ -33,7 +33,7 @@
 			    	<div class="modal-content">
 			    		<div class="modal-header">
     						<h3 class="modal-title">
-    							<i class="fa fa-check fa-md"></i> It's a match
+    							It's a match
 								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     						</h3>
 						</div>
@@ -41,7 +41,7 @@
 			      		<div class="modal-body">
 			        		<div class="col-lg-6 text-right">
 			        			<div>
-									<img src="http://images.gotinder.com/<?php echo $this->session->userdata('tinder_id').'/172x172_'.$this->session->userdata('profile_pic'); ?>" width="172" height="172" alt="<?php echo $this->session->userdata('first_name'); ?>">
+									<img src="<?php echo $pic; ?>" width="172" height="172" alt="<?php echo $name; ?>">
 								</div>
 			        		</div>
 
@@ -53,7 +53,7 @@
 
 			        		<div class="col-lg-12 text-center">
 			        			<h3>
-									<a href="<?php echo $base_url.'users/'.$this->session->userdata('tinder_id'); ?>"><?php echo $this->session->userdata('first_name'); ?></a> <span style="font-size: 24px;">&</span> <a href="" id="match_name"></a>
+									<a href="<?php echo $base_url.$link; ?>"><?php echo $name; ?></a> <span>&</span> <a href="#" id="match_name"></a>
 								</h3>
 			        		</div>
 

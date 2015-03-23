@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var base_url = '/wetinder/';
+	var base_url = $('#base_url').text().trim(); 
 	// $('#sync_modal').modal('show'); 
 
 	/**

@@ -21,7 +21,7 @@
             </form>
             -->
 
-            <div id="matches_load">
+            <div id="match_load">
                 <div class="ajax-loader"></div>
             </div>
 
@@ -42,4 +42,6 @@
             <div class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/" data-numposts="10" data-colorscheme="light"></div>
         </div>
     </div>
+
+    <div class="hidden" id="match_id"><?php echo $match_id; ?></div>
         

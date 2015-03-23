@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var base_url = '/wetinder/'; 
+    var base_url = $('#base_url').text().trim(); 
     var auth = $('#auth').text().trim();
     
     /**
@@ -11,7 +11,7 @@ $(document).ready(function() {
         $circle.animate({
             'width': '600px',
             'height': '600px',
-            'margin-top': '-370px',
+            'margin-top': '-460px',
             'margin-left': '-300px',
             'opacity': '0'
         }, 2000, 'easeOutCirc');
@@ -45,12 +45,24 @@ $(document).ready(function() {
 
             // Upon like or pass of a user
             $('#like_user, #pass_user').click(function() {
+                // Get the element's ID
+                var _id = $(this).attr('id');
                 var tinder_id = $('#user_tinder_id').text();
 
+                if(_id == 'like_user') {
+                    var text = 'Like';
+                    var _class = 'like';
+                    var direction = 'left';
+                } else {
+                    var text = 'Pass';
+                    var _class = 'dislike';
+                    var direction = 'right';
+                }
+
                 // Swipe animations
-                $(this).addClass('rotate-left').delay(700).fadeOut(1);
+                $('.jumbotron').addClass('rotate-'+ direction).delay(700).fadeOut(1);
                 $('.buddy').find('.status').remove();
-                $(this).append('<div class="status like">Like!</div>'); 
+                $('.jumbotron').append('<div class="status '+ _class +'">'+ text +'</div>'); 
 
                 // If it's the 11th like, then load a fresh batch
                 var index = $('#user_at_num').text();
@@ -78,8 +90,9 @@ $(document).ready(function() {
                         id: tinder_id
                     },
                     success: function(data) {
-                        // console.log(data);
-                        if(data != 'done') {
+                        console.log(data);
+
+                        if(data != 'false') {
                             var match_id = data;
 
                             // Change the match count number
@@ -99,7 +112,7 @@ $(document).ready(function() {
                                     var pic = obj.pic;
 
                                     // Change the match's pic on the modal
-                                    $('#match_pic').attr('src', 'http://images.gotinder.com/'+ id +'/'+ pic);
+                                    $('#match_pic').attr('src', pic);
 
                                     // Change the link to their profile
                                     $('#match_name').attr('href', base_url +'users/'+ id);

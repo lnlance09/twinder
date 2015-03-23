@@ -1,6 +1,7 @@
 #users_load {
     .jumbotron {
         text-align: left;
+        border: solid 1px #ccc;
 
         h1 {
             img {
@@ -17,50 +18,48 @@
 
 #like_or_pass {
     padding: 20px;
-    background: #fff;
+    background: #eee;
     z-index: 999;
     margin-top: 0;
-    border: solid 1px #ddd;
+    border: solid 1px #ccc;
+}
+
+.rotate-left,
+.rotate-right {
+    opacity: 0;
+    transition: 1s;
 }
 
 .rotate-left {
   transform: rotate(30deg) scale(0.8);
-  transition: 1s;
   margin-left: 400px;
   cursor: e-resize;
-  opacity: 0;
 }
 
 .rotate-right {
   transform: rotate(-30deg) scale(0.8);
-  transition: 1s;
-  opacity: 0;
   margin-left: -400px;
   cursor: w-resize;
 }
 
+.status {
+    font-size: 42px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    position: absolute;
+    text-shadow: none;
+    top: 50px;
+}
+
 .like {
-  border-radius: 5px;
-  padding: 5px 10px;
-  border: 2px solid green;
-  color: green;
-  text-transform: uppercase;
-  font-size: 15px;
-  position: absolute;
-  top: 50px;
+  border: 2px solid $green;
+  color: $green;
   right: 40px;
-  text-shadow: none;
 }
 
 .dislike {
-  border-radius: 5px;
-  padding: 5px 10px;
-  border: 2px solid red;
-  color: red;
-  text-transform: uppercase;
-  font-size: 15px;
-  position: absolute;
-  top: 50px;
+  border: 2px solid #ffae1a;
+  color: #ffae1a;
   left: 40px;
-  text-shadow: none;
 }

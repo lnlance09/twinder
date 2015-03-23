@@ -68,9 +68,15 @@
 				$me_like = $this->database->SeeIfLiked($my_id, $his_id, FALSE);
 
 				if($me_like == 0) {
-					$like = TRUE;
+					$like = 'can_like';
 				} else {
-					$like = 'liked';
+					$he_like = $this->database->SeeIfLiked($my_id, $his_id, TRUE);
+
+					if($he_like == 0) {
+						$like = 'liked';
+					} else {
+						$like = 'matched';
+					}
 				}
 			} else {
 				$like = FALSE;
@@ -384,9 +390,9 @@
 		public function UserLookup($tinder_id, $auth) {
 			$info = SendRequest('user/'.$tinder_id, $auth, FALSE, FALSE);
 			$decode = @json_decode($info, TRUE);
-			// FormatArray($decode);
-			// die;
-			// 
+			//FormatArray($decode);
+			//die;
+			
 			if($decode['status'] == 200) {
 				$user = $decode['results'];
 				// FormatArray($user);

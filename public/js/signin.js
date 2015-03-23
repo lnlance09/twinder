@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var base_url = '/wetinder/';
+	var base_url = $('#base_url').text().trim(); 
 	// $('#sync_modal').modal('show'); 
 
 	/**
@@ -23,6 +23,7 @@ $(document).ready(function() {
 	            },
 	            success: function(data) {
 	                console.log(data);
+	                
 	                if(data.trim() == 'true') {
 	                	// console.log('true');
 	                	window.location = base_url +'users/discover';

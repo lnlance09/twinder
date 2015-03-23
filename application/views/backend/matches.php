@@ -8,15 +8,17 @@
 <?php
         // Loop thru each user
         for($i=0;$i<$end;$i++) {
+            $msg = $connections[$i]['last_msg'];
 			$user = $connections[$i]['user_info'];
             $_id = $user['tinder_id'];
 			$name = $user['first_name'];
 			$age = $user['age'];
-            $bio = $user['bio'];
-            $img = $user['profile_pic'];
+
+            // Format the link to the user's picture
+            $img = ChangePicSize($user['profile_pic'], 172);
 
             // Set the link
-            $link = $base_url.$user['link'];
+            $link = $base_url.'matches/'.$connections[$i]['id'];
 ?>
         <div class="media" onclick="location.href='<?php echo $link; ?>'">
             <div class="media-left media-top">
@@ -29,20 +31,19 @@
                 <h4 class="media-heading">
                     <a href="<?php echo $link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
 
-                    <span class="pull-right"><i class="fa fa-clock-o"></i></span>
-
+                    <span class="pull-right"><?php echo $msg['time']; ?></span>
                     <span class="clearfix"></span>
                 </h4>
 
                 <p>
-                    <?php echo $bio; ?>
+                    <?php echo $msg['msg']; ?>
                 </p>
             </div>
         </div>
 <?php
 		}
 ?>
-    </div>
+   </div> 
 <?php
         if($new_page != $pages) {
 ?>

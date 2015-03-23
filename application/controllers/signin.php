@@ -78,8 +78,6 @@
 
 						// Set the session for 1 day
 						$this->config->set_item('sess_expiration', 86400);
-						// FormatArray($this->session->all_userdata());
-						// die;
 
 						echo 'true';
 					} else {

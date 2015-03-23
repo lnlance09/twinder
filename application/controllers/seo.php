@@ -23,7 +23,8 @@
 			}
 
 			public function Test() {
-				// $this->database->FlushDB();
+				$this->database->FlushDB();
+				die;
 
 				$info = $this->twitter->Verify('1230606690-7T0q3DBXOyXG2rXLrRaW1OPNRo85qQPdr1WG6to');
 				// $info = $this->twitter->Authenticate();

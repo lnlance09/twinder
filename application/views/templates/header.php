@@ -94,7 +94,7 @@
 ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img src="http://images.gotinder.com/54684adda591fd436cbbb718/84x84_56166cf5-fbc3-44d3-8879-42e8818f388b.jpg" alt="Me" class="thumbnail">
+                            <img src="<?php echo $profile_pic; ?>" alt="Me" class="thumbnail">
 
                             <span id="header_name"><?php echo $name; ?></span>
 
@@ -150,5 +150,6 @@
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
+    <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
     <div id="like_users_num" class="hidden">0</div>
     

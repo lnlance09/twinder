@@ -50,6 +50,7 @@ $route['seo/sitemap\.xml'] = 'seo/sitemap';
 
 /* Users page */
 $route['users/(:any)'] = 'users/index/$1';
+$route['users/(:any)/(:any)'] = 'users/index/$1/$2';
 $route['users/discover'] = 'users/Discover/';
 $route['users/Discover'] = 'users/Discover/';
 $route['users/DiscoverLoad'] = 'users/DiscoverLoad/';

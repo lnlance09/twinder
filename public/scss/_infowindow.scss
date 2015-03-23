@@ -3,9 +3,25 @@
  */
 #infobox {
     display: none;
+    margin-top: 80px;
 }
 
-h2#last_seen_marker {
-    margin: 0;
-    font-size: 18px;
+#infowindow {
+    min-width: 250px;
+    padding: 10px;
+
+    h4 {
+        font-size: 24px;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        border: solid 1px #ccc;
+        padding: 5px;
+    }
+
+    p {
+        font-size: 18px;
+    }
 }

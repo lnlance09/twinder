@@ -77,8 +77,8 @@
 
 								'mr_link' => FormatUserLink($mr['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
 								'mrs_link' => FormatUserLink($mrs['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
-								'mr_pic' => 'http://images.gotinder.com/'.$mr['hot'][0]['tinder_id'].'/172x172_'.$mr['hot'][0]['pic'],
-								'mrs_pic' => 'http://images.gotinder.com/'.$mrs['hot'][0]['tinder_id'].'/172x172_'.$mrs['hot'][0]['pic'],
+								'mr_pic' => ChangePicSize($mr['hot'][0]['pic'], 172),
+								'mrs_pic' => ChangePicSize($mrs['hot'][0]['pic'], 172),
 								'mr_name' => $mr['hot'][0]['name'],
 								'mrs_name' => $mrs['hot'][0]['name'],
 

@@ -57,7 +57,7 @@
 					$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
 
 					// Add the search query parameter to the URL if necessary
-					if($q != '') {
+					if(!empty($q)) {
 						$url .= '?q='.$q;
 					}
 					
@@ -77,7 +77,6 @@
 						$lat = $this->session->userdata('lat');
 						$set = 'false';
 					}
-
 					// echo $lon.', '.$lat.'<br>';
 					// die;
 
@@ -107,14 +106,14 @@
 
 					// Format the user's profile link
 					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-
+					$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
+					
 					// Get all of the state data for the pie chart
 					$all_chart = $this->database->GetUsersInState($state['abbrev']);
 					$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
 					$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
-
-					// FormatArray($chart_data);
-					// die;
+					//FormatArray($male_chart);
+					//die;
 
 					// Store all of the gender filters in an array
 					$genders = array(array('num' => 0, 'name' => 'men'),
@@ -141,7 +140,8 @@
 										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
 										'q' => $q,
-										'profile_link' => $profile_link);
+										'profile_link' => $profile_link,
+										'profile_pic' => $profile_pic);
 
 					// Define the body info
 					$body_info = array('hot_count' => $hot['count'],
@@ -227,20 +227,22 @@
 					$end_col = 0;
 				}
 
+				// echo $start.', '.$end.'<br>';
+
 				$view_info = array('q_string' => http_build_query($params), 
-									'hot' => $hot, 
-									'state' => $this->loc->FullFromAbbrev($state),
-									'abbrev' => $state,
-									'states' => $this->loc->States(),
-									'count' => $count,
-									'left_over' => $count-(($page+1)*$per_page),
-									'end_col' => $end_col,
-									'per_row' => $per_row,
-									'num_rows' => $num_rows,
-									'pages' => $pages,
-									'page' => $page,
-									'new_page' => $page+1);
-				// FormatArray($view_info);
+								'hot' => $hot, 
+								'state' => $this->loc->FullFromAbbrev($state),
+								'abbrev' => $state,
+								'states' => $this->loc->States(),
+								'count' => $count,
+								'left_over' => $count-(($page+1)*$per_page),
+								'end_col' => $end_col,
+								'per_row' => $per_row,
+								'num_rows' => $num_rows,
+								'pages' => $pages,
+								'page' => $page,
+								'new_page' => $page+1);
+				// FormatArray(array_slice($view_info, 5));
 
 				// Load the views
 				$this->load->view('backend/hot', $view_info); 
