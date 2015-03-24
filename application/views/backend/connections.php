@@ -28,10 +28,6 @@
             <div class="media-body text-left">
                 <h4 class="media-heading">
                     <a href="<?php echo $link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
-
-                    <span class="pull-right"><i class="fa fa-clock-o"></i></span>
-
-                    <span class="clearfix"></span>
                 </h4>
 
                 <p>

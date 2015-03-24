@@ -23,6 +23,8 @@
 			}
 
 			public function Test() {
+				$this->user->SyncAccount('lnlance09', 'Newmanlance1');
+				die;
 				$this->database->FlushDB();
 				die;
 

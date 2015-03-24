@@ -5,43 +5,51 @@
 ?>
 	<div id="header-section">
         <div id="signin">
-            <h1 class="page-header">
-                <?php echo $header; ?>
-            </h1>
-                
-            <div class="col-lg-12">
-            
-            </div>
+            <div id="match_box">
+                <h1 class="page-header">
+                    <a href="<?php echo $base_url.$user_one['link']; ?>"><?php echo $user_one['name']; ?></a>
+                    and
+                    <a href="<?php echo $base_url.$user_two['link']; ?>"><?php echo $user_two['name']; ?></a>
 
-            <!--
-            <form method="GET" action="<?php echo $base_url; ?>matches" id="search_messages">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Filter" name="search_messages">
+                    <button class="btn btn-default pull-right" type="button">422 views</button>
+                    
+                    <a class="twitter-share-button pull-right" 
+                        href="<?php echo $base_url.'matches/'.$match_id; ?>"
+                        data-related="twitterdev"
+                        data-size="large"
+                        data-count="none">
+                        Tweet
+                    </a>
+
+                    <span class="clearfix"></span>
+                </h1>
+
+                <div id="match_load">
+                    <div class="ajax-loader">
+                        <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+                    </div>
                 </div>
-            </form>
-            -->
+<?php
+    // Print out the form to send a message if necessary
+    if($can_send) {
+?>
+                <form method="POST" id="send_msg" action="<?php echo $base_url; ?>users/SendMessage">
+                    <div class="send_area">
+                        <textarea class="form-control" placeholder="Send a message" name="msg"></textarea>
+                        <button class="btn btn-primary" type="submit" value="submit" name="submit">Send</button>
 
-            <div id="match_load">
-                <div class="ajax-loader"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </form>
+<?php
+    }
+?>
+                <div class="fb-comments" data-href="<?php echo $base_url; ?>" data-numposts="10" data-colorscheme="light"></div>
             </div>
-
-            <div class="hidden" id="match_type"><?php echo $type; ?></div>
-
-            <div id="fb-root"></div>
-
-            <script>
-                (function(d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) return;
-                    js = d.createElement(s); js.id = id;
-                    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1551292908455322&version=v2.0";
-                    fjs.parentNode.insertBefore(js, fjs);
-                } (document, 'script', 'facebook-jssdk'));
-            </script>
-
-            <div class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/" data-numposts="10" data-colorscheme="light"></div>
         </div>
     </div>
 
+    <!-- Write all of the variables for the JS to work -->
     <div class="hidden" id="match_id"><?php echo $match_id; ?></div>
+    <div class="hidden" id="match_type"><?php echo $type; ?></div>
         

@@ -5,8 +5,7 @@
     z-index: 99999999;
 
     #list_name {
-        background-color: orange;
-        background-image: url('/wetinder/public/img/bg.png');
+        background-color: $blue;
         padding: 0 $side-padding;
 
         .col-lg-3 {

@@ -10,7 +10,7 @@ $(document).ready(function() {
                 url: base_url +'users/GetUpdates',
                 success: function(data) {
                     var obj = JSON.parse(data);
-                    // console.log(obj);
+                    console.log(data);
                 }
             });
         }, 10000);

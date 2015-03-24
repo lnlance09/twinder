@@ -102,12 +102,12 @@ $(document).ready(function() {
                     url: base_url +'users/UpdateProfile',
                     type: 'POST',
                     data: {
-                        bio: $('#about_quote span').text(),
-                        pics: '',
+                        bio: $('#bio_text').val(),
                         submit: 'submit'
                     },
                     success: function(data) {
                         console.log(data);
+                        $('#about_quote').text($('#bio_text').val());
                         $('#about_quote').fadeIn();
                         $('#bio_text').hide();
                     }

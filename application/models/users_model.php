@@ -123,7 +123,7 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function GetMatchInfo($match_id, $auth) {
-			$info = SendRequest('matches/'.$match_id, $auth, FALSE, FALSE);
+			$info = SendRequest('user/matches/'.$match_id, $auth, FALSE, FALSE);
 			return @json_decode($info, TRUE);
 		}
 
@@ -262,7 +262,7 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			$sig = "Sent from <a href='http://twinder.io'>WeTinder</a> - Twitter meets Tinder";
+			$sig = "Twinder.io - Twitter meets Tinder";
 			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
 			return @json_decode($info, TRUE);
 		}

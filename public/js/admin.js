@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	var base_url = $('#base_url').text().trim(); 
-	// $('#sync_modal').modal('show'); 
 
 	/**
 	 * Validate the login form and get the auth token and sync the user's account with AJAX

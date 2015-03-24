@@ -158,20 +158,9 @@
 
 							// Update the user's last seen position
 							$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
-							//echo '<br><br><br><br><br><br>';
-							//FormatArray($last_seen);
-							//die;
-
-							/*
-							echo 'Can Like: ';
-							var_dump($like);
-							echo '<br>';
-							*/
 						
 							// Get the text for the popup window on the google maps marker
 							$last = FormatLastSeenText($last_seen, $this->base_url);
-							// echo $last;
-							// die;
 
 							// Define the meta tags
 							$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on Twinder',
@@ -218,8 +207,8 @@
 											'con_icon' => ReturnFA($tabs['active']),
 											'tab_active' => $tabs['active'],
 											'tabs' => $tabs['tabs']);
-							//FormatArray($body_info);
-							//die;
+							// FormatArray($body_info);
+							// die;
 
 							// Get all of the data for the footer view
 							$locations = $this->loc->RandomLocations();
@@ -443,10 +432,10 @@
 					$start = $page*$per_page;
 
 					if($page == ($pages-1)) {
-						$mod = $count/$per_page;
+						$mod = $count%$per_page;
 
 						if($mod > 0) {
-							$end = $count-$mod;
+							$end = $start+$mod;
 						} else {
 							$end = $start+$per_page;
 						}
@@ -454,12 +443,14 @@
 						$end = $start+$per_page;
 					}
 
+					// var_dump($end);
+
 					$info = array('connections' => $results['users'],
 								'id' => $id,
 								'type' => $type,
 								'count' => $count,
 								'left_over' => $count-($new_page*$per_page),
-								'end' => $end,
+								'end' => ceil($end),
 								'pages' => $pages,
 								'page' => $page,
 								'new_page' => $new_page);
@@ -514,8 +505,24 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if($user_id) {
+					// Save all of the session variables
+					$tinder_id = $this->session->userdata('tinder_id');
+					$token = $this->session->userdata('token');
+					$distance = $this->session->userdata('distance');
+					$lon = $this->session->userdata('lon');
+					$lat = $this->session->userdata('lat');
+					
+					// Get the city and state
+					$loc = $this->loc->MapquestLatLon($lat, $lon);
+					$city = $loc['city'];
+					$state = $loc['state'];
+
 					// Call the GetUpdates function in the users model 
-					$updates = $this->user->GetUpdates($this->session->userdata('token'), 'now');
+					$updates = $this->user->GetUpdates($token, '-10hours');
+					
+					// Sync all of the user's messages
+					$this->database->SyncMessages($updates['matches'], $tinder_id, $distance, $lon, $lat, $city, $state);
+					
 					echo json_encode($updates);
 				}
 			}
@@ -639,9 +646,24 @@
 					$id = $this->input->post('id');
 					$msg = $this->input->post('msg');
 
-					// Call the SendMessage function in the users model 
-					$message = $this->user->SendMessage($id, $msg, $this->session->userdata('token'));
-					// FormatArray($message);
+					// Make sure the form was submitted
+					if($this->input->post('submit') == 'submit') { 
+						$message = $this->user->SendMessage($id, $msg, $this->session->userdata('token'));
+						// FormatArray($message);
+
+						// Insert the message into the DB
+						if(is_array($message)) {
+							$data = array('match_id' => $message['match_id'],
+										'msg' => $message['message'],
+										'user_from' => $message['from'],
+										'user_to' => $message['to'],
+										'datetime' => strtotime($message['sent_date']));
+							$this->database->InsertMessage($data);
+							echo 'true';
+						}
+					} else {
+						echo "Didn't submit";
+					}
 				}
 			}
 
@@ -650,20 +672,17 @@
 				$user_id = $this->session->userdata('user_id');
 
 				if($user_id) {
-					$auth = $this->session->userdata('auth');
+					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Update the pic order
-					// $this->users_model->ChangePicOrder($pics, $auth);
+					$gender = $this->session->userdata('gender');
 
 					// Update the bio and/or gender
 					$bio = $this->input->post('bio');
-					$gender = $this->session->userdata('gender');
 					$update = $this->user->UpdateProfile($auth, $bio, $gender);
 
 					// Update the user's row in the DB
 					$this->database->UpdateUser($tinder_id, array('bio' => $bio, 'gender' => $gender));
-					// FormatArray($update);
+					FormatArray($update);
 				}
 			}
 		}

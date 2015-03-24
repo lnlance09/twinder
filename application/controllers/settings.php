@@ -48,7 +48,7 @@
 
 						// Get the user's profile link
 						$profile_link = FormatUserLink($tinder_id, $username);
-						$profile_pic = 'http://images.gotinder.com/'.$tinder_id.'/84x84_'.$this->session->userdata('profile_pic');
+						$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 172);
 
 						if($info['gender'] == 0) {
 							$same = 'Gay';

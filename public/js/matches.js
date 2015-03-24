@@ -1,0 +1,55 @@
+$(document).ready(function() {
+    var base_url = $('#base_url').text().trim(); 
+    var tinder_id = $('#user_tinder_id').text();
+    var match_id = $('#match_id').text();
+
+    // Load the results
+    var data = 'id='+ match_id +'&page=0';
+    $('#match_load').load(base_url +'matches/Thread', data, function() {
+        $('#match_load .ajax-loader').fadeOut();
+    });
+
+    $('form#send_msg').submit(function(e) {
+        e.preventDefault();
+        var msg = $('textarea').val();
+
+        if(msg != '') {
+            $.ajax({
+                url: base_url +'users/SendMessage',
+                type: 'POST',
+                data: {
+                    msg: msg,
+                    id: match_id,
+                    submit: 'submit'
+                },
+                success: function(data) {
+                    // console.log(data);
+                    
+                    // Reload the thread
+                    if(data == 'true') {
+                        var data = 'id='+ match_id +'&page=0';
+                        $('#match_load').load(base_url +'matches/Thread', data, function() {
+                            
+                        });
+                    }
+                }
+            });
+        } else {
+            $(this).effect('shake');
+        }
+    }); 
+
+    setTimeout(function(){
+        resizeFacebookComments();
+    }, 1000);
+
+    // ON PAGE RESIZE
+    $(window).on('resize', function(){
+        resizeFacebookComments();
+    });
+
+    function resizeFacebookComments(){
+        var src = $('.fb-comments iframe').attr('src').split('width='), width = $('#container').width();
+        $('.fb-comments iframe').attr('src', src[0] + 'width=' + width);
+    }
+});
