@@ -3,19 +3,37 @@
  */
 .navbar {
     position: fixed;
-    background-color: $black;
-    padding: 0 $side-padding; 
+    background: $black;
+
+    @media screen and (max-width: $break-small) {
+        padding: 0 20px;
+
+        .container {
+            opacity: 0.8;
+        }
+    }
+    
+    @media screen and (min-width: $break-large) {
+        padding: 0 $side-padding;
+    }
+
+    // padding: 0 $side-padding; 
+
     margin: 0 auto; 
-    border-bottom: solid 1px #fff;
     z-index: 99999;
 
     .navbar-toggle {
-        border: solid 1px $white;
-        border-radius: 0;
+        border: none;
+        background: $blue;
+        color: $white;
 
         &:hover {
-            background: $white;
+            color: #ccc;
         }
+    }
+
+    .container {
+        width: 100%;
     }
 
     .navbar-brand {
@@ -44,89 +62,111 @@
         }
     }
 
-    .navbar-nav {
+    .navbar-collapse {
+        @media screen and (max-width: $break-small) {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
 
-        > li {
-            padding: 8px;
-
-            button {
-                background: $blue;
+        ul.navbar-nav {
+            @media screen and (max-width: $break-small) {
+                float: none !important;
+                -webkit-padding-start: 0 !important;
+                margin: 0;
             }
 
-            &:first-of-type {
-                padding-right: 0;
-            }
+            > li {
+                padding: 8px;
 
-            a {
-                background: inherit;
-                color: $white;
-                font-size: 16px;
-                outline: none;
-            }
-
-            &.active {
-                > a:hover {
-                    background: #333;
+                button {
+                    background: $blue;
                 }
 
-                > a:focus {
-                    background: #222;
-                }
-            }
-
-            &.dropdown {
-                padding: 0;
-                background: #222;
-                height: 50px;
-
-                &:hover {
-                    background: #444;
+                &:first-of-type {
+                    padding-right: 0;
                 }
 
-                &.open {
-                    background: #222;
+                a {
+                    background: inherit;
+                    color: $white;
+                    font-size: 16px;
 
-                    a {
+                    @media screen and (max-width: $break-small) {
+                        font-size: 13px;
+                    }
+
+                    outline: none;
+                }
+
+                &.active {
+                    > a:hover {
+                        background: #333;
+                    }
+
+                    > a:focus {
                         background: #222;
                     }
+                }
+
+                &.dropdown {
+                    padding: 0;
+                    background: #222;
 
                     &:hover {
                         background: #444;
                     }
-                }
 
-                a {
-                    &.dropdown-toggle {
-                        padding: 8px 30px;
-                        height: 100%;
+                    &.open {
+                        background: #222;
 
-                        img {
-                            width: 35px;
-                            height: 35px;
-                            display: inline;
-                            margin-bottom: 0;
-                            vertical-align: middle;
+                        a {
+                            background: #222;
                         }
 
-                        #like_count {
-                            margin-left: 25px;
+                        &:hover {
+                            background: #444;
                         }
+                    }
 
-                        span#header_name {
-                            margin-left: 7px;
+                    a {
+                        &.dropdown-toggle {
+                            padding: 8px 10px;
+                            height: 100%;
+
+                            img {
+                                width: 35px;
+                                height: 35px;
+                                display: inline;
+                                margin-bottom: 0;
+                                vertical-align: middle;
+                            }
+
+                            #like_count {
+                                @media screen and (max-width: $break-small) {
+                                    float: right;
+                                }
+                            }
+
+                            span#header_name {
+                                margin-left: 7px;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    > .container {
-        display: block;
-        width: 100%;
-        margin: 0;
-        padding: 0 15px 0 15px;
-        z-index: 9999;
+
+        > .container {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            z-index: 9999;
+        }
     }
 }
 

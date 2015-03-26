@@ -126,19 +126,11 @@ $(document).ready(function() {
 
                                     // Make the button clickable
                                     $('#msg_match').click(function() {
-                                        window.location.href = 'matches/'+ match_id; 
+                                        window.location.href = base_url +'matches/'+ match_id; 
                                     });  
                                 }
                             });
                         } 
-
-                        // Update the user's stats in the upper right hand corner
-                        if(el_id == 'pass_user') {
-                            $('#users_load').effect('toggle');
-                        } else {
-                            var like_count = $('#like_count_num').text();
-                            $('#like_count_num').text(parseInt(like_count)+parseInt(1));
-                        }
 
                         // Load the next user in the batch
                         $('#users_load').load(user_url, 'index='+ new_index +'&type=old', function(data) {

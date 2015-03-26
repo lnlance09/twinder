@@ -25,10 +25,8 @@
 			
 			if($query->num_rows() == 1) { 
 				foreach($query->result() as $row) {
-					$id = $row->id;
+					return $row->id;
 				}
-
-				return $id;
 			} else {
 				return FALSE;
 			}
@@ -97,14 +95,9 @@
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$name[$i] = $row->state;
-				$abbrev[$i] = $row->state_abbrev;
+				$return[$i] = array('name' => $row->state, 'abbrev' => strtolower($row->state_abbrev));
 
 				$i++;
-			}
-
-			for($i=0;$i<$count;$i++) {
-				$return[$i] = array('name' => $name[$i], 'abbrev' => strtolower($abbrev[$i]));
 			}
 
 			return array('count' => $count, 'states' => $return);
@@ -128,13 +121,9 @@
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$name[$i] = $row->city;
+				$return[$i] = array('name' => $row->city);
 
 				$i++;
-			}
-
-			for($i=0;$i<$count;$i++) {
-				$return[$i] = array('name' => $name[$i]);
 			}
 
 			return array('count' => $count, 'cities' => $return);
@@ -169,11 +158,8 @@
 		 * @return {array} An array containing the results from MapQuest's API
 		 */
 		public function MapquestLocation($city, $state) {
-			if(!empty($city) && !empty($city)) {
-				$param = $city.','.$state;
-			} else {
-				$param = $state;
-			}
+			// Define the parameter
+			$param = (!empty($city) && !empty($city) ? $city.','.$state : $state);
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->mapquest_url.'location='.urlencode($param).'&key='.$this->mapquest_key);
@@ -224,17 +210,12 @@
 			$count = $query->num_rows();
 			$i = 0;
 
-			foreach($query->result() as $row) {
-				$city[$i] = $row->city;
-				$state[$i] = $row->state_abbrev;
-
-				$i++;
-			}
-
 			$return = [];
 
-			for($i=0;$i<$count;$i++) {
-				$return[$i] = array('city' => $city[$i], 'state' => $state[$i]);
+			foreach($query->result() as $row) {
+				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
+
+				$i++;
 			}
 
 			shuffle($return);

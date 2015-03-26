@@ -193,24 +193,15 @@
 
 			if($query->num_rows() == 1) {
 				foreach($query->result() as $row) {
-					$seen_id = $row->seen_id;
-					$by_id = $row->seen_by_id;
-					$lon = $row->lon;
-					$lat = $row->lat;
-					$city = $row->city;
-					$state = $row->state;
-					$miles = $row->miles_away;
-					$datetime = $row->datetime;
+					return array('seen_id' => $row->seen_id,
+								'seen_by_id' => $row->seen_by_id,
+								'lon' => $row->lon,
+								'lat' => $row->lat,
+								'city' => $row->city,
+								'state' => $row->state,
+								'miles_away' => $row->miles_away,
+								'datetime' => $row->datetime);
 				}
-
-				return array('seen_id' => $seen_id,
-							'seen_by_id' => $by_id,
-							'lon' => $lon,
-							'lat' => $lat,
-							'city' => $city,
-							'state' => $state,
-							'miles_away' => $miles,
-							'datetime' => $datetime);
 			} else {
 				return FALSE;
 			}
@@ -393,17 +384,10 @@
 									'profile_pic' => $profile_pic[$i],
 									'link' => FormatUserLink($p_tinder_id[$i], $username[$i]));
 
-				// Find out if there is a mutual like between the two users
-				if(!empty($match_id[$i])) {
-					$match = TRUE;
-				} else {
-					$match = FALSE;
-				}
-
 				$return[$i] = array('id' => $id[$i],
 									'like' => $user_two[$i],
 									'datetime' => $datetime[$i],
-									'match' => $match,
+									'match' => (!empty($match_id[$i]) ? TRUE : FALSE),
 									'user_info' => $user_info);
 			}
 
@@ -421,12 +405,12 @@
 			$liked = $this->SeeIfLiked($my_id, $tinder_id, FALSE);
 
 			// Check to see if I have already liked this user
-			if($liked == 0) {
+			if($liked['count'] == 0) {
 				// Check to see if this user has liked me
 				$liked = $this->SeeIfLiked($my_id, $tinder_id, TRUE);
 
 				// If the user has already liked my profile, then update that row with the match ID
-				if($liked == 1) {
+				if($liked['count'] == 1) {
 					$this->db->where(array('user_one' => $tinder_id, 'user_two' => $my_id));
 					$this->db->update('likes', array('match_id' => $match_id));
 				} else {
@@ -458,10 +442,10 @@
 		 * @param {string} [my_id] The Tinder ID of the user is currently logged in
 		 * @param {string} [tinder_id] The Tinder ID of the user who is being liked
 		 * @param {boolean} [inverse] Whether or not to do the opposite. 
-		 * @return {int} The number of rows returned from the query. Either 1 or 2
+		 * @return {array} An array containing the number of rows returned, the mactch ID and unmatched status
 		 */
 		public function SeeIfLiked($my_id, $tinder_id, $inverse) {
-			$this->db->select('match_id');
+			$this->db->select('match_id, unmatched');
 
 			if($inverse) {
 				$this->db->where(array('user_one' => $my_id, 'user_two' => $tinder_id));
@@ -470,7 +454,17 @@
 			}
 
 			$query = $this->db->get('likes');
-			return $query->num_rows();
+			$result = $query->result();
+			$count = $query->num_rows();
+		
+			$return = array('count' => $count);
+
+			if($count > 0) {
+				$return['match_id'] = $result[0]->match_id;
+				$return['unmatched'] = $result[0]->unmatched;
+			}
+
+			return $return;
 		}
 
 		/**
@@ -571,14 +565,15 @@
 					FROM likes
 					JOIN users
 					ON likes.user_two = users.tinder_id
-					WHERE likes.match_id != '0' 
-					AND (likes.user_two = '".$tinder_id."')";
+					WHERE likes.match_id != ? 
+					AND likes.unmatched IS NULL
+					AND likes.user_two = ?";
 
 			if(!empty($q)) {
-				$sql .= " AND users.first_name LIKE '%".trim($q)."%'";
+				$sql .= " AND users.first_name LIKE ?";
 			}
 
-			$query = $this->db->query($sql);
+			$query = $this->db->query($sql, array(0, $tinder_id, '%'.trim($q).'%'));
 			return $query->num_rows();
 		}
 
@@ -588,12 +583,13 @@
 		 * @param {string} [q] The query string to match the user's first name with
 		 * @return {array} An array containing the number of rows and info about the users
 		 */
-		public function GetMatches($tinder_id, $q = NULL) {
+		public function GetMatches($tinder_id, $q = NULL, $same) {
 			$sql = "SELECT likes.*, users.*
 					FROM likes
 					JOIN users
 					ON likes.user_two = users.tinder_id
 					WHERE likes.match_id != ?
+					AND likes.unmatched IS NULL
 					AND likes.user_one = ?";
 
 			if(!empty($q)) {
@@ -640,13 +636,18 @@
 				// Get the last message from the msg table
 				$msg = $this->GetLastMsg($match_id[$i]);
 
-				if(!$msg) {
-					$msg = array('msg' => '', 
-								'time' => $created_at[$i], 
-								'time_format' => FormatTime(date('F d', $last_active[$i])));
-					$text = 'Matched on '.date('n/d', $created_at[$i]);
+				// Determine what the paragraph for each match should read
+				if($same) {
+					if(!$msg) {
+						$msg = array('msg' => '', 
+									'time' => $created_at[$i], 
+									'time_format' => FormatTime(date('F d', $last_active[$i])));
+						$text = 'Matched on '.date('n/d', $created_at[$i]);
+					} else {
+						$text = $msg['msg'];
+					}
 				} else {
-					$text = $msg['msg'];
+					$text = 'Matched on '.date('n/d', $created_at[$i]);
 				}
 
 				$return[$i] = array('id' => $match_id[$i],
@@ -655,17 +656,10 @@
 									'user_info' => $user_info,
 									'text' => $text,
 									'last_msg' => $msg);
-				//echo $i.') '.$return[$i]['last_msg']['time_format'];
-				//var_dump($return[$i]['last_msg']['time']);
-				//echo '<br>';
 			}
 
 			// Sort the results by most recent
-			function SortResults($a, $b) {    
-				return $b['last_msg']['time'] - $a['last_msg']['time'];
-			}
-
-			usort($return, 'SortResults');
+			usort($return, 'SortMessages');
 
 			return array('count' => $count, 'users' => $return);
 		}
@@ -682,7 +676,8 @@
 					FROM users
 					JOIN likes
 					ON users.tinder_id = likes.user_one
-					WHERE (likes.user_one = ? OR likes.user_two = ?)";
+					WHERE (likes.user_one = ? OR likes.user_two = ?)
+					AND likes.unmatched IS NULL";
 
 			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
@@ -704,7 +699,8 @@
 					FROM users
 					JOIN likes
 					ON users.tinder_id = likes.user_one
-					WHERE (likes.user_one = ? OR likes.user_two = ?)";
+					WHERE (likes.user_one = ? OR likes.user_two = ?)
+					AND likes.unmatched IS NULL";
 
 			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
@@ -746,17 +742,10 @@
 									'profile_pic' => $profile_pic[$i],
 									'link' => FormatUserLink($p_tinder_id[$i], $username[$i]));
 
-				// Find out if there is a mutual like between the two users
-				if($match_id[$i] != '') {
-					$match = TRUE;
-				} else {
-					$match = FALSE;
-				}
-
 				$return[$i] = array('id' => $id[$i],
 									'like' => $user_two[$i],
 									'datetime' => $datetime[$i],
-									'match' => $match,
+									'match' => (!empty($match_id[$i]) ? TRUE : FALSE),
 									'user_info' => $user_info);
 			}
 
@@ -789,11 +778,10 @@
 
 			if($query->num_rows() == 1) {
 				foreach($query->result() as $row) {
-					$msg = $row->msg;
-					$time = $row->datetime;
+					return array('msg' => $row->msg, 
+								'time' => $row->datetime, 
+								'time_format' => FormatTime(date('F d', $row->datetime)));
 				}
-
-				return array('msg' => $msg, 'time' => $time, 'time_format' => FormatTime(date('F d', $time)));
 			} else {
 				return FALSE;
 			}
@@ -865,11 +853,7 @@
 				$i++;
 			}
 
-			if($count > 0) {
-				return $return;
-			} else {
-				return FALSE;
-			}
+			return ($count > 0 ? $return : FALSE);
 		}
 
 		/**
@@ -1026,7 +1010,7 @@
 					ON users.tinder_id = passes.user_one
 					WHERE (passes.user_two = ? OR passes.user_two = ?)";
 
-			if($q !== NULL && !empty($q)) {
+			if($q != NULL && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
@@ -1152,12 +1136,7 @@
 				$this->db->select('id');
 				$this->db->where(array('reported_by' => $my_id, 'user_reported' => $his_id));
 				$query = $this->db->get('reports');
-				
-				if($query->num_rows() == 0) {
-					return TRUE;
-				} else {
-					return FALSE;
-				}
+				return ($query->num_rows() == 0 ? TRUE : FALSE);
 			} else {
 				return FALSE;
 			}
@@ -1180,11 +1159,10 @@
 		 * @return {array} An array containing the counts for each 
 		 */
 		public function GetThreeStats($id) {
-			$like_count = $this->database->GetLikeCount($id, FALSE);
 			$match_count = $this->database->GetMatchCount($id);
 
 			// Return an array containing all three stats
-			return array('like_count' => $like_count, 
+			return array('like_count' => NULL, 
 						'match_count' => $match_count, 
 						'pass_count' => NULL);
 		}
@@ -1362,11 +1340,7 @@
 			}
 
 			// Sort the results by like count
-			function SortResults($a, $b) {    
-				return $b['like_count'] - $a['like_count'];
-			}
-
-			usort($return, 'SortResults');
+			usort($return, 'SortByLikes');
 
 			return array('count' => count($return), 'users' => $return);
 		}
@@ -1393,48 +1367,23 @@
 
 			if($count == 1) {
 				foreach($query->result() as $row) {
-					// Get the data from the users table
-					$id[$i] = $row->tinder_id;
-					$name[$i] = $row->first_name;
-					$gender[$i] = $row->gender;
-					$username[$i] = $row->username;
-					$dob[$i] = $row->dob;
-					$age[$i] = $row->age;
-					$bio[$i] = $row->bio;
-					$activity[$i] = $row->last_activity_date;
-					$pic[$i] = $row->profile_pic;
-
-					// Get the data from the last_seen table
-					$seen_id[$i] = $row->seen_id;
-					$by_id[$i] = $row->seen_by_id;
-					$lon[$i] = $row->lon;
-					$lat[$i] = $row->lat;
-					$city[$i] = $row->city;
-					$n_state[$i] = $row->state;
-					$miles[$i] = $row->miles_away;
-					$datetime[$i] = $row->datetime;
+					$return[$i] = array('tinder_id' => $row->tinder_id,
+										'name' => $row->first_name,
+										'username' => $row->username,
+										'gender' => $row->gender,
+										'age' => $row->age,
+										'bio' => $row->bio,
+										'pic' => $row->profile_pic,
+										'seen_id' => $row->seen_id,
+										'seen_by_id' => $row->seen_by_id,
+										'lon' => $row->lon,
+										'lat' => $row->lat,
+										'city' => $row->city,
+										'state' => $row->state,
+										'miles_away' => $row->miles_away,
+										'datetime' => $row->datetime);
 
 					$i++;
-				}
-
-				$return = [];
-
-				for($i=0;$i<$count;$i++) {
-					$return[$i] = array('tinder_id' => $id[$i],
-										'name' => $name[$i],
-										'username' => $username[$i],
-										'gender' => $gender[$i],
-										'age' => $age[$i],
-										'bio' => $bio[$i],
-										'pic' => $pic[$i],
-										'seen_id' => $seen_id[$i],
-										'seen_by_id' => $by_id[$i],
-										'lon' => $lon[$i],
-										'lat' => $lat[$i],
-										'city' => $city[$i],
-										'state' => $n_state[$i],
-										'miles_away' => $miles[$i],
-										'datetime' => $datetime[$i]);
 				}
 
 				return array('count' => $count, 'hot' => $return);
@@ -1449,7 +1398,7 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetUserInfo($id) {
-			$sql = "SELECT users.tinder_id, users.first_name, users.username, users.dob, users.age, users.bio, users.gender, users.profile_pic, users.last_activity_date, users.twitter_username, pics.*
+			$sql = "SELECT users.tinder_id, users.first_name, users.username, users.dob, users.age, users.bio, users.gender, users.profile_pic, users.last_activity_date, users.twitter_username, users.twitter_id, pics.*
 					FROM users
 					JOIN pics 
 					ON users.tinder_id = pics.tinder_id
@@ -1476,6 +1425,7 @@
 						$bio = $row->bio;
 						$activity = $row->last_activity_date;
 						$twitter = $row->twitter_username;
+						$twitter_id = $row->twitter_id;
 						$pic = $row->profile_pic;
 					}
 
@@ -1500,6 +1450,7 @@
 							'last_active_format' => FormatTime($activity),
 							'profile_pic' => $pic,
 							'twitter_handle' => $twitter,
+							'twitter_id' => $twitter_id,
 							'pics' => array('file' => $filename, 'order' => $order));
 			} else {
 				return FALSE;
@@ -1622,10 +1573,10 @@
 		 * @param {string} [username] The username
 		 * @return {int} The number of rows returned
 		 */
-		public function CheckUsername($username) {
-			$this->db->select('id');
-			$this->db->where('username', $username);
-			$query = $this->db->get('users');
+		public function CheckUsername($username, $tinder_id) {
+			$sql = "SELECT id FROM users
+					WHERE username = ? AND tinder_id != ?";
+			$query = $this->db->query($sql, array($username, $tinder_id));
 			return $query->num_rows();
 		}
 
@@ -1642,6 +1593,16 @@
 		}
 
 		/**
+		 * Unmatch a relationship
+		 * @param {string} [id] The match ID
+		 */
+		public function UnmatchUser($id) {
+			$data = array('unmatched' => 1);
+			$this->db->where('match_id', $id);
+			$this->db->update('likes', $data);	
+		}
+
+		/**
 		 * Sync all of the messages from a given thread with Twinder's DB
 		 * @param {array} [messages] An array from Tinder's 'matches' API endpoint
 		 */
@@ -1649,27 +1610,143 @@
 			// Loop thru each message
 			for($i=0;$i<$count;$i++) {
 				if(array_key_exists($i, $messages)) {
-					// FormatArray($messages[$i]);
-					$id = $messages[$i]['match_id'];
-					$to = $messages[$i]['to'];
-					$from = $messages[$i]['from'];
-					$msg = $messages[$i]['message'];
-					$time = $messages[$i]['sent_date'];
+					if(!empty($messages[$i]['match_id'])) {
+						// FormatArray($messages[$i]);
+						$id = $messages[$i]['match_id'];
+						$to = $messages[$i]['to'];
+						$from = $messages[$i]['from'];
+						$msg = $messages[$i]['message'];
+						$time = $messages[$i]['sent_date'];
 
-					// See if there is a record of each message existing in the DB
-					$this->db->select('id');
-					$this->db->where(array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from));
-					$query = $this->db->get('msg');
-					
-					if($query->num_rows() == 0) {
-						$data = array('match_id' => $id,
-									'msg' => $msg,
-									'user_from' => $from,
-									'user_to' => $to,
-									'datetime' => strtotime($time));
-						$this->db->insert('msg', $data);
+						// See if there is a record of each message existing in the DB
+						$this->db->select('id');
+						$this->db->where(array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from));
+						$query = $this->db->get('msg');
+						
+						if($query->num_rows() == 0) {
+							$data = array('match_id' => $id,
+										'msg' => $msg,
+										'user_from' => $from,
+										'user_to' => $to,
+										'datetime' => strtotime($time));
+							$this->db->insert('msg', $data);
+						}
 					}
 				}
 			}
+		}
+
+		/**
+		 * Loop thru an array of Tweets and insert them into the DB
+		 * @param {string} [username] The Twitter handle of the user
+		 * @param {string} [tweets] An array containing Tweets from a given user
+		 */
+		public function SyncTweets($twitter_id, $tweets) {
+			for($i=0;$i<count($tweets);$i++) {
+				$data = array('twitter_id' => $twitter_id,
+							'tweet_id' => $tweets[$i]['id'],
+							'tweet' => $tweets[$i]['text'],
+							'datetime' => strtotime($tweets[$i]['created_at']),
+							'pic' => $tweets[$i]['user']['profile_image_url_https'],
+							'username' => $tweets[$i]['user']['screen_name'],
+							'name' => $tweets[$i]['user']['name']);
+
+				// Check to see if the tweet already exists
+				$this->db->select('id');
+				$this->db->where('tweet_id', $tweets[$i]['id']);
+				$query = $this->db->get('tweets');
+
+				if($query->num_rows() == 0) {
+					// Check to see if a status was retweeted
+					if(array_key_exists('retweeted_status', $tweets[$i])) {
+						$rt = $tweets[$i]['retweeted_status'];
+						$data['retweet_status'] = 1;
+						$data['retweet_id'] = $rt['id'];
+						$data['retweet'] = $rt['text'];
+						$data['retweet_date'] = strtotime($rt['created_at']);
+						$data['pic'] = $rt['user']['profile_image_url_https'];
+						$data['retweet_username'] = $rt['user']['screen_name'];
+						$data['retweet_name'] = $rt['user']['name'];
+					} 
+
+					$data['retweet_count'] = $tweets[$i]['retweet_count'];
+					$data['favorite_count'] = $tweets[$i]['favorite_count'];
+
+					// Get the media elements
+					$entities = $tweets[$i]['entities'];
+					
+					if(array_key_exists('media', $entities)) {
+						if(count($entities['media']) > 0) {
+							$data['media'] = 1;
+							$data['url'] = $entities['media'][0]['media_url_https'];
+						} else {
+							$data['media'] = 0;
+							$data['url'] = NULL;
+						}
+					}
+
+					// Determine if there were any replies
+					if(!empty($tweets[$i]['in_reply_to_status_id'])) {
+						$data['reply'] = 1;
+					} else {
+						$data['reply'] = NULL;	
+					}
+
+					// Insert the row into the DB
+					$this->db->insert('tweets', $data);
+				}
+			}
+		}
+
+		public function GetTweets($twitter_id, $retweet, $media) {
+			$params = array('twitter_id' => $twitter_id);
+
+			if($retweet) {
+				$new = array('reply >=' => 0);
+				array_push($params, $new);
+			}
+
+			if($media) {
+				$new = array('media' => 1);
+				array_push($params, $new);
+			}
+
+			$this->db->select('*');
+			$this->db->where($params);
+			$query = $this->db->get('tweets');
+			$count = $query->num_rows();
+			$i = 0;
+
+			$return = [];
+
+			foreach($query->result() as $row) {
+				if($row->retweet_status == 1) {
+						$retweet = array('tweet' => $row->retweet,
+										'time' => date('', $row->retweet_date),
+										'username' => $row->retweet_username,
+										'name' => $row->retweet_name);
+				} else {
+					$retweet = FALSE;
+				}
+
+				if($row->media == 1) {
+					$media = array('url' => $row->url);
+				} else {
+					$media = FALSE;
+				}
+
+				$return[$i] = array('tweet' => $row->tweet,
+									'time' => date('', $row->datetime),
+									'name' => $row->name,
+									'username' => $row->username,
+									'pic' => $row->pic,
+									'retweet' => $retweet,
+									'reply' => (!empty($row->reply) ? TRUE : FALSE),
+									'media' => $media);
+
+				$i++;
+			}
+
+			return array('count' => $count, 'users' => $return);
 		}
 	}

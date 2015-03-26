@@ -35,12 +35,7 @@
 					if($user_info) {
 						// Find out if the client is logged in or not
 						$user_id = $this->session->userdata('user_id');
-
-						if($user_id) {
-							$session = TRUE;
-						} else {
-							$session = FALSE;
-						}
+						$session = ($user_id ? TRUE : FALSE);
 
 						// If the client is logged in
 						if($session) {
@@ -55,9 +50,7 @@
 
 							// Get the stats of the user who is logged in
 							$stats = $this->database->GetThreeStats($my_tinder_id);
-							$like_count = $stats['like_count'];
 							$match_count = $stats['match_count'];
-							$pass_count = $stats['pass_count'];
 
 							// Make a request to Tinder to get the most recent info about this user
 							$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
@@ -79,7 +72,7 @@
 								$this->database->UpdateUser($live_info['tinder_id'], $data);
 
 								// Add these elements to the array
-								$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 'fb_like_count', 'fb_likes', 'fb_friend_count', 'fb_friends');
+								$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic');
 
 								foreach($keys as $key) {
 									$user_info[$key] = $live_info[$key];
@@ -108,8 +101,6 @@
 								$info = array('name' => $name,
 											'auth' => $token,
 											'tinder_id' => $my_tinder_id,
-											'like_count' => $like_count,
-											'pass_count' => $pass_count,
 											'match_count' => $match_count,
 											'profile_link' => FormatUserLink($my_tinder_id, $username),
 											'profile_pic' => $pic,
@@ -123,23 +114,25 @@
 							}
 						} else {
 							// User stats
-							$like_count = NULL;
 							$match_count = NULL;
-							$pass_count = NULL;
+
 							// Page permissions
 							$report = FALSE;
 							$like = FALSE;
 							$edit = FALSE;
+
 							// User variables
 							$name = NULL;
 							$pic = NULL;
 							$token = NULL;
 							$my_tinder_id = NULL;
 							$username = NULL;
+
 							// Location
 							$lon = NULL;
 							$lat = NULL;
 							$distance = NULL;
+
 							// Active
 							$active = TRUE;
 						}
@@ -150,11 +143,7 @@
 							$profile_pic = ChangePicSize($pic, 172);
 
 							// Find out if this user has authorized Twitter for their account
-							if(!empty($user_info['twitter_handle'])) {
-								$twitter = 'true';
-							} else {
-								$twitter = 'false';
-							}
+							$twitter = (!empty($user_info['twitter_handle']) ? 'true' : 'false');
 
 							// Update the user's last seen position
 							$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
@@ -174,9 +163,7 @@
 												'auth' => $token,
 												'tinder_id' => $my_tinder_id,
 												'name' => $name,
-												'like_count' => $like_count,
 												'match_count' => $match_count,
-												'pass_count' => $pass_count,
 												'meta' => $meta_info,
 												'profile_link' => $profile_link,
 												'profile_pic' => $profile_pic);
@@ -202,11 +189,21 @@
 											'state' => $last_seen['data']['state'],
 											'distance' => $last_seen['data']['miles_away'],
 											'last_seen' => $last,
-											'twitter' => array('access' => $twitter, 'handle' => $user_info['twitter_handle']),
+											'twitter' => array('access' => $twitter, 'handle' => $user_info['twitter_handle'], 'id' => $user_info['twitter_id']),
 											'stats' => $user_stats,
 											'con_icon' => ReturnFA($tabs['active']),
 											'tab_active' => $tabs['active'],
 											'tabs' => $tabs['tabs']);
+
+							if($like == 'can_like') {
+								$body_info['my_info'] = array('name' => $name,
+															'pic' => ChangePicSize($pic, 172),
+															'link' => $profile_link);
+							}
+
+							// FormatArray($like);
+							// die;
+
 							// FormatArray($body_info);
 							// die;
 
@@ -349,16 +346,16 @@
 
 			public function GetConnections() {
 				// Get the query parameters from the URL
+				$twitter = $this->input->get('twitter');
+				$twitter_id = $this->input->get('twitter_id');
 				$page = $this->input->get('page');
 				$type = $this->input->get('type');
 				$id = $this->input->get('id');
 				$q = $this->input->get('q');
-				$twitter = $this->input->get('twitter');
-
-				// echo 'Type: '.$type.'<br>';
 
 				// Save the Tinder ID session
 				$tinder_id = $this->session->userdata('tinder_id');
+				$same = ($id == $tinder_id ? TRUE : FALSE);
 
 				// Get the results depening on what the user is looking for
 				switch($type) {
@@ -379,7 +376,7 @@
 
 					case'matches':
 
-						$results = $this->database->GetMatches($id, $q);
+						$results = $this->database->GetMatches($id, $q, $same);
 						break;
 
 					case'mutual_matches':
@@ -400,6 +397,21 @@
 					case'passed_by':
 
 						$results = $this->database->GetPasses($id, TRUE, $q);
+						break;
+
+					case'tweets':
+
+						$results = $this->database->GetTweets($twitter_id, FALSE, FALSE);
+						break;
+
+					case'tweets_and_replies':
+
+						$results = $this->database->GetTweets($twitter_id, TRUE, FALSE);
+						break;
+
+					case'photos_and_videos':
+
+						$results = $this->database->GetTweets($twitter_id, TRUE, TRUE);
 						break;
 				}
 				// FormatArray($results);
@@ -453,8 +465,9 @@
 								'end' => ceil($end),
 								'pages' => $pages,
 								'page' => $page,
-								'new_page' => $new_page);
-					// FormatArray($view_info);
+								'new_page' => $new_page,
+								'twitter_id' => $twitter_id);
+					// FormatArray($info);
 					
 					// Determine which view to load
 					switch($type) {
@@ -522,7 +535,6 @@
 					
 					// Sync all of the user's messages
 					$this->database->SyncMessages($updates['matches'], $tinder_id, $distance, $lon, $lat, $city, $state);
-					
 					echo json_encode($updates);
 				}
 			}
@@ -615,15 +627,16 @@
 						$text = NULL;
 					}
 
-					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
+					$auth = $this->session->userdata('token');
 
 					// Check to see if this user has already reported this user before
 					$check = $this->database->CheckReport($tinder_id, $id);
 
-					if($check == 0) {
+					if($check) {
 						// Send a request to Tinder's API to report this user
 						$report = $this->user->ReportUser($id, $auth, $reason, $text);
+						// FormatArray($report);
 
 						// If the report was successfully sent to Tinder, then record it in the DB
 						if(array_key_exists('status', $report)) {
@@ -664,6 +677,26 @@
 					} else {
 						echo "Didn't submit";
 					}
+				}
+			}
+
+			public function UnmatchUser() {
+				// Make sure the user is logged in
+				$user_id = $this->session->userdata('user_id');
+
+				if($user_id) {
+					// Get the match ID from the URL
+					$match_id = $this->input->get('id');
+
+					// Save the API token
+					$auth = $this->session->userdata('token');
+
+					// Unmatch the user by sending a request to Tinder's API
+					$unmatch = $this->user->UnmatchUser($match_id, $auth);
+					FormatArray($unmatch);
+
+					// Update the likes table to 'unmatched'
+					$this->database->UnmatchUser($match_id);
 				}
 			}
 

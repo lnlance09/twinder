@@ -15,11 +15,7 @@
                     </p>
 <?php
     for($i=0;$i<count($filters);$i++) {
-        if($filters[$i]['num'] == $gender_filter) {
-            $class = ' active';
-        } else {
-            $class = '';
-        }
+        $class = ($filters[$i]['num'] == $gender_filter ? ' active' : '');
 ?>
                     <div class="col-lg-4 text-center selector<?php echo $class; ?>" title="<?php echo $filters[$i]['num']; ?>">
                         <?php echo $filters[$i]['name']; ?>
@@ -36,11 +32,7 @@
                     </p>
 <?php
     for($i=0;$i<count($genders);$i++) {
-        if($genders[$i]['num'] == $gender) {
-            $class = ' active';
-        } else {
-            $class = '';
-        }
+        $class = ($genders[$i]['num'] == $gender ? ' active' : '');
 ?>
                     <div class="col-lg-6 text-center selector<?php echo $class; ?>" title="<?php echo $genders[$i]['num']; ?>">
                         <?php echo $genders[$i]['name']; ?>

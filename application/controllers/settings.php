@@ -42,9 +42,7 @@
 
 						// Get all of the stats for the header if the client is logged in
 						$stats = $this->database->GetThreeStats($tinder_id);
-						$like_count = $stats['like_count'];
 						$match_count = $stats['match_count'];
-						$pass_count = $stats['pass_count'];
 
 						// Get the user's profile link
 						$profile_link = FormatUserLink($tinder_id, $username);
@@ -87,8 +85,6 @@
 											'name' => $this->session->userdata('first_name'),
 											'auth' => $auth,
 											'tinder_id' => $tinder_id,
-											'like_count' => $like_count,
-											'pass_count' => $pass_count,
 											'match_count' => $match_count,
 											'profile_link' => $profile_link,
 											'profile_pic' => $profile_pic);
@@ -136,7 +132,7 @@
 				$username = $this->input->get('username');
 
 				// Check to see if the username exists
-				$check = $this->database->CheckUsername($username);
+				$check = $this->database->CheckUsername($username, $this->session->userdata('tinder_id'));
 				echo $check;
 			}
 		}

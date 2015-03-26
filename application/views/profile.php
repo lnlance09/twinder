@@ -20,15 +20,6 @@
 
 					<!-- Stripe -->
 					<div id="stripe">
-<?php	
-	if($report) {
-?>
-						<!-- Link to report the user -->
-            			<!--<button class="btn btn-primary pull-right" id="report_user" type="button" data-toggle="modal" data-target="#report_modal">Report <?php echo $user_info['name']; ?></button>-->
-<?php
-	}
-?>
-
 						<div class="col-lg-8 pull-right">
 							<div class="row">
 <?php
@@ -62,25 +53,25 @@
 <?php
 	} 
 
-	if($like) {
-		if($like == 'liked') {
+	if($like['perm']) {
+		if($like['perm'] == 'liked') {
 ?>
-							<button class="btn btn-success" type="button">Liked</button>
+							<button class="btn btn-success" type="button">Liked!</button>
 <?php
-		} elseif($like == 'matched') {
+		} elseif($like['perm'] == 'matched') {
 ?>
 							<button class="btn btn-warning" type="button" id="unmatch_user">Matched</button>
 <?php
-		} else {
+		} elseif($like['perm'] == 'can_like') {
 ?>
-							<button class="btn btn-primary" type="button" id="like_user"><i class="fa fa-heart"></i> Like</button>
+							<button class="btn btn-default" type="button" id="like_user"><i class="fa fa-heart"></i> Like</button>
 <?php
 		}
 	}
 ?>
 						</div>
 			
-						<span class="clearfix"></span>
+						<div class="clearfix"></div>
 					</div>						
 
 	                <div id="profile_page_info">
@@ -96,6 +87,14 @@
 									<?php echo $user_info['name'].', '.$user_info['age']; ?>
 	                            </h1>
 	                    
+<?php
+	// Display the username is necessary
+	if(!empty($user_info['username'])) {
+?>
+								<p>@<?php echo $user_info['username']; ?></p>
+<?php
+	}
+?>
 	                    		<!-- Bio -->
 	                            <div id="about_quote">
 	                                <?php echo $user_info['bio']; ?>
@@ -106,12 +105,12 @@
 
 								<ul id="user_info">
 									<!-- City and state -->
-									<li><i class="fa fa-map-marker fa-fw"></i> Last seen near <a href="<?php echo $base_url.'hot/city/'.$city.'/state/'.$state.'/'; ?>"><?php echo $city.', '.$state; ?></a></li>
+									<li><i class="fa fa-map-marker fa-fw"></i> Last seen near <a href="<?php echo $base_url.'hot/gender/both/city/'.$city.'/state/'.$state.'/'; ?>"><?php echo $city.', '.$state; ?></a></li>
 									<li><i class="fa fa-clock-o fa-fw"></i> Last active <?php echo $user_info['last_active_format']; ?></li>
 <?php
 	if($twitter['access'] == 'true') {
 ?>
-									<li><i class="fa fa-twitter fa-fw"></i> <?php echo $twitter['handle']; ?></li>
+									<li><i class="fa fa-twitter fa-fw"></i> <a href="https://twitter.com/<?php echo $twitter['handle']; ?>" target="_blank"><?php echo $twitter['handle']; ?></a></li>
 <?php
 	}
 ?>
@@ -137,6 +136,14 @@
 		                	</ul>
 
 		                	<div class="clearfix"></div>
+
+<?php
+	if($report) {
+?>
+							<a href="#" data-toggle="modal" data-target="#report_modal"><i class="fa fa-ban fa-lg"></i> Report <?php echo $user_info['name']; ?></a>
+<?php
+	}
+?>
 		           		</div>
 
 			            <div class="col-lg-9 text-center">
@@ -202,9 +209,9 @@
                     <div class="modal-content">
                     	<form id="report_form" method="POST">
 	                    	<div class="modal-header">
-	                    		<h3>
+	                    		<h3 class="modal-title">
 	                    			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-									<i class="fa fa-bullhorn fa-md"></i> Report <?php echo $user_info['name']; ?>
+									Report <?php echo $user_info['name']; ?>
 								</h3>
 	                    	</div>
 
@@ -227,6 +234,51 @@
                     </div>
                 </div>
             </div>
+<?php
+    }
+
+    if($like['perm'] == 'can_like') {
+?>
+			<!-- Modal -->
+			<div id="match_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+			    	<div class="modal-content">
+			    		<div class="modal-header">
+    						<h3 class="modal-title">
+    							It's a match
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    						</h3>
+						</div>
+
+			      		<div class="modal-body">
+			        		<div class="col-lg-6 text-right">
+			        			<div>
+									<img src="<?php echo $user_info['profile_pic']; ?>" width="172" height="172" alt="<?php echo $user_info['name']; ?>">
+								</div>
+			        		</div>
+
+			        		<div class="col-lg-6">
+								<div>
+									<img src="<?php echo $my_info['pic']; ?>" width="172" height="172" alt="<?php echo $my_info['name']; ?>" id="match_pic">
+								</div>
+			        		</div>
+
+			        		<div class="col-lg-12 text-center">
+			        			<h3>
+									<a href="<?php echo $base_url.$user_info['link']; ?>"><?php echo $user_info['name']; ?></a> <span>&</span> <a href="<?php echo $my_info['link']; ?>" id="match_name"><?php echo $my_info['name']; ?></a>
+								</h3>
+			        		</div>
+
+			        		<div class="clearfix"></div>
+			      		</div>
+
+			      		<div class="modal-footer">
+			      			<button class="btn btn-success" type="button" id="msg_match">Send <?php echo $user_info['name']; ?> a message</button>
+			      			<button class="btn btn-primary" type="button" data-dismiss="modal">Keep Playing</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
 <?php
     }
 ?>
@@ -254,14 +306,17 @@
             </div>
         </div>
 
+		<!-- Write all of the JS variables -->
         <div class="hidden" id="user_tinder_id"><?php echo $user_info['tinder_id']; ?></div>
         <div class="hidden" id="can_edit"><?php echo $edit; ?></div>
-        <div class="hidden" id="like"><?php echo $like; ?></div>
+        <div class="hidden" id="like"><?php echo $like['perm']; ?></div>
+        <div class="hidden" id="match_id"><?php echo $like['match_id']; ?></div>
         <div class="hidden" id="lon"><?php echo $lon; ?></div>
         <div class="hidden" id="lat"><?php echo $lat; ?></div>
         <div class="hidden" id="radius"><?php echo $distance; ?></div>
         <div class="hidden" id="twitter"><?php echo $twitter['access']; ?></div>
         <div class="hidden" id="handle"><?php echo $twitter['handle']; ?></div>
+        <div class="hidden" id="twitter_id"><?php echo $twitter['id']; ?></div>
         <div class="hidden" id="first_name"><?php echo $user_info['name']; ?></div>
         <div class="hidden" id="gender"><?php echo $user_info['gender']; ?></div>
         <div class="hidden" id="active_tab"><?php echo $tab_active; ?></div>

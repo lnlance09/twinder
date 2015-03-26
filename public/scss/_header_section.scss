@@ -1,6 +1,13 @@
 #header-section {
     min-height: 250px;
-    padding: 0 120px;
+    
+    @media screen and (max-width: $break-small) {
+        padding: 0 20px;
+    }
+    
+    @media screen and (min-width: $break-large) {
+        padding: 0 $side-padding;
+    }
 
     .container {
         width: 100%;
@@ -15,6 +22,10 @@
         margin-bottom: 12px;
         padding: 2px 10px 10px 10px;
         width: 100%;
+
+        @media screen and (max-width: $break-small) {
+            font-size: 22px;
+        }
     }
 
     #profile_top {

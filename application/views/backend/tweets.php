@@ -8,35 +8,59 @@
 <?php
         // Loop thru each user
         for($i=0;$i<$end;$i++) {
-			$user = $connections[$i]['user_info'];
-            $_id = $user['tinder_id'];
-			$name = $user['first_name'];
-			$age = $user['age'];
-            $bio = $user['bio'];
-            $img = $user['profile_pic'];
+            $img = $connections[$i]['pic'];
+            $tweet = $connections[$i]['tweet'];	
+            $my_username = $connections[$i]['username'];
+            $my_name = $connections[$i]['name'];
+            $rt = $connections[$i]['retweet'];
+            $media = $connections[$i]['media'];
 
-            // Set the link
-            $link = $base_url.$user['link'];
+            if($rt) {
+                $tweet = $rt['tweet'];
+                $name = $rt['name'];
+                $username = $rt['username'];
+            } else {
+                $name = $my_name;
+                $username = $my_username;
+            }
+
+            $link = 'https://twitter.com/'.$username;
 ?>
-        <div class="media" onclick="location.href='<?php echo $link; ?>'">
+        <div class="media tweet" onclick="location.href='<?php echo $link; ?>'">
+<?php
+            if($rt) {
+?>
+            <p class="retweet text-left">
+                <i class="fa fa-retweet"></i> <span><?php echo $my_name; ?> retweeted</span>
+            </p>
+<?php
+            }
+?>
             <div class="media-left media-top">
                 <a href="<?php echo $link; ?>">
-                    <img src="<?php echo $img; ?>" class="media-object img-circle" alt="<?php echo $name; ?>">
+                    <img src="<?php echo $img; ?>" class="media-object thumbnail" alt="<?php echo $username; ?>">
                 </a>
             </div>
             
             <div class="media-body text-left">
                 <h4 class="media-heading">
-                    <a href="<?php echo $link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
-
-                    <span class="pull-right"><i class="fa fa-clock-o"></i></span>
-
-                    <span class="clearfix"></span>
+                    <a href="<?php echo $link; ?>" title="<?php echo $username; ?>"><?php echo $username; ?></a>
+                    <?php echo $name; ?>
                 </h4>
 
                 <p>
-                    <?php echo $bio; ?>
+                    <?php echo FormattedTweet($tweet); ?> 
                 </p>
+
+<?php
+            if($media) {
+?>
+                <p>
+                    <img src="<?php echo $media['url']; ?>" class="thumbnail media_pic" alt="twitter pic">
+                </p>
+<?php
+            }
+?>
             </div>
         </div>
 <?php
@@ -57,13 +81,14 @@
         var base_url = '<?php echo $base_url; ?>';
         var type = '<?php echo $type; ?>';
         var tinder_id = '<?php echo $id; ?>';
+        var twitter_id = '<?php echo $twitter_id; ?>';
 
         $('button#see_more').click(function(e) {
             $('#con_load_box .text-center').prepend('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
 
             e.preventDefault();
             var new_page = '<?php echo $new_page; ?>';
-            var data = 'type='+ type +'&page='+ new_page +'&id='+ tinder_id;
+            var data = 'type='+ type +'&page='+ new_page +'&id='+ tinder_id +'&twitter_id='+ twitter_id;
     
             $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
                 $('.ajax-loader').fadeOut();

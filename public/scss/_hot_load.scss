@@ -33,6 +33,11 @@
                    height: 100%;
                    width: 100%;
                    display: block;
+
+                    @media screen and (max-width: $break-small) {
+                        width: 84px !important;
+                        height: 84px !important;
+                    }
                 }
             }
         }

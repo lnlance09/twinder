@@ -11,10 +11,14 @@
     h2 {
         font-size: 26px;
         margin-top: 7px;
+
+        @media screen and (max-width: $break-small) {
+            font-size: 20px;
+        }
     }
 
     p {
-        font-size: 16px;
+        font-size: 14px;
         color: #444;
         margin-bottom: 12px;
         line-height: 25px;

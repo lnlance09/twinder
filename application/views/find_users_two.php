@@ -1,6 +1,5 @@
 <?php
     $base_url = $this->config->base_url();
-
     // FormatArray($pics);
 ?>
     <div class="jumbotron">

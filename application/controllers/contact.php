@@ -27,29 +27,26 @@
 						$session = TRUE;
 						$auth = $this->session->userdata('token');
 						$tinder_id = $this->session->userdata('tinder_id');
+						$username = $this->session->userdata('username');
 
 						// Get all of the stats for the header if the client is logged in
 						$stats = $this->database->GetThreeStats($tinder_id);
-						$like_count = $stats['like_count'];
 						$match_count = $stats['match_count'];
-						$pass_count = $stats['pass_count'];
 					} else {
 						$session = FALSE;
 						$auth = NULL;
 						$tinder_id = NULL;
-						$like_count = NULL;
+						$username = NULL;
 						$match_count = NULL;
-						$pass_count = NULL;
 					}
 
-					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+					$profile_link = FormatUserLink($tinder_id, $username);
+					$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 					// Define the meta tags
 					$meta_info = array('description' => 'Contact Twinder',
 										'img' => $this->base_url.'public/img/',
 										'url' => $this->base_url.'contact');
-
-					$profile_pic = 'http://images.gotinder.com/'.$tinder_id.'/84x84_'.$this->session->userdata('profile_pic');
 
 					// Set all of the info that needs to be passed to the header view
 					$header_info = array('title' => 'Contact Us',
@@ -57,9 +54,7 @@
 										'header' => 'Contact Us',
 										'auth' => $auth,
 										'tinder_id' => $tinder_id,
-										'like_count' => $like_count,
 										'match_count' => $match_count,
-										'pass_count' => $pass_count,
 										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
 										'profile_link' => $profile_link,

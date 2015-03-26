@@ -65,11 +65,12 @@ $route['users/PassUser'] = 'users/PassUser/';
 $route['users/ReportUser'] = 'users/ReportUser/';
 $route['users/SendMessage'] = 'users/SendMessage/';
 $route['users/UpdateProfile'] = 'users/UpdateProfile/';
+$route['users/UnmatchUser'] = 'users/UnmatchUser/';
 
 /* Matches page */
 $route['matches/(:any)'] = 'matches/index/$1';
 $route['matches/MatchesBackend'] = 'matches/MatchesBackend/';
-$route['matches/Thread'] = 'matches/Thread/';
+$route['matches/Thread'] = 'matches/Thread404/';
 
 /* Hot page */
 $route['hot/gender/(:any)'] = 'hot/index/$1';

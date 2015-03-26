@@ -4,14 +4,29 @@
         border: solid 1px #ccc;
 
         h1 {
+            @media screen and (max-width: $break-small) {
+                font-size: 18px;
+                height: auto !important;
+                margin-bottom: 10px !important;
+            }
+
             img {
                 vertical-align: middle !important;
                 display: inline;
+
+                @media screen and (max-width: $break-small) {
+                    width: 84px;
+                    height: 84px;
+                }
             }
         }
 
         #profile_discover {
-            
+            p {
+                @media screen and (max-width: $break-small) {
+                    font-size: 14px;
+                }
+            }
         }
     }
 }

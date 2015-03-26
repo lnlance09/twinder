@@ -48,11 +48,7 @@
 		 * @return {boolean}
 		 */
 		public function CanEdit($my_id, $his_id) {
-			if($my_id == $his_id) {
-				return TRUE;
-			} else {
-				return FALSE;
-			}
+			return ($my_id == $his_id ? TRUE : FALSE);
 		}
 
 		/**
@@ -66,20 +62,23 @@
 			if($my_id != $his_id) {
 				// See if there is already a liking between these two users
 				$me_like = $this->database->SeeIfLiked($my_id, $his_id, FALSE);
+				// FormatArray($me_like);
 
-				if($me_like == 0) {
-					$like = 'can_like';
+				if($me_like['count'] == 0) {
+					$like = array('perm' => 'can_like', 'match_id' => NULL);
 				} else {
-					$he_like = $this->database->SeeIfLiked($my_id, $his_id, TRUE);
-
-					if($he_like == 0) {
-						$like = 'liked';
+					if($me_like['match_id']) {
+						$like = array('perm' => 'liked', 'match_id' => NULL);
 					} else {
-						$like = 'matched';
+						if($me_like['unmatched']) {
+							$like = array('perm' => 'unmatched', 'match_id' => $me_like['match_id']);
+						} else {
+							$like = array('perm' => 'matched', 'match_id' => $me_like['match_id']);
+						}
 					}
 				}
 			} else {
-				$like = FALSE;
+				$like = array('perm' => FALSE, 'match_id' => FALSE);
 			}
 
 			return $like;
@@ -160,6 +159,12 @@
 			return @json_decode($info, TRUE);
 		}
 
+		/**
+		 * Search for users on Tinder by specific lat & lon coordinates
+		 * @param {string} [auth] The auth token of the user who is logged in
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 */
 		public function Passport($auth, $lon, $lat) {
 			$info = SendRequest('passport/user/travel', $auth, TRUE, array('lon' => $lon, 'lat' => $lat));
 			return @json_decode($info, TRUE);
@@ -263,6 +268,7 @@
 		 */
 		public function SendMessage($id, $msg, $auth) {
 			$sig = "Twinder.io - Twitter meets Tinder";
+			$sig = "";
 			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
 			return @json_decode($info, TRUE);
 		}
@@ -374,9 +380,10 @@
 		/**
 		 * Unmatch a user on Tinder
 		 * @param {string} [match_id] The match ID on Tinder
+		 * @param {string} [auth] The API token of the user who is logged in
 		 * @return {array} An array from Tinder's API
 		 */
-		public function UnmatchUser($match_id) {
+		public function UnmatchUser($match_id, $auth) {
 			$info = SendRequest('user/matches/'.$match_id.'/', $auth, "DELETE", FALSE);
 			return @json_decode($info, TRUE);
 		}
@@ -409,11 +416,7 @@
 							'age' => ReturnAge($user['birth_date']),
 							'last_activity_date' => FormatTime($user['ping_time']),
 							'profile_pic' => ReturnProfilePic($user['photos']),
-							'pics' => ReturnPicsArray($user['photos']),
-							'fb_friend_count' => $user['common_friend_count'],
-							'fb_friends' => $user['common_friends'],
-							'fb_like_count' => $user['common_like_count'],
-							'fb_likes' => $user['common_likes']
+							'pics' => ReturnPicsArray($user['photos'])
 							); 
 			} else {
 				return FALSE;
@@ -455,8 +458,6 @@
 							// If the state is set, then query the DB to see if the city in the given state exists
 							if(isset($params['state'])) {
 								$check = $this->loc->CheckCityAndState(urldecode($val), urldecode($params['state']));
-								//echo '<br><br><br><br><br><br>';
-								//var_dump($check);
 
 								// If the place exists, then decode it
 								if($check) {
@@ -466,9 +467,6 @@
 									$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
 									$city['lon'] = $coords['lng'];
 									$city['lat'] = $coords['lat'];
-									//echo '<br><br><br>';
-									//FormatArray($coords);
-									//FormatArray($city);
 								}
 							}
 						}

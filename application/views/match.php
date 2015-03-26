@@ -12,7 +12,7 @@
                     <a href="<?php echo $base_url.$user_two['link']; ?>"><?php echo $user_two['name']; ?></a>
 
                     <button class="btn btn-default pull-right" type="button">422 views</button>
-                    
+
                     <a class="twitter-share-button pull-right" 
                         href="<?php echo $base_url.'matches/'.$match_id; ?>"
                         data-related="twitterdev"
@@ -52,4 +52,5 @@
     <!-- Write all of the variables for the JS to work -->
     <div class="hidden" id="match_id"><?php echo $match_id; ?></div>
     <div class="hidden" id="match_type"><?php echo $type; ?></div>
+    <div class="hidden" id=""><?php echo $type; ?></div>
         

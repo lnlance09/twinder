@@ -10,7 +10,7 @@
             <!-- Where all of the previous messages will be loaded -->
             <div id="thread_load">
                 <div class="ajax-loader">
-                    <i class="fa fa-cog fa-2x fa-spin"></i>
+                    <i class="fa fa-circle-notch-o fa-2x fa-spin"></i>
                 </div>
             </div>
 

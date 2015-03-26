@@ -13,11 +13,7 @@
     $slider_pages = array('settings', 'hot');
     $meta_pages = array('about', 'contact', 'faq', 'hot', 'signin', 'terms', 'users');
 
-    if($controller == 'hot') {
-        $val = $q;
-    } else {
-        $val = NULL;
-    }
+    $val = ($controller == 'hot' ? $q : NULL);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +25,7 @@
     <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
 
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>open_sans.css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
@@ -96,11 +92,16 @@
                     <span id="we">Twinder</span>
                 </a>
 
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    
+                    <i class="fa fa-list fa-lg"></i>
+                </button>
+
                 <div class="clearfix"></div>
             </div>
 
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right pull-right">
 <?php
     if($session) {
 ?>
@@ -115,6 +116,8 @@
                                 <i class="fa fa-heart" id="heart_icon"></i> 
                                 <span id="match_count_num"><?php echo $match_count; ?></span>
                             </span> 
+
+                            <span class="clearfix"></span>
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
@@ -137,6 +140,8 @@
     }
 ?>
                 </ul>
+
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
@@ -161,7 +166,6 @@
 
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
-    <div id="auth" class="hidden"><?php echo $auth; ?></div>
     <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
-    <div id="like_users_num" class="hidden">0</div>
+    <div id="auth" class="hidden"><?php echo $auth; ?></div>
     

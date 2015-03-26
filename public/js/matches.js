@@ -29,7 +29,9 @@ $(document).ready(function() {
                     if(data == 'true') {
                         var data = 'id='+ match_id +'&page=0';
                         $('#match_load').load(base_url +'matches/Thread', data, function() {
-                            
+                            $('html, body').animate({
+                                scrollTop: $('form#send_msg').top
+                            }, 2000);  
                         });
                     }
                 }

@@ -31,7 +31,6 @@
 					// Get the validated query parameters
 					$valids = $this->user->ValidateParams($params);
 					// FormatArray($valids);
-
 					$gender = $valids['gender'];
 					$city = $valids['city'];
 					$state = $valids['state'];
@@ -92,16 +91,12 @@
 
 						// Get all of the stats for the header if the client is logged in
 						$stats = $this->database->GetThreeStats($tinder_id);
-						$like_count = $stats['like_count'];
 						$match_count = $stats['match_count'];
-						$pass_count = $stats['pass_count'];
 					} else {
 						$session = FALSE;
 						$auth = NULL;
 						$tinder_id = NULL;
-						$like_count = NULL;
 						$match_count = NULL;
-						$pass_count = NULL;
 					}
 
 					// Format the user's profile link
@@ -134,8 +129,6 @@
 										'header' => 'The hottest',
 										'auth' => $auth,
 										'tinder_id' => $tinder_id,
-										'like_count' => $like_count,
-										'pass_count' => $pass_count,
 										'match_count' => $match_count,
 										'name' => $this->session->userdata('first_name'),
 										'meta' => $meta_info,
@@ -186,7 +179,6 @@
 				foreach($params as $key => $value) {
 					$$key = $value;
 				}
-
 				// var_dump($page);
 
 				// Get all of the hottest users

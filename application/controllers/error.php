@@ -16,27 +16,36 @@
 				if($this->session->userdata('user_id')) {
 					$session = TRUE;
 					$name = $this->session->userdata('first_name'); 
+					$tinder_id = $this->session->userdata('tinder_id');
+					$token = $this->session->userdata('token');
 
 					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database->GetThreeStats($this->session->userdata('tinder_id'));
-					$like_count = $stats['like_count'];
+					$stats = $this->database->GetThreeStats($tinder_id);
 					$match_count = $stats['match_count'];
 
-					$profile_link = FormatUserLink($this->session->userdata('tinder_id'), $this->session->userdata('username'));
+					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+					$pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 				} else {
 					$session = FALSE;
 					$name = NULL;
-					$like_count = NULL;
 					$match_count = NULL;
-					$profile_link = NULL;
+					$link = NULL;
+					$pic = NULL;
 				}
+
+				// Get the footer info
+				$locations = $this->loc->RandomLocations();
+				$rand_users = $this->database->GetAllUsers();
 
 				// Store all of the data that needs to be passed to the view as an array
 				$data = array('session' => $session,
-							'first_name' => $name,
-							'like_count' => $like_count,
+							'name' => $name,
+							'auth' => $token,
 							'match_count' => $match_count,
-							'profile_link' => $profile_link);
+							'profile_pic' => $pic,
+							'profile_link' => $link,
+							'locations' => $locations, 
+							'users' => $rand_users);
 
 				$this->load->view('errors/error', $data); 
 			}

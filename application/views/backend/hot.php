@@ -14,13 +14,7 @@
             <div class="row">
 <?php
         $start = $i*$per_row;
-
-        if($i == ($num_rows-1)) {
-            $end = $end_col;
-        } else {
-            $end = $start+$per_row;
-        }
-
+        $end = ($i == ($num_rows-1) ? $end_col : $start+$per_row);
         // echo 'Start: '.$start.', End: '.$end.'<br>';
 
         for($x=$start;$x<$end;$x++) {

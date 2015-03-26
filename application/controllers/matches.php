@@ -26,11 +26,7 @@
 					$profile_pic = $this->session->userdata('profile_pic');
 
 					// Make sure the user is logged in
-					if($user_id) {
-						$session = TRUE;
-					} else {
-						$session = FALSE;
-					}
+					$session = ($user_id ? TRUE : FALSE);
 
 					// Get the ID from the URL
 					$id = $this->uri->segment(2, NULL);
@@ -54,19 +50,17 @@
 									$messages = $live['results']['messages'];
 									$this->database->UpdateThread($messages, count($messages));
 
-									$can_send = TRUE;
+									$can_send = 'true';
 								} else {
-									$can_send = TRUE;
+									$can_send = FALSE;
 								}
 							}  else {
-								$can_send = TRUE;
+								$can_send = FALSE;
 							}
 
 							// Get all of the stats for the header if the client is logged in
 							$stats = $this->database->GetThreeStats($tinder_id);
-							$like_count = $stats['like_count'];
 							$match_count = $stats['match_count'];
-							$pass_count = $stats['pass_count'];
 
 							// Format the user's profile pic and their page link
 							$profile_img = ChangePicSize($profile_pic, 172);
@@ -83,9 +77,7 @@
 												'auth' => $auth,
 												'session' => $session,
 												'tinder_id' => $tinder_id,
-												'like_count' => $like_count,
 												'match_count' => $match_count,
-												'pass_count' => $pass_count,
 												'profile_link' => $profile_link,
 												'meta' => $meta_info,
 												'profile_pic' => $profile_img);

@@ -17,6 +17,9 @@
 		// Define the users statuses API endpoint
 		public $users_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
 
+		// Define the users statuses API endpoint
+		public $home_url = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+
 		// Define the verification URL
 		public $verify_url = 'https://api.twitter.com/1.1/account/verify_credentials.json';
 
@@ -56,7 +59,7 @@
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 			$response = curl_exec($ch);
 			curl_close($ch);
-			echo $response;
+			return $response;
 		}
 
 		/**
@@ -92,10 +95,11 @@
 		 * @param {string} [username] The Twitter user's username
 		 * @return {array} A JSON decoded array from Twitter's API
 		 */
-		public function FetchTweets($username) {
+		public function FetchTweets($username, $count) {
 			// Define the signature base string
 			$nonce = $this->OAuthNonce();
-			$data = array('oauth_consumer_key' => $this->api_key,
+			$data = array('count' => $count,
+						'oauth_consumer_key' => $this->api_key,
 						'oauth_nonce' => $nonce,
 						'oauth_signature_method' => 'HMAC-SHA1',
 						'oauth_timestamp' => time(),
@@ -107,7 +111,7 @@
 			$header = array('Authorization: OAuth oauth_consumer_key="'.$this->api_key.'", oauth_nonce="'.$nonce.'", oauth_signature="'.urlencode($sig).'", oauth_signature_method="HMAC-SHA1", oauth_timestamp="'.time().'", oauth_version="1.0"');
 
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $this->users_url.'?screen_name='.$username);
+			curl_setopt($ch, CURLOPT_URL, $this->users_url.'?screen_name='.$username.'&count='.$count);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 			$response = curl_exec($ch);
@@ -148,10 +152,9 @@
 			$length = 32;
 		    $charset = 'abcdefghijklmnopqrstuvwxyz0123456789';
 		    $str = '';
-		    $count = strlen($charset);
-
+		    
 		    while($length--) {
-		        $str .= $charset[mt_rand(0, $count-1)];
+		        $str .= $charset[mt_rand(0, strlen($charset)-1)];
 		    }
 
 		    return $str;

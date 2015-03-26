@@ -28,7 +28,7 @@
 						header('Location: '.$this->base_url);
 					} else {
 						// Define the meta tags
-						$meta_info = array('description' => 'Sign In to WeTinder',
+						$meta_info = array('description' => 'Sign In to Twinder',
 										'img' => $this->base_url.'public/img/',
 										'url' => $this->base_url.'signin');
 

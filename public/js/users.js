@@ -8,25 +8,29 @@ $(document).ready(function() {
     var can_edit = $('#can_edit').text().trim();
     var twitter = $('#twitter').text().trim();
     var can_like = $('#like').text().trim();
+    var twitter_id = $('#twitter_id').text().trim();
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
     // console.log(can_edit);
-
     console.log(can_like);
 
     // Google Maps
     function Initialize(lat, lon) {
+        var distance = $('#radius').text();
+        var tenth = distance*0.05;
+        var zoom = parseInt(10)-parseInt(tenth);
+
         // Set the position
         var LatLon = new google.maps.LatLng(lat, lon);
         var options = {
             center: LatLon,
-            zoom: 10,
+            zoom: zoom,
             mapTypeControlOptions: {
                 mapTypeIds: ['map_style']
             }
         };
 
         var map = new google.maps.Map(document.getElementById('ping_map'), options);
-        map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Last seen by '}));
+        map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Twinder Radar'}));
         map.setMapTypeId('map_style');
 
         // Set the infobox options
@@ -58,7 +62,7 @@ $(document).ready(function() {
             fillOpacity: 0.35,
             map: map,
             center: LatLon,
-            radius: Math.round(parseInt($('#radius').text())*1609.344)
+            radius: Math.round(parseInt(distance*1609.344))
         };
 
         circle = new google.maps.Circle(radius);
@@ -106,7 +110,7 @@ $(document).ready(function() {
                         submit: 'submit'
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
                         $('#about_quote').text($('#bio_text').val());
                         $('#about_quote').fadeIn();
                         $('#bio_text').hide();
@@ -143,7 +147,7 @@ $(document).ready(function() {
                             text: text
                         },
                         success: function(data) {
-                            // console.log(data);
+                            console.log(data);
                             var obj = JSON.parse(data);
 
                             if(obj.status == 200) {
@@ -158,8 +162,8 @@ $(document).ready(function() {
             });
         } else {
             $.ajax({
-                url : base_url +'users/ReportUser',
-                data : {
+                url: base_url +'users/ReportUser',
+                data: {
                     id: tinder_id,
                     reason: reason
                 },
@@ -170,6 +174,7 @@ $(document).ready(function() {
                     if(obj.status == 200) {
                         $('#report_modal').modal('hide');
                         $('#report_user').fadeOut('slow');
+                        location.reload();
                     }
                 }
             });
@@ -190,6 +195,8 @@ $(document).ready(function() {
         // The users have already been matched
         case'matched':
 
+            var match_id = $('#match_id').text();
+
             $('#unmatch_user').hover(function() {
                 $(this).removeClass('btn-warning');
                 $(this).addClass('btn-danger');
@@ -206,17 +213,91 @@ $(document).ready(function() {
                 $.ajax({
                     url: base_url +'users/UnmatchUser',
                     data: {
-                        city: city,
-                        state: state
+                        id: match_id
                     },
                     success: function(data) {
+                        console.log(data);
 
+                        $(this).removeClass('btn-warning');
+                        $(this).addClass('btn-default');
+                        $(this).html('<i class="fa fa-thumbs-up"></i> Like');
+
+                        $('#like_user').click(function() {
+                            $.ajax({
+                                url: base_url +'users/LikeUser',
+                                data: {
+                                    id: tinder_id
+                                },
+                                success: function(data) {
+                                    if(data != 'false') {
+                                        // Change the match count number
+                                        var count = $('#match_count_num').text();
+                                        $('#match_count_num').text(parseInt(count)+parseInt(1));
+
+                                        // Show the modal
+                                        $('#match_modal').modal('show');
+
+                                        // Make the button clickable
+                                        $('#msg_match').click(function() {
+                                            window.location.href = base_url +'matches/'+ data; 
+                                        });
+
+                                        var new_class = 'warning';
+                                        var new_text = 'Matched';
+                                    } else {
+                                        var new_class = 'success';
+                                        var new_text = 'Liked!';
+                                    }
+
+                                    // Change the button
+                                    $('#like_user').removeClass('btn-default');
+                                    $('#like_user').addClass('btn-'+ new_class);
+                                    $('#like_user').html(new_text);
+                                    console.log(data);
+                                }
+                            });
+                        });
                     }
                 });
+            });
+            break;
 
-                $(this).removeClass('btn-warning');
-                $(this).addClass('btn-primary');
-                $(this).html('<i class="fa fa-heart"></i> Like');
+        case'can_like':
+
+            $('#like_user').click(function() {
+                $.ajax({
+                    url: base_url +'users/LikeUser',
+                    data: {
+                        id: tinder_id
+                    },
+                    success: function(data) {
+                        if(data != 'false') {
+                            // Change the match count number
+                            var count = $('#match_count_num').text();
+                            $('#match_count_num').text(parseInt(count)+parseInt(1));
+
+                            // Show the modal
+                            $('#match_modal').modal('show');
+
+                            // Make the button clickable
+                            $('#msg_match').click(function() {
+                                window.location.href = base_url +'matches/'+ data; 
+                            });
+
+                            var new_class = 'warning';
+                            var new_text = 'Matched';
+                        } else {
+                            var new_class = 'success';
+                            var new_text = 'Liked!';
+                        }
+
+                        // Change the button
+                        $('#like_user').removeClass('btn-default');
+                        $('#like_user').addClass('btn-'+ new_class);
+                        $('#like_user').html(new_text);
+                        console.log(data);
+                    }
+                });
             });
             break;
     }
@@ -296,7 +377,7 @@ $(document).ready(function() {
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
         if(type == 'tweets') {
-            data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
+            data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
         }
 
         // Load the new results
@@ -342,7 +423,7 @@ $(document).ready(function() {
     Initialize($('#lat').text(), $('#lon').text());
 
     // Load the connections
-    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter;
+    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter +'&twitter_id='+ twitter_id;
 
     $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
         $('.panel-heading ul li').click(function() {
