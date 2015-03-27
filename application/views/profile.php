@@ -24,11 +24,7 @@
 							<div class="row">
 <?php
 	for($i=0;$i<count($stats);$i++) {
-		if($stats[$i]['name'] == $tab_active) {
-			$id = 'active';
-		} else {
-			$id = '';
-		}
+		$id = ($stats[$i]['name'] == $tab_active ? 'active' : '');
 ?>
 				                <div class="col-lg-2 timer_box" id="<?php echo $id; ?>" name="<?php echo $stats[$i]['name']; ?>">
 				                	<div class="inside">
@@ -153,11 +149,7 @@
 <?php
 	// Loop thru the connections tabs
 	for($i=0;$i<count($tabs);$i++) {
-		if($i == 0) {
-			$tab_id = 'id="active"';
-		} else {
-			$tab_id = '';
-		}
+		$tab_id = ($tabs[$i] == $sub_tab ? 'id="active"' : '');
 ?>
 										<li <?php echo $tab_id; ?> name="<?php echo $tabs[$i]; ?>"><?php echo str_replace('_', ' ', $tabs[$i]); ?></li>
 <?php

@@ -258,6 +258,9 @@ ul.list-group li {
     .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
       padding: 0;
       background: #222; }
+      @media screen and (min-width: 992px) {
+        .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
+          padding: 0 20px; } }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown:hover {
         background: #444; }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown.open {
@@ -341,6 +344,7 @@ ul.list-group li {
         padding: 0 120px; } }
     #footer #list_name .col-lg-3 {
       font-size: 24px;
+      font-weight: 600;
       padding: 8px 0;
       text-align: left;
       color: #fff;
@@ -483,6 +487,8 @@ span.sub_tip {
     @media screen and (max-width: 768px) {
       #header-section .page-header {
         font-size: 22px; } }
+    #header-section .page-header .img-circle {
+      width: 50px; }
   #header-section #profile_top {
     min-height: 340px;
     padding: 110px 0 20px 0;
@@ -679,7 +685,8 @@ span.sub_tip {
 
 .discussion {
   list-style: none;
-  background: #f4f4f4;
+  background: #fff;
+  border: none;
   margin: 0;
   padding: 0 0 50px 0; }
   .discussion li {
@@ -794,6 +801,7 @@ span.sub_tip {
   #settings_form .settings_box p {
     background: #f0f0f0;
     font-size: 24px;
+    font-weight: 600;
     padding: 4px 9px;
     border-bottom: solid 1px #ddd; }
   #settings_form .settings_box .compartment {
@@ -1048,7 +1056,8 @@ span.sub_tip {
                     border: solid 1px #ccc;
                     padding: 5px; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet h4 {
-                    font-size: 14px; }
+                    font-size: 14px;
+                    color: #888; }
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet h4 a {
                       color: #000;
                       font-weight: bold; }
@@ -1069,12 +1078,25 @@ span.sub_tip {
                       color: #82b919; }
                       #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.retweet .fa + span {
                         margin-left: 10px; }
+                  #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats {
+                    margin-top: 6px; }
+                    #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span {
+                      color: #8899a6; }
+                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span:last-of-type {
+                        margin-left: 15px; }
+                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa {
+                        color: #ccd6dd;
+                        font-size: 20px; }
+                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa-star {
+                        color: yellow; }
+                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa-retweet {
+                        color: #82b919; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media:nth-of-type(odd) {
                     background: #f7f7f7; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media:hover {
                     border: solid 1px #08f !important; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media:last-of-type {
-                    border-bottom: none; }
+                    border-bottom: solid 1px #ddd; }
                 #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box button#see_more {
                   width: 100%;
                   margin-top: 10px; }
@@ -1224,15 +1246,10 @@ span.sub_tip {
         cursor: auto;
         padding: 4px 12px;
         line-height: 2.0;
+        font-size: 24px;
         cursor: auto; }
-        #chart_load #chart_data #chart_block ul li span {
-          font-size: 22px;
-          line-height: 1.4;
-          vertical-align: middle; }
         #chart_load #chart_data #chart_block ul li:hover {
           color: #000 !important; }
-          #chart_load #chart_data #chart_block ul li:hover span {
-            color: #000 !important; }
   #chart_load #chart_data #mr,
   #chart_load #chart_data #mrs {
     padding: 10px; }
@@ -1254,15 +1271,16 @@ span.sub_tip {
   position: fixed;
   top: 50px;
   border: none;
-  border-bottom: solid 1px #555;
   z-index: 9999;
   background: #fff; }
   @media screen and (max-width: 768px) {
     #search_container {
-      padding: 0 20px; } }
+      padding: 0 20px;
+      border-bottom: solid 1px #555; } }
   @media screen and (min-width: 992px) {
     #search_container {
-      padding: 0 120px; } }
+      padding: 0 120px;
+      border-bottom: solid 1px #ccc; } }
   #search_container .input-group {
     height: 100%; }
     #search_container .input-group .input-group-addon {
@@ -1459,18 +1477,17 @@ span.stateface {
 
 .twitter-share-button {
   margin-top: 6px;
-  margin-right: 15px;
   font-size: 16px; }
 
-#match_box .btn-default {
-  margin: 0;
-  margin-top: 0 !important;
-  background: #f0f0f0;
-  font-size: 14px; }
+#match_box h1 span {
+  font-size: 18px;
+  display: block;
+  margin-top: 9px;
+  margin-right: 20px; }
 #match_box #match_load {
-  border: solid 1px #ccc;
   margin-bottom: 20px;
-  padding: 0; }
+  padding: 0;
+  border-bottom: solid 1px #ccc; }
   #match_box #match_load .none {
     border: none; }
 #match_box textarea {
@@ -1480,7 +1497,8 @@ span.stateface {
   float: right;
   margin-top: 10px; }
 
-.fb_iframe_widget,
-.fb_iframe_widget span,
-.fb_iframe_widget iframe[style] {
-  width: 100% !important; }
+#disqus_thread {
+  padding: 0 10px;
+  margin: 8px 0;
+  border: solid 1px #ddd;
+  background: #f8f8f8; }

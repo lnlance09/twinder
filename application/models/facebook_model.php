@@ -18,13 +18,7 @@
 		 */
 		public function CookieFile($email) {
 			$exp = explode('@', $email);
-
-			if(count($exp) > 1) {
-				$file = $exp[0];
-			} else {
-				$file = $email;
-			}
-
+			$file = (count($exp) > 1 ? $exp[0] : $email);
 		    return 'cookies/'.$file.'.txt';
 		}
 
@@ -51,16 +45,20 @@
 			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php');
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);  
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);    
+			// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
+			curl_setopt($ch, CURLOPT_HEADER, TRUE);     
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
-			curl_exec($ch); 					
+			$data = curl_exec($ch); 					
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
 			curl_close($ch);
-			return $http;   
+			
+			if($http == 302) {
+				return $data;
+			}   
 		}
 
 		/**

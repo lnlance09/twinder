@@ -14,6 +14,8 @@
             $my_name = $connections[$i]['name'];
             $rt = $connections[$i]['retweet'];
             $media = $connections[$i]['media'];
+            $rt_count = $connections[$i]['rt_count'];
+            $fav_count = $connections[$i]['fav_count'];
 
             if($rt) {
                 $tweet = $rt['tweet'];
@@ -26,7 +28,7 @@
 
             $link = 'https://twitter.com/'.$username;
 ?>
-        <div class="media tweet" onclick="location.href='<?php echo $link; ?>'">
+        <div class="media tweet">
 <?php
             if($rt) {
 ?>
@@ -51,7 +53,6 @@
                 <p>
                     <?php echo FormattedTweet($tweet); ?> 
                 </p>
-
 <?php
             if($media) {
 ?>
@@ -61,6 +62,13 @@
 <?php
             }
 ?>
+                <p class="tweet_stats">
+                    <!-- Favorite count -->
+                    <span class="favorite_count"><i class="fa fa-star"></i> <?php echo number_format($fav_count); ?></span>
+
+                    <!-- Retweet count -->
+                    <span class="retweet_count"><i class="fa fa-retweet"></i> <?php echo number_format($rt_count); ?></span>
+                </p>
             </div>
         </div>
 <?php

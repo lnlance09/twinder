@@ -11,8 +11,6 @@
                     and
                     <a href="<?php echo $base_url.$user_two['link']; ?>"><?php echo $user_two['name']; ?></a>
 
-                    <button class="btn btn-default pull-right" type="button">422 views</button>
-
                     <a class="twitter-share-button pull-right" 
                         href="<?php echo $base_url.'matches/'.$match_id; ?>"
                         data-related="twitterdev"
@@ -20,6 +18,8 @@
                         data-count="none">
                         Tweet
                     </a>
+
+                    <span class="pull-right"><?php echo $views; ?> views</span>
 
                     <span class="clearfix"></span>
                 </h1>
@@ -44,7 +44,8 @@
 <?php
     }
 ?>
-                <div class="fb-comments" data-href="<?php echo $base_url; ?>" data-numposts="10" data-colorscheme="light"></div>
+                
+                <div id="disqus_thread"></div>
             </div>
         </div>
     </div>

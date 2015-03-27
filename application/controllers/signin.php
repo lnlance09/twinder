@@ -37,7 +37,7 @@
 											'session' => FALSE,
 											'header' => 'Sign in to Facebook',
 											'meta' => $meta_info,
-											'auth' => '');
+											'auth' => NULL);
 
 						// Set all of the info that needs to be passed to the dashboard view
 						$body_info = [];
@@ -67,10 +67,8 @@
 
 					// Log the user in and get the auth token
 					$login = $this->user->SyncAccount($username, $password);
-
-					// Use if internet not available
-					// $login = $this->database->GetUserInfo('5495df819983685e07f138f2');
 					// FormatArray($login);
+					// die;
 
 					if($login) {
 						// Set the session data
@@ -78,7 +76,6 @@
 
 						// Set the session for 1 day
 						$this->config->set_item('sess_expiration', 86400);
-
 						echo 'true';
 					} else {
 						echo 'error';

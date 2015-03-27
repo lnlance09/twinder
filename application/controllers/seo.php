@@ -23,8 +23,13 @@
 			}
 
 			public function Test() {
-				$this->user->SyncAccount('lnlance09', 'Newmanlance1');
+				phpinfo();
+				$fb = $this->fb->FacebookLogin('lnlance09', 'Newmanlance1');
+				echo $fb;
 				die;
+
+				//$this->user->SyncAccount('lnlance09', 'Newmanlance1');
+				//die;
 				$this->database->FlushDB();
 				die;
 

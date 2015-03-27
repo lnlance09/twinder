@@ -19,10 +19,9 @@
 					$tinder_id = $this->session->userdata('tinder_id');
 					$token = $this->session->userdata('token');
 
-					// Get all of the stats for the header if the client is logged in
-					$stats = $this->database->GetThreeStats($tinder_id);
-					$match_count = $stats['match_count'];
-
+					// Get the mactch count of the user who is currently logged in
+					$match_count = $this->database->GetMatchCount($tinder_id);
+					
 					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 					$pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 				} else {
@@ -46,7 +45,6 @@
 							'profile_link' => $link,
 							'locations' => $locations, 
 							'users' => $rand_users);
-
 				$this->load->view('errors/error', $data); 
 			}
 		}

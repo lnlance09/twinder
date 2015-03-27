@@ -89,9 +89,8 @@
 						$auth = $this->session->userdata('token');
 						$tinder_id = $this->session->userdata('tinder_id');
 
-						// Get all of the stats for the header if the client is logged in
-						$stats = $this->database->GetThreeStats($tinder_id);
-						$match_count = $stats['match_count'];
+						// Get the mactch count of the user who is currently logged in
+						$match_count = $this->database->GetMatchCount($tinder_id);
 					} else {
 						$session = FALSE;
 						$auth = NULL;
@@ -107,8 +106,6 @@
 					$all_chart = $this->database->GetUsersInState($state['abbrev']);
 					$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
 					$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
-					//FormatArray($male_chart);
-					//die;
 
 					// Store all of the gender filters in an array
 					$genders = array(array('num' => 0, 'name' => 'men'),
@@ -175,7 +172,6 @@
 				// Get all of the query string parameters
 				$params = $this->input->get();		
 				// FormatArray($params);
-
 				foreach($params as $key => $value) {
 					$$key = $value;
 				}
@@ -236,7 +232,7 @@
 								'new_page' => $page+1);
 				// FormatArray(array_slice($view_info, 5));
 
-				// Load the views
+				// Load the view
 				$this->load->view('backend/hot', $view_info); 
 			}
 

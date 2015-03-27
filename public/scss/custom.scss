@@ -193,22 +193,23 @@ span.stateface {
 
 .twitter-share-button {
     margin-top: 6px;
-    margin-right: 15px;
     font-size: 16px;
 }
 
 #match_box {
-    .btn-default {
-        margin: 0;
-        margin-top: 0 !important;
-        background: #f0f0f0;
-        font-size: 14px;
+    h1 {
+        span {
+            font-size: 18px;
+            display: block;
+            margin-top: 9px;
+            margin-right: 20px;
+        }
     }
 
     #match_load {
-        border: solid 1px #ccc;
         margin-bottom: 20px;
         padding: 0;
+        border-bottom: solid 1px #ccc;
 
         .none {
             border: none;
@@ -226,6 +227,9 @@ span.stateface {
     }
 }
 
-.fb_iframe_widget,
-.fb_iframe_widget span,
-.fb_iframe_widget iframe[style]  {width: 100% !important;}
+#disqus_thread {
+    padding: 0 10px;
+    margin: 8px 0;
+    border: solid 1px #ddd;
+    background: #f8f8f8;
+}

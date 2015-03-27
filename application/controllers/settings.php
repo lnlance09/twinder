@@ -40,9 +40,8 @@
 						// FormatArray($loc);
 						// die;
 
-						// Get all of the stats for the header if the client is logged in
-						$stats = $this->database->GetThreeStats($tinder_id);
-						$match_count = $stats['match_count'];
+						// Get the mactch count of the user who is currently logged in
+						$match_count = $this->database->GetMatchCount($tinder_id);
 
 						// Get the user's profile link
 						$profile_link = FormatUserLink($tinder_id, $username);

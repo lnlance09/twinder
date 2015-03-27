@@ -40,18 +40,4 @@ $(document).ready(function() {
             $(this).effect('shake');
         }
     }); 
-
-    setTimeout(function(){
-        resizeFacebookComments();
-    }, 1000);
-
-    // ON PAGE RESIZE
-    $(window).on('resize', function(){
-        resizeFacebookComments();
-    });
-
-    function resizeFacebookComments(){
-        var src = $('.fb-comments iframe').attr('src').split('width='), width = $('#container').width();
-        $('.fb-comments iframe').attr('src', src[0] + 'width=' + width);
-    }
 });

@@ -25,7 +25,8 @@
 		public function AuthToken($email, $password) {
 			// Get the Facebook token
 			$token = $this->fb->FacebookToken($email, $password);
-			
+			// var_dump($token);
+
 			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
 				// Send a request to Tinder's auth endpoint to get a new token
 				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token));
@@ -62,12 +63,11 @@
 			if($my_id != $his_id) {
 				// See if there is already a liking between these two users
 				$me_like = $this->database->SeeIfLiked($my_id, $his_id, FALSE);
-				// FormatArray($me_like);
 
 				if($me_like['count'] == 0) {
 					$like = array('perm' => 'can_like', 'match_id' => NULL);
 				} else {
-					if($me_like['match_id']) {
+					if(empty($me_like['match_id']) || $me_like['match_id'] == 'false') {
 						$like = array('perm' => 'liked', 'match_id' => NULL);
 					} else {
 						if($me_like['unmatched']) {
@@ -267,7 +267,7 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			$sig = "Twinder.io - Twitter meets Tinder";
+			// $sig = "Twinder.io - Twitter meets Tinder";
 			$sig = "";
 			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
 			return @json_decode($info, TRUE);
@@ -282,7 +282,6 @@
 		public function SyncAccount($email, $password) {
 			// Get the Tinder API token
 			$auth = $this->AuthToken($email, $password);
-			// FormatArray($auth);
 
 			if($auth) {
 				// Seperate the first name from the last
@@ -292,6 +291,7 @@
 				$profile = $this->ProfileInfo($auth['api_token']);
 				$lon = $profile['pos']['lon'];
 				$lat = $profile['pos']['lat'];
+				$distance = $profile['distance_filter'];
 				// FormatArray($profile);
 				// die;
 
@@ -310,13 +310,11 @@
 				// Define the settings array for the query on the settings table
 				$settings = array('age_min' => $profile['age_filter_min'],
 								'age_max' => $profile['age_filter_max'],
-								'distance_filter' => $profile['distance_filter'],
+								'distance_filter' => $distance,
 								'interested_in' => $profile['gender_filter']);
 
 				// Insert/update this user into the DB
 				$info = $this->database->InsertUser($user, $settings);
-				// FormatArray($user_info);
-				// die;
 
 				// Define the user_id and username keys of the data array
 				$user['user_id'] = $info['user_id'];
@@ -330,14 +328,19 @@
 
 				// Get the name of the city and state based upon the user's longitude and latitude coordinates
 				$loc = $this->loc->MapquestLatLon($lat, $lon);
+				$city = $loc['city'];
+				$state = $loc['state'];
 
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
-				// FormatArray($updates);
+				FormatArray($updates);
 
 				// Sync all of the messages from the user's Tinder account
-				$this->database->SyncMessages($updates['matches'], $auth['_id'], $profile['distance_filter'], $lon, $lat, $loc['city'], $loc['state']);
+				$this->database->SyncMessages($updates['matches'], $auth['_id'], $distance, $lon, $lat, $city, $state);
 
+				// Update all of the blocks
+				$this->database->UpdateBlocks($auth['_id'], $updates['blocks']);
+			
 				// Merge the settings and users arrays
 				return array_merge($user, $settings);
 			} else {
@@ -397,16 +400,13 @@
 		public function UserLookup($tinder_id, $auth) {
 			$info = SendRequest('user/'.$tinder_id, $auth, FALSE, FALSE);
 			$decode = @json_decode($info, TRUE);
-			//FormatArray($decode);
-			//die;
+			// echo $info;
+			// FormatArray($decode);
+			// die;
 			
 			if($decode['status'] == 200) {
 				$user = $decode['results'];
-				// FormatArray($user);
-				// die;
-
-				return array(
-							'tinder_id' => $user['_id'],
+				return array('tinder_id' => $user['_id'],
 							'distance' => $user['distance_mi'],
 							'name' => $user['name'],
 							'dob' => date('M j, Y', strtotime($user['birth_date'])),
@@ -416,8 +416,7 @@
 							'age' => ReturnAge($user['birth_date']),
 							'last_activity_date' => FormatTime($user['ping_time']),
 							'profile_pic' => ReturnProfilePic($user['photos']),
-							'pics' => ReturnPicsArray($user['photos'])
-							); 
+							'pics' => ReturnPicsArray($user['photos'])); 
 			} else {
 				return FALSE;
 			}
@@ -491,8 +490,7 @@
 									$state['abbrev'] = strtolower(urldecode($val));
 									$state['name'] = $this->loc->FullFromAbbrev(urldecode($val));
 								}
-								// echo $state['abbrev'];
-
+								
 								// Get the place's lat & lon coordinates
 								$coords = $this->loc->MapquestLocation(NULL, $state['abbrev']);
 								$state['lon'] = $coords['lng'];

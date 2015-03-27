@@ -115,6 +115,11 @@
                     padding: 0;
                     background: #222;
 
+                    @media screen and (min-width: $break-large) {
+                        padding: 0 20px;
+
+                    }
+
                     &:hover {
                         background: #444;
                     }

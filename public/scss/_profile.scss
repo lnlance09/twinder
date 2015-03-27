@@ -287,6 +287,7 @@
                                         &.tweet {
                                             h4 {
                                                 font-size: 14px;
+                                                color: #888;
 
                                                 a {
                                                     color: $black;
@@ -325,6 +326,31 @@
                                                         }
                                                     }
                                                 }
+
+                                                &.tweet_stats {
+                                                    margin-top: 6px;
+
+                                                    span {
+                                                        color: #8899a6;
+
+                                                        &:last-of-type {
+                                                            margin-left: 15px;
+                                                        }
+
+                                                        .fa {
+                                                            color: #ccd6dd;
+                                                            font-size: 20px;
+                                                        } 
+
+                                                        .fa-star {
+                                                            color: yellow;
+                                                        }
+
+                                                        .fa-retweet {
+                                                            color: $green;
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
 
@@ -337,7 +363,7 @@
                                         }
 
                                         &:last-of-type  {
-                                            border-bottom: none;
+                                            border-bottom: solid 1px $border-color;
                                         }
                                     }
                                 }

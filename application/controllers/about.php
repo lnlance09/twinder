@@ -28,9 +28,8 @@
 						$auth = $this->session->userdata('token');
 						$tinder_id = $this->session->userdata('tinder_id');
 
-						// Get all of the stats for the header if the client is logged in
-						$stats = $this->database->GetThreeStats($tinder_id);
-						$match_count = $stats['match_count'];
+						// Get the mactch count of the user who is currently logged in
+						$match_count = $this->database->GetMatchCount($tinder_id);
 					} else {
 						$session = FALSE;
 						$auth = NULL;

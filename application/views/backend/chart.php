@@ -26,7 +26,7 @@
                 <canvas id="my_chart" class="pull-left" width="120" height="120"></canvas>
 
                 <ul class="list-group pull-left">
-                    <li class="list-group-item"><span><?php echo $total_count; ?></span> users</li>
+                    <li class="list-group-item"><?php echo $total_count; ?> users</li>
                 </ul>
 
                 <div class="clearfix"></div>

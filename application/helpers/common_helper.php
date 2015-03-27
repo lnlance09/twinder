@@ -11,11 +11,7 @@
 		 */
 		function SendRequest($url, $auth, $post, $post_data) {
 			// Define the HTTP headers
-			$headers = array('app-version: 123',
-							'os_version: 80000100001',
-							'Accept: */*',
-							'platform: ios',
-							'Content-Type: application/json; charset=utf-8');
+			$headers = array('app-version: 123', 'os_version: 80000100001', 'Accept: */*', 'platform: ios', 'Content-Type: application/json; charset=utf-8');
 
 			// Push the auth token headers into the array if necessary
 			if($auth) {
@@ -56,10 +52,20 @@
 			return $http;
 		}
 
+		/**
+		 * Sort messages according to time
+		 * @param {array} [a] Array one
+		 * @param {array} [b] Array two
+		 */
 		function SortMessages($a, $b) {    
 			return $b['last_msg']['time'] - $a['last_msg']['time'];
 		}
 
+		/**
+		 * Sort messages according to likes
+		 * @param {array} [a] Array one
+		 * @param {array} [b] Array two
+		 */
 		function SortByLikes($a, $b) {    
 			return $b['like_count'] - $a['like_count'];
 		}
@@ -339,36 +345,49 @@
 			return trim($text);
 		}
 
+		/**
+		 * Format a gender's possesion
+		 * @param {int} [gender] Either 0 or 1
+		 * @return {string}
+		 */
 		function FormatPossesion($gender) {
 			return ($gender == 0 ? 'his' : 'her');
 		}
 
+		/**
+		 * Return the Font-Awesome class name
+		 * @param {string} [type] The name of the tab
+		 * @return {string}
+		 */
 		function ReturnFA($type) {
 			switch($type) {
 	            case'likes':
 
-	                $fa = 'thumbs-up';
+	                return 'thumbs-up';
 	                break;
 
 	            case'matches':
 
-	                $fa = 'heart';
+	                return 'heart';
 	                break;
 
 	            case'passes':
 
-	                $fa = 'thumbs-down';
+	                return 'thumbs-down';
 	                break;
 
 	            case'tweets':
 
-	                $fa = 'twitter';
+	                return 'twitter';
 	                break;
 	        }
-
-	        return $fa;
 	    }
 
+	    /**
+	     * Return a gender's article
+	     * @param {int} [gender] Ether 0 or 1
+	     * @return {string}
+	     */
 		function FormatArticle($gender) {
 			return ($gender == 0 ? 'he' : 'she');
 		}
@@ -426,29 +445,46 @@
 			return (empty($username) ? $name : $username);
 		}
 
-		function ReturnTabs($tab) {
+		/**
+		 * Determine what tab to display
+		 * @param [type] $tab  [description]
+		 * @param [type] $same [description]
+		 */
+		function ReturnTabs($tab, $same) {
 			switch($tab) {
 				case'likes':
 				case'liked_by':
 				case'mutual_likes':
 
-					$tabs = array('likes', 'liked_by', 'mutual_likes');
+					$tabs = array('likes', 'liked_by');
 					$active = 'likes';
+
+					if(!$same) {
+						array_push($tabs, 'mutual_likes');
+					}
 					break;
 
 				case'passes':
 				case'passed_by':
 				case'mutual_passes':
 
-					$tabs = array('passes', 'passed_by', 'mutual_passes');
+					$tabs = array('passes', 'passed_by');
 					$active = 'passes';
+
+					if(!$same) {
+						array_push($tabs, 'mutual_passes');
+					}
 					break;	
 
 				case'matches':
 				case'mutual_matches':
 
-					$tabs = array('matches', 'mutual_matches');
+					$tabs = array('matches');
 					$active = 'matches';
+
+					if(!$same) {
+						array_push($tabs, 'mutual_matches');
+					}
 					break;
 
 				case'tweets':
@@ -491,7 +527,6 @@
 			}
 
 			$num_rows = ceil($end/$per_row);
-
 			return array('end' => $end, 'end_col' => $end_col, 'num_rows' => $num_rows);
 		}
 

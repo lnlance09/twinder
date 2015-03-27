@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-//$config['base_url']	= 'http://twinder.io/';
-$config['base_url']	= '/wetinder/';
+$config['base_url']	= 'http://twinder.io/';
+//$config['base_url']	= '/wetinder/';
 
 /*
 |--------------------------------------------------------------------------

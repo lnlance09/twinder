@@ -2,13 +2,14 @@ $(document).ready(function() {
     var base_url = $('#base_url').text().trim(); 
     var tinder_id = $('#user_tinder_id').text();
     var my_tinder_id = $('#my_tinder_id').text();
+    var twitter_id = $('#twitter_id').text().trim();
+    var twitter = $('#twitter').text().trim();
+
     var first_name = $('#first_name').text();
     var gender = $('#gender').text();
     var active_tab = $('#active_tab').text();
     var can_edit = $('#can_edit').text().trim();
-    var twitter = $('#twitter').text().trim();
     var can_like = $('#like').text().trim();
-    var twitter_id = $('#twitter_id').text().trim();
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
     // console.log(can_edit);
     console.log(can_like);
@@ -184,7 +185,7 @@ $(document).ready(function() {
     // Search thru connections upon keyup of the input field
     $('#search_connections').keyup(function(e) {
         var type = $('#active').attr('name');
-        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ $(this).val();
+        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ $(this).val() +'&twitter_id='+ twitter_id;
 
         $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
             
@@ -217,46 +218,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         console.log(data);
-
-                        $(this).removeClass('btn-warning');
-                        $(this).addClass('btn-default');
-                        $(this).html('<i class="fa fa-thumbs-up"></i> Like');
-
-                        $('#like_user').click(function() {
-                            $.ajax({
-                                url: base_url +'users/LikeUser',
-                                data: {
-                                    id: tinder_id
-                                },
-                                success: function(data) {
-                                    if(data != 'false') {
-                                        // Change the match count number
-                                        var count = $('#match_count_num').text();
-                                        $('#match_count_num').text(parseInt(count)+parseInt(1));
-
-                                        // Show the modal
-                                        $('#match_modal').modal('show');
-
-                                        // Make the button clickable
-                                        $('#msg_match').click(function() {
-                                            window.location.href = base_url +'matches/'+ data; 
-                                        });
-
-                                        var new_class = 'warning';
-                                        var new_text = 'Matched';
-                                    } else {
-                                        var new_class = 'success';
-                                        var new_text = 'Liked!';
-                                    }
-
-                                    // Change the button
-                                    $('#like_user').removeClass('btn-default');
-                                    $('#like_user').addClass('btn-'+ new_class);
-                                    $('#like_user').html(new_text);
-                                    console.log(data);
-                                }
-                            });
-                        });
+                        $('#unmatch_user').fadeOut(2000);
                     }
                 });
             });
@@ -376,7 +338,7 @@ $(document).ready(function() {
         // Define the query string
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
-        if(type == 'tweets') {
+        if(type == 'tweets' || type == 'tweets_and_replies') {
             data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
         }
 
@@ -422,6 +384,7 @@ $(document).ready(function() {
     // Load the map
     Initialize($('#lat').text(), $('#lon').text());
 
+    var active_tab = $('.panel-heading ul li#active').attr('name');
     // Load the connections
     var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter +'&twitter_id='+ twitter_id;
 
@@ -437,7 +400,7 @@ $(document).ready(function() {
             var data = 'type='+ type + '&page=0&id='+ tinder_id;
 
             if(type == 'tweets' || type == 'tweets_and_replies' || type == 'photos_and_videos') {
-                data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
+                data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
             }
 
             $('#con_load_box').load(base_url +'users/GetConnections', data, function() {

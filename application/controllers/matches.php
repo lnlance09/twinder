@@ -58,9 +58,11 @@
 								$can_send = FALSE;
 							}
 
-							// Get all of the stats for the header if the client is logged in
-							$stats = $this->database->GetThreeStats($tinder_id);
-							$match_count = $stats['match_count'];
+							// Update the matches new views
+							$views = $this->database->UpdateMatchViews($id, $match['user_one']['views']);
+
+							// Get the mactch count of the user who is currently logged in
+							$match_count = $this->database->GetMatchCount($tinder_id);
 
 							// Format the user's profile pic and their page link
 							$profile_img = ChangePicSize($profile_pic, 172);
@@ -86,6 +88,8 @@
 							$body_info = array('match_id' => $id,
 											'user_one' => $match['user_one'],
 											'user_two' => $match['user_two'],
+											'views' => $views,
+											'unmatched' => $match['user_one']['unmatched'],
 											'can_send' => $can_send);
 
 							// Get all of the data for the footer view
@@ -128,15 +132,22 @@
 				// Get all of the users sorted by the given filter
 				$thread = $this->database->GetThread($id);
 				// FormatArray($thread);
-				
+				// die;
+
 				// Get the match info
 				$match = $this->database->GetMatchInfo($id);
 				// FormatArray($match);
 				// die;
 
+				if(count($thread) == 1) {
+					$count = 0;
+				} else {
+					$count = count($thread);
+				}
+
 				// Load the view
 				$data = array('messages' => $thread, 
-							'count' => count($thread),
+							'count' => $count,
 							'user_one' => $match['user_one'],
 							'user_two' => $match['user_two'],
 							'page' => $page);

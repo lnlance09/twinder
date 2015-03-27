@@ -70,7 +70,7 @@ $route['users/UnmatchUser'] = 'users/UnmatchUser/';
 /* Matches page */
 $route['matches/(:any)'] = 'matches/index/$1';
 $route['matches/MatchesBackend'] = 'matches/MatchesBackend/';
-$route['matches/Thread'] = 'matches/Thread404/';
+$route['matches/Thread'] = 'matches/Thread/';
 
 /* Hot page */
 $route['hot/gender/(:any)'] = 'hot/index/$1';
