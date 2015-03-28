@@ -32,6 +32,8 @@ $(document).ready(function() {
                                 scrollTop: $('form#send_msg').top
                             }, 2000);  
                         });
+
+                        $('textarea').val('');
                     }
                 }
             });
