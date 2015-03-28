@@ -23,6 +23,7 @@ span.sub_tip {
 	padding: 7px 15px 10px 15px;
 	line-height: 1;
 	opacity: 1 !important;
+	z-index: 99999999;
 }
 
 .tooltip.top .tooltip-arrow {
@@ -30,5 +31,5 @@ span.sub_tip {
 	bottom: -1px;
 	border-width: 6px 6px 0;
 	border-top-color: $black;
-	z-index: 9999;
+	z-index: 99999999;
 }
