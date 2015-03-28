@@ -83,7 +83,6 @@
 			// Redirect the user to the authorization page
 			if($http == 302) {
 				preg_match('/href="([^\s"]+)/', $response, $match);
-				// FormatArray($match);
 				header('Location: '.$match[1]);
 			} else {
 				header('Location: https://api.twitter.com/oauth/authenticate?oauth_token='.$token);

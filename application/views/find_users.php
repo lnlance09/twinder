@@ -5,25 +5,29 @@
 ?>
 	<div id="header-section">
         <div class="container" id="profile_top">
-        	<!-- Radiating circle where new users will be loaded -->
-        	<div id="users_load" class="text-center">
-        		<div id="user_circle">
-					<img src="<?php echo $this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar">
-				</div>
-            </div>
+        	<div id="discover_box">
+	        	<!-- Radiating circle where new users will be loaded -->
+	        	<div id="users_load" class="text-center">
+	        		<div id="user_circle">
+						<img src="<?php echo $this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar">
+					</div>
+	            </div>
+	        </div>
 
-			<!-- Like or Pass buttons -->
-			<div class="col-lg-12 text-center" id="like_or_pass">
-				<div class="col-lg-6">
-        			<img class="svg pull-right" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey">
-        		</div>
+			<div id="decide_box">
+				<!-- Like or Pass buttons -->
+				<div id="like_or_pass">
+					<div class="col-lg-6">
+	        			<img class="svg pull-right" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey">
+	        		</div>
 
-        		<div class="col-lg-6">
-                	<img class="svg pull-left" id="like_user" src="<?php echo $img_url; ?>svg/heart.svg" width="500" height="500" alt="like"> 
-                </div>
+	        		<div class="col-lg-6">
+	                	<img class="svg pull-left" id="like_user" src="<?php echo $img_url; ?>svg/heart.svg" width="500" height="500" alt="like"> 
+	                </div>
 
-                <div class="clearfix"></div>
-       	 	</div>
+	                <div class="clearfix"></div>
+	       	 	</div>
+	       	</div>
 
 			<div class="hidden" id="user_at_num">0</div>
 

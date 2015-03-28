@@ -12,22 +12,18 @@
 				// Load the session library
 				$this->load->library('session');
 
-				// Load the URL helper
-				$this->load->helper('url');
-
 				// Load all of the models
 				$this->load->model('users_model', 'user');
 			}
 
 			public function Index() {
-				redirect('hot', 'location');
+				header('Location: '.$this->base_url.'hot');
 			
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 			
 				if(!$user_id) {
-					// header('Location: '.$this->base_url.'users/'.$this->session->userdata('tinder_id'));
-					redirect('hot', 'location');
+					header('Location: '.$this->base_url.'hot');
 				} else {
 					// Define the meta tags
 					$meta_info = array('description' => 'Tinder for Web',
@@ -39,9 +35,6 @@
 										'session' => FALSE,
 										'header' => '',
 										'meta' => $meta_info);
-
-					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = [];
 
 					// Load all of the views
 					$this->load->view('templates/header', $header_info); 
@@ -66,38 +59,27 @@
 					// Get the hottest user from the given state
 					$mr = $this->database->HottestByState(0, $state);
 					$mrs = $this->database->HottestByState(1, $state);
-
-					// Get the state's rank
-					$rank = 1;
 					
 					$data = array('total_count' => FormatNumber($all['count']),
 								'male_count' => $male['count'],
 								'female_count' => $female['count'],
 								'avg' => $all['avg_age'],
-
 								'mr_link' => FormatUserLink($mr['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
 								'mrs_link' => FormatUserLink($mrs['hot'][0]['tinder_id'], $mr['hot'][0]['username']),
 								'mr_pic' => ChangePicSize($mr['hot'][0]['pic'], 172),
 								'mrs_pic' => ChangePicSize($mrs['hot'][0]['pic'], 172),
 								'mr_name' => $mr['hot'][0]['name'],
 								'mrs_name' => $mrs['hot'][0]['name'],
-
 								'state' => $this->loc->FullFromAbbrev(strtoupper($state)),
-								'abbrev' => $state,
-								'state_rank' => $rank);
-					// FormatArray($data);
+								'abbrev' => $state);
 					$this->load->view('backend/chart', $data); 
 				}
 			}
 
 			// Autocomplete for states
 			public function GetStates() {
-				// Get the state from the URL
-				$state = $this->input->get('state');
-
 				// Call this method to query the DB for matching states
-				$states = $this->loc->GetStates($state);
-				// FormatArray($states);
+				$states = $this->loc->GetStates($this->input->get('state'));
 
 				// Load the autocomplete view
 				$this->load->view('autocomplete/states', $states); 
@@ -111,7 +93,6 @@
 
 				// Call this method to query the DB for matching states
 				$cities = $this->loc->GetCities($state, $city);
-				// FormatArray($cities);
 
 				// Load the autocomplete view
 				$this->load->view('autocomplete/cities', $cities); 
@@ -138,6 +119,8 @@
 				$user_id = $this->session->userdata('user_id');
 			
 				if($user_id) {
+					$tinder_id = $this->session->userdata('tinder_id');
+
 					// Load the Twitter model
 					$this->load->model('twitter_model', 'twitter');
 
@@ -148,16 +131,13 @@
 					// Get an access token and save the result as an array
 					$info = $this->twitter->AccessToken($token, $verifier);
 					parse_str($info, $data);
-
 					foreach($data as $key => $value) {
 						$$key = $value;
 					}
 					
 					$screen_name = 'shelbyjsapp';
-
 					// Update the user's Twitter handle and user ID
-					$data = array('twitter_username' => $screen_name, 'twitter_id' => $user_id);
-					$this->database->UpdateUser($this->session->userdata('tinder_id'), $data);
+					$this->database->UpdateUser($tinder_id, array('twitter_username' => $screen_name, 'twitter_id' => $user_id));
 
 					// Get all of the user's Tweets
 					$tweets = $this->twitter->FetchTweets($screen_name, 200);
@@ -167,7 +147,7 @@
 					$this->database->SyncTweets($user_id, $tweets);
 
 					// Get the link to the user's profile
-					$link = FormatUserLink($this->session->userdata('tinder_id'), $this->session->userdata('username'));
+					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 					// Go back to the user's home page
 					header('Location: '.$this->base_url.$link.'/tweets');

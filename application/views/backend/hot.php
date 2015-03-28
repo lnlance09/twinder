@@ -15,7 +15,6 @@
 <?php
         $start = $i*$per_row;
         $end = ($i == ($num_rows-1) ? $end_col : $start+$per_row);
-        // echo 'Start: '.$start.', End: '.$end.'<br>';
 
         for($x=$start;$x<$end;$x++) {
             $id = $hot['users'][$x]['tinder_id'];
@@ -25,11 +24,9 @@
             $likes = $hot['users'][$x]['like_count'];
             $link = $hot['users'][$x]['link'];
 
+            // Adjust the grammar
             $form = 'match';
-
-            if($likes == 0 || $likes > 1) {
-                $form .= 'es';
-            } 
+            $form .= ($likes != 1 ?: 'es');
 
             // Define the tooltip HTML
             $tooltip = "<span class='tip'>".$name.", ".$age."</span><span class='sub_tip'> ".$likes." ".$form."</span>";

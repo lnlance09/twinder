@@ -3,7 +3,10 @@
  */
 .navbar {
     position: fixed;
-    background: $black;
+    background: $blue;
+    margin: 0 auto; 
+    z-index: 99999;
+    border: none;
 
     @media screen and (max-width: $break-small) {
         padding: 0 20px;
@@ -16,11 +19,6 @@
     @media screen and (min-width: $break-large) {
         padding: 0 $side-padding;
     }
-
-    // padding: 0 $side-padding; 
-
-    margin: 0 auto; 
-    z-index: 99999;
 
     .navbar-toggle {
         border: none;
@@ -103,17 +101,17 @@
 
                 &.active {
                     > a:hover {
-                        background: #333;
+                        background: $blue;
                     }
 
                     > a:focus {
-                        background: #222;
+                        background: $blue;
                     }
                 }
 
                 &.dropdown {
                     padding: 0;
-                    background: #222;
+                    background: $blue;
 
                     @media screen and (min-width: $break-large) {
                         padding: 0 20px;
@@ -121,19 +119,15 @@
                     }
 
                     &:hover {
-                        background: #444;
+                        background: $dk_blue;
+
+                        &.open {
+                            background: $dk_blue;
+                        }
                     }
 
                     &.open {
-                        background: #222;
-
-                        a {
-                            background: #222;
-                        }
-
-                        &:hover {
-                            background: #444;
-                        }
+                        background: $dk_blue;
                     }
 
                     a {

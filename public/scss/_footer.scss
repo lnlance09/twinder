@@ -5,7 +5,7 @@
     z-index: 99999999;
 
     #list_name {
-        background-color: $blue;
+        background-color: $green;
 
         @media screen and (max-width: $break-small) {
             padding: 20px 0;
@@ -86,22 +86,10 @@
                         }
                     }
 
-                    
                     padding: 6px 0;
 
                     .twitter-follow-button {
                         margin-left: 0px;
-                    }
-
-                    .fb-like-box {
-                        margin-top: 7px;
-                        background: #fff;
-                        margin-left: 0px;
-                        padding: 0;
-
-                        img {
-                            border: solid 1px #000 !important;
-                        }
                     }
 
                     a {

@@ -11,13 +11,24 @@
     color: #3b5998;
 }
 
-.fa-heart,
+.fa-twitter {
+    color: $blue;
+}
+
 .fa-refresh {
     color: $green;
 }
 
-.fa-share {
-    cursor: pointer;
+.fa-star {
+    color: #e6c200;
+}
+
+.fa-retweet {
+    color: $green;
+}
+
+.fa-heart {
+    color: $salmon;
 }
 
 .fa-thumbs-up {
@@ -36,11 +47,6 @@
 .fa-rocket,
 .fa-ban {
     color: #c61931;
-}
-
-.fa-twitter,
-.fa-random {
-	color: $blue;
 }
 
 .fa-heartbeat {

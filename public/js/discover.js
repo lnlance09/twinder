@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    var base_url = $('#base_url').text().trim(); 
-    var auth = $('#auth').text().trim();
+    var base_url = $('#base_url').text(); 
+    var auth = $('#auth').text();
     
     /**
      * Draw the radiating circle while loading a new batch of users
@@ -91,7 +91,6 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         console.log(data);
-
                         if(data != 'false') {
                             var match_id = data;
 

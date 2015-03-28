@@ -39,7 +39,7 @@
 				// Store all of the data that needs to be passed to the view as an array
 				$data = array('session' => $session,
 							'name' => $name,
-							'auth' => $token,
+							'auth' => $this->session->userdata('token'),
 							'match_count' => $match_count,
 							'profile_pic' => $pic,
 							'profile_link' => $link,

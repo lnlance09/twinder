@@ -11,9 +11,6 @@
 
 				// Load the session library
 				$this->load->library('session');
-
-				// Load all of the models
-				$this->load->model('admin_model', 'admin');
 			}
 
 			public function Index() {
@@ -33,7 +30,10 @@
 				$password = $this->input->post('password');
 
 				// Store all of the login credentials in an array
-				$creds = array('lance' => 'Codecall87!');
+				$creds = array('lance' => 'twinder',
+							'sam' => 'twinder',
+							'anthony' => 'twinder',
+							'chris' => 'twinder');
 
 				// If the login was successful, then redirect the user to the home page
 				if(array_key_exists($username, $creds)) {
@@ -43,7 +43,6 @@
 
 						// Set the session for 1 day
 						$this->config->set_item('sess_expiration', 86400);
-
 						echo 'true';
 					} else {
 						echo 'false';

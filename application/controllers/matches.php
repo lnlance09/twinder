@@ -49,7 +49,6 @@
 									// Update the thread
 									$messages = $live['results']['messages'];
 									$this->database->UpdateThread($messages, count($messages));
-
 									$can_send = 'true';
 								} else {
 									$can_send = FALSE;
@@ -139,15 +138,9 @@
 				// FormatArray($match);
 				// die;
 
-				if(count($thread) == 1) {
-					$count = 0;
-				} else {
-					$count = count($thread);
-				}
-
 				// Load the view
 				$data = array('messages' => $thread, 
-							'count' => $count,
+							'count' => (count($thread) == 1 ? 0 : count($thread)),
 							'user_one' => $match['user_one'],
 							'user_two' => $match['user_two'],
 							'page' => $page);

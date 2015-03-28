@@ -1,9 +1,9 @@
-// Font-Awesome, Fonts, SVG and colors
 @import 'globals';
 
 @import 'modals';
 @import 'list_group';
 @import 'navbar';
+@import 'forms';
 @import 'dropdown';
 @import 'footer';
 @import 'infowindow';
@@ -17,6 +17,7 @@
 @import 'radar';
 @import 'settings_box';
 @import 'profile';
+@import 'matches';
 @import 'users_load';
 @import 'chart';
 @import 'autocomplete';
@@ -25,65 +26,6 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-}
-
-form {
-    margin-bottom: 0;
-}
-
-.input-group {
-    width: 100%;
-    height: 30px;
-    overflow: hidden;
-}
-
-.input-group-addon {
-    border: none;
-    background: #fff;
-    color: $black;
-}
-
-.btn-group {
-    float: right;
-}
-
-button:focus {
-    outline: none !important;
-    box-shadow: none;
-}
-
-.input-group-addon,
-input[type=text],
-input[type=password],
-textarea.form-control {
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.btn {
-    padding: 8px 13px;
-    border: none;
-}
-
-.btn-success {
-    background: $green;
-
-    &:hover,
-    &:focus {
-        background: $dk_green;
-    }
-}
-
-.btn-primary {
-    background: $blue;
-
-    &:hover {
-        background: $dk_blue;
-    }
-}
-
-.btn-default {
-    border: solid 1px #ccc;
 }
 
 h1 {
@@ -128,29 +70,12 @@ a {
     }
 }
 
-span#time_format {
-    font-style: italic;
-    color: #05f;
-}
-
-span#age {
-    top: 80px;
-}
-
-span.stateface {
-    font-family: 'StateFaceRegular' !important;
-}
-
 .ajax-loader {
     width: 100%;
     text-align: center;
     padding: 10px;
     margin-top: 14px;
     padding: 70px 0;
-}
-
-.hidden {
-    display: none;
 }
 
 .noUi-background {
@@ -170,7 +95,7 @@ span.stateface {
 }
 
 #about_box {
-    background: #fff;
+    background: $white;
     padding: 20px 30px 0 30px;
     z-index: 999;
     margin-top: -90px;
@@ -189,47 +114,4 @@ span.stateface {
 
 .main_none {
     padding: 40px 10px;
-}
-
-.twitter-share-button {
-    margin-top: 6px;
-    font-size: 16px;
-}
-
-#match_box {
-    h1 {
-        span {
-            font-size: 18px;
-            display: block;
-            margin-top: 9px;
-            margin-right: 20px;
-        }
-    }
-
-    #match_load {
-        margin-bottom: 20px;
-        padding: 0;
-        border-bottom: solid 1px #ccc;
-
-        .none {
-            border: none;
-        }
-    }
-
-    textarea {
-        height: 100px;
-        border-radius: 3px;
-    }
-
-    button {
-        float: right;
-        margin-top: 10px;
-    }
-}
-
-#disqus_thread {
-    padding: 0 10px;
-    margin: 8px 0;
-    border: solid 1px #ddd;
-    background: #f8f8f8;
 }

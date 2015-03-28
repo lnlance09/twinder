@@ -9,7 +9,7 @@
     $method = $this->router->fetch_method();
 
     $maps_pages = array('users', 'settings', 'hot');
-    $slider_pages = array('users', 'settings', 'hot');
+    $slider_pages = array('settings', 'hot');
 ?>
     <div class="text-center" id="footer">
         <div id="list_name">
@@ -91,25 +91,6 @@
                             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
                         </script>
                     </li>
-
-                    <!-- Facebook Button -->
-                    <!--
-                    <li id="fb_like_button">
-                        <div id="fb-root"></div>
-
-                        <script>
-                            (function(d, s, id) {
-                                var js, fjs = d.getElementsByTagName(s)[0];
-                                if (d.getElementById(id)) return;
-                                js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            } (document, 'script', 'facebook-jssdk'));
-                        </script>
-
-                        <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
-                    </li>
-                    -->
                 </ul>
             </div>
 
@@ -164,10 +145,8 @@
     } if($controller == 'matches') {
 ?>
     <script>
-        /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'twinder';
         
-        /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -176,10 +155,10 @@
     </script>
 <?php
     }
-?>
 
+    if($base_url != '/wetinder/') {
+?>
     <!-- StatCounter -->
-    <!--
     <script type="text/javascript">
         var sc_project = 10187180; 
         var sc_invisible = 1; 
@@ -187,6 +166,8 @@
         var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
         document.write("<sc"+"ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></"+"script>");
     </script>
-    -->
+<?php
+    }
+?>
 </body>
 </html>

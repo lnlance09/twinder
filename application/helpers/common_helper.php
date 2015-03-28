@@ -26,7 +26,7 @@
 
 		    if($post) {
 		    	curl_setopt($ch, CURLOPT_POST, TRUE);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, ($url == 'media' ? $post_data : json_encode($post_data)));
+				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
 		    } elseif($post == 'PUT') {
 		    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 		    	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
@@ -89,8 +89,8 @@
 			$string = implode('|', $terms);
 
 			// Turn the links to anchor tags
-			$link_bio = ReturnLinks($bio);
-			$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $link_bio);
+			// $link_bio = ReturnLinks($bio);
+			$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
 			$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
 			return trim($hash_bio);
 		}
@@ -442,7 +442,7 @@
 		 * @param {string} [name] The name of the user
 		 */
 		function MetaSubject($username, $name) {
-			return (empty($username) ? $name : $username);
+			return (empty($username) ? $name : $username).' on Twinder';
 		}
 
 		/**
@@ -504,6 +504,16 @@
 			return array('tabs' => $tabs, 'active' => $active);
 		}
 
+		/**
+		 * Return pagination values
+		 * @param {int} [count] The number of results
+		 * @param {int} [per_row] The number of results to display per row
+		 * @param {int} [per_page] The number of rows to display per page
+		 * @param {int} [page] The current page number
+		 * @param {int} [pages] The number of total pages
+		 * @param {int} [start] The starting point
+		 * @return {array} An array containing the ending point, the ending column and the number of rows
+		 */
 		function RowPagination($count, $per_row, $per_page, $page, $pages, $start) {
 			if($page == ($pages-1)) {
 				$mod = $count%$per_page;
@@ -511,12 +521,7 @@
 				if($mod > 0) {
 					$end = $mod;
 					$col_mod = $end%$per_row;
-
-					if($col_mod == 0) {
-						$end_col = $end;
-					} else {
-						$end_col = $count-$col_mod;
-					}
+					$end_col = ($col_mod == 0 ? $end : $count-$col_mod);
 				} else {
 					$end = $start+$per_page;
 					$end_col = $end;
@@ -526,8 +531,7 @@
 				$end_col = $end;
 			}
 
-			$num_rows = ceil($end/$per_row);
-			return array('end' => $end, 'end_col' => $end_col, 'num_rows' => $num_rows);
+			return array('end' => $end, 'end_col' => $end_col, 'num_rows' => ceil($end/$per_row));
 		}
 
 		/**

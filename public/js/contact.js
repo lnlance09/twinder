@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var base_url = $('#base_url').text().trim(); 
+	var base_url = $('#base_url').text(); 
 
 	$('#contact_form').submit(function(e) {
 		e.preventDefault();

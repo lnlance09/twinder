@@ -23,8 +23,9 @@
 
 					// Get the info about the user
 					$user_info = $this->database->GetUserInfo($id);
-					// FormatArray($user_info);
-					
+					//FormatArray($user_info);
+					//die;
+
 					// If the user actually exists in the DB
 					if($user_info) {
 						// Find out if the client is logged in or not
@@ -33,7 +34,6 @@
 
 						// If the client is logged in
 						if($session) {
-							// Save all of the session variables as variables
 							$my_tinder_id = $this->session->userdata('tinder_id');
 							$username = $this->session->userdata('username');
 							$token = $this->session->userdata('token');
@@ -50,8 +50,6 @@
 
 							// Make a request to Tinder to get the most recent info about this user
 							$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
-							// FormatArray($live_info);
-							// die;
 
 							// If the user actually exists according to Tinder, then get their info and update the profile
 							if($live_info) {
@@ -148,7 +146,7 @@
 							$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
 
 							// Define the meta tags
-							$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']).' on Twinder',
+							$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']),
 											'img' => $user_info['profile_pic'],
 											'url' => $this->base_url.$user_info['link']);
 
@@ -166,12 +164,10 @@
 
 							// Get all of the stats of the user who is being viewed
 							$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $my_tinder_id, $user_info['twitter_id']);
-							// FormatArray($user_info);
-							// die;
 							
 							// Set all of the info that needs to be passed to the body view
 							$body_info = array('user_info' => $user_info,
-											'pic_count' => count($user_info['pics']['file']),
+											'pic_count' => count($user_info['pics']),
 											'session' => $session,
 											'report' => $report,
 											'like' => $like,
@@ -274,8 +270,7 @@
 					$pic = $this->session->userdata('profile_pic');
 
 					// Get all of the parameters from the URL
-					$params = $this->input->get();
-							
+					$params = $this->input->get();	
 					foreach($params as $key => $value) {
 						$$key = $value;
 					}
@@ -396,7 +391,7 @@
 						$results = $this->database->GetTweets($twitter_id, TRUE, TRUE, $q);
 						break;
 				}
-				// FormatArray($results);
+				// FormatArray($results, TRUE);
 
 				// If the tweets are being requested but the user hasn't authorized Twinder on Tinder
 				if($type == 'tweets' && $twitter == 'false') {
@@ -427,17 +422,10 @@
 
 					if($page == ($pages-1)) {
 						$mod = $count%$per_page;
-
-						if($mod > 0) {
-							$end = $start+$mod;
-						} else {
-							$end = $start+$per_page;
-						}
+						$end = ($mod > 0 ? $start+$mod : $start+$per_page);
 					} else {
 						$end = $start+$per_page;
 					}
-
-					// var_dump($end);
 
 					$info = array('connections' => $results['users'],
 								'id' => $id,
@@ -449,7 +437,6 @@
 								'page' => $page,
 								'new_page' => $new_page,
 								'twitter_id' => $twitter_id);
-					// FormatArray($info);
 					
 					// Determine which view to load
 					switch($type) {
@@ -606,11 +593,7 @@
 					// Get the form parameters from the URL
 					$id = $this->input->get('id');
 					$reason = $this->input->get('reason');
-					$text = $this->input->get('text');
-
-					if(empty(trim($text))) {
-						$text = NULL;
-					}
+					$text = (empty(trim($this->input->get('text'))) ?: NULL);
 
 					$tinder_id = $this->session->userdata('tinder_id');
 					$auth = $this->session->userdata('token');
@@ -621,7 +604,6 @@
 					if($check) {
 						// Send a request to Tinder's API to report this user
 						$report = $this->user->ReportUser($id, $auth, $reason, $text);
-						// FormatArray($report);
 
 						// If the report was successfully sent to Tinder, then record it in the DB
 						if(array_key_exists('status', $report)) {
@@ -678,7 +660,6 @@
 
 					// Unmatch the user by sending a request to Tinder's API
 					$unmatch = $this->user->UnmatchUser($match_id, $auth);
-					// FormatArray($unmatch);
 
 					// Update the likes table to 'unmatched'
 					$this->database->UnmatchUser($this->session->userdata('tinder_id'), $match_id);

@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
 
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>open_sans.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">

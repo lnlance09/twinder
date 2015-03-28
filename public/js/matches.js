@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var base_url = $('#base_url').text().trim(); 
+    var base_url = $('#base_url').text(); 
     var tinder_id = $('#user_tinder_id').text();
     var match_id = $('#match_id').text();
 
@@ -24,7 +24,6 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     // console.log(data);
-                    
                     // Reload the thread
                     if(data == 'true') {
                         var data = 'id='+ match_id +'&page=0';

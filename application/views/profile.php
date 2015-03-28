@@ -118,8 +118,8 @@
 <?php
 	// Loop thru the pics
     for($i=0;$i<$pic_count;$i++) {
-    	$size_one = ChangePicSize($user_info['pics']['file'][$i], 172);
-    	$size_two = ChangePicSize($user_info['pics']['file'][$i], 320);
+    	$size_one = ChangePicSize($user_info['pics'][$i]['file'], 172);
+    	$size_two = ChangePicSize($user_info['pics'][$i]['file'], 320);
 ?>
 			                    <li name="<?php echo $size_two; ?>" data-toggle="modal" data-target="#gallery_modal">
 			                        <a href="#">
@@ -281,7 +281,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 	<div class="modal-header">
-                        <h3 class="modal-title">
+                        <h3 class="modal-title text-center">
                         	<?php echo $user_info['name']; ?>
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </h3>

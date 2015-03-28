@@ -20,33 +20,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
-
-    <!-- Google Fonts -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
-
-    <!-- Stateface Font CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
 <?php
-    if(in_array($controller, $slider_pages)) {
-?>
-    <!-- CSS for sliders --> 
-    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
-    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
-<?php
-    }
-
     if(in_array($controller, $meta_pages)) {
 ?>
     <!-- Meta Tags -->
@@ -68,6 +42,32 @@
 <?php
     }
 ?>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
+
+    <!-- Stateface Font CSS -->
+    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
+<?php
+    if(in_array($controller, $slider_pages)) {
+?>
+    <!-- CSS for sliders --> 
+    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
+    <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
+<?php
+    }
+?>
     <title><?php echo $title; ?> - Twinder</title>
 </head>
     
@@ -81,7 +81,6 @@
                 </a>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    
                     <i class="fa fa-list fa-lg"></i>
                 </button>
 
@@ -137,7 +136,7 @@
     <div id="search_container">
         <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
             <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span>
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
 
                 <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
 
@@ -145,12 +144,6 @@
             </div>
         </form>
     </div>
-
-    <!--
-    <div id="autocomplete_wrapper">
-        <div id="autocomplete"></div>
-    </div>
-    -->
 
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>

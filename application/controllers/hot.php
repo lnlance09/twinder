@@ -25,12 +25,9 @@
 
 					// Get all of the URL parameters
 					$params = $this->uri->uri_to_assoc(2);
-					// FormatArray($params);
-					// die;
 
 					// Get the validated query parameters
 					$valids = $this->user->ValidateParams($params);
-					// FormatArray($valids);
 					$gender = $valids['gender'];
 					$city = $valids['city'];
 					$state = $valids['state'];
@@ -50,7 +47,6 @@
 									'min' => $min,
 									'max' => $max,
 									'page' => $page);
-					// FormatArray($city);
 
 					// Define the full URL with all of the parameters
 					$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
@@ -76,8 +72,6 @@
 						$lat = $this->session->userdata('lat');
 						$set = 'false';
 					}
-					// echo $lon.', '.$lat.'<br>';
-					// die;
 
 					// The number of user that meet this criteria
 					$query = $this->database->HotQuery($gender, $min, $max, $q);
@@ -151,8 +145,6 @@
 										'chart_data' => $all_chart,
 										'male_percentage' => $male_chart['count'],
 										'female_percentage' => $female_chart['count']);
-					// FormatArray($body_info);
-					// die;
 
 					// Get all of the data for the footer view
 					$locations = $this->loc->RandomLocations();
@@ -171,7 +163,6 @@
 			public function GetHottest() {
 				// Get all of the query string parameters
 				$params = $this->input->get();		
-				// FormatArray($params);
 				foreach($params as $key => $value) {
 					$$key = $value;
 				}
@@ -181,7 +172,6 @@
 				$query = $this->database->HotQuery($gender, $min, $max, $q);
 				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
 				$count = $hot['count'];
-				// FormatArray($hot);
 
 				// Get the city and state
 				$location = $this->loc->MapquestLatLon($lat, $lon);
@@ -196,7 +186,6 @@
 								'q' => $q,
 								'page' => $page,
 								'count' => $count);
-				// FormatArray($params);
 
 				// Calculate all of the info for the pagination in the view
 				$per_page = 30;
@@ -214,8 +203,6 @@
 					$num_rows = 0;
 					$end_col = 0;
 				}
-
-				// echo $start.', '.$end.'<br>';
 
 				$view_info = array('q_string' => http_build_query($params), 
 								'hot' => $hot, 

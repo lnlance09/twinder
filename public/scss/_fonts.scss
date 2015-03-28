@@ -14,3 +14,7 @@
         url('fonts/stateface/webfont/stateface-regular-webfont.ttf') format('truetype'),
         url('fonts/stateface/webfont/stateface-regular-webfont.svg#StateFaceRegular') format('svg');
 }
+
+span.stateface {
+    font-family: 'StateFaceRegular' !important;
+}

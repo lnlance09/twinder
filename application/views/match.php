@@ -2,6 +2,9 @@
     $base_url = $this->config->base_url();
     $public_url = $base_url.'public/';
     $img_url = $public_url.'img/';
+
+    // Adjust the plurality
+    $grammar = ($views != 1 ? 'views' : 'view');
 ?>
 	<div id="header-section">
         <div id="signin">
@@ -19,7 +22,7 @@
                         Tweet
                     </a>
 
-                    <span class="pull-right"><?php echo $views; ?> views</span>
+                    <span class="pull-right"><?php echo $views.' '.$grammar; ?></span>
 
                     <span class="clearfix"></span>
                 </h1>

@@ -1,42 +1,54 @@
-#users_load {
-    .jumbotron {
-        text-align: left;
-        border: solid 1px #ccc;
+#discover_box {
+  position:relative;
+  min-height: 600px;
 
-        h1 {
-            @media screen and (max-width: $break-small) {
-                font-size: 18px;
-                height: auto !important;
-                margin-bottom: 10px !important;
-            }
+  #users_load {
+      .jumbotron {
+          text-align: left;
+          border: solid 1px #ccc;
 
-            img {
-                vertical-align: middle !important;
-                display: inline;
+          h1 {
+              @media screen and (max-width: $break-small) {
+                  font-size: 18px;
+                  height: auto !important;
+                  margin-bottom: 10px !important;
+              }
 
-                @media screen and (max-width: $break-small) {
-                    width: 84px;
-                    height: 84px;
-                }
-            }
-        }
+              img {
+                  vertical-align: middle !important;
+                  display: inline;
 
-        #profile_discover {
-            p {
-                @media screen and (max-width: $break-small) {
-                    font-size: 14px;
-                }
-            }
-        }
-    }
+                  @media screen and (max-width: $break-small) {
+                      width: 84px;
+                      height: 84px;
+                  }
+              }
+          }
+
+          #profile_discover {
+              p {
+                  @media screen and (max-width: $break-small) {
+                      font-size: 14px;
+                  }
+              }
+          }
+      }
+  }
 }
 
-#like_or_pass {
-    padding: 20px;
-    background: #eee;
-    z-index: 999;
-    margin-top: 0;
-    border: solid 1px #ccc;
+#decide_box {
+  position: relative;
+
+  #like_or_pass {
+      position: absolute;
+      bottom: 10px;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+      background: #eee;
+      z-index: 999;
+      border: solid 1px #ccc;
+  }
 }
 
 .rotate-left,

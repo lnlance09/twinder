@@ -12,6 +12,9 @@
   font-family: 'StateFaceRegular';
   src: url("fonts/stateface/webfont/stateface-regular-webfont.eot");
   src: url("fonts/stateface/webfont/stateface-regular-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/stateface/webfont/stateface-regular-webfont.woff") format("woff"), url("fonts/stateface/webfont/stateface-regular-webfont.ttf") format("truetype"), url("fonts/stateface/webfont/stateface-regular-webfont.svg#StateFaceRegular") format("svg"); }
+span.stateface {
+  font-family: 'StateFaceRegular' !important; }
+
 /**
  * SVG
  */
@@ -20,7 +23,7 @@
   height: 50px;
   vertical-align: middle; }
   .svg path {
-    fill: #82b919;
+    fill: #ffa07a;
     transition: 0.8s; }
 
 #like_user,
@@ -74,12 +77,20 @@
 .fa-facebook-square {
   color: #3b5998; }
 
-.fa-heart,
+.fa-twitter {
+  color: #0993c7; }
+
 .fa-refresh {
   color: #82b919; }
 
-.fa-share {
-  cursor: pointer; }
+.fa-star {
+  color: #e6c200; }
+
+.fa-retweet {
+  color: #82b919; }
+
+.fa-heart {
+  color: #ffa07a; }
 
 .fa-thumbs-up {
   color: #08f; }
@@ -94,10 +105,6 @@
 .fa-rocket,
 .fa-ban {
   color: #c61931; }
-
-.fa-twitter,
-.fa-random {
-  color: #0993c7; }
 
 .fa-heartbeat {
   color: #82b919; }
@@ -153,6 +160,17 @@
 #match_modal .modal-body {
   padding: 15px 0 8px 0; }
 
+#gallery_modal .modal-backdrop {
+  opacity: 0.7; }
+#gallery_modal .modal-dialog {
+  width: 350px; }
+  #gallery_modal .modal-dialog .modal-header {
+    text-align: center; }
+  #gallery_modal .modal-dialog #gallery_img {
+    width: 320px;
+    margin-bottom: 0;
+    display: inline; }
+
 /**
  * List group
  */
@@ -190,9 +208,10 @@ ul.list-group li {
  */
 .navbar {
   position: fixed;
-  background: #000;
+  background: #0993c7;
   margin: 0 auto;
-  z-index: 99999; }
+  z-index: 99999;
+  border: none; }
   @media screen and (max-width: 768px) {
     .navbar {
       padding: 0 20px; }
@@ -252,23 +271,21 @@ ul.list-group li {
         .navbar .navbar-collapse ul.navbar-nav > li a {
           font-size: 13px; } }
     .navbar .navbar-collapse ul.navbar-nav > li.active > a:hover {
-      background: #333; }
+      background: #0993c7; }
     .navbar .navbar-collapse ul.navbar-nav > li.active > a:focus {
-      background: #222; }
+      background: #0993c7; }
     .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
       padding: 0;
-      background: #222; }
+      background: #0993c7; }
       @media screen and (min-width: 992px) {
         .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
           padding: 0 20px; } }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown:hover {
-        background: #444; }
+        background: #328aab; }
+        .navbar .navbar-collapse ul.navbar-nav > li.dropdown:hover.open {
+          background: #328aab; }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown.open {
-        background: #222; }
-        .navbar .navbar-collapse ul.navbar-nav > li.dropdown.open a {
-          background: #222; }
-        .navbar .navbar-collapse ul.navbar-nav > li.dropdown.open:hover {
-          background: #444; }
+        background: #328aab; }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown a.dropdown-toggle {
         padding: 8px 10px;
         height: 100%; }
@@ -292,6 +309,50 @@ ul.list-group li {
 
 .navbar-inverse .navbar-nav > .open > a {
   background-color: orange; }
+
+form {
+  margin-bottom: 0; }
+
+input[type=text],
+input[type=password],
+textarea.form-control {
+  border-radius: 0;
+  box-shadow: none; }
+
+.input-group {
+  width: 100%;
+  height: 30px;
+  overflow: hidden; }
+
+.input-group-addon {
+  box-shadow: none;
+  border: none;
+  background: #fff;
+  color: #000; }
+
+.btn-group {
+  float: right; }
+
+.btn {
+  padding: 8px 13px;
+  border: none; }
+
+.btn-success {
+  background: #82b919; }
+  .btn-success:hover, .btn-success:focus {
+    background: #82a900; }
+
+.btn-primary {
+  background: #0993c7; }
+  .btn-primary:hover {
+    background: #328aab; }
+
+.btn-default {
+  border: solid 1px #ccc; }
+
+button:focus {
+  outline: none !important;
+  box-shadow: none; }
 
 /**
  * Dropdown menu
@@ -335,7 +396,7 @@ ul.list-group li {
 #footer {
   z-index: 99999999; }
   #footer #list_name {
-    background-color: #0993c7; }
+    background-color: #82b919; }
     @media screen and (max-width: 768px) {
       #footer #list_name {
         padding: 20px 0; } }
@@ -396,13 +457,6 @@ ul.list-group li {
                 display: inline; } }
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
-          #footer #sub_footer .col-lg-3 ul li .fb-like-box {
-            margin-top: 7px;
-            background: #fff;
-            margin-left: 0px;
-            padding: 0; }
-            #footer #sub_footer .col-lg-3 ul li .fb-like-box img {
-              border: solid 1px #000 !important; }
           #footer #sub_footer .col-lg-3 ul li a {
             font-size: 15px;
             color: #444; }
@@ -1074,8 +1128,7 @@ span.sub_tip {
                     font-size: 14px;
                     color: #777; }
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.retweet .fa {
-                      font-size: 20px;
-                      color: #82b919; }
+                      font-size: 20px; }
                       #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.retweet .fa + span {
                         margin-left: 10px; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats {
@@ -1085,12 +1138,7 @@ span.sub_tip {
                       #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span:last-of-type {
                         margin-left: 15px; }
                       #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa {
-                        color: #ccd6dd;
                         font-size: 20px; }
-                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa-star {
-                        color: yellow; }
-                      #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p.tweet_stats span .fa-retweet {
-                        color: #82b919; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media:nth-of-type(odd) {
                     background: #f7f7f7; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media:hover {
@@ -1122,16 +1170,6 @@ span.sub_tip {
         #profile-section .container #focus_box ul#sub_pics + .clearfix + a {
           margin-bottom: 10px;
           display: block; }
-  #profile-section #gallery_modal .modal-backdrop {
-    opacity: 0.7; }
-  #profile-section #gallery_modal .modal-dialog {
-    width: 350px; }
-    #profile-section #gallery_modal .modal-dialog .modal-header {
-      text-align: center; }
-    #profile-section #gallery_modal .modal-dialog #gallery_img {
-      width: 320px;
-      margin-bottom: 0;
-      display: inline; }
   #profile-section .timer_box {
     padding: 0;
     text-align: center;
@@ -1164,31 +1202,66 @@ span.sub_tip {
         font-weight: 600;
         height: auto !important; }
 
-#users_load .jumbotron {
-  text-align: left;
-  border: solid 1px #ccc; }
-  @media screen and (max-width: 768px) {
-    #users_load .jumbotron h1 {
-      font-size: 18px;
-      height: auto !important;
-      margin-bottom: 10px !important; } }
-  #users_load .jumbotron h1 img {
-    vertical-align: middle !important;
-    display: inline; }
-    @media screen and (max-width: 768px) {
-      #users_load .jumbotron h1 img {
-        width: 84px;
-        height: 84px; } }
-  @media screen and (max-width: 768px) {
-    #users_load .jumbotron #profile_discover p {
-      font-size: 14px; } }
+#match_box h1 span {
+  font-size: 18px;
+  display: block;
+  margin-top: 9px;
+  margin-right: 20px; }
+#match_box #match_load {
+  margin-bottom: 20px;
+  padding: 0;
+  border-bottom: solid 1px #ccc; }
+  #match_box #match_load .none {
+    border: none; }
+#match_box textarea {
+  height: 100px;
+  border-radius: 3px; }
+#match_box button {
+  float: right;
+  margin-top: 10px; }
+#match_box .twitter-share-button {
+  margin-top: 6px;
+  font-size: 16px; }
 
-#like_or_pass {
-  padding: 20px;
-  background: #eee;
-  z-index: 999;
-  margin-top: 0;
-  border: solid 1px #ccc; }
+#disqus_thread {
+  padding: 0 10px;
+  margin: 8px 0;
+  border: solid 1px #ddd;
+  background: #f8f8f8; }
+
+#discover_box {
+  position: relative;
+  min-height: 600px; }
+  #discover_box #users_load .jumbotron {
+    text-align: left;
+    border: solid 1px #ccc; }
+    @media screen and (max-width: 768px) {
+      #discover_box #users_load .jumbotron h1 {
+        font-size: 18px;
+        height: auto !important;
+        margin-bottom: 10px !important; } }
+    #discover_box #users_load .jumbotron h1 img {
+      vertical-align: middle !important;
+      display: inline; }
+      @media screen and (max-width: 768px) {
+        #discover_box #users_load .jumbotron h1 img {
+          width: 84px;
+          height: 84px; } }
+    @media screen and (max-width: 768px) {
+      #discover_box #users_load .jumbotron #profile_discover p {
+        font-size: 14px; } }
+
+#decide_box {
+  position: relative; }
+  #decide_box #like_or_pass {
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    background: #eee;
+    z-index: 999;
+    border: solid 1px #ccc; }
 
 .rotate-left,
 .rotate-right {
@@ -1282,9 +1355,11 @@ span.sub_tip {
       padding: 0 120px;
       border-bottom: solid 1px #ccc; } }
   #search_container .input-group {
-    height: 100%; }
+    height: 100%;
+    margin-top: 2px; }
     #search_container .input-group .input-group-addon {
-      font-size: 16px; }
+      font-size: 16px;
+      color: #0993c7; }
     #search_container .input-group .form-control {
       border: none !important;
       outline: none !important;
@@ -1350,50 +1425,6 @@ span.sub_tip {
 body {
   font-family: 'Open Sans', sans-serif; }
 
-form {
-  margin-bottom: 0; }
-
-.input-group {
-  width: 100%;
-  height: 30px;
-  overflow: hidden; }
-
-.input-group-addon {
-  border: none;
-  background: #fff;
-  color: #000; }
-
-.btn-group {
-  float: right; }
-
-button:focus {
-  outline: none !important;
-  box-shadow: none; }
-
-.input-group-addon,
-input[type=text],
-input[type=password],
-textarea.form-control {
-  border-radius: 0;
-  box-shadow: none; }
-
-.btn {
-  padding: 8px 13px;
-  border: none; }
-
-.btn-success {
-  background: #82b919; }
-  .btn-success:hover, .btn-success:focus {
-    background: #82a900; }
-
-.btn-primary {
-  background: #0993c7; }
-  .btn-primary:hover {
-    background: #328aab; }
-
-.btn-default {
-  border: solid 1px #ccc; }
-
 h1 {
   padding-top: 30px;
   color: #000;
@@ -1423,25 +1454,12 @@ a {
     outline: none;
     text-decoration: none; }
 
-span#time_format {
-  font-style: italic;
-  color: #05f; }
-
-span#age {
-  top: 80px; }
-
-span.stateface {
-  font-family: 'StateFaceRegular' !important; }
-
 .ajax-loader {
   width: 100%;
   text-align: center;
   padding: 10px;
   margin-top: 14px;
   padding: 70px 0; }
-
-.hidden {
-  display: none; }
 
 .noUi-background {
   background: #fff; }
@@ -1474,31 +1492,3 @@ span.stateface {
 
 .main_none {
   padding: 40px 10px; }
-
-.twitter-share-button {
-  margin-top: 6px;
-  font-size: 16px; }
-
-#match_box h1 span {
-  font-size: 18px;
-  display: block;
-  margin-top: 9px;
-  margin-right: 20px; }
-#match_box #match_load {
-  margin-bottom: 20px;
-  padding: 0;
-  border-bottom: solid 1px #ccc; }
-  #match_box #match_load .none {
-    border: none; }
-#match_box textarea {
-  height: 100px;
-  border-radius: 3px; }
-#match_box button {
-  float: right;
-  margin-top: 10px; }
-
-#disqus_thread {
-  padding: 0 10px;
-  margin: 8px 0;
-  border: solid 1px #ddd;
-  background: #f8f8f8; }

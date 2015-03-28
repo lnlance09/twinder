@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
 
     <!-- Google Fonts -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>open_sans.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
@@ -98,7 +98,6 @@
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
-    <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
 
     <div id="header-section">
         <div id="signin">

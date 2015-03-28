@@ -39,9 +39,6 @@
 											'meta' => $meta_info,
 											'auth' => NULL);
 
-						// Set all of the info that needs to be passed to the dashboard view
-						$body_info = [];
-
 						// Get all of the data for the footer view
 						$locations = $this->loc->RandomLocations();
 						$rand_users = $this->database->GetAllUsers();
@@ -58,10 +55,8 @@
 			}
 
 			public function Login() {
-				$submit = $this->input->post('submit');
-
 				// Make sure the form was submitted
-				if($submit == 'submit') {
+				if($this->input->post('submit') == 'submit') {
 					$username = $this->input->post('username');
 					$password = $this->input->post('password');
 
@@ -71,10 +66,7 @@
 					// die;
 
 					if($login) {
-						// Set the session data
 						$this->session->set_userdata($login);
-
-						// Set the session for 1 day
 						$this->config->set_item('sess_expiration', 86400);
 						echo 'true';
 					} else {

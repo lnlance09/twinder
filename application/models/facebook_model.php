@@ -45,8 +45,8 @@
 			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php');
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);  
-			// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
-			curl_setopt($ch, CURLOPT_HEADER, TRUE);     
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
+			// curl_setopt($ch, CURLOPT_HEADER, TRUE);     
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
@@ -55,10 +55,10 @@
 			$data = curl_exec($ch); 					
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
 			curl_close($ch);
-			
-			if($http == 302) {
-				return $data;
-			}   
+			return $http;
+			//if($http == 302) {
+			//	return $data;
+			//}   
 		}
 
 		/**

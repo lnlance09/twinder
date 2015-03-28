@@ -35,3 +35,4 @@
     <!-- Write all of the variables for the JS to work -->
     <div class="hidden" id="match_id"><?php echo $match_id; ?></div>
     <div class="hidden" id="match_type"><?php echo $type; ?></div>
+    

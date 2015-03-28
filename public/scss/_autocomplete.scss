@@ -1,7 +1,6 @@
 /**
  * Autocomplete
  */
-
 #search_container {
     position: fixed;
     top: 50px;
@@ -22,9 +21,11 @@
 
     .input-group {
         height: 100%;
+        margin-top: 2px;
 
         .input-group-addon {
             font-size: 16px;
+            color: $blue;
         }
 
         .form-control {

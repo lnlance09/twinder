@@ -20,7 +20,6 @@
 				$admin_id = $this->session->userdata('admin_id');
 
 				if($admin_id) {
-					// Get the user ID
 					$user_id = $this->session->userdata('user_id');
 
 					// Make sure the user is logged in
@@ -37,9 +36,7 @@
 
 						// Get the city and state based upon the lon & lat coordinates
 						$loc = $this->loc->MapquestLatLon($lat, $lon);
-						// FormatArray($loc);
-						// die;
-
+						
 						// Get the mactch count of the user who is currently logged in
 						$match_count = $this->database->GetMatchCount($tinder_id);
 
@@ -61,8 +58,7 @@
 					                    array('num' => -1, 'name' => 'Bi'));
 
 						// Store all of the gender values in an array
-						$genders = array(array('num' => 0, 'name' => 'Male'),
-										array('num' => 1, 'name' => 'Female'));
+						$genders = array(array('num' => 0, 'name' => 'Male'), array('num' => 1, 'name' => 'Female'));
 
 						$settings_info = array('distance' => $info['distance_filter'],
 												'min' => $info['age_filter_min'],
@@ -107,7 +103,6 @@
 
 			public function UpdateSettings() {
 				$query = $this->input->post();
-						
 				foreach($query as $key => $value) {
 					$$key = $value;
 				}
@@ -117,7 +112,6 @@
 
 				// Update all of the settings
 				$info = $this->user->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
-				// FormatArray($info);
 
 				// Update the username in the DB
 				$this->database->UpdateUser($this->session->userdata('tinder_id'), array('username' => $username));

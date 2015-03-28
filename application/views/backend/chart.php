@@ -1,13 +1,8 @@
 <?php
     $base_url = $this->config->base_url();
 
-    if($female_count == 0) {
-        $female_count = 1;
-    }
-
-    if($male_count == 0) {
-        $male_count = 1;
-    }
+    $female_count = ($female_count == 0 ?: 1);
+    $male_count = ($male_count == 0 ?: 1);
 ?>
 <div id="chart_data" class="panel panel-default">
     <div class="panel-heading" id="glance">

@@ -250,11 +250,7 @@
 		 */
 		public function ReportUser($tinder_id, $auth, $cause, $text = NULL) {
 			$data = array('cause' => (int)$cause);
-
-			if($text) {
-				$data['text'] = $text;
-			}
-
+			$data['text'] = ($text ?: $text);
 			$info = SendRequest('report/user/'.$tinder_id, $auth, TRUE, $data);
 			return @json_decode($info, TRUE);
 		}
@@ -292,8 +288,6 @@
 				$lon = $profile['pos']['lon'];
 				$lat = $profile['pos']['lat'];
 				$distance = $profile['distance_filter'];
-				// FormatArray($profile);
-				// die;
 
 				// Define all of the user's info in an array
 				$user = array('tinder_id' => $auth['_id'],
@@ -333,7 +327,7 @@
 
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
-				FormatArray($updates);
+				// FormatArray($updates);
 
 				// Sync all of the messages from the user's Tinder account
 				$this->database->SyncMessages($updates['matches'], $auth['_id'], $distance, $lon, $lat, $city, $state);
@@ -400,9 +394,6 @@
 		public function UserLookup($tinder_id, $auth) {
 			$info = SendRequest('user/'.$tinder_id, $auth, FALSE, FALSE);
 			$decode = @json_decode($info, TRUE);
-			// echo $info;
-			// FormatArray($decode);
-			// die;
 			
 			if($decode['status'] == 200) {
 				$user = $decode['results'];
