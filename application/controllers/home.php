@@ -135,7 +135,7 @@
 						$$key = $value;
 					}
 					
-					$screen_name = 'shelbyjsapp';
+					// $screen_name = 'shelbyjsapp';
 					// Update the user's Twitter handle and user ID
 					$this->database->UpdateUser($tinder_id, array('twitter_username' => $screen_name, 'twitter_id' => $user_id));
 
