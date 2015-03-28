@@ -33,6 +33,7 @@
 				$creds = array('lance' => 'twinder',
 							'sam' => 'twinder',
 							'anthony' => 'twinder',
+							'jp' => 'twinder',
 							'chris' => 'twinder');
 
 				// If the login was successful, then redirect the user to the home page

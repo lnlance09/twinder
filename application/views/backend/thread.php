@@ -8,8 +8,8 @@
     		if($messages[$i]['from'] == $user_one['id']) {
 ?>
 		<li class="other">
-			<div class="avatar">
-        		<img src="<?php echo $user_two['pic']; ?>" alt="<?php echo $user_two['name']; ?>" onclick="location.href='<?php echo $base_url.$user_two['link']; ?>'">
+			<div class="avatar" onclick="location.href='<?php echo $base_url.$user_two['link']; ?>'">
+        		<img src="<?php echo $user_two['pic']; ?>" alt="<?php echo $user_two['name']; ?>" data-toggle="tooltip" data-original-title="<?php echo $user_two['name'].', '.$user_two['age']; ?>">
       		</div>
 
 			<div class="messages">
@@ -21,8 +21,8 @@
 			} else {
 ?>
 		<li class="self">
-			<div class="avatar">
-        		<img src="<?php echo $user_one['pic']; ?>" alt="<?php echo $user_one['name']; ?>" onclick="location.href='<?php echo $base_url.$user_one['link']; ?>'">
+			<div class="avatar" onclick="location.href='<?php echo $base_url.$user_one['link']; ?>'" >
+        		<img src="<?php echo $user_one['pic']; ?>" alt="<?php echo $user_one['name']; ?>" data-toggle="tooltip" data-original-title="<?php echo $user_one['name'].', '.$user_one['age']; ?>">
       		</div>
 
 			<div class="messages">

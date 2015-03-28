@@ -7,6 +7,11 @@ $(document).ready(function() {
     var data = 'id='+ match_id +'&page=0';
     $('#match_load').load(base_url +'matches/Thread', data, function() {
         $('#match_load .ajax-loader').fadeOut();
+
+        $('[data-toggle="tooltip"]').tooltip({
+            placement: 'top',
+            html: true,
+        });
     });
 
     $('form#send_msg').submit(function(e) {
