@@ -42,23 +42,20 @@
 		            	'default_persistent' => 0); 
               
 			$ch = curl_init();  
-			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php');
+			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php/?login_attempt=1');
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);  
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
-			// curl_setopt($ch, CURLOPT_HEADER, TRUE);     
+			// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE); 
+			curl_setopt($ch, CURLOPT_HEADER, TRUE);     
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
-			$data = curl_exec($ch); 					
+			curl_exec($ch); 					
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
 			curl_close($ch);
 			return $http;
-			//if($http == 302) {
-			//	return $data;
-			//}   
 		}
 
 		/**
@@ -70,7 +67,7 @@
 		public function FacebookToken($email, $password) {
 			$login = $this->FacebookLogin($email, $password);
 
-			if($login == 200) {
+			if($login == 302) {
 				// Define the cookies file
 				$cookies = $this->CookieFile($email);
 			    $uri = 'https://www.facebook.com/connect/login_success.html';

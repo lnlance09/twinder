@@ -23,8 +23,8 @@
 			}
 
 			public function Test() {
-				phpinfo();
-				$fb = $this->fb->FacebookLogin('lnlance09', 'Newmanlance1');
+				/*
+				/$fb = $this->fb->FacebookLogin('lnlance09', 'Newmanlance1');
 				echo $fb;
 				die;
 
@@ -51,6 +51,7 @@
 				// $updates = $this->user->GetUpdates('b3b5096f-b4ec-4604-ade0-34583b22200a', '-100 days');
 				// FormatArray($updates);
 				// die;
+				*/
 			}
 		}
 	}
