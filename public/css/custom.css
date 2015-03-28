@@ -1128,12 +1128,13 @@ span.sub_tip {
         font-weight: 600;
         height: auto !important; }
 
-#match_box h1 span {
-  font-size: 18px;
-  display: block;
-  margin-top: 9px;
-  margin-right: 20px;
+#match_box h1.page-header {
   margin-bottom: 0; }
+  #match_box h1.page-header span {
+    font-size: 18px;
+    display: block;
+    margin-top: 9px;
+    margin-right: 20px; }
 #match_box #match_load {
   margin-bottom: 20px;
   padding: 0;
