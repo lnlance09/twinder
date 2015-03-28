@@ -732,80 +732,6 @@ span.sub_tip {
     line-height: 25px; }
 
 /**
- * Messages for Threads page
- */
-[class*="typicons-"]:before {
-  font-family: 'Typicons', sans-serif; }
-
-.discussion {
-  list-style: none;
-  background: #fff;
-  border: none;
-  margin: 0;
-  padding: 0 0 50px 0; }
-  .discussion li {
-    padding: 0.5rem;
-    overflow: hidden;
-    display: flex; }
-  .discussion .avatar {
-    width: 84px;
-    position: relative; }
-    .discussion .avatar img {
-      display: block;
-      width: 100%; }
-
-.other .avatar {
-  cursor: pointer; }
-  .other .avatar:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    border: 5px solid white;
-    border-left-color: transparent;
-    border-bottom-color: transparent; }
-
-.self {
-  justify-content: flex-end;
-  align-items: flex-end; }
-  .self .messages {
-    order: 1;
-    border-bottom-right-radius: 0; }
-  .self .avatar {
-    cursor: pointer;
-    order: 2; }
-    .self .avatar:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border: 5px solid white;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); }
-
-.messages {
-  background: white;
-  padding: 10px;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
-  .messages p {
-    font-size: 24px;
-    margin: 0 0 0.2rem 0; }
-  .messages time {
-    font-size: 16px;
-    color: #ccc; }
-
-@keyframes pulse {
-  from {
-    opacity: 0; }
-  to {
-    opacity: 0.5; } }
-/**
  * Radar
  */
 #users_load #user_circle {
@@ -1206,7 +1132,8 @@ span.sub_tip {
   font-size: 18px;
   display: block;
   margin-top: 9px;
-  margin-right: 20px; }
+  margin-right: 20px;
+  margin-bottom: 0; }
 #match_box #match_load {
   margin-bottom: 20px;
   padding: 0;
@@ -1229,6 +1156,80 @@ span.sub_tip {
   border: solid 1px #ddd;
   background: #f8f8f8; }
 
+/**
+ * Messages for Threads page
+ */
+[class*="typicons-"]:before {
+  font-family: 'Typicons', sans-serif; }
+
+.discussion {
+  list-style: none;
+  background: #fff;
+  border: none;
+  margin: 0;
+  padding: 0; }
+  .discussion li {
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex; }
+  .discussion .avatar {
+    width: 84px;
+    position: relative; }
+    .discussion .avatar img {
+      display: block;
+      width: 100%; }
+
+.other .avatar {
+  cursor: pointer; }
+  .other .avatar:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border: 5px solid white;
+    border-left-color: transparent;
+    border-bottom-color: transparent; }
+
+.self {
+  justify-content: flex-end;
+  align-items: flex-end; }
+  .self .messages {
+    order: 1;
+    border-bottom-right-radius: 0; }
+  .self .avatar {
+    cursor: pointer;
+    order: 2; }
+    .self .avatar:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border: 5px solid white;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); }
+
+.messages {
+  background: white;
+  padding: 10px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+  .messages p {
+    font-size: 24px;
+    margin: 0 0 0.2rem 0; }
+  .messages time {
+    font-size: 16px;
+    color: #ccc; }
+
+@keyframes pulse {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 0.5; } }
 #discover_box {
   position: relative;
   min-height: 600px; }

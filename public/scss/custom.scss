@@ -13,7 +13,6 @@
 @import 'hot_load';
 @import 'slide_wrapper';
 @import 'faq';
-@import 'chat';
 @import 'radar';
 @import 'settings_box';
 @import 'profile';
@@ -68,7 +67,7 @@ a {
         outline: none;
         text-decoration: none;
     }
-}
+} 
 
 .ajax-loader {
     width: 100%;
