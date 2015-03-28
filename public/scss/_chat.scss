@@ -15,7 +15,6 @@
 
   li {
     padding: 0.5rem;
-    overflow: hidden;
     display: flex;
   }
   .avatar {
@@ -30,6 +29,8 @@
 }
 
 .other {
+  z-index: 2;
+
   .avatar {
     cursor: pointer;
 
@@ -48,6 +49,7 @@
 }
 
 .self {
+  z-index: 2;
   justify-content: flex-end;
   align-items: flex-end;
   .messages {

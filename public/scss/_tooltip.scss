@@ -16,6 +16,11 @@ span.sub_tip {
 	opacity: 1;
 }
 
+.tooltip {
+	z-index: 99999999;
+	font-size: 18px;
+}
+
 .tooltip-inner {
 	background: $black;
 	color: $white;
