@@ -593,7 +593,11 @@
 					// Get the form parameters from the URL
 					$id = $this->input->get('id');
 					$reason = $this->input->get('reason');
-					$text = (empty(trim($this->input->get('text'))) ?: NULL);
+					$text = $this->input->get('text');
+
+					if(empty($text)) {
+						$text = NULL;
+					}
 
 					$tinder_id = $this->session->userdata('tinder_id');
 					$auth = $this->session->userdata('token');

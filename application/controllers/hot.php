@@ -17,8 +17,6 @@
 			}
 
 			public function Index() {
-				FormatArray($this->session->all_userdata());
-				die;
 				$admin_id = $this->session->userdata('admin_id');
 
 				if($admin_id) {
