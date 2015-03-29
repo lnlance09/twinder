@@ -137,7 +137,7 @@
 							$profile_pic = ChangePicSize($pic, 172);
 
 							// Get the tab list based upon the tab in the URL
-							$tabs = ReturnTabs($tab, $same);
+							$tabs = ReturnTabs($tab, $same, $session);
 
 							// Find out if this user has authorized Twitter for their account
 							$twitter = (!empty($user_info['twitter_handle']) ? 'true' : 'false');

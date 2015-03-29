@@ -450,7 +450,7 @@
 		 * @param [type] $tab  [description]
 		 * @param [type] $same [description]
 		 */
-		function ReturnTabs($tab, $same) {
+		function ReturnTabs($tab, $same, $session) {
 			switch($tab) {
 				case'likes':
 				case'liked_by':
@@ -459,7 +459,7 @@
 					$tabs = array('likes', 'liked_by');
 					$active = 'likes';
 
-					if(!$same) {
+					if(!$same && $session) {
 						array_push($tabs, 'mutual_likes');
 					}
 					break;
@@ -471,7 +471,7 @@
 					$tabs = array('passes', 'passed_by');
 					$active = 'passes';
 
-					if(!$same) {
+					if(!$same && $session) {
 						array_push($tabs, 'mutual_passes');
 					}
 					break;	
@@ -482,7 +482,7 @@
 					$tabs = array('matches');
 					$active = 'matches';
 
-					if(!$same) {
+					if(!$same && $session) {
 						array_push($tabs, 'mutual_matches');
 					}
 					break;

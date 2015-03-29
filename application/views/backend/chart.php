@@ -1,8 +1,9 @@
 <?php
     $base_url = $this->config->base_url();
 
-    $female_count = ($female_count == 0 ?: 1);
-    $male_count = ($male_count == 0 ?: 1);
+    // Define the tooltips
+    $mr_tip = $mr_name.', '.$mr_age.' <br> <p>'.$mr_count.' matches</p>'; 
+    $mrs_tip = $mrs_name.', '.$mrs_age.' <br> <p>'.$mrs_count.' matches</p>'; 
 ?>
 <div id="chart_data" class="panel panel-default">
     <div class="panel-heading" id="glance">
@@ -29,12 +30,32 @@
 
             <!-- The hottest guy -->
             <div class="col-lg-4 col-sm-4" id="mr">
-                <a href="<?php echo $base_url.$mr_link; ?>" class="pull-left">
+<?php
+    if(!empty($mr_name)) {
+?>
+                <a href="<?php echo $base_url.$mr_link; ?>" class="pull-left" data-toggle="tooltip" data-html="true" data-original-title="<?php echo $mr_tip; ?>">
                     <img src="<?php echo $mr_pic; ?>" class="img-circle" width="120" height="120" alt="<?php echo $mr_name; ?>">
                 </a>
+<?php
+    } else {
+?>
+                <a href="<?php echo $base_url.$mr_link; ?>" class="pull-left">
+                    <img src="<?php echo $base_url; ?>public/img/svg/kanye.svg" class="img-circle svg" width="120" height="120" alt="none" id="lance">
+                </a>
+<?php
+    }
+?>
 
                 <div class="hottest_name pull-left">
-                    <span><?php echo $mr_name; ?></span>
+                    <span class="salutation">Mr. <?php echo $state; ?></span><br>
+<?php
+    if(!empty($mr_name)) {
+?>
+                    <span><?php echo $mr_name.', '.$mr_age; ?></span><br>
+                    <span><?php echo $mr_count; ?> matches</span>
+<?php
+    }
+?>
                 </div>
 
                 <div class="clearfix"></div>
@@ -42,12 +63,31 @@
 
             <!-- The hottest girl -->
             <div class="col-lg-4 col-sm-4" id="mrs">
-                <a href="<?php echo $base_url.$mrs_link; ?>" class="pull-left">
+<?php
+    if(!empty($mrs_name)) {
+?>
+                <a href="<?php echo $base_url.$mrs_link; ?>" class="pull-left" data-toggle="tooltip" data-html="true" data-original-title="<?php echo $mrs_tip; ?>">
                     <img src="<?php echo $mrs_pic; ?>" class="img-circle" width="120" height="120" alt="<?php echo $mrs_name; ?>">
                 </a>
-
+<?php
+    } else {
+?>
+                <a href="<?php echo $base_url.$mrs_link; ?>" class="pull-left">
+                    <img src="<?php echo $base_url; ?>public/img/svg/mrs.svg" class="img-circle svg" width="120" height="120" alt="<?php echo $mrs_name; ?>">
+                </a>
+<?php
+    }
+?>
                 <div class="hottest_name pull-left">
-                    <span><?php echo $mrs_name; ?></span>
+                    <span class="salutation">Mrs. <?php echo $state; ?></span><br>
+<?php
+    if(!empty($mr_name)) {
+?>
+                    <span><?php echo $mrs_name.', '.$mrs_age; ?></span><br>
+                    <span><?php echo $mrs_count; ?> matches</span>
+<?php
+    }
+?>
                 </div>
 
                 <div class="clearfix"></div>
@@ -67,7 +107,7 @@
             label: 'Women'
         },
         {
-            value: parseInt(<?php echo $male_count; ?>),
+            value: parseInt(<?php echo $female_count; ?>),
             color: '#0993c7',
             highlight: '#3090cc',
             label: 'Men'
@@ -87,4 +127,31 @@
             }
     var ctx = $('#my_chart').get(0).getContext('2d');
     var pie = new Chart(ctx).Pie(data, options);
+
+    jQuery('.svg').each(function() {
+        var $img = jQuery(this);
+        var imgID = $img.attr('id');
+        var imgClass = $img.attr('class');
+        var imgURL = $img.attr('src');
+
+        jQuery.get(imgURL, function(data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = jQuery(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if(typeof imgID !== 'undefined') {
+                $svg = $svg.attr('id', imgID);
+            }
+            // Add replaced image's classes to the new SVG
+            if(typeof imgClass !== 'undefined') {
+                $svg = $svg.attr('class', imgClass +' replaced-svg');
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns:a');
+
+            // Replace image with new SVG
+            $img.replaceWith($svg);
+        }, 'xml');
+    });
 </script>

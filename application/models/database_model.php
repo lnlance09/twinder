@@ -512,7 +512,7 @@
 					ON likes.user_two = users.tinder_id
 					WHERE likes.match_id != ? 
 					AND likes.unmatched IS NULL
-					AND likes.user_two = ?";
+					AND likes.user_one = ?";
 
 			if(!empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
@@ -1175,44 +1175,28 @@
 		 */
 		public function GetHottest($sql, $lon, $lat, $distance) {
 			$i = 0;
-
-			foreach($sql['result'] as $row) {
-				// The columns from the users table
-				$tinder_id[$i] = $row->tinder_id;
-				$name[$i] = $row->first_name;
-				$age[$i] = $row->age;
-				$username[$i] = $row->username;
-				$pic[$i] = $row->profile_pic;
-
-				// The columns from the last seen column
-				$last_lat[$i] = $row->lat;
-				$last_lon[$i] = $row->lon;
-
-				$i++;
-			}
-
-			// Create the master array that will store everything
 			$return = [];
 
-			// Loop thru each user
-			for($i=0;$i<$sql['count'];$i++) {
+			foreach($sql['result'] as $row) {
 				// Get each user's match count
-				$like_count = $this->GetLikeCount($tinder_id[$i], TRUE);
+				$like_count = $this->GetLikeCount($row->tinder_id, TRUE);
 
 				// Get the distance between the client and the users
-				$between = $this->loc->Haversine($last_lat[$i], $last_lon[$i], $lat, $lon);
+				$between = $this->loc->Haversine($row->lat, $row->lon, $lat, $lon);
 
 				// If the distance is within the user's settings limit, then push it into the greater array
 				if($between < $distance) {
-					$new_data = array('tinder_id' => $tinder_id[$i],
-									'name' => $name[$i],
-									'age' => $age[$i],
-									'profile_pic' => $pic[$i],
-									'link' => FormatUserLink($tinder_id[$i], $username[$i]),
+					$new_data = array('tinder_id' => $row->tinder_id,
+									'name' => $row->first_name,
+									'age' => $row->age,
+									'profile_pic' => $row->profile_pic,
+									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'distance' => $between,
 									'like_count' => $like_count);
 					array_push($return, $new_data);
 				}
+
+				$i++;
 			}
 
 			// Sort the results by like count
@@ -1241,6 +1225,9 @@
 
 			if($count == 1) {
 				foreach($query->result() as $row) {
+					// Get the user's match count
+					$match_count = $this->GetMatchCount($row->tinder_id);
+
 					$return[$i] = array('tinder_id' => $row->tinder_id,
 										'name' => $row->first_name,
 										'username' => $row->username,
@@ -1255,7 +1242,8 @@
 										'city' => $row->city,
 										'state' => $row->state,
 										'miles_away' => $row->miles_away,
-										'datetime' => $row->datetime);
+										'datetime' => $row->datetime,
+										'match_count' => $match_count);
 
 					$i++;
 				}
@@ -1464,9 +1452,13 @@
 						$time = $messages[$i]['sent_date'];
 
 						// See if there is a record of each message existing in the DB
+						$params = array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from);
 						$this->db->select('id');
-						$this->db->where(array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from));
+						$this->db->where($params);
 						$query = $this->db->get('msg');
+						
+						echo $query->num_rows().'<br>';
+						FormatArray($params);
 						
 						if($query->num_rows() == 0) {
 							$data = array('match_id' => $id,

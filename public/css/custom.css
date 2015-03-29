@@ -23,7 +23,7 @@ span.stateface {
   height: 50px;
   vertical-align: middle; }
   .svg path {
-    fill: #ffa07a;
+    fill: #ffa500;
     transition: 0.8s; }
 
 #like_user,
@@ -90,7 +90,7 @@ span.stateface {
   color: #82b919; }
 
 .fa-heart {
-  color: #ffa07a; }
+  color: #ffa500; }
 
 .fa-thumbs-up {
   color: #08f; }
@@ -506,7 +506,11 @@ span.sub_tip {
 
 .tooltip {
   z-index: 99999999;
-  font-size: 18px; }
+  font-size: 20px; }
+  .tooltip p {
+    margin-top: 7px;
+    margin-bottom: 0;
+    font-size: 15px; }
 
 .tooltip-inner {
   background: #000;
@@ -1312,7 +1316,9 @@ span.sub_tip {
   padding-bottom: 0;
   margin: 15px 0 25px 0; }
   #chart_load #chart_data #glance h3 {
-    font-size: 28px; }
+    font-size: 24px;
+    font-weight: 700;
+    color: #000; }
     @media screen and (max-width: 768px) {
       #chart_load #chart_data #glance h3 {
         font-size: 20px; } }
@@ -1326,15 +1332,29 @@ span.sub_tip {
       #chart_load #chart_data #chart_block ul li {
         background: #fff !important;
         cursor: auto;
-        padding: 4px 12px;
-        line-height: 2.0;
-        font-size: 24px;
+        padding: 0;
+        font-size: 20px;
+        font-weight: 700;
         cursor: auto; }
         #chart_load #chart_data #chart_block ul li:hover {
           color: #000 !important; }
   #chart_load #chart_data #mr,
   #chart_load #chart_data #mrs {
-    padding: 10px; }
+    padding: 0; }
+    #chart_load #chart_data #mr img,
+    #chart_load #chart_data #mrs img {
+      padding: 5px;
+      border: solid 1px #ccc; }
+    #chart_load #chart_data #mr .svg,
+    #chart_load #chart_data #mrs .svg {
+      width: 120px !important;
+      height: 120px !important; }
+      #chart_load #chart_data #mr .svg path,
+      #chart_load #chart_data #mrs .svg path {
+        fill: #0993c7; }
+      #chart_load #chart_data #mr .svg#lance path,
+      #chart_load #chart_data #mrs .svg#lance path {
+        fill: #ffa500; }
     #chart_load #chart_data #mr .hottest_name,
     #chart_load #chart_data #mrs .hottest_name {
       margin-left: 10px; }
@@ -1342,9 +1362,13 @@ span.sub_tip {
         #chart_load #chart_data #mr .hottest_name,
         #chart_load #chart_data #mrs .hottest_name {
           display: none; } }
-      #chart_load #chart_data #mr .hottest_name span,
-      #chart_load #chart_data #mrs .hottest_name span {
-        font-size: 24px; }
+      #chart_load #chart_data #mr .hottest_name .salutation,
+      #chart_load #chart_data #mrs .hottest_name .salutation {
+        font-weight: 700;
+        font-size: 20px; }
+        #chart_load #chart_data #mr .hottest_name .salutation + span,
+        #chart_load #chart_data #mrs .hottest_name .salutation + span {
+          font-size: 16px; }
 
 /**
  * Autocomplete

@@ -59,7 +59,8 @@
 					// Get the hottest user from the given state
 					$mr = $this->database->HottestByState(0, $state);
 					$mrs = $this->database->HottestByState(1, $state);
-					
+					// FormatArray($mr);
+
 					$data = array('total_count' => FormatNumber($all['count']),
 								'male_count' => $male['count'],
 								'female_count' => $female['count'],
@@ -70,6 +71,10 @@
 								'mrs_pic' => ChangePicSize($mrs['hot'][0]['pic'], 172),
 								'mr_name' => $mr['hot'][0]['name'],
 								'mrs_name' => $mrs['hot'][0]['name'],
+								'mr_count' => $mr['hot'][0]['match_count'],
+								'mrs_count' => $mrs['hot'][0]['match_count'],
+								'mr_age' => $mr['hot'][0]['age'],
+								'mrs_age' => $mrs['hot'][0]['age'],
 								'state' => $this->loc->FullFromAbbrev(strtoupper($state)),
 								'abbrev' => $state);
 					$this->load->view('backend/chart', $data); 

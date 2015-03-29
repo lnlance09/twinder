@@ -26,7 +26,10 @@
 
             // Adjust the grammar
             $form = 'match';
-            $form .= ($likes != 1 ?: 'es');
+
+            if($likes != 1) {
+                $form .= 'es';
+            }
 
             // Define the tooltip HTML
             $tooltip = "<span class='tip'>".$name.", ".$age."</span><span class='sub_tip'> ".$likes." ".$form."</span>";

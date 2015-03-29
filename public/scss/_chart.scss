@@ -8,7 +8,9 @@
         #glance {
           
             h3 {
-                font-size: 28px;
+                font-size: 24px;
+                font-weight: 700;
+                color: $black;
 
                 @media screen and (max-width: $break-small) {
                     font-size: 20px;
@@ -29,9 +31,9 @@
                 li {
                     background: $white !important;
                     cursor: auto;
-                    padding: 4px 12px;
-                    line-height: 2.0;
-                    font-size: 24px;
+                    padding: 0;
+                    font-size: 20px;
+                    font-weight: 700;
                     cursor: auto;
 
                     &:hover {
@@ -43,8 +45,28 @@
 
         #mr,
         #mrs {
-            padding: 10px;
+            padding: 0;
             
+            img {
+                padding: 5px;
+                border: solid 1px #ccc;
+            }
+
+            .svg {
+                width: 120px !important;
+                height: 120px !important;
+
+                path {
+                    fill: $blue;
+                }
+
+                &#lance {
+                    path {
+                        fill: $salmon;
+                    }
+                }
+            }
+
             .hottest_name {
                 @media screen and (max-width: $break-small) {
                     display: none;
@@ -52,8 +74,13 @@
 
                 margin-left: 10px;
 
-                span {
-                    font-size: 24px;
+                .salutation {
+                    font-weight: 700;
+                    font-size: 20px;
+
+                    + span {
+                        font-size: 16px;
+                    }
                 }
             }
         }
