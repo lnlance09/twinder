@@ -1152,8 +1152,7 @@ span.sub_tip {
     display: block; }
 #match_box #match_load {
   margin-bottom: 20px;
-  padding: 0;
-  border-bottom: solid 1px #ccc; }
+  padding: 0; }
   #match_box #match_load .none {
     border: none; }
 #match_box textarea {

@@ -67,7 +67,7 @@
 												'gender' => $info['gender'],
 												'username' => $username,
 												'city' => $loc['city'],
-												'state' => $loc['full_name'],
+												'state' => $loc['state'],
 												'lon' => $lon,
 												'lat' => $lat,
 											    'filters' => $filters,
