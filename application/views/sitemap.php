@@ -5,13 +5,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>http://twinder.io/</loc> 
-        <changefreq>never</changefreq>
+        <changefreq>hourly</changefreq>
         <priority>1.0</priority>
     </url>
 
 	<url>
 		<loc>http://twinder.io/hot</loc>
-		<changefreq>never</changefreq>
+		<changefreq>hourly</changefreq>
 		<priority>0.9</priority>
 	</url>
 
@@ -26,7 +26,7 @@
 ?>
     <url>
         <loc><?= 'http://twinder.io/'.$users[$i]['link']; ?></loc>
-        <changefreq>never</changefreq>
+        <changefreq>daily</changefreq>
         <priority>0.7</priority>
     </url>
 <?php 
@@ -36,7 +36,7 @@
 ?>
 	<url>
         <loc><?= 'http://twinder.io/matches/'.$matches[$i]['match_id']; ?></loc>
-        <changefreq>never</changefreq>
+        <changefreq>daily</changefreq>
         <priority>0.7</priority>
     </url>
 <?php
