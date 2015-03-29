@@ -1459,8 +1459,8 @@
 						$this->db->where($params);
 						$query = $this->db->get('msg');
 						$num = $query->num_rows();
-						// echo $num.'<br>';
-						// FormatArray($params);
+						echo $num.'<br>';
+						FormatArray($params);
 
 						if($num == 0) {
 							$data = array('match_id' => $id,
