@@ -1640,4 +1640,23 @@
 				}
 			}
 		}
+
+		public function GetAllMatches() {
+			$sql = "SELECT DISTINCT match_id	
+					FROM likes
+					WHERE match_id IS NOT NULL";
+			$query = $this->db->query($sql);
+			$num = $query->num_rows();
+			$i = 0;
+
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$return[$i] = array('match_id' => $row->match_id);
+				
+				$i++;
+			}
+
+			return $return;
+		}
 	}

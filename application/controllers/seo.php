@@ -16,16 +16,18 @@
 
 			public function Index() {
 				// Set all of the info that needs to be passed to the header view
-				$info = $this->database->GetAllUsers();
+				$users = $this->database->GetAllUsers();
+
+				// Get all of the matches from the DB
+				$matches = $this->database->GetAllMatches();
 
 				// Load all of the views
-				$this->load->view('sitemap', array('users' => $info)); 
+				$this->load->view('sitemap', array('users' => $users, 'matches' => $matches)); 
 			}
 
 			public function Test() {
 				$this->database->FlushDB();
 				die;
-				
 			}
 		}
 	}
