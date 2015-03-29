@@ -1387,16 +1387,15 @@ span.sub_tip {
   position: fixed;
   top: 50px;
   border: none;
+  border-bottom: solid 1px #ccc;
   z-index: 9999;
   background: #fff; }
   @media screen and (max-width: 768px) {
     #search_container {
-      padding: 0 20px;
-      border-bottom: solid 1px #555; } }
+      padding: 0 20px; } }
   @media screen and (min-width: 992px) {
     #search_container {
-      padding: 0 120px;
-      border-bottom: solid 1px #ccc; } }
+      padding: 0 120px; } }
   #search_container .input-group {
     height: 100%;
     margin-top: 2px; }
