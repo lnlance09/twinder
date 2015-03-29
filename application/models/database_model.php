@@ -1456,7 +1456,7 @@
 						$raw = $messages[$i]['message'];
 
 						// See if there is a record of each message existing in the DB
-						$params = array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from);
+						$params = array('match_id' => $id, 'msg' => $raw, 'user_to' => $to, 'user_from' => $from);
 						$this->db->select('id');
 						$this->db->where($params);
 						$query = $this->db->get('msg');
