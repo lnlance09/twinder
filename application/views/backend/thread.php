@@ -13,7 +13,7 @@
       		</div>
 
 			<div class="messages">
-        		<p><?php echo nl2br($messages[$i]['message']); ?></p>
+        		<p><?php echo $messages[$i]['message']; ?></p>
         		<time datetime="2009-11-13T20:00"><?php echo $user_two['name']; ?> • <?php echo $messages[$i]['datetime']; ?></time>
       		</div>
 		</li>
@@ -26,7 +26,7 @@
       		</div>
 
 			<div class="messages">
-        		<p><?php echo nl2br($messages[$i]['message']); ?></p>
+        		<p><?php echo $messages[$i]['message']; ?></p>
         		<time datetime="2009-11-13T20:00"><?php echo $user_one['name']; ?> • <?php echo $messages[$i]['datetime']; ?></time>
       		</div>
 		</li>

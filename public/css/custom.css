@@ -422,7 +422,8 @@ button:focus {
         #footer #list_name #slogan {
           display: block;
           font-size: 22px;
-          color: #fff; } }
+          color: #fff;
+          font-weight: 700; } }
   #footer #sub_footer {
     background-color: #fff;
     text-align: left; }
@@ -437,6 +438,9 @@ button:focus {
       width: 25%;
       margin: 0;
       padding: 0; }
+      @media screen and (max-width: 768px) {
+        #footer #sub_footer .col-lg-3 {
+          width: 100%; } }
       #footer #sub_footer .col-lg-3 ul {
         -webkit-padding-start: 0;
         list-style: none;
@@ -1139,11 +1143,10 @@ span.sub_tip {
 
 #match_box h1.page-header {
   margin-bottom: 0; }
+  #match_box h1.page-header .fa {
+    color: #82b919; }
   #match_box h1.page-header span {
-    font-size: 18px;
-    display: block;
-    margin-top: 9px;
-    margin-right: 20px; }
+    display: block; }
 #match_box #match_load {
   margin-bottom: 20px;
   padding: 0;
@@ -1156,15 +1159,22 @@ span.sub_tip {
 #match_box button {
   float: right;
   margin-top: 10px; }
-#match_box .twitter-share-button {
-  margin-top: 6px;
-  font-size: 16px; }
 
-#disqus_thread {
-  padding: 0 10px;
-  margin: 8px 0;
-  border: solid 1px #ddd;
-  background: #f8f8f8; }
+#comment_box {
+  margin-top: 25px; }
+  #comment_box h3 {
+    font-weight: 700; }
+    #comment_box h3 .fa {
+      color: #0993c7; }
+  #comment_box .twitter-share-button {
+    margin-top: 0;
+    font-size: 16px; }
+  #comment_box .panel-body {
+    padding: 0 15px; }
+  #comment_box #disqus_thread {
+    padding: 0;
+    margin: 3px 0 8px 0;
+    background: #fff; }
 
 /**
  * Messages for Threads page

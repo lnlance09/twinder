@@ -2,11 +2,12 @@
     h1.page-header {
         margin-bottom: 0;
 
+        .fa {
+            color: $green;
+        }
+        
         span {
-            font-size: 18px;
             display: block;
-            margin-top: 9px;
-            margin-right: 20px;
         }
     }
 
@@ -29,18 +30,33 @@
         float: right;
         margin-top: 10px;
     }
-
-    .twitter-share-button {
-        margin-top: 6px;
-        font-size: 16px;
-    }
 }
 
-#disqus_thread {
-    padding: 0 10px;
-    margin: 8px 0;
-    border: solid 1px #ddd;
-    background: #f8f8f8;
+#comment_box {
+    margin-top: 25px;
+    
+    h3 {
+        font-weight: 700;
+
+        .fa {
+            color: $blue;
+        }
+    }
+    
+    .twitter-share-button {
+        margin-top: 0;
+        font-size: 16px;
+    }
+
+    .panel-body {
+        padding: 0 15px;
+    }
+
+    #disqus_thread {
+        padding: 0;
+        margin: 3px 0 8px 0;
+        background: #fff;
+    }
 }
 
 @import 'chat';

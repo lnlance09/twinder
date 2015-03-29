@@ -10,21 +10,10 @@
         <div id="signin">
             <div id="match_box">
                 <h1 class="page-header">
+                    <i class="fa fa-leaf"></i>
                     <a href="<?php echo $base_url.$user_one['link']; ?>"><?php echo $user_one['name']; ?></a>
                     and
                     <a href="<?php echo $base_url.$user_two['link']; ?>"><?php echo $user_two['name']; ?></a>
-
-                    <a class="twitter-share-button pull-right" 
-                        href="<?php echo $base_url.'matches/'.$match_id; ?>"
-                        data-related="twitterdev"
-                        data-size="large"
-                        data-count="none">
-                        Tweet
-                    </a>
-
-                    <span class="pull-right"><?php echo $views.' '.$grammar; ?></span>
-
-                    <span class="clearfix"></span>
                 </h1>
 
                 <div id="match_load">
@@ -40,15 +29,36 @@
                     <div class="send_area">
                         <textarea class="form-control" placeholder="Send a message" name="msg"></textarea>
                         <button class="btn btn-primary" type="submit" value="submit" name="submit">Send</button>
-
                         <div class="clearfix"></div>
                     </div>
                 </form>
 <?php
     }
 ?>
-                
-                <div id="disqus_thread"></div>
+
+                <div class="panel panel-default" id="comment_box">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-comments fa-lg"></i> Comments
+
+                            <span class="pull-right"><?php echo $views.' '.$grammar; ?></span>
+
+                            <a class="twitter-share-button pull-right" 
+                                href="<?php echo $base_url.'matches/'.$match_id; ?>"
+                                data-related="twitterdev"
+                                data-size="medium"
+                                data-count="horizontal">
+                                Tweet
+                            </a>
+
+                            <span class="clearfix"></span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div id="disqus_thread"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -56,5 +66,3 @@
     <!-- Write all of the variables for the JS to work -->
     <div class="hidden" id="match_id"><?php echo $match_id; ?></div>
     <div class="hidden" id="match_type"><?php echo $type; ?></div>
-    <div class="hidden" id=""><?php echo $type; ?></div>
-        

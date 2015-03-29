@@ -140,7 +140,7 @@
 
 				// Load the view
 				$data = array('messages' => $thread, 
-							'count' => (count($thread) == 1 ? 0 : count($thread)),
+							'count' => count($thread),
 							'user_one' => $match['user_one'],
 							'user_two' => $match['user_two'],
 							'page' => $page);

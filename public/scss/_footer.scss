@@ -40,6 +40,7 @@
                display: block;
                font-size: 22px;
                color: $white; 
+               font-weight: 700;
             }
         }
     }
@@ -62,6 +63,10 @@
             margin: 0;
             padding: 0;
 
+            @media screen and (max-width: $break-small) {
+                width: 100%;
+            }
+
             ul {
                 -webkit-padding-start: 0;
                 list-style: none;
@@ -70,6 +75,7 @@
 
                 li {
                     text-align: left;
+                    padding: 6px 0;
 
                     @media screen and (max-width: $break-small) {
                         text-align: center;
@@ -85,8 +91,6 @@
                             display: inline;
                         }
                     }
-
-                    padding: 6px 0;
 
                     .twitter-follow-button {
                         margin-left: 0px;
