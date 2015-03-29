@@ -806,9 +806,14 @@ span.sub_tip {
   #settings_form .settings_box .selector {
     padding: 20px;
     font-size: 22px;
-    border-right: solid 1px #ddd;
     cursor: pointer;
     transition: 0.3s; }
+    @media screen and (max-width: 768px) {
+      #settings_form .settings_box .selector {
+        border-bottom: solid 1px #ddd; } }
+    @media screen and (min-width: 992px) {
+      #settings_form .settings_box .selector {
+        border-right: solid 1px #ddd; } }
     #settings_form .settings_box .selector:last-of-type {
       border: none; }
     #settings_form .settings_box .selector:hover, #settings_form .settings_box .selector.active {

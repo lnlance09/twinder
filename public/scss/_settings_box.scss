@@ -52,9 +52,16 @@
         .selector {
             padding: 20px;
             font-size: 22px;
-            border-right: solid 1px #ddd;
             cursor: pointer;
             transition: 0.3s;
+
+            @media screen and (max-width: $break-small) {
+                border-bottom: solid 1px #ddd;
+            }
+
+            @media screen and (min-width: $break-large) {
+                border-right: solid 1px #ddd;
+            }
 
             &:last-of-type {
                 border: none;
