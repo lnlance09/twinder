@@ -1459,8 +1459,6 @@
 						$this->db->where($params);
 						$query = $this->db->get('msg');
 						$num = $query->num_rows();
-						echo $num.'<br>';
-						FormatArray($params);
 
 						if($num == 0) {
 							$data = array('match_id' => $id,
@@ -1469,6 +1467,7 @@
 										'user_to' => $to,
 										'datetime' => strtotime($time));
 							$this->db->insert('msg', $data);
+							FormatArray($data);
 						}
 					}
 				}
