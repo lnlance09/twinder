@@ -153,8 +153,10 @@
 					}
 				}	
 
-				// Insert all of the messages into the msg table
-				$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
+				if(array_key_exists('messages', $updates[$i])) 
+					// Insert all of the messages into the msg table
+					$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
+				}
 			}
 		}
 
@@ -1460,6 +1462,7 @@
 						$query = $this->db->get('msg');
 						$num = $query->num_rows();
 
+						echo $num.'<br>';
 						if($num == 0) {
 							$data = array('match_id' => $id,
 										'msg' => $raw,
@@ -1467,7 +1470,7 @@
 										'user_to' => $to,
 										'datetime' => strtotime($time));
 							$this->db->insert('msg', $data);
-							// FormatArray($data);
+							FormatArray($data);
 						}
 					}
 				}

@@ -504,12 +504,11 @@
 
 					// Sync all of the user's messages
 					$this->database->SyncMessages($updates['matches'], $tinder_id, $distance, $lon, $lat, $city, $state);
-					// FormatArray($updates);
+					FormatArray($updates);
 					// die;
 					
 					// Get all of the blocks and update the likes table accordingly
 					$this->database->UpdateBlocks($tinder_id, $updates['blocks']);
-					// echo @json_encode($updates);
 				}
 			}
 
