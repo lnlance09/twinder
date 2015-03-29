@@ -66,7 +66,7 @@
                         <div id="age_slider" class="slider"></div>
 
                         <h2 id="age_settings">
-                            <span class="example-val" id="lower-value"></span> - <span class="example-val" id="upper-value"></span>
+                            <span class="example-val" id="lower-value"></span> - <span class="example-val" id="upper-value"></span> years
                         </h2>
                     </div>
                 </div>

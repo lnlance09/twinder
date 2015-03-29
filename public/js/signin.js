@@ -23,14 +23,16 @@ $(document).ready(function() {
 	            },
 	            success: function(data) {
 	                console.log(data);
-	                
 	                if(data.trim() == 'true') {
-	                	// console.log('true');
 	                	window.location = base_url +'users/discover';
 	                } else if(data == 'error') {
 	                	$('#sync_modal').modal('hide');
+	                	$('input[name=username]').css('border', 'solid 1px red');
+	                	$('input[name=password]').css('border', 'solid 1px red');
 	                } else {
 	                	console.log("Didn't submit");
+	                	$('input[name=username]').css('border', 'solid 1px red');
+	                	$('input[name=password]').css('border', 'solid 1px red');
 	                }
 	            }
 	        });

@@ -11,7 +11,7 @@ $(document).ready(function() {
         $circle.animate({
             'width': '600px',
             'height': '600px',
-            'margin-top': '-500px',
+            'margin-top': '-550px',
             'margin-left': '-300px',
             'opacity': '0'
         }, 2000, 'easeOutCirc');

@@ -78,6 +78,10 @@
 #match_modal {
     .modal-body {
         padding: 15px 0 8px 0; 
+
+        .col-lg-6 {
+            width: 50%;
+        }
     }
 }
 

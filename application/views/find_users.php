@@ -43,17 +43,19 @@
 						</div>
 
 			      		<div class="modal-body">
-			        		<div class="col-lg-6 text-right">
+			        		<div class="col-lg-6 pull-left text-right">
 			        			<div>
-									<img src="<?php echo $pic; ?>" width="172" height="172" alt="<?php echo $name; ?>">
+									<img src="<?php echo $pic; ?>" class="img-circle" width="172" height="172" alt="<?php echo $name; ?>">
 								</div>
 			        		</div>
 
-			        		<div class="col-lg-6">
+			        		<div class="col-lg-6 pull-left text-left">
 								<div>
-									<img src="" width="172" height="172" alt="" id="match_pic">
+									<img src="" class="img-circle" width="172" height="172" alt="" id="match_pic">
 								</div>
 			        		</div>
+
+			        		<div class="clearfix"></div>
 
 			        		<div class="col-lg-12 text-center">
 			        			<h3>

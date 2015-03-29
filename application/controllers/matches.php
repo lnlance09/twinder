@@ -88,6 +88,7 @@
 											'user_one' => $match['user_one'],
 											'user_two' => $match['user_two'],
 											'views' => $views,
+											'my_tinder_id' => $tinder_id = $this->session->userdata('tinder_id'),
 											'unmatched' => $match['user_one']['unmatched'],
 											'can_send' => $can_send);
 

@@ -5,15 +5,14 @@
 
     // Adjust the plurality
     $grammar = ($views != 1 ? 'views' : 'view');
+    $other = ($user_one['id'] == $my_tinder_id ? $user_two : $user_one);
 ?>
 	<div id="header-section">
         <div id="signin">
             <div id="match_box">
                 <h1 class="page-header">
                     <i class="fa fa-leaf"></i>
-                    <a href="<?php echo $base_url.$user_one['link']; ?>"><?php echo $user_one['name']; ?></a>
-                    and
-                    <a href="<?php echo $base_url.$user_two['link']; ?>"><?php echo $user_two['name']; ?></a>
+                    <?php echo $user_one['name'].' and '.$user_two['name']; ?>
                 </h1>
 
                 <div id="match_load">
@@ -27,7 +26,7 @@
 ?>
                 <form method="POST" id="send_msg" action="<?php echo $base_url; ?>users/SendMessage">
                     <div class="send_area">
-                        <textarea class="form-control" placeholder="Send a message" name="msg"></textarea>
+                        <textarea class="form-control" placeholder="Send a <?php echo $other['name']; ?> message" name="msg"></textarea>
                         <button class="btn btn-primary" type="submit" value="submit" name="submit">Send</button>
                         <div class="clearfix"></div>
                     </div>

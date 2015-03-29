@@ -149,4 +149,4 @@
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
-    
+    <div id="controller" class="hidden"><?php echo $controller; ?></div>

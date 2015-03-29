@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text();  
     var auth = $('#auth').text();
+    var controller = $('#controller').text();
     // console.log(auth);
 
     // Query to check for any updates and/or matches/messages every 10 seconds
@@ -9,6 +10,23 @@ $(document).ready(function() {
              $.ajax({
                 url: base_url +'users/GetUpdates',
                 success: function(data) {
+                    if(controller == 'matches') {
+                        var match_id = $('#match_id').text();
+
+                        $('#match_load').html('<div class="ajax-loader"><i class="fa fa-circle-notch-o fa-spin"></i></div>');
+
+                        // Load the results
+                        var string = 'id='+ match_id +'&page=0';
+                        $('#match_load').load(base_url +'matches/Thread', string, function() {
+                            $('#match_load .ajax-loader').fadeOut();
+
+                            $('[data-toggle="tooltip"]').tooltip({
+                                placement: 'top',
+                                html: true,
+                            });
+                        });
+                    }
+
                     // var obj = JSON.parse(data);
                     // console.log(data);
                 }
