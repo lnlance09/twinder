@@ -327,7 +327,7 @@
 			$return = [];
 
 			$result = $query->result();
-			// FormatArray($result, TRUE);
+			FormatArray($result, TRUE);
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,

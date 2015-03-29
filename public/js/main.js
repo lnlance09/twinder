@@ -9,8 +9,8 @@ $(document).ready(function() {
              $.ajax({
                 url: base_url +'users/GetUpdates',
                 success: function(data) {
-                    var obj = JSON.parse(data);
-                    console.log(data);
+                    // var obj = JSON.parse(data);
+                    // console.log(data);
                 }
             });
         }, 10000);
