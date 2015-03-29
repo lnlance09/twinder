@@ -1452,6 +1452,7 @@
 						$to = $messages[$i]['to'];
 						$from = $messages[$i]['from'];
 						$time = $messages[$i]['sent_date'];
+						$raw = $messages[$i]['message'];
 
 						// See if there is a record of each message existing in the DB
 						$params = array('match_id' => $id, 'msg' => $msg, 'user_to' => $to, 'user_from' => $from);
@@ -1462,12 +1463,12 @@
 
 						if($num == 0) {
 							$data = array('match_id' => $id,
-										'msg' => $msg,
+										'msg' => $raw,
 										'user_from' => $from,
 										'user_to' => $to,
 										'datetime' => strtotime($time));
 							$this->db->insert('msg', $data);
-							FormatArray($data);
+							// FormatArray($data);
 						}
 					}
 				}
