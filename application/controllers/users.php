@@ -532,17 +532,19 @@
 					if(array_key_exists('match', $like)) {
 						if(is_array($like['match'])) {
 							$match_id = $like['match']['_id'];
+							$match = $like['match']['_id'];
 							$last_active = $like['match']['last_activity_date'];
 							$created_at = $like['match']['created_date'];
 						} else {
 							$match_id = 'false';
+							$match = NULL;
 							$last_active = date('Y-m-d H:i:s');
 							$created_at = date('Y-m-d H:i:s');
 						}
 
 						// Remove the batch user from the DB and then insert him/her into the likes table
 						$this->database->RemoveBatchUser($id, $user_id);
-						$this->database->InsertIntoLikes($my_tinder_id, $id, $match_id, $last_active, $created_at);
+						$this->database->InsertIntoLikes($my_tinder_id, $id, $match, $last_active, $created_at);
 
 						// Echo out the match ID
 						echo $match_id;
