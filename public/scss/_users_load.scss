@@ -1,6 +1,5 @@
 #discover_box {
-  position:relative;
-  min-height: 600px;
+  position: relative;
 
   #users_load {
       .jumbotron {
@@ -40,13 +39,11 @@
   position: relative;
 
   #like_or_pass {
-      position: absolute;
-      bottom: 10px;
       text-align: center;
       width: 100%;
       padding: 20px;
       background: #eee;
-      z-index: 999;
+      z-index: 999999;
       border: solid 1px #ccc;
   }
 }

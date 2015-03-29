@@ -11,7 +11,7 @@ $(document).ready(function() {
         $circle.animate({
             'width': '600px',
             'height': '600px',
-            'margin-top': '-550px',
+            'margin-top': '-300px',
             'margin-left': '-300px',
             'opacity': '0'
         }, 2000, 'easeOutCirc');
@@ -90,10 +90,9 @@ $(document).ready(function() {
                         id: tinder_id
                     },
                     success: function(data) {
-                        console.log(data);
-                        if(data != 'false') {
+                        // console.log(data);
+                        if(data != 'false' && data != 'done') {
                             var match_id = data;
-
                             // Change the match count number
                             var match_count = $('#match_count_num').text();
                             var new_match_count = parseInt(match_count)+parseInt(1);

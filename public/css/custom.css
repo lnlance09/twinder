@@ -755,9 +755,6 @@ span.sub_tip {
   #users_load #user_circle img#radar {
     position: relative;
     line-height: 100px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
     z-index: 2;
     overflow: hidden; }
 
@@ -1255,8 +1252,7 @@ span.sub_tip {
   to {
     opacity: 0.5; } }
 #discover_box {
-  position: relative;
-  min-height: 600px; }
+  position: relative; }
   #discover_box #users_load .jumbotron {
     text-align: left;
     border: solid 1px #ccc; }
@@ -1279,13 +1275,11 @@ span.sub_tip {
 #decide_box {
   position: relative; }
   #decide_box #like_or_pass {
-    position: absolute;
-    bottom: 10px;
     text-align: center;
     width: 100%;
     padding: 20px;
     background: #eee;
-    z-index: 999;
+    z-index: 999999;
     border: solid 1px #ccc; }
 
 .rotate-left,

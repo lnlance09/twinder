@@ -9,7 +9,7 @@
 	        	<!-- Radiating circle where new users will be loaded -->
 	        	<div id="users_load" class="text-center">
 	        		<div id="user_circle">
-						<img src="<?php echo $this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar">
+						<img src="<?php echo $this->session->userdata('profile_pic'); ?>" width="184" height="184" id="radar" class="img-circle">
 					</div>
 	            </div>
 	        </div>
