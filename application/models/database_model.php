@@ -1457,8 +1457,9 @@
 						$this->db->select('id');
 						$this->db->where($params);
 						$query = $this->db->get('msg');
-						
-						echo $query->num_rows().'<br>';
+						$num = $query->num_rows()
+
+						echo $num.'<br>';
 						FormatArray($params);
 
 						if($query->num_rows() == 0) {
