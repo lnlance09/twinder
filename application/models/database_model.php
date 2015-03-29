@@ -1445,11 +1445,12 @@
 			// Loop thru each message
 			for($i=0;$i<$count;$i++) {
 				if(array_key_exists($i, $messages)) {
-					if(!empty($messages[$i]['match_id']) && !empty(trim($messages[$i]['message']))) {
+					$msg = trim($messages[$i]['message']);
+
+					if(!empty($messages[$i]['match_id']) && !empty($msg)) {
 						$id = $messages[$i]['match_id'];
 						$to = $messages[$i]['to'];
 						$from = $messages[$i]['from'];
-						$msg = $messages[$i]['message'];
 						$time = $messages[$i]['sent_date'];
 
 						// See if there is a record of each message existing in the DB
