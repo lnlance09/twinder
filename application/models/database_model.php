@@ -368,7 +368,7 @@
 					$this->db->where(array('user_one' => $tinder_id, 'user_two' => $my_id));
 					$this->db->update('likes', array('match_id' => $match_id));
 				} else {
-					if($match_id != 'false') {
+					if($match_id != 'false' && !empty($match_id)) {
 						// If there is no record, then create one
 						$data = array('user_one' => $tinder_id,
 									'user_two' => $my_id,
