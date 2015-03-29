@@ -1462,7 +1462,7 @@
 						$query = $this->db->get('msg');
 						$num = $query->num_rows();
 
-						echo $num.'<br>';
+						// echo $num.'<br>';
 						if($num == 0) {
 							$data = array('match_id' => $id,
 										'msg' => $raw,
@@ -1470,7 +1470,7 @@
 										'user_to' => $to,
 										'datetime' => strtotime($time));
 							$this->db->insert('msg', $data);
-							FormatArray($data);
+							// FormatArray($data);
 						}
 					}
 				}
