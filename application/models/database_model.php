@@ -326,8 +326,9 @@
 
 			$return = [];
 
+			FormatArray($query->result(), TRUE);
+			
 			foreach($query->result() as $row) {
-				// Set all of the user's info in an array
 				$user_info = array('tinder_id' => $row->tinder_id,
 									'first_name' => $row->first_name,
 									'username' => $row->username,
@@ -335,7 +336,6 @@
 									'bio' => $row->bio,
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username));
-
 				$return[$i] = array('id' => $row->id,
 									'like' => $row->user_two,
 									'datetime' => $row->datetime,
@@ -1444,7 +1444,7 @@
 			// Loop thru each message
 			for($i=0;$i<$count;$i++) {
 				if(array_key_exists($i, $messages)) {
-					if(!empty($messages[$i]['match_id'])) {
+					if(!empty($messages[$i]['match_id']) && !empty(trim($messages[$i]['message']))) {
 						$id = $messages[$i]['match_id'];
 						$to = $messages[$i]['to'];
 						$from = $messages[$i]['from'];
@@ -1459,7 +1459,7 @@
 						
 						echo $query->num_rows().'<br>';
 						FormatArray($params);
-						
+
 						if($query->num_rows() == 0) {
 							$data = array('match_id' => $id,
 										'msg' => $msg,

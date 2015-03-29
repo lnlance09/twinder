@@ -81,7 +81,7 @@
                 <div class="hottest_name pull-left">
                     <span class="salutation">Mrs. <?php echo $state; ?></span><br>
 <?php
-    if(!empty($mr_name)) {
+    if(!empty($mrs_name)) {
 ?>
                     <span><?php echo $mrs_name.', '.$mrs_age; ?></span><br>
                     <span><?php echo $mrs_count; ?> matches</span>
