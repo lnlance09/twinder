@@ -507,7 +507,7 @@
 					
 					// Get all of the blocks and update the likes table accordingly
 					$this->database->UpdateBlocks($tinder_id, $updates['blocks']);
-					echo json_encode($updates);
+					echo @json_encode($updates);
 				}
 			}
 
