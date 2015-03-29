@@ -46,7 +46,7 @@ $route['default_controller'] = 'home';
 $route['404_override'] = 'error';
 
 // Sitemap 
-$route['seo/sitemap\.xml'] = 'seo/sitemap';
+$route['seo/sitemap\.xml'] = 'seo';
 
 /* Users page */
 $route['users/(:any)'] = 'users/index/$1';
