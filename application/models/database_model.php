@@ -153,7 +153,7 @@
 					}
 				}	
 
-				if(array_key_exists('messages', $updates[$i])) 
+				if(array_key_exists('messages', $updates[$i])) {
 					// Insert all of the messages into the msg table
 					$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
 				}
