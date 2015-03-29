@@ -108,13 +108,13 @@
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?php echo $base_url; ?>users/discover">Play</a></li>
-                            <li><a href="<?php echo $base_url.$profile_link; ?>">Profile</a></li>
+                            <li><a href="<?php echo $base_url; ?>users/discover">Play <i class="fa fa-play fa-fw"></i></a></li>
+                            <li><a href="<?php echo $base_url.$profile_link; ?>">Profile <i class="fa fa-user fa-fw"></i></a></li>
 
                             <li class="divider"></li>
 
-                            <li><a href="<?php echo $base_url; ?>settings">Settings <i class="fa fa-cog"></i></a></li>
-                            <li><a href="<?php echo $base_url; ?>users/Logout">Logout <i class="fa fa-sign-out"></i></a></li>
+                            <li><a href="<?php echo $base_url; ?>settings">Settings <i class="fa fa-cog fa-fw"></i></a></li>
+                            <li><a href="<?php echo $base_url; ?>users/Logout">Logout <i class="fa fa-sign-out fa-fw"></i></a></li>
                         </ul>
                     </li>
 <?php

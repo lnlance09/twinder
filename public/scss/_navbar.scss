@@ -73,7 +73,7 @@
             @media screen and (max-width: $break-small) {
                 float: none !important;
                 -webkit-padding-start: 0 !important;
-                margin: 0;
+                margin: 0 0 8px 0;
             }
 
             > li {
@@ -115,7 +115,6 @@
 
                     @media screen and (min-width: $break-large) {
                         padding: 0 20px;
-
                     }
 
                     &:hover {
@@ -146,6 +145,7 @@
                             #like_count {
                                 @media screen and (max-width: $break-small) {
                                     float: right;
+                                    margin-top: 6px;
                                 }
                             }
 
