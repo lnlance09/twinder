@@ -327,7 +327,7 @@
 			$return = [];
 
 			$result = $query->result();
-			FormatArray($result, TRUE);
+			// FormatArray($result, TRUE);
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -1459,11 +1459,10 @@
 						$this->db->where($params);
 						$query = $this->db->get('msg');
 						$num = $query->num_rows();
+						// echo $num.'<br>';
+						// FormatArray($params);
 
-						echo $num.'<br>';
-						FormatArray($params);
-
-						if($query->num_rows() == 0) {
+						if($num == 0) {
 							$data = array('match_id' => $id,
 										'msg' => $msg,
 										'user_from' => $from,
