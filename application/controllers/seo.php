@@ -29,5 +29,15 @@
 				$this->database->FlushDB();
 				die;
 			}
+
+			public function Ping() {
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, 'https://api.gotinder.com/');
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Tinder/4.0.9 (iPhone; iOS 8.1.1; Scale/2.00)');
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			    $data = curl_exec($ch);
+			    curl_close($ch);
+			    echo $data;
+			}
 		}
 	}
