@@ -19,58 +19,54 @@
 			public function Index() {
 				$admin_id = $this->session->userdata('admin_id');
 
-				if($admin_id) {
-					// Get the user ID
-					$user_id = $this->session->userdata('user_id');
+				// Get the user ID
+				$user_id = $this->session->userdata('user_id');
 
-					if($user_id) {
-						$session = TRUE;
-						$auth = $this->session->userdata('token');
-						$tinder_id = $this->session->userdata('tinder_id');
-						$username = $this->session->userdata('username');
+				if($user_id) {
+					$session = TRUE;
+					$auth = $this->session->userdata('token');
+					$tinder_id = $this->session->userdata('tinder_id');
+					$username = $this->session->userdata('username');
 
-						// Get the mactch count of the user who is currently logged in
-						$match_count = $this->database->GetMatchCount($tinder_id);
-					} else {
-						$session = FALSE;
-						$auth = NULL;
-						$tinder_id = NULL;
-						$username = NULL;
-						$match_count = NULL;
-					}
-
-					$profile_link = FormatUserLink($tinder_id, $username);
-					$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
-
-					// Define the meta tags
-					$meta_info = array('description' => 'Contact Twinder',
-										'img' => $this->base_url.'public/img/',
-										'url' => $this->base_url.'contact');
-
-					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Contact Us',
-										'session' => $session,
-										'header' => 'Contact Us',
-										'auth' => $auth,
-										'tinder_id' => $tinder_id,
-										'match_count' => $match_count,
-										'name' => $this->session->userdata('first_name'),
-										'meta' => $meta_info,
-										'profile_link' => $profile_link,
-										'profile_pic' => $profile_pic);
-
-					// Get all of the data for the footer view
-					$locations = $this->loc->RandomLocations();
-					$rand_users = $this->database->GetAllUsers();
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
-
-					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('contact'); 
-					$this->load->view('templates/footer', $footer_info); 
+					// Get the mactch count of the user who is currently logged in
+					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
-					header('Location: '.$this->base_url.'admin');
+					$session = FALSE;
+					$auth = NULL;
+					$tinder_id = NULL;
+					$username = NULL;
+					$match_count = NULL;
 				}
+
+				$profile_link = FormatUserLink($tinder_id, $username);
+				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
+
+				// Define the meta tags
+				$meta_info = array('description' => 'Contact Twinder',
+									'img' => $this->base_url.'public/img/',
+									'url' => $this->base_url.'contact');
+
+				// Set all of the info that needs to be passed to the header view
+				$header_info = array('title' => 'Contact Us',
+									'session' => $session,
+									'header' => 'Contact Us',
+									'auth' => $auth,
+									'tinder_id' => $tinder_id,
+									'match_count' => $match_count,
+									'name' => $this->session->userdata('first_name'),
+									'meta' => $meta_info,
+									'profile_link' => $profile_link,
+									'profile_pic' => $profile_pic);
+
+				// Get all of the data for the footer view
+				$locations = $this->loc->RandomLocations();
+				$rand_users = $this->database->GetAllUsers();
+				$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+				// Load all of the views
+				$this->load->view('templates/header', $header_info); 
+				$this->load->view('contact'); 
+				$this->load->view('templates/footer', $footer_info); 
 			}
 
 			public function Send() {
