@@ -6,6 +6,7 @@
 
     #list_name {
         background-color: $green;
+        background-image: url('../img/bg.png');
 
         @media screen and (max-width: $break-small) {
             padding: 20px 0;

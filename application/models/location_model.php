@@ -80,6 +80,7 @@
 		public function GetStates($state) {
 			$this->db->select('state, state_abbrev');
 			$this->db->like('state', $state);
+			$this->db->order_by('state', 'asc');
 			$this->db->limit(5);
 			$this->db->distinct();
 			$query = $this->db->get('locations');
@@ -107,6 +108,7 @@
 			$this->db->select('city');
 			$this->db->where('state', $state);
 			$this->db->like('city', $city);
+			$this->db->order_by('city', 'asc');
 			$this->db->limit(5);
 			$query = $this->db->get('locations');
 			$count = $query->num_rows();

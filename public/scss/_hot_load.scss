@@ -10,45 +10,50 @@
         margin: 10px 0;
     }
 
-    .sub_load {
-        padding: 10px 0 7px 0;
-    }
+    #media_container {
 
-    .container-fluid {
-        padding: 0;
-
-        .row {
+        .media {
+            padding: 7px 10px;
+            border: solid 1px $border-color;
+            border-bottom: none;
             margin: 0;
-            margin-top: 5px;
-            width: 100%;
+            cursor: pointer;
 
-            .col-lg-2 {
-                padding: 5px;
-                text-align: center;
-                cursor: pointer;
-                margin-bottom: 0;
+            h4 {
+                font-size: 20px;
+                font-weight: 600;
 
-                @media screen and (max-width: $break-small) {
-                    border: none;
-                }
+                span.pull-right {
+                    font-size: 18px;
 
-                img {
-                   margin-bottom: 0;
-                   height: 100%;
-                   width: 100%;
-                   display: block;
+                    .fa {
 
-                    @media screen and (max-width: $break-small) {
-                        width: 84px !important;
-                        height: 84px !important;
                     }
                 }
             }
-        }
 
-        &:first-of-type {
-            .row {
-                margin-top: 0;
+            p {
+                margin: 0;
+                font-size: 16px;
+            }
+
+            img {
+                width: 100px;
+                margin: 0;
+                border: solid 1px #ccc;
+                padding: 5px;
+            }
+
+            &:hover {
+                background: #f0f0f0;
+            }
+
+            &:nth-of-type(odd) {
+                background: #f7f7f7;
+            }
+
+            &:last-of-type {
+                border-bottom: solid 1px #ccc !important;
             }
         }
     }
@@ -56,5 +61,6 @@
     button#see_more {
         width: 100%;
         margin-top: 10px;
+        background: $salmon;
     }
 }

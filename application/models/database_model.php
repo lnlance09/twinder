@@ -1130,7 +1130,7 @@
 		public function HotQuery($gender, $min, $max, $q) {
 			$params = [];
 
-			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic, last_seen.*
+			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic, users.bio, last_seen.*
 					FROM users 
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
@@ -1191,6 +1191,7 @@
 					$new_data = array('tinder_id' => $row->tinder_id,
 									'name' => $row->first_name,
 									'age' => $row->age,
+									'bio' => BioLinks(BioDefault($row->bio, $row->first_name)),
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'distance' => $between,

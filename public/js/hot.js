@@ -170,7 +170,8 @@ $(document).ready(function() {
                 $('#abbrev').text(abbrev);
                 $('#top_stateface').attr('class', 'stateface stateface-'+ abbrev.toLowerCase());
                 $('h2 .stateface').text(state);
-                
+                $('#page').text(0);
+
                 if(city == null) {
                     $('#city').val('');
                     var zoom = 6;
@@ -247,7 +248,7 @@ $(document).ready(function() {
 
                 case'state':
 
-                    var val = params[index].text().trim();
+                    var val = params[index].text();
 
                     // Set the default value of the state to 'new york'
                     if(val == '') {
@@ -259,18 +260,19 @@ $(document).ready(function() {
 
                     var val = params[index].text().trim().toLowerCase();
 
-                    if(val === undefined) {
+                    if(val === undefined || val == '') {
                         var val = 'both';
                     }
                     break;
 
                 case'page':
 
-                    var val = parseInt(params[index].val() + parseInt(1));
+                    var val = parseInt(params[index].text().trim()) + parseInt(1);
                     break;
 
                 default:
                     var val = params[index].text().trim();
+                    break;
             }
 
             str += index +'/'+ val +'/';
@@ -310,11 +312,11 @@ $(document).ready(function() {
 
                 case'page':
 
-                    var val = params[index].val();
+                    var val = parseInt(params[index].text().trim());
                     break;
 
                 default:
-                    var val = params[index].text().trim();
+                    var val = params[index].text();
             }
 
             str += index +'='+ val +'&';
@@ -329,12 +331,12 @@ $(document).ready(function() {
     function DefineTitle() {
         var title = 'The hottest ';
         var gender = $('[name="gender"]').attr('title');
-        var distance = $('#distance-value').text().trim();
+        var distance = $('#distance-value').text();
         var city = $('#city').val();
-        var state = $('#state_ref').text().trim();
-        var min = $('#lower-value').text().trim();
-        var max = $('#upper-value').text().trim();
-        var page = $('#page').text().trim();
+        var state = $('#state_ref').text();
+        var min = $('#lower-value').text();
+        var max = $('#upper-value').text();
+        var page = $('#page').text();
         var q = $('#users_autocomplete').val();
 
         // Format the gender
@@ -344,11 +346,21 @@ $(document).ready(function() {
             title += 'women ';
         }
 
-        // Format the age filter
-        title += 'ages '+ min +' to '+ max +' within '+ distance +' miles of '+ city +', '+ state;
-        
-        if(page > 1) {
-            title += ' page '+ page;
+        // Format the age 
+        if(parseInt(min) > 18 || parseInt(max) < 50) {
+            title += 'ages '+ min +' to '+ max +' ';
+        }
+
+        title += 'within '+ distance +' miles of ';
+
+        // Format the city
+        if(city != '' && city != 'null') {
+            title +=  city +', ';
+        }
+
+        // Format the state
+        if(state != '') {
+            title += state;
         }
 
         return title;
@@ -358,17 +370,11 @@ $(document).ready(function() {
      * Load the new results with the updated parameters in the #hot_load div
      */
     function RefreshResults() {
-        // console.log(GetParams());
         $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
 
         $('#hot_load').load(base_url +'hot/GetHottest', GetParams(), function() {
             $('#hot_load .ajax-loader').fadeOut();
             ChangeTitleURL();
-
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top',
-                html: true,
-            });
         });
     }
 

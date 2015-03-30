@@ -1,52 +1,54 @@
 <?php
 	$base_url = $this->config->base_url();
     $js_url = $base_url.'public/js/';
-    // echo 'Num: '.$count.', '.$num_rows.'<br>';
 ?>
     <!--Write the page number for the JS to work -->
-    <div class="hidden" id="page"><?php echo $page; ?></div>
+    <div class="hidden" id="load_page"><?php echo $page; ?></div>
 
     <div class="sub_load">
 <?php
-	for($i=0;$i<$num_rows;$i++) {
+    if($count > 0) {
 ?>
-        <div class="container-fluid">
-            <div class="row">
+        <div id="media_container">
 <?php
-        $start = $i*$per_row;
-        $end = ($i == ($num_rows-1) ? $end_col : $start+$per_row);
+    	for($i=0;$i<$end;$i++) {
+            // Define the style
+            $style = ($i == ($end-1) ? 'style="border-bottom: solid 1px #ccc;"' : NULL);
 
-        for($x=$start;$x<$end;$x++) {
-            $id = $hot['users'][$x]['tinder_id'];
-			$name = $hot['users'][$x]['name'];
-			$age = $hot['users'][$x]['age'];
-			$img = $hot['users'][$x]['profile_pic'];
-            $likes = $hot['users'][$x]['like_count'];
-            $link = $hot['users'][$x]['link'];
-
-            // Adjust the grammar
-            $form = 'match';
-
-            if($likes != 1) {
-                $form .= 'es';
-            }
-
-            // Define the tooltip HTML
-            $tooltip = "<span class='tip'>".$name.", ".$age."</span><span class='sub_tip'> ".$likes." ".$form."</span>";
+            $id = $hot['users'][$i]['tinder_id'];
+    		$name = $hot['users'][$i]['name'];
+    		$age = $hot['users'][$i]['age'];
+            $bio = $hot['users'][$i]['bio'];
+    		$img = $hot['users'][$i]['profile_pic'];
+            $likes = $hot['users'][$i]['like_count'];
+            $link = $hot['users'][$i]['link'];
 ?>
-                <div class="col-lg-2 thumbnail" onclick="location.href='<?php echo $base_url.$link; ?>'" data-toggle="tooltip" data-original-title="<?php echo $tooltip; ?>">
-                    <img class="img-responsive" src="<?php echo $img; ?>" alt="<?php echo $name; ?>" />
+            <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'" <?php echo $style; ?>>
+                <div class="media-left media-top">
+                    <a href="<?php echo $base_url.$link; ?>">
+                        <img src="<?php echo $img; ?>" class="media-object img-circle" alt="<?php echo $name; ?>">
+                    </a>
                 </div>
+                
+                <div class="media-body text-left">
+                    <h4 class="media-heading">
+                        <a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
+                    
+                        <span class="pull-right"><i class="fa fa-heart"></i> <?php echo $likes; ?></span>
+                    </h4>
+
+                    <p>
+                        <?php echo $bio; ?>
+                    </p>
+                </div>
+            </div>
 <?php
         }
-?>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-<?php
     }
 ?>
-        <div id="append"></div>
+            <div id="append"></div>
+        </div>
+    </div>
 <?php
     if($count == 0) {
 ?>
@@ -87,32 +89,48 @@
                         distance: $('#distance-value'), 
                         min: $('#lower-value'), 
                         max: $('#upper-value'), 
-                        page: $('#page')
+                        page: $('#load_page')
                     };
 
             for(var index in params) {
-                if(index == 'city') {
-                    var val = params[index].val();
+                switch(index) {
+                    case'city':
 
-                    // Set the default value of the city to 'null'
-                    if(val == '') {
-                        var val = 'null';
-                    }
-                } else if(index == 'state') {
-                    var val = params[index].text().trim();
-            
-                    // Set the default value of the state to 'new york'
-                    if(val == '') {
-                        var val = 'new york';
-                    }
-                } else if(index == 'gender') {
-                    var val = params[index].text().trim().toLowerCase();
+                        var val = params[index].val();
 
-                    if(val === undefined) {
-                        var val = 'both';
-                    }
-                } else {
-                    var val = params[index].text().trim();
+                        // Set the default value of the city to 'null'
+                        if(val == '') {
+                            var val = 'null';
+                        }
+                        break;
+
+                    case'state':
+
+                        var val = params[index].text();
+
+                        // Set the default value of the state to 'new york'
+                        if(val == '') {
+                            var val = 'new york';
+                        }
+                        break;
+
+                    case'gender':
+
+                        var val = params[index].text().trim().toLowerCase();
+
+                        if(val === undefined || val == '') {
+                            var val = 'both';
+                        }
+                        break;
+
+                    case'page':
+
+                        var val = parseInt(params[index].text().trim()) + parseInt(1);
+                        break;
+
+                    default:
+                        var val = params[index].text().trim();
+                        break;
                 }
 
                 str += index +'/'+ val +'/';
@@ -122,53 +140,13 @@
             return str.substr(9, str.length-10) +'?q='+ q;
         }
 
-        /**
-         * Format the title of the document based upon the search parameters
-         */
-        function DefineTitle() {
-            var title = 'The hottest ';
-            var gender = $('[name="gender"]').attr('title');
-            var distance = $('#distance-value').text().trim();
-            var city = $('#city').val();
-            var state = $('#state_ref').text().trim();
-            var min = $('#lower-value').text().trim();
-            var max = $('#upper-value').text().trim();
-            var page = $('#page').text().trim();
-            var q = $('#users_autocomplete').val();
-
-            // Format the gender
-            if(gender == 0) {
-                title += 'men '
-            } else if(gender == 1) {
-                title += 'women ';
-            }
-
-            // Format the age filter
-            title += 'ages '+ min +' to '+ max +' within '+ distance +' miles of '+ city +', '+ state;
-            
-            if(page > 1) {
-                title += ' page '+ page;
-            }
-
-            return title;
-        }
-
         function ChangeTitleURL() {
-            // var title = 'The hottest '+ key +' - WeTinder';
-            var title = DefineTitle();
             var new_url = base_url +'hot/'+ GetFullURL();
-            
-            // Change the URL
-            window.history.replaceState('', title, new_url);
-
-            // Change the document's title
-            document.title = title;
+            window.history.replaceState('', '', new_url);
         }
 
         $('button#see_more').click(function(e) {
             $('#append').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-
-            $('#page').text(<?php echo $new_page; ?>);
             var new_page = '<?php echo $new_page; ?>';
             var data = '<?php echo $q_string; ?>&page='+ new_page;
             // console.log(data);
@@ -176,11 +154,6 @@
             $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
                 $('#hot_load .ajax-loader').fadeOut();
                 ChangeTitleURL();
-
-                $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top',
-                    html: true,
-                });
             });
         });
     </script>

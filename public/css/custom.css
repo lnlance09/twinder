@@ -406,7 +406,8 @@ button:focus {
 #footer {
   z-index: 99999999; }
   #footer #list_name {
-    background-color: #82b919; }
+    background-color: #82b919;
+    background-image: url("../img/bg.png"); }
     @media screen and (max-width: 768px) {
       #footer #list_name {
         padding: 20px 0; } }
@@ -609,36 +610,35 @@ span.sub_tip {
     border: solid 1px #ddd;
     padding: 15px;
     margin: 10px 0; }
-  #hot_load .sub_load {
-    padding: 10px 0 7px 0; }
-  #hot_load .container-fluid {
-    padding: 0; }
-    #hot_load .container-fluid .row {
+  #hot_load #media_container .media {
+    padding: 7px 10px;
+    border: solid 1px #ddd;
+    border-bottom: none;
+    margin: 0;
+    cursor: pointer; }
+    #hot_load #media_container .media h4 {
+      font-size: 20px;
+      font-weight: 600; }
+      #hot_load #media_container .media h4 span.pull-right {
+        font-size: 18px; }
+    #hot_load #media_container .media p {
       margin: 0;
-      margin-top: 5px;
-      width: 100%; }
-      #hot_load .container-fluid .row .col-lg-2 {
-        padding: 5px;
-        text-align: center;
-        cursor: pointer;
-        margin-bottom: 0; }
-        @media screen and (max-width: 768px) {
-          #hot_load .container-fluid .row .col-lg-2 {
-            border: none; } }
-        #hot_load .container-fluid .row .col-lg-2 img {
-          margin-bottom: 0;
-          height: 100%;
-          width: 100%;
-          display: block; }
-          @media screen and (max-width: 768px) {
-            #hot_load .container-fluid .row .col-lg-2 img {
-              width: 84px !important;
-              height: 84px !important; } }
-    #hot_load .container-fluid:first-of-type .row {
-      margin-top: 0; }
+      font-size: 16px; }
+    #hot_load #media_container .media img {
+      width: 100px;
+      margin: 0;
+      border: solid 1px #ccc;
+      padding: 5px; }
+    #hot_load #media_container .media:hover {
+      background: #f0f0f0; }
+    #hot_load #media_container .media:nth-of-type(odd) {
+      background: #f7f7f7; }
+    #hot_load #media_container .media:last-of-type {
+      border-bottom: solid 1px #ccc !important; }
   #hot_load button#see_more {
     width: 100%;
-    margin-top: 10px; }
+    margin-top: 10px;
+    background: #ffa500; }
 
 .slide_wrapper {
   background: #fff;
@@ -1365,7 +1365,6 @@ span.sub_tip {
   margin: 15px 0 25px 0; }
   #chart_load #chart_data #glance h3 {
     font-size: 24px;
-    font-weight: 700;
     color: #000; }
     @media screen and (max-width: 768px) {
       #chart_load #chart_data #glance h3 {

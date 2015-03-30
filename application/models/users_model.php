@@ -501,6 +501,15 @@
 							$$key = $val;
 						} 
 						break;
+
+					case'page':
+
+						if(is_numeric($val) && $val > 0) {
+							$page = $val-1;
+						} else {
+							$page = 0;
+						}
+						break;
 				}
 			}
 

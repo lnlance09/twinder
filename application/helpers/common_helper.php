@@ -76,7 +76,7 @@
 		 * @param {string} [name] The user's name
 		 */
 		function BioDefault($bio, $name) {
-			return (empty($bio) ? $name." doesn't have a bio" : $bio);
+			return (empty($bio) ? $name." doesn't have a bio." : $bio);
 		}
 
 		/**
@@ -504,36 +504,6 @@
 		}
 
 		/**
-		 * Return pagination values
-		 * @param {int} [count] The number of results
-		 * @param {int} [per_row] The number of results to display per row
-		 * @param {int} [per_page] The number of rows to display per page
-		 * @param {int} [page] The current page number
-		 * @param {int} [pages] The number of total pages
-		 * @param {int} [start] The starting point
-		 * @return {array} An array containing the ending point, the ending column and the number of rows
-		 */
-		function RowPagination($count, $per_row, $per_page, $page, $pages, $start) {
-			if($page == ($pages-1)) {
-				$mod = $count%$per_page;
-
-				if($mod > 0) {
-					$end = $mod;
-					$col_mod = $end%$per_row;
-					$end_col = ($col_mod == 0 ? $end : $count-$col_mod);
-				} else {
-					$end = $start+$per_page;
-					$end_col = $end;
-				}
-			} else {
-				$end = $start+$per_page;
-				$end_col = $end;
-			}
-
-			return array('end' => $end, 'end_col' => $end_col, 'num_rows' => ceil($end/$per_row));
-		}
-
-		/**
 		 * Define the title for the 'Hot' page
 		 * @param {int} [gender] The gender from the URL
 		 * @param {string} [city] The city
@@ -551,7 +521,7 @@
 			} 
 
 			// Format the age and distance
-			if($min > 18 && $max < 50) {
+			if($min > 18 || $max < 50) {
 				$title .= 'ages '.$min.' to '.$max.' ';
 			}
 
