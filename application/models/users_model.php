@@ -278,9 +278,9 @@
 
 				// Get the user's latitude and longitude coordinates
 				$profile = $this->ProfileInfo($auth['api_token']);
+				$distance = $profile['distance_filter'];
 				$lon = $profile['pos']['lon'];
 				$lat = $profile['pos']['lat'];
-				$distance = $profile['distance_filter'];
 
 				// Define all of the user's info in an array
 				$user = array('tinder_id' => $auth['_id'],
@@ -512,8 +512,7 @@
 						break;
 				}
 			}
-
-			var_dump($gender);
+			// var_dump($gender);
 
 			return array('gender' => $gender, 
 						'city' => $city, 
