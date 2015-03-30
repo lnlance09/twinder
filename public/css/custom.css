@@ -974,7 +974,10 @@ span.sub_tip {
           z-index: 9999;
           width: 105%; }
         #profile-section .container #focus_box #profile_page_info .thumbnail {
-          margin-bottom: 9px; }
+          margin-bottom: 9px;
+          cursor: auto; }
+          #profile-section .container #focus_box #profile_page_info .thumbnail:hover {
+            border: solid 1px #ccc; }
           #profile-section .container #focus_box #profile_page_info .thumbnail #main_img {
             cursor: pointer;
             margin-bottom: 0;
@@ -997,6 +1000,7 @@ span.sub_tip {
         #profile-section .container #focus_box #profile_page_info .col-lg-9 {
           margin-top: 200px;
           padding: 10px 0 10px 0;
+          margin-left: 0;
           z-index: 999;
           border: none;
           background: transparent; }
@@ -1006,10 +1010,12 @@ span.sub_tip {
               width: 100%; } }
           #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper {
             padding: 0;
-            margin-top: 20px; }
+            margin-top: 20px;
+            margin-left: 50px; }
             @media screen and (max-width: 768px) {
               #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper {
-                margin-top: 0; } }
+                margin-top: 0;
+                margin-left: 0; } }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading {
               text-align: left; }
               #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul {

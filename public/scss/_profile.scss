@@ -146,6 +146,11 @@
 
                 .thumbnail {
                     margin-bottom: 9px;
+                    cursor: auto;
+
+                    &:hover {
+                        border: solid 1px #ccc;
+                    }
 
                     #main_img {
                         cursor: pointer;
@@ -180,6 +185,7 @@
                 .col-lg-9 {
                     margin-top: 200px;
                     padding: 10px 0 10px 0;
+                    margin-left: 0;
                     z-index: 999;
                     border: none;
                     background: transparent;
@@ -192,9 +198,11 @@
                     #con_wrapper {
                         padding: 0;
                         margin-top: 20px;
+                        margin-left: 50px;
 
                         @media screen and (max-width: $break-small) {
                             margin-top: 0;
+                            margin-left: 0;
                         }
 
                         .panel-heading {
