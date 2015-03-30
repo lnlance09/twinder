@@ -930,8 +930,7 @@ span.sub_tip {
             cursor: auto; }
       #profile-section .container #focus_box #resize_stripe {
         width: 100%;
-        background: #fff;
-        border-bottom: solid 1px #ddd; }
+        background: #fff; }
         @media screen and (min-width: 992px) {
           #profile-section .container #focus_box #resize_stripe {
             display: none; } }
