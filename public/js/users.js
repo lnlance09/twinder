@@ -84,7 +84,7 @@ $(document).ready(function() {
     // Edit the profile
     if(can_edit == 1) {
         // Edit the user's bio
-        $('button#click_to_edit, button#resize_click_to_edit,').click(function(e) {
+        $('button#click_to_edit, button#resize_click_to_edit').click(function(e) {
             e.preventDefault();
             
             // If the form is being opened to be edited
@@ -323,7 +323,6 @@ $(document).ready(function() {
 
         // Define the query string
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
-
         if(type == 'tweets' || type == 'tweets_and_replies') {
             data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
         }
