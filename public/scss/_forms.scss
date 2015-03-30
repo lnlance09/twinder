@@ -7,6 +7,11 @@ input[type=password],
 textarea.form-control {
     border-radius: 0;
     box-shadow: none;
+
+    @media screen and (max-width: $break-small) {
+        -webkit-appearance: caret;
+        -moz-appearance: caret;
+    }
 }
 
 .input-group {

@@ -31,12 +31,7 @@
 				// Send a request to Tinder's auth endpoint to get a new token
 				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token));
 				$decode = @json_decode($info, TRUE);
-
-				if(array_key_exists('user', $decode)) {
-					return $decode['user'];
-				} else {
-					return FALSE;
-				}
+				return (array_key_exists('user', $decode) ? $decode['user'] : FALSE);
 			} else {
 				return FALSE;
 			}
@@ -205,9 +200,7 @@
 			if(array_key_exists('message', $users)) {
 				if(trim($users['message']) == 'recs timeout') {
 					return FALSE;
-				} else {
-					return FALSE;
-				}
+				} 
 			} else {
 				$results = $users['results'];
 				$users = [];

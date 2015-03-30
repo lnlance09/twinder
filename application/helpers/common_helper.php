@@ -89,7 +89,6 @@
 			$string = implode('|', $terms);
 
 			// Turn the links to anchor tags
-			// $link_bio = ReturnLinks($bio);
 			$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
 			$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
 			return trim($hash_bio);
@@ -552,19 +551,21 @@
 			} 
 
 			// Format the age and distance
-			$title .= 'ages '.$min.' to '.$max.' within '.$distance.' miles of ';
+			if($min > 18 && $max < 50) {
+				$title .= 'ages '.$min.' to '.$max.' ';
+			}
 
 			// Format the city
 			if(!empty($city)) {
-				$title .= $city.', ';
+				$title .= 'within '.$distance.' miles of '.$city.', ';
 			}
 
 			// Format the state
 			if(!empty($state)) {
-				$title .= $state.' ';
+				$title .= $state;
 			}
 
-			return $title;
+			return trim($title);
 		}
 	}
 ?>

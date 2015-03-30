@@ -585,7 +585,6 @@
 					$this->database->RemoveBatchUser($id, $user_id);
 					$this->database->InsertIntoPasses($this->session->userdata('tinder_id'), $id);
 				}
-
 				echo 'done';
 			}
 
@@ -647,9 +646,11 @@
 										'datetime' => strtotime($message['sent_date']));
 							$this->database->InsertMessage($data);
 							echo 'true';
+						} else {
+							echo 'error';
 						}
 					} else {
-						echo "Didn't submit";
+						echo 'error';
 					}
 				}
 			}

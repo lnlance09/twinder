@@ -17,10 +17,8 @@
 		 * @return {int|boolean} The location ID from the DB or FALSE
 		 */
 		public function CheckCityAndState($city, $state) {
-			$sql = "SELECT id 
-					FROM locations 
-					WHERE city = ? 
-					AND (state = ? OR state_abbrev = ?)"; 
+			$sql = "SELECT id FROM locations 
+					WHERE city = ? AND (state = ? OR state_abbrev = ?)"; 
 			$query = $this->db->query($sql, array($city, $state, $state));
 			
 			if($query->num_rows() == 1) { 
@@ -68,11 +66,7 @@
 
 			foreach($states as $key => $val) {
 				if($key == $state) {
-					if($state == 'Washington D.C.') {
-						return 'Washington D.C.';
-					} else {
-						return ucwords(strtolower($val));
-					}
+					return ucwords(strtolower($val));
 					break;
 				}
 			}
