@@ -427,8 +427,8 @@
 				switch($key) {
 					// Set the default gender
 					case'gender':
-						// The default is both
-						if($val == 0 || $val == 1) {
+				
+						if($val == 'men' || $val == 'women') {
 							$gender = $val;
 						} 
 						break;
@@ -487,7 +487,7 @@
 					case'distance':
 
 						// If the distance is greater than 0 and less than 10,000 set it
-						if($val > 0 && $val < 5000) {
+						if($val > 0 && $val < 100) {
 							$distance = $val;
 						} 
 						break;
@@ -512,6 +512,8 @@
 						break;
 				}
 			}
+
+			var_dump($gender);
 
 			return array('gender' => $gender, 
 						'city' => $city, 

@@ -30,6 +30,8 @@
 
 				// Get the validated query parameters
 				$valids = $this->user->ValidateParams($params);
+				// FormatArray($valids);
+				// die;
 				$gender = $valids['gender'];
 				$city = $valids['city'];
 				$state = $valids['state'];
@@ -49,9 +51,7 @@
 								'min' => $min,
 								'max' => $max,
 								'page' => $page);
-				// FormatArray($array);
-				// die;
-
+				
 				// Define the full URL with all of the parameters
 				$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
 

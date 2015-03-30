@@ -60,7 +60,7 @@
         if($new_page != $pages) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-success" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
+        <button type="button" class="btn btn-warning" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
     </div>
 <?php
         }
