@@ -622,6 +622,9 @@ span.sub_tip {
         text-align: center;
         cursor: pointer;
         margin-bottom: 0; }
+        @media screen and (max-width: 768px) {
+          #hot_load .container-fluid .row .col-lg-2 {
+            border: none; } }
         #hot_load .container-fluid .row .col-lg-2 img {
           margin-bottom: 0;
           height: 100%;
@@ -926,6 +929,24 @@ span.sub_tip {
             color: #0993c7; }
           #profile-section .container #focus_box #stripe button.btn-success {
             cursor: auto; }
+      #profile-section .container #focus_box #resize_stripe {
+        width: 100%;
+        background: #fff;
+        border-bottom: solid 1px #ddd; }
+        @media screen and (min-width: 992px) {
+          #profile-section .container #focus_box #resize_stripe {
+            display: none; } }
+      #profile-section .container #focus_box #resize_edit {
+        margin-top: 12px; }
+        @media screen and (min-width: 992px) {
+          #profile-section .container #focus_box #resize_edit {
+            display: none; } }
+        #profile-section .container #focus_box #resize_edit button .fa {
+          color: #fff; }
+        #profile-section .container #focus_box #resize_edit button.btn-default .fa {
+          color: #0993c7; }
+        #profile-section .container #focus_box #resize_edit button.btn-success {
+          cursor: auto; }
       #profile-section .container #focus_box #profile_page_info {
         margin-top: -150px;
         min-height: 300px !important;
@@ -975,17 +996,14 @@ span.sub_tip {
               vertical-align: middle; }
         #profile-section .container #focus_box #profile_page_info .col-lg-9 {
           margin-top: 200px;
-          padding: 10px 0 10px 50px;
+          padding: 10px 0 10px 0;
           z-index: 999;
           border: none;
           background: transparent; }
           @media screen and (max-width: 768px) {
             #profile-section .container #focus_box #profile_page_info .col-lg-9 {
               margin-top: 0px;
-              width: 100%;
-              padding: 10px;
-              border: solid 1px #ddd;
-              background: #fff; } }
+              width: 100%; } }
           #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper {
             padding: 0;
             margin-top: 20px; }
@@ -1006,7 +1024,8 @@ span.sub_tip {
                   text-transform: capitalize; }
                   @media screen and (max-width: 768px) {
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li {
-                      margin-left: 10px; } }
+                      margin-left: 10px;
+                      font-size: 13px; } }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li:first-of-type {
                     margin-left: 0; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li#active {
@@ -1032,6 +1051,9 @@ span.sub_tip {
                 font-size: 22px;
                 padding: 7px;
                 height: auto; }
+                @media screen and (max-width: 768px) {
+                  #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .input-group .form-control {
+                    font-size: 16px; } }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box {
               position: relative;
               top: 0;
@@ -1130,6 +1152,11 @@ span.sub_tip {
     cursor: pointer;
     background: #fff;
     z-index: 99; }
+    @media screen and (max-width: 768px) {
+      #profile-section .timer_box {
+        border-top: solid 1px #ddd; }
+        #profile-section .timer_box:last-of-type {
+          border-bottom: solid 1px #ddd; } }
     #profile-section .timer_box .border_active {
       bottom: 0;
       margin-top: 6px;

@@ -84,14 +84,11 @@ $(document).ready(function() {
     // Edit the profile
     if(can_edit == 1) {
         // Edit the user's bio
-        $('button#click_to_edit').click(function(e) {
+        $('button#click_to_edit, button#resize_click_to_edit,').click(function(e) {
             e.preventDefault();
             
             // If the form is being opened to be edited
             if($(this).attr('id') == 'click_to_edit') {
-                $('#about_quote').hide();
-                $('#bio_text').fadeIn();
-
                 $(this).attr('class', 'btn btn-success pull-right');
                 $(this).attr('type', 'submit');
                 $(this).attr('id', 'editing');
@@ -118,9 +115,6 @@ $(document).ready(function() {
                 $(this).attr('id', 'click_to_edit');
                 $(this).text('Edit');
             }
-
-            $('#about_quote span').attr('contenteditable', 'true');
-            $('#about_quote span').css('font-style', 'italic');
         });
     }
 
@@ -190,19 +184,19 @@ $(document).ready(function() {
 
             var match_id = $('#match_id').text();
 
-            $('#unmatch_user').hover(function() {
+            $('#unmatch_user, #resize_unmatch_user').hover(function() {
                 $(this).removeClass('btn-warning');
                 $(this).addClass('btn-danger');
                 $(this).text('Unmatch');
             });
 
-            $('#unmatch_user').mouseout(function() {
+            $('#unmatch_user, #resize_unmatch_user').mouseout(function() {
                 $(this).removeClass('btn-danger');
                 $(this).addClass('btn-warning');
                 $(this).text('Matched');
             });
 
-            $('#unmatch_user').click(function() {
+            $('#unmatch_user, #resize_unmatch_user').click(function() {
                 $.ajax({
                     url: base_url +'users/UnmatchUser',
                     data: {
@@ -210,7 +204,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         console.log(data);
-                        $('#unmatch_user').fadeOut(2000);
+                        $('#unmatch_user, #resize_unmatch_user').fadeOut(2000);
                     }
                 });
             });
@@ -218,7 +212,7 @@ $(document).ready(function() {
 
         case'can_like':
 
-            $('#like_user').click(function() {
+            $('#like_user, #resize_like_user').click(function() {
                 $.ajax({
                     url: base_url +'users/LikeUser',
                     data: {
@@ -246,9 +240,9 @@ $(document).ready(function() {
                         }
 
                         // Change the button
-                        $('#like_user').removeClass('btn-default');
-                        $('#like_user').addClass('btn-'+ new_class);
-                        $('#like_user').html(new_text);
+                        $('#like_user, #resize_like_user').removeClass('btn-default');
+                        $('#like_user, #resize_like_user').addClass('btn-'+ new_class);
+                        $('#like_user, #resize_like_user').html(new_text);
                         console.log(data);
                     }
                 });

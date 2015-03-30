@@ -185,7 +185,7 @@
 											'tab_active' => $tabs['active'],
 											'tabs' => $tabs['tabs']);
 
-							if($like == 'can_like') {
+							if($like['perm'] == 'can_like') {
 								$body_info['my_info'] = array('name' => $name,
 															'pic' => ChangePicSize($pic, 172),
 															'link' => $profile_link);

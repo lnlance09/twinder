@@ -28,6 +28,10 @@
                 cursor: pointer;
                 margin-bottom: 0;
 
+                @media screen and (max-width: $break-small) {
+                    border: none;
+                }
+
                 img {
                    margin-bottom: 0;
                    height: 100%;

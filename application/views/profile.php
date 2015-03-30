@@ -112,6 +112,33 @@
 ?>
 									<li><i class="fa fa-camera-retro fa-fw"></i> <?php echo $pic_count; ?> photos</li>
 								</ul>
+
+								<!-- The edit, like and unmatch buttons for mobile display -->
+								<div id="resize_edit">
+<?php
+    if($edit) {
+?>
+                    				<button class="btn btn-primary" type="button" id="resize_click_to_edit">Edit</button>
+<?php
+	} 
+
+	if($like['perm']) {
+		if($like['perm'] == 'liked') {
+?>
+									<button class="btn btn-success" type="button">Liked!</button>
+<?php
+		} elseif($like['perm'] == 'matched') {
+?>
+									<button class="btn btn-warning" type="button" id="resize_unmatch_user">Matched</button>
+<?php
+		} elseif($like['perm'] == 'can_like') {
+?>
+									<button class="btn btn-default" type="button" id="resize_like_user"><i class="fa fa-heart"></i> Like</button>
+<?php
+		}
+	}
+?>
+								</div>
 		                    </form>
 
 	                		<ul id="sub_pics">
@@ -141,6 +168,30 @@
 	}
 ?>
 		           		</div>
+
+						<!-- Resize stat buttons -->
+						<div id="resize_stripe">
+							<div class="row">
+<?php
+	for($i=0;$i<count($stats);$i++) {
+		$id = ($stats[$i]['name'] == $tab_active ? 'active' : '');
+?>
+				                <div class="col-lg-2 timer_box" id="<?php echo $id; ?>" name="<?php echo $stats[$i]['name']; ?>">
+				                	<div class="inside">
+				                    	<h3>
+				                    		<?php echo strtoupper($stats[$i]['name']); ?>
+				                    	</h3>
+
+				                    	<p><?php echo $stats[$i]['count']; ?></p>
+									</div>
+
+				                    <div class="border_active"></div>
+				                </div>
+<?php
+	}
+?>
+							</div>
+						</div>
 
 			            <div class="col-lg-9 text-center">
 			            	<div id="con_wrapper" class="panel panel-default">
