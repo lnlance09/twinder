@@ -85,7 +85,7 @@
 		 * @param {string} [bio] The user's bio
 		 */
 		function BioLinks($bio) {
-			$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA');
+			$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA', 'insta @', 'INSTA @', 'ig@', 'IG@');
 			$string = implode('|', $terms);
 
 			// Turn the links to anchor tags
