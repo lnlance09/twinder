@@ -196,46 +196,48 @@
 			// Check to see if each user has a row existing in the last_seen table
 			$last = $this->GetLastSeen($his_tinder_id);
 			
-			// If there is a record of the user existing
-			if($last) {
-				// Make sure the user isn't updating their own profile and the user is logged in
-				if(!empty($my_tinder_id) && $his_tinder_id != $my_tinder_id) {
-					// Make sure the user's last location isn't one from a ping
-					if($last['seen_id'] != $last['seen_by_id']) {
-						// Check to see if your proximity is closer than the one currently on record
-						if($distance < $last['miles_away']) {
-							// Get the name of the city and state based upon the lat & lon coordinates
-							$loc = $this->loc->MapquestLatLon($lat, $lon);
+			if($lon && $lat) {
+				// If there is a record of the user existing
+				if($last) {
+					// Make sure the user isn't updating their own profile and the user is logged in
+					if(!empty($my_tinder_id) && $his_tinder_id != $my_tinder_id) {
+						// Make sure the user's last location isn't one from a ping
+						if($last['seen_id'] != $last['seen_by_id']) {
+							// Check to see if your proximity is closer than the one currently on record
+							if($distance < $last['miles_away']) {
+								// Get the name of the city and state based upon the lat & lon coordinates
+								$loc = $this->loc->MapquestLatLon($lat, $lon);
 
-							// Update the last seen row in the table
-							$data = array('seen_id' => $his_tinder_id,
-										'seen_by_id' => $my_tinder_id,
-										'lon' => $lon,
-										'lat' => $lat,
-										'city' => $loc['city'],
-										'state' => $loc['state'],
-										'miles_away' => $distance,
-										'datetime' => date('Y-m-d H:i:s'));
-							$this->UpdateLastSeen($his_tinder_id, $data);
-							$last = $data;
+								// Update the last seen row in the table
+								$data = array('seen_id' => $his_tinder_id,
+											'seen_by_id' => $my_tinder_id,
+											'lon' => $lon,
+											'lat' => $lat,
+											'city' => $loc['city'],
+											'state' => $loc['state'],
+											'miles_away' => $distance,
+											'datetime' => date('Y-m-d H:i:s'));
+								$this->UpdateLastSeen($his_tinder_id, $data);
+								$last = $data;
+							} 
 						} 
 					} 
-				} 
-			} else {
-				// Get the latitude and longitude coordinates
-				$loc = $this->loc->MapquestLatLon($lat, $lon);
+				} else {
+					// Get the latitude and longitude coordinates
+					$loc = $this->loc->MapquestLatLon($lat, $lon);
 
-				// Create a new row in the last_seen table for this user
-				$data = array('seen_id' => $his_tinder_id,
-							'seen_by_id' => $my_tinder_id,
-							'lon' => $lon,
-							'lat' => $lat,
-							'city' => $loc['city'],
-							'state' => $loc['state'],
-							'miles_away' => $distance,
-							'datetime' => date('Y-m-d H:i:s'));
-				$this->CreateLastSeen($data);
-				$last = $data;
+					// Create a new row in the last_seen table for this user
+					$data = array('seen_id' => $his_tinder_id,
+								'seen_by_id' => $my_tinder_id,
+								'lon' => $lon,
+								'lat' => $lat,
+								'city' => $loc['city'],
+								'state' => $loc['state'],
+								'miles_away' => $distance,
+								'datetime' => date('Y-m-d H:i:s'));
+					$this->CreateLastSeen($data);
+					$last = $data;
+				}
 			}
 
 			// Get info about the person who saw this user

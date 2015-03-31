@@ -137,12 +137,8 @@
 						$twitter = (!empty($user_info['twitter_handle']) ? 'true' : 'false');
 
 						// Update the user's last seen position
-						if($lon && $lat) {
-							$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
-						} else {
-							$last_seen = $this->database->GetLastSeen($user_info['tinder_id']);
-						}
-
+						$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
+						
 						// Define the meta tags
 						$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']),
 										'img' => $user_info['profile_pic'],
