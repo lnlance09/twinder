@@ -33,7 +33,7 @@
 
 					// If the client is logged in
 					if($session) {
-						$my_tinder_id = $this->session->userdata('tinder_id');
+						$tinder_id = $this->session->userdata('tinder_id');
 						$username = $this->session->userdata('username');
 						$token = $this->session->userdata('token');
 						$name = $this->session->userdata('first_name');
@@ -42,16 +42,14 @@
 						$pic = $this->session->userdata('profile_pic');
 
 						// Findout if the user is viewing their own profile
-						$same = ($id == $my_tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
-
-						// Get the mactch count of the user who is currently logged in
-						$match_count = $this->database->GetMatchCount($my_tinder_id);
+						$same = ($id == $tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
 
 						// Make a request to Tinder to get the most recent info about this user
 						$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
 
 						// If the user actually exists according to Tinder, then get their info and update the profile
 						if($live_info) {
+							// The user's distance from the person who was logged in
 							$distance = $live_info['distance'];
 
 							// Update the users table with the most recent info about this user
@@ -65,22 +63,16 @@
 							$this->database->UpdateUser($live_info['tinder_id'], $data);
 
 							// Add these elements to the array
-							$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic');
+							$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 'last_activity_date');
 							foreach($keys as $key) {
 								$user_info[$key] = $live_info[$key];
 							}
 
-							$user_info['last_active_format'] = $user_info['last_activity_date'];
-
 							// Check to see if this user is allowed to report this user
-							$report = $this->database->CheckReport($my_tinder_id, $user_info['tinder_id']);
-
-							// Determine whether or not the client is able to like the given user
-							$like = $this->user->CanLike($user_info['tinder_id'], $my_tinder_id, $session);
-							
-							// Determine whether or not the client is able to edit the bio for the profile
-							$edit = $this->user->CanEdit($user_info['tinder_id'], $my_tinder_id);
 							$active = TRUE;
+							$report = $this->database->CheckReport($tinder_id, $user_info['tinder_id']);
+							$like = $this->user->CanLike($user_info['tinder_id'], $tinder_id, $session);
+							$edit = $this->user->CanEdit($user_info['tinder_id'], $tinder_id);
 						} else {
 							// Get all of the data for the view
 							$locations = $this->loc->RandomLocations();
@@ -94,7 +86,7 @@
 										'auth' => $token,
 										'tinder_id' => $my_tinder_id,
 										'match_count' => $match_count,
-										'profile_link' => FormatUserLink($my_tinder_id, $username),
+										'profile_link' => FormatUserLink($tinder_id, $username),
 										'profile_pic' => ChangePicSize($pic, 84),
 										'locations' => $locations,
 										'users' => $rand_users,
@@ -131,8 +123,11 @@
 					}
 
 					if($active) {
+						// Get the mactch count of the user who is currently logged in
+						$match_count = $this->database->GetMatchCount($tinder_id);
+
 						// Format the user's profile link
-						$profile_link = FormatUserLink($my_tinder_id, $username);
+						$profile_link = FormatUserLink($tinder_id, $username);
 						$profile_pic = ChangePicSize($pic, 172);
 
 						// Get the tab list based upon the tab in the URL
@@ -142,7 +137,11 @@
 						$twitter = (!empty($user_info['twitter_handle']) ? 'true' : 'false');
 
 						// Update the user's last seen position
-						$last_seen = $this->database->EditLastSeen($distance, $my_tinder_id, $user_info['tinder_id'], $lon, $lat);
+						if($lon && $lat) {
+							$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
+						} else {
+							$last_seen = $this->database->GetLastSeen($user_info['tinder_id']);
+						}
 
 						// Define the meta tags
 						$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']),
@@ -154,7 +153,7 @@
 											'session' => $session,
 											'header' => $user_info['name'],
 											'auth' => $token,
-											'tinder_id' => $my_tinder_id,
+											'tinder_id' => $tinder_id,
 											'name' => $name,
 											'match_count' => $match_count,
 											'meta' => $meta_info,
@@ -162,7 +161,7 @@
 											'profile_pic' => $profile_pic);
 
 						// Get all of the stats of the user who is being viewed
-						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $my_tinder_id, $user_info['twitter_id']);
+						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id, $user_info['twitter_id']);
 						
 						// Set all of the info that needs to be passed to the body view
 						$body_info = array('user_info' => $user_info,
@@ -500,8 +499,6 @@
 
 					// Sync all of the user's messages
 					$this->database->SyncMessages($updates['matches'], $tinder_id, $distance, $lon, $lat, $city, $state);
-					// FormatArray($updates);
-					// die;
 					
 					// Get all of the blocks and update the likes table accordingly
 					$this->database->UpdateBlocks($tinder_id, $updates['blocks']);

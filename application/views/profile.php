@@ -102,7 +102,7 @@
 								<ul id="user_info">
 									<!-- City and state -->
 									<li><i class="fa fa-map-marker fa-fw"></i> Last seen near <a href="<?php echo $base_url.'hot/gender/both/city/'.$city.'/state/'.$state.'/'; ?>"><?php echo $city.', '.$state; ?></a></li>
-									<li><i class="fa fa-clock-o fa-fw"></i> Last active <?php echo $user_info['last_active_format']; ?></li>
+									<li><i class="fa fa-clock-o fa-fw"></i> Last active <?php echo $user_info['last_activity_date']; ?></li>
 <?php
 	if($twitter['access'] == 'true') {
 ?>

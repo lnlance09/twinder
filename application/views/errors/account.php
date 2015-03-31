@@ -83,12 +83,6 @@
         </form>
     </div>
 
-    <!--
-    <div id="autocomplete_wrapper">
-        <div id="autocomplete"></div>
-    </div>
-    -->
-
     <div id="header-section">
         <div id="signin">
             <h1 class="page-header">
@@ -173,31 +167,12 @@
                 <ul>
                     <!-- Twitter Button -->
                     <li>
-                        <a href="https://twitter.com/TwinderTweets" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderTweets</a>
+                        <a href="https://twitter.com/TwinderIO" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderIO</a>
 
                         <script>
                             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
                         </script>
                     </li>
-
-                    <!-- Facebook Button -->
-                    <!--
-                    <li id="fb_like_button">
-                        <div id="fb-root"></div>
-
-                        <script>
-                            (function(d, s, id) {
-                                var js, fjs = d.getElementsByTagName(s)[0];
-                                if (d.getElementById(id)) return;
-                                js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            } (document, 'script', 'facebook-jssdk'));
-                        </script>
-
-                        <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
-                    </li>
-                    -->
                 </ul>
             </div>
 

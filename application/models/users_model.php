@@ -31,7 +31,12 @@
 				// Send a request to Tinder's auth endpoint to get a new token
 				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token));
 				$decode = @json_decode($info, TRUE);
-				return (array_key_exists('user', $decode) ? $decode['user'] : FALSE);
+
+				if(is_array($decode)) {
+					return (array_key_exists('user', $decode) ? $decode['user'] : FALSE);
+				} else {
+					return "Tinder couldn't authenticate";
+				}
 			} else {
 				return FALSE;
 			}
@@ -272,13 +277,13 @@
 			// Get the Tinder API token
 			$auth = $this->AuthToken($email, $password);
 
-			if($auth) {
+			if($auth && $auth != "Tinder couldn't authenticate") {
 				// Seperate the first name from the last
 				$names = FormatNames($auth['full_name']);
 
 				// Get the user's latitude and longitude coordinates
 				$profile = $this->ProfileInfo($auth['api_token']);
-				$distance = $profile['distance_filter'];
+				$miles = $profile['distance_filter'];
 				$lon = $profile['pos']['lon'];
 				$lat = $profile['pos']['lat'];
 
@@ -297,18 +302,16 @@
 				// Define the settings array for the query on the settings table
 				$settings = array('age_min' => $profile['age_filter_min'],
 								'age_max' => $profile['age_filter_max'],
-								'distance_filter' => $distance,
+								'distance_filter' => $miles,
 								'interested_in' => $profile['gender_filter']);
 
-				// Insert/update this user into the DB
+				// Insert/update this user into the DB and get their info returned from the query
 				$info = $this->database->InsertUser($user, $settings);
-
-				// Define the user_id and username keys of the data array
 				$user['user_id'] = $info['user_id'];
 				$user['username'] = $info['username'];
 
 				// Insert a record in the DB for their last seen location
-				$this->database->EditLastSeen(0, $auth['_id'], $auth['_id'], $lon, $lat); 
+				// $this->database->EditLastSeen($auth['_id'], $auth['_id'], 0, $lon, $lat); 
 
 				// Insert the user's pics
 				$this->database->InsertPics($auth['_id'], ReturnPicsArray($auth['photos']));
@@ -320,10 +323,9 @@
 
 				// Get all of the user's matches since they have joined
 				$updates = $this->GetUpdates($auth['api_token'], $profile['create_date']);
-				// FormatArray($updates);
 
 				// Sync all of the messages from the user's Tinder account
-				$this->database->SyncMessages($updates['matches'], $auth['_id'], $distance, $lon, $lat, $city, $state);
+				$this->database->SyncMessages($updates['matches'], $auth['_id'], $miles, $lon, $lat, $city, $state);
 
 				// Update all of the blocks
 				$this->database->UpdateBlocks($auth['_id'], $updates['blocks']);

@@ -57,9 +57,8 @@
 					$female = $this->database->GetUsersInState($state, 1);
 
 					// Get the hottest user from the given state
-					$mr = $this->database->HottestByState(0, $state);
-					$mrs = $this->database->HottestByState(1, $state);
-					// FormatArray($mr);
+					$mr = $this->database->HottestByState($state, 0);
+					$mrs = $this->database->HottestByState($state, 1);
 
 					$data = array('total_count' => FormatNumber($all['count']),
 								'male_count' => $male['count'],

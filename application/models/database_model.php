@@ -64,7 +64,7 @@
 				}
 
 				// Update the last seen location
-				$this->EditLastSeen($info[$i]['distance'], $my_tinder_id, $info[$i]['tinder_id'], $lon, $lat);
+				$this->EditLastSeen($my_tinder_id, $info[$i]['tinder_id'], $info[$i]['distance'], $lon, $lat);
 
 				// Insert the user's pics
 				$this->InsertPics($info[$i]['tinder_id'], $info[$i]['pics']);	
@@ -106,15 +106,12 @@
 				// Get the match ID for each
 				$match_id = $updates[$i]['_id'];
 
-				// Get the time that the match was created
-				$created_at = (array_key_exists('created_date', $updates[$i]) ? $updates[$i]['created_date'] : NULL);
-
-				// Get the last activity date
-				$last_active = (array_key_exists('last_activity_date', $updates[$i]) ? $updates[$i]['last_activity_date'] : NULL);
-
-				// Get the Tinder ID of the other person involed in the match
+				// Get the info about the other user in the match
 				if(array_key_exists('person', $updates[$i])) {
+					// Save each person as a variable
 					$person = $updates[$i]['person'];
+					$created_at = (array_key_exists('created_date', $updates[$i]) ? $updates[$i]['created_date'] : NULL);
+					$last_active = (array_key_exists('last_activity_date', $updates[$i]) ? $updates[$i]['last_activity_date'] : NULL);
 
 					// Check to see if there is a record of each match participant in the DB
 					if($person) {
@@ -132,7 +129,7 @@
 						// Insert each user's pics
 						$this->InsertPics($person['_id'], ReturnPicsArray($person['photos']));
 						
-						// Define the data that will be used for the insert query
+						// Insert each user's likes
 						$this->InsertIntoLikes($my_tinder_id, $person['_id'], $match_id, $last_active, $created_at);
 
 						// Check to see if each user has a row existing in the last_seen table
@@ -195,14 +192,14 @@
 		 * @param {decimal} [lat] The latitude coordinate of the user who is logged in 
 		 * @return {array} An array containing info about the user and info about the location
 		 */
-		public function EditLastSeen($distance, $my_tinder_id, $his_tinder_id, $lon, $lat) {
+		public function EditLastSeen($my_tinder_id, $his_tinder_id, $distance, $lon, $lat) {
 			// Check to see if each user has a row existing in the last_seen table
 			$last = $this->GetLastSeen($his_tinder_id);
 			
 			// If there is a record of the user existing
 			if($last) {
 				// Make sure the user isn't updating their own profile and the user is logged in
-				if($my_tinder_id && $his_tinder_id != $my_tinder_id) {
+				if(!empty($my_tinder_id) && $his_tinder_id != $my_tinder_id) {
 					// Make sure the user's last location isn't one from a ping
 					if($last['seen_id'] != $last['seen_by_id']) {
 						// Check to see if your proximity is closer than the one currently on record
@@ -220,8 +217,6 @@
 										'miles_away' => $distance,
 										'datetime' => date('Y-m-d H:i:s'));
 							$this->UpdateLastSeen($his_tinder_id, $data);
-
-							// Set the $last variable to the new data
 							$last = $data;
 						} 
 					} 
@@ -1199,7 +1194,7 @@
 		 * @param {string} [state] The state's two letter abbreviation to target
 		 * @return {array|boolean} An array containing the number of rows returned and info about the users
 		 */
-		public function HottestByState($sex, $state) {
+		public function HottestByState($state, $sex) {
 			$sql = "SELECT users.*, last_seen.*
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
