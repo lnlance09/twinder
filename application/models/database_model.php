@@ -286,7 +286,7 @@
 				$sql .= " ON users.tinder_id = likes.user_two WHERE likes.user_one = ?";
 			}
 
-			if(!empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 				array_push($params, '%'.trim($q).'%');
 			}
@@ -315,7 +315,7 @@
 				$sql .= " ON users.tinder_id = likes.user_two WHERE likes.user_one = ?";
 			}
 
-			if(!empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 				array_push($params, '%'.trim($q).'%');
 			}
@@ -338,6 +338,7 @@
 									'bio' => $row->bio,
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username));
+
 				$return[$i] = array('id' => $row->id,
 									'like' => $row->user_two,
 									'datetime' => $row->datetime,
@@ -469,21 +470,11 @@
 				$sql .= " AND u.first_name LIKE ?";
 				array_push($params, '%'.trim($q).'%');
 			}
-		
 			$query = $this->db->query($sql, $params);
-			$count = $query->num_rows();
-			$i = 0;
-
+			
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$tinder_id[$i] = $row->tinder_id;
-				$profile_pic[$i] = $row->profile_pic;
-				$name[$i] = $row->first_name;
-				$username[$i] = $row->username;
-				$age[$i] = $row->age;
-				$bio[$i] = $row->bio;
-
 				if($row->tinder_id != $my_id && $row->tinder_id != $his_id) {
 					$new = array('tinder_id' => $row->tinder_id,
 								'first_name' => $row->first_name,
@@ -494,8 +485,6 @@
 								'age' => $row->age);
 					array_push($return, $new);
 				}
-
-				$i++;
 			}
 
 			return array('count' => count($return), 'users' => $return);
@@ -827,7 +816,7 @@
 				$sql .= " ON users.tinder_id = passes.user_two WHERE passes.user_one = ?";
 			}
 
-			if($q !== NULL && !empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
@@ -853,7 +842,7 @@
 				$sql .= " ON users.tinder_id = passes.user_two WHERE passes.user_one = ?";
 			}
 
-			if($q !== NULL && !empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
@@ -902,7 +891,7 @@
 					    GROUP BY user_one
 					    HAVING COUNT(*) = 2)";
 
-			if($q !== NULL && !empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
@@ -929,7 +918,7 @@
 					    GROUP BY user_one
 					    HAVING COUNT(*) = 2)";
 
-			if($q != NULL && !empty($q)) {
+			if($q && !empty($q)) {
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
@@ -1176,7 +1165,6 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetHottest($sql, $lon, $lat, $distance) {
-			$i = 0;
 			$return = [];
 
 			foreach($sql['result'] as $row) {
@@ -1198,8 +1186,6 @@
 									'like_count' => $like_count);
 					array_push($return, $new_data);
 				}
-
-				$i++;
 			}
 
 			// Sort the results by like count
@@ -1224,31 +1210,25 @@
 					LIMIT 1";
 			$query = $this->db->query($sql, array('', $sex, $state));
 			$count = $query->num_rows();
-			$i = 0;
 
 			if($count == 1) {
 				foreach($query->result() as $row) {
-					// Get the user's match count
-					$match_count = $this->GetMatchCount($row->tinder_id);
-
-					$return[$i] = array('tinder_id' => $row->tinder_id,
-										'name' => $row->first_name,
-										'username' => $row->username,
-										'gender' => $row->gender,
-										'age' => $row->age,
-										'bio' => $row->bio,
-										'pic' => $row->profile_pic,
-										'seen_id' => $row->seen_id,
-										'seen_by_id' => $row->seen_by_id,
-										'lon' => $row->lon,
-										'lat' => $row->lat,
-										'city' => $row->city,
-										'state' => $row->state,
-										'miles_away' => $row->miles_away,
-										'datetime' => $row->datetime,
-										'match_count' => $match_count);
-
-					$i++;
+					return array('tinder_id' => $row->tinder_id,
+								'name' => $row->first_name,
+								'username' => $row->username,
+								'gender' => $row->gender,
+								'age' => $row->age,
+								'bio' => $row->bio,
+								'pic' => $row->profile_pic,
+								'seen_id' => $row->seen_id,
+								'seen_by_id' => $row->seen_by_id,
+								'lon' => $row->lon,
+								'lat' => $row->lat,
+								'city' => $row->city,
+								'state' => $row->state,
+								'miles_away' => $row->miles_away,
+								'datetime' => $row->datetime,
+								'match_count' => $this->GetMatchCount($row->tinder_id));
 				}
 
 				return array('count' => $count, 'hot' => $return);
@@ -1630,12 +1610,8 @@
 					}
 				
 					// Determine who unmatched who
-					if($user_one == $my_tinder_id) {
-						$unmatched_by = $user_two;
-					} else {
-						$unmatched_by = $user_one;
-					}
-
+					$unmatched_by = ($user_one == $my_tinder_id ? $user_two : $user_one);
+					
 					// Update the row in the DB
 					$this->UnmatchUser($unmatched_by, $blocks[$i]);
 				}
@@ -1647,7 +1623,6 @@
 					FROM likes
 					WHERE match_id IS NOT NULL";
 			$query = $this->db->query($sql);
-			$num = $query->num_rows();
 			$i = 0;
 
 			$return = [];
