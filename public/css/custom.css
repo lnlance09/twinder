@@ -1088,7 +1088,8 @@ span.sub_tip {
                     width: 100px;
                     margin: 0;
                     border: solid 1px #ccc;
-                    padding: 5px; }
+                    padding: 5px;
+                    background: #fff; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet h4 {
                     font-size: 14px;
                     color: #888; }

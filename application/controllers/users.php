@@ -41,6 +41,9 @@
 						$lat = $this->session->userdata('lat');
 						$pic = $this->session->userdata('profile_pic');
 
+						// Get the mactch count of the user who is currently logged in
+						$match_count = $this->database->GetMatchCount($tinder_id);
+						
 						// Findout if the user is viewing their own profile
 						$same = ($id == $tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
 
@@ -84,7 +87,7 @@
 
 							$info = array('name' => $name,
 										'auth' => $token,
-										'tinder_id' => $my_tinder_id,
+										'tinder_id' => $tinder_id,
 										'match_count' => $match_count,
 										'profile_link' => FormatUserLink($tinder_id, $username),
 										'profile_pic' => ChangePicSize($pic, 84),
@@ -123,9 +126,6 @@
 					}
 
 					if($active) {
-						// Get the mactch count of the user who is currently logged in
-						$match_count = $this->database->GetMatchCount($tinder_id);
-
 						// Format the user's profile link
 						$profile_link = FormatUserLink($tinder_id, $username);
 						$profile_pic = ChangePicSize($pic, 172);
