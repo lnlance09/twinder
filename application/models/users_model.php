@@ -311,7 +311,7 @@
 				$user['username'] = $info['username'];
 
 				// Insert a record in the DB for their last seen location
-				// $this->database->EditLastSeen($auth['_id'], $auth['_id'], 0, $lon, $lat); 
+				$this->database->EditLastSeen($auth['_id'], $auth['_id'], 0, $lon, $lat); 
 
 				// Insert the user's pics
 				$this->database->InsertPics($auth['_id'], ReturnPicsArray($auth['photos']));
