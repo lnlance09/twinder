@@ -218,7 +218,7 @@
 		 * @param {string} [time] The time
 		 */
 		function FormatTime($time) {
-			if($time != 'Just now') {
+			if($time != 'Just now' && substr($time, -3) != 'ago') {
 				$time = date_diff(date_create(), date_create($time));
 
 				// Format the date difference by minutes, hours, days and months
