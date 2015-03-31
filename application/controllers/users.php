@@ -109,7 +109,7 @@
 						$name = NULL;
 						$pic = NULL;
 						$token = NULL;
-						$my_tinder_id = NULL;
+						$tinder_id = NULL;
 						$username = NULL;
 
 						// Location
