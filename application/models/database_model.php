@@ -1213,7 +1213,7 @@
 
 			if($count == 1) {
 				foreach($query->result() as $row) {
-					return array('tinder_id' => $row->tinder_id,
+					$return = array('tinder_id' => $row->tinder_id,
 								'name' => $row->first_name,
 								'username' => $row->username,
 								'gender' => $row->gender,
