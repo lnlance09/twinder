@@ -36,12 +36,12 @@
 		/**
 		 * Insert a batch of new users from the discovery process into the DB
 		 * @param {int} [user_id] The user ID of the user who is logged in
-		 * @param {string} [my_tinder_id] The tinder ID of the user who is logged in
+		 * @param {string} [tinder_id] The tinder ID of the user who is logged in
 		 * @param {array} [info] An array of users that was obtained from Tinder's API
 		 * @param {decimal} [lon] The longitude coordinate of the user who is logged in
 		 * @param {decimal} [lat] The latitude coordinate of the user who is logged in
 		 */
-		public function InsertBatch($user_id, $my_tinder_id, $info, $lon, $lat) {
+		public function InsertBatch($user_id, $tinder_id, $info, $lon, $lat) {
 			for($i=0;$i<count($info);$i++) {
 				// Insert each batch user accordingly
 				$data = array('tinder_id' => $info[$i]['tinder_id'],
@@ -64,7 +64,27 @@
 				}
 
 				// Update the last seen location
-				$this->EditLastSeen($my_tinder_id, $info[$i]['tinder_id'], $info[$i]['distance'], $lon, $lat);
+				$this->EditLastSeen($tinder_id, $info[$i]['tinder_id'], $info[$i]['distance'], $lon, $lat);
+
+				// Insert the user's pics
+				$this->InsertPics($info[$i]['tinder_id'], $info[$i]['pics']);	
+			}
+		}
+
+		public function InsertPassportUsers($tinder_id, $info, $lon, $lat) {
+			for($i=0;$i<count($info);$i++) {
+				// Insert each batch user accordingly
+				$data = array('tinder_id' => $info[$i]['tinder_id'],
+							'first_name' => $info[$i]['name'],
+							'age' => $info[$i]['age'],
+							'dob' => date('M j, Y', strtotime($info[$i]['birth_date'])),
+							'gender' => $info[$i]['gender'],
+							'bio' => $info[$i]['bio'],
+							'profile_pic' => $info[$i]['profile_pic']);
+				$this->InsertUser($data);
+
+				// Update the last seen location
+				$this->EditLastSeen($tinder_id, $info[$i]['tinder_id'], $info[$i]['distance'], $lon, $lat);
 
 				// Insert the user's pics
 				$this->InsertPics($info[$i]['tinder_id'], $info[$i]['pics']);	
@@ -1176,7 +1196,7 @@
 					$new_data = array('tinder_id' => $row->tinder_id,
 									'name' => $row->first_name,
 									'age' => $row->age,
-									'bio' => BioLinks(BioDefault($row->bio, $row->first_name)),
+									'bio' => BioDefault($row->bio, $row->first_name),
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'distance' => $between,
@@ -1265,7 +1285,7 @@
 										'gender_format' => FormatGender($row->gender),
 										'dob' => $row->dob,
 										'age' => $row->age,
-										'bio' => BioLinks(BioDefault($row->bio, $row->first_name)),
+										'bio' => BioDefault($row->bio, $row->first_name),
 										'last_activity_date' => $row->last_activity_date,
 										'last_active_format' => FormatTime($row->last_activity_date),
 										'profile_pic' => $row->profile_pic,

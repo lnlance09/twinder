@@ -61,5 +61,11 @@
     button#see_more {
         width: 100%;
         margin-top: 10px;
+        background: #f4f4f4;
+
+        &:hover {
+            background: #e8e8e8;
+            border: solid 1px #ccc;
+        }
     }
 }

@@ -5,7 +5,7 @@
 <?php
 		for($i=0;$i<$count;$i++) {
 ?>
-		<li class="list-group-item">
+		<li class="list-group-item" lon="<?php echo $cities[$i]['lon']; ?>" lat="<?php echo $cities[$i]['lat']; ?>">
 			<?php echo $cities[$i]['name']; ?>
 		</li>
 <?php

@@ -23,8 +23,9 @@
 @import 'carousel';
 @import 'admin';
 
-body {
+body, html {
     font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -113,4 +114,12 @@ a {
 
 .main_none {
     padding: 40px 10px;
+}
+
+#lance_load {
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    border: solid 1px #ddd;
+    margin-top: 10px;
 }

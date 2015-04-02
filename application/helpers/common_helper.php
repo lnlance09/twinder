@@ -85,11 +85,9 @@
 		 * @param {string} [bio] The user's bio
 		 */
 		function BioLinks($bio) {
-			$terms = array('instagram', 'ig', 'insta', 'Instagram', 'Ig', 'Insta', 'INSTAGRAM', 'IG', 'INSTA', 'insta @', 'INSTA @', 'ig@', 'IG@');
-			$string = implode('|', $terms);
-
-			// Turn the links to anchor tags
-			$ig_bio = preg_replace('/\b('.$string.')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
+			$terms = array('@', 'instagram', 'ig:', 'insta:', 'Instagram', 'Ig:', 'Insta', 'INSTAGRAM', 'IG:', 'INSTA');
+			// $ig_bio = preg_replace('/(?<=^|\s)'.implode('|', $terms).'([a-z0-9_]+)/i', '<a href="https://instagram.com/$1" target="_blank">$1</a>', $bio);
+			$ig_bio = preg_replace('/\b('.implode('|', $terms).')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
 			$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
 			return trim($hash_bio);
 		}

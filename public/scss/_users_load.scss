@@ -39,12 +39,31 @@
   position: relative;
 
   #like_or_pass {
+      position: relative;
       text-align: center;
       width: 100%;
       padding: 20px;
       background: #eee;
       z-index: 999999;
       border: solid 1px #ccc;
+
+      #like_user {
+        float: left;
+      }
+
+      #pass_user {
+        float: right;
+      }
+
+      @media screen and (max-width: $break-small) {
+        #pass_user {
+          float: left;
+        }
+
+        #like_user {
+          float: right;
+        }
+      }
   }
 }
 

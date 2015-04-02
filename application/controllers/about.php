@@ -27,7 +27,7 @@
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
 
-					// Get the mactch count of the user who is currently logged in
+					// Get the match count of the user who is currently logged in
 					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
 					$session = FALSE;

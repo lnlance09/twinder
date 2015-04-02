@@ -10,6 +10,7 @@
 
     @media screen and (max-width: $break-small) {
         padding: 0 20px;
+        border-bottom: solid 1px #555;
 
         .container {
             opacity: 0.8;
@@ -159,7 +160,6 @@
             }
         }
 
-
         > .container {
             display: block;
             width: 100%;
@@ -172,4 +172,82 @@
 
 .navbar-inverse .navbar-nav > .open > a {  
     background-color: orange;
+}
+
+#wrapper {
+    padding-left: 0;
+    transition: all .4s ease 0s;
+    height: 100%
+}
+
+@media screen and (min-width: $break-large) {
+    #sidebar-wrapper {
+        display: none;
+    }
+}
+
+@media screen and (max-width: $break-small) {
+    $width: 150px;
+    $neg_width: -150px;
+
+    #sidebar-wrapper {
+        margin-left: -150px;
+        left: 0;
+        width: $width;
+        background: #f0f0f0;
+        position: fixed;
+        height: 100%;
+        z-index: 10000;
+        transition: all .4s ease 0s;
+
+        .sidebar-nav {
+            display: block;
+            float: left;
+            width: $width;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            padding-top: 54px;
+
+            li {
+                border-bottom: solid 1px #ddd;
+                cursor: pointer;
+                transition: 0.4s;
+
+                a {
+                    display: block;
+                    background: $white;
+                    padding: 10px;
+                    color: #090127;
+                    transition: 0.4s;
+                }
+
+                &:hover {
+                    a {
+                        background: #07f;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+        span {
+            bottom: 4px;
+            right: 0;
+            text-align: center;
+            display: block;
+            width: 100%;
+            color: #666;
+            position: absolute;
+        }
+    }
+
+    #wrapper.active {
+        margin-left: $width;
+        border-left: solid 1px #ddd;
+    
+        #sidebar-wrapper {
+            left: $width;
+        }
+    }
 }

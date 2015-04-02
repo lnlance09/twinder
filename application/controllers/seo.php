@@ -26,8 +26,12 @@
 			}
 
 			public function Test() {
-				$this->database->FlushDB();
-				die;
+				$auth = '16880500-7df7-4892-b954-28676bc32eeb';
+
+				$info = $this->user->ProfileInfo($auth);
+				FormatArray($info);
+				// $this->database->FlushDB();
+				// die;
 			}
 
 			public function Ping() {

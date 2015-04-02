@@ -19,7 +19,7 @@
 					$tinder_id = $this->session->userdata('tinder_id');
 					$token = $this->session->userdata('token');
 
-					// Get the mactch count of the user who is currently logged in
+					// Get the match count of the user who is currently logged in
 					$match_count = $this->database->GetMatchCount($tinder_id);
 					
 					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));

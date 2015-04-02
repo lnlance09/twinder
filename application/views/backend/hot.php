@@ -38,7 +38,7 @@
                     </h4>
 
                     <p>
-                        <?php echo $bio; ?>
+                        <?php echo BioLinks($bio); ?>
                     </p>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         if($new_page != $pages) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-warning" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
+        <button type="button" class="btn btn-default" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
     </div>
 <?php
         }

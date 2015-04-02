@@ -4,6 +4,11 @@ $(document).ready(function() {
     var controller = $('#controller').text();
     // console.log(auth);
 
+    $('#main_icon').click(function(e) {
+        e.preventDefault();
+        $('#wrapper').toggleClass('active');
+    });
+
     // Query to check for any updates and/or matches/messages every 10 seconds
     if(auth != '') {
         window.setInterval(function() {

@@ -111,7 +111,7 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function FindUsers($auth) {
-			$info = SendRequest('user/recs', $auth, FALSE, FALSE);
+			$info = SendRequest('user/recs?locale=en', $auth, FALSE, FALSE);
 			return @json_decode($info, TRUE);
 		}
 
@@ -164,6 +164,7 @@
 		 * @param {string} [auth] The auth token of the user who is logged in
 		 * @param {decimal} [lon] The longitude coordinate
 		 * @param {decimal} [lat] The latitude coordinate
+		 * @return {array} An array returned from Tinder's API
 		 */
 		public function Passport($auth, $lon, $lat) {
 			$info = SendRequest('passport/user/travel', $auth, TRUE, array('lon' => $lon, 'lat' => $lat));
@@ -400,7 +401,7 @@
 							'gender' => $user['gender'],
 							'gender_format' => FormatGender($user['gender']),
 							'age' => ReturnAge($user['birth_date']),
-							'last_activity_date' => FormatTime($user['ping_time']),
+							'last_activity_date' => $user['ping_time'],
 							'profile_pic' => ReturnProfilePic($user['photos']),
 							'pics' => ReturnPicsArray($user['photos'])); 
 			} else {

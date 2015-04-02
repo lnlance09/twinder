@@ -11,7 +11,6 @@
         <div id="signin">
             <div id="match_box">
                 <h1 class="page-header">
-                    <i class="fa fa-leaf"></i>
                     <?php echo $user_one['name'].' and '.$user_two['name']; ?>
                 </h1>
 

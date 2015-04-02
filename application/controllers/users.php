@@ -43,7 +43,7 @@
 
 						// Get the mactch count of the user who is currently logged in
 						$match_count = $this->database->GetMatchCount($tinder_id);
-						
+
 						// Findout if the user is viewing their own profile
 						$same = ($id == $tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
 
@@ -305,6 +305,7 @@
 						// Lookup the user to see if there's any mutual likes or friends
 						$lookup = $this->user->UserLookup($next, $token);
 
+						// Load the view
 						$this->load->view('find_users_two', $lookup); 
 					} else {
 						$this->load->view('errors/timeout'); 

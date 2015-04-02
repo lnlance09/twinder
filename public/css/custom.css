@@ -216,7 +216,8 @@ ul.list-group li {
   border: none; }
   @media screen and (max-width: 768px) {
     .navbar {
-      padding: 0 20px; }
+      padding: 0 20px;
+      border-bottom: solid 1px #555; }
       .navbar .container {
         opacity: 0.8; } }
   @media screen and (min-width: 992px) {
@@ -314,6 +315,59 @@ ul.list-group li {
 .navbar-inverse .navbar-nav > .open > a {
   background-color: orange; }
 
+#wrapper {
+  padding-left: 0;
+  transition: all .4s ease 0s;
+  height: 100%; }
+
+@media screen and (min-width: 992px) {
+  #sidebar-wrapper {
+    display: none; } }
+@media screen and (max-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: -150px;
+    left: 0;
+    width: 150px;
+    background: #f0f0f0;
+    position: fixed;
+    height: 100%;
+    z-index: 10000;
+    transition: all .4s ease 0s; }
+    #sidebar-wrapper .sidebar-nav {
+      display: block;
+      float: left;
+      width: 150px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      padding-top: 54px; }
+      #sidebar-wrapper .sidebar-nav li {
+        border-bottom: solid 1px #ddd;
+        cursor: pointer;
+        transition: 0.4s; }
+        #sidebar-wrapper .sidebar-nav li a {
+          display: block;
+          background: #fff;
+          padding: 10px;
+          color: #090127;
+          transition: 0.4s; }
+        #sidebar-wrapper .sidebar-nav li:hover a {
+          background: #07f;
+          color: #fff; }
+    #sidebar-wrapper span {
+      bottom: 4px;
+      right: 0;
+      text-align: center;
+      display: block;
+      width: 100%;
+      color: #666;
+      position: absolute; }
+
+  #wrapper.active {
+    margin-left: 150px;
+    border-left: solid 1px #ddd; }
+    #wrapper.active #sidebar-wrapper {
+      left: 150px; } }
 form {
   margin-bottom: 0; }
 
@@ -637,7 +691,11 @@ span.sub_tip {
       border-bottom: solid 1px #ccc !important; }
   #hot_load button#see_more {
     width: 100%;
-    margin-top: 10px; }
+    margin-top: 10px;
+    background: #f4f4f4; }
+    #hot_load button#see_more:hover {
+      background: #e8e8e8;
+      border: solid 1px #ccc; }
 
 .slide_wrapper {
   background: #fff;
@@ -1322,12 +1380,22 @@ span.sub_tip {
 #decide_box {
   position: relative; }
   #decide_box #like_or_pass {
+    position: relative;
     text-align: center;
     width: 100%;
     padding: 20px;
     background: #eee;
     z-index: 999999;
     border: solid 1px #ccc; }
+    #decide_box #like_or_pass #like_user {
+      float: left; }
+    #decide_box #like_or_pass #pass_user {
+      float: right; }
+    @media screen and (max-width: 768px) {
+      #decide_box #like_or_pass #pass_user {
+        float: left; }
+      #decide_box #like_or_pass #like_user {
+        float: right; } }
 
 .rotate-left,
 .rotate-right {
@@ -1510,8 +1578,9 @@ span.sub_tip {
 .admin {
   padding-top: 55px !important; }
 
-body {
-  font-family: 'Open Sans', sans-serif; }
+body, html {
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden; }
 
 h1 {
   padding-top: 30px;
@@ -1580,3 +1649,10 @@ a {
 
 .main_none {
   padding: 40px 10px; }
+
+#lance_load {
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
+  border: solid 1px #ddd;
+  margin-top: 10px; }

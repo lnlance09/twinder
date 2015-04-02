@@ -105,7 +105,7 @@
 		 * @return {array} An array containing the number of rows and info about the cities
 		 */
 		public function GetCities($state, $city) {
-			$this->db->select('city');
+			$this->db->select('city, lon, lat');
 			$this->db->where('state', $state);
 			$this->db->like('city', $city);
 			$this->db->order_by('city', 'asc');
@@ -117,7 +117,7 @@
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('name' => $row->city);
+				$return[$i] = array('name' => $row->city, 'lon' => $row->lon, 'lat' => $row->lat);
 
 				$i++;
 			}

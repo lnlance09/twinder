@@ -64,7 +64,7 @@
                         <!-- Age Slider -->
                         <div class="col-lg-6 text-center settings_box" id="age_box">
                             <h2>
-                                <span class="example-val" id="lower-value"><?php echo $min; ?></span> - <span class="example-val" id="upper-value"><?php echo $max; ?></span>
+                                <span class="example-val" id="lower-value"><?php echo $min; ?></span> - <span class="example-val" id="upper-value"><?php echo $max; ?></span> years
                             </h2>
 
                             <div id="age_slider" class="slider"></div><br>

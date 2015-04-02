@@ -18,11 +18,11 @@
 				<!-- Like or Pass buttons -->
 				<div id="like_or_pass">
 					<div class="col-lg-6">
-	        			<img class="svg pull-right" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey">
+	        			<img class="svg" id="pass_user" src="<?php echo $img_url; ?>svg/close.svg" width="500" height="500" alt="pass" title="hey">
 	        		</div>
 
 	        		<div class="col-lg-6">
-	                	<img class="svg pull-left" id="like_user" src="<?php echo $img_url; ?>svg/heart.svg" width="500" height="500" alt="like"> 
+	                	<img class="svg" id="like_user" src="<?php echo $img_url; ?>svg/heart.svg" width="500" height="500" alt="like"> 
 	                </div>
 
 	                <div class="clearfix"></div>

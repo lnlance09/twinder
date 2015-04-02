@@ -273,6 +273,9 @@
 	                        		<div class="clearfix"></div>
 	                        	</div>
 	                        </div>
+
+	                        <div class="modal-footer">
+	                        </div>
 	                    </form>
                     </div>
                 </div>

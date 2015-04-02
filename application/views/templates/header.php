@@ -80,7 +80,7 @@
                     <span id="we">Twinder</span>
                 </a>
 
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" id="main_icon">
                     <i class="fa fa-list fa-lg"></i>
                 </button>
 
@@ -110,9 +110,6 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="<?php echo $base_url; ?>users/discover">Play <i class="fa fa-play fa-fw"></i></a></li>
                             <li><a href="<?php echo $base_url.$profile_link; ?>">Profile <i class="fa fa-user fa-fw"></i></a></li>
-
-                            <li class="divider"></li>
-
                             <li><a href="<?php echo $base_url; ?>settings">Settings <i class="fa fa-cog fa-fw"></i></a></li>
                             <li><a href="<?php echo $base_url; ?>users/Logout">Logout <i class="fa fa-sign-out fa-fw"></i></a></li>
                         </ul>
@@ -133,20 +130,42 @@
         </div>
     </div>
 
-    <div id="search_container">
-        <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-
-                <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
-
-                <div class="clearfix"></div>
-            </div>
-        </form>
-    </div>
-
     <!-- Write all of the hidden values that need to be used by JS files -->
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
     <div id="controller" class="hidden"><?php echo $controller; ?></div>
+
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav" id="sidebar">     
+<?php
+    if($session) {
+?>
+                <li><a href="<?php echo $base_url.'users/discover'; ?>"><i class="fa fa-play fa-fw"></i> Play</a></li>
+                <li><a href="<?php echo $base_url.$profile_link; ?>"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+                <li><a href="<?php echo $base_url.'settings'; ?>"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
+                <li><a href="<?php echo $base_url.'users/Logout'; ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+<?php
+    } else {
+?>
+                <li><a href="<?php echo $base_url.'signin'; ?>"><i class="fa fa-sign-in fa-fw"></i> Sign In</a></li>
+<?php
+    }
+?>
+            </ul>
+
+            <span>Twinder v1.0</span>
+        </div>
+
+        <div id="search_container">
+            <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
+
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
