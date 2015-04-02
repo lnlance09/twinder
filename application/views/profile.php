@@ -309,9 +309,9 @@
 			        		</div>
 
 			        		<div class="col-lg-12 text-center">
-			        			<h3>
+			        			<p>
 									<a href="<?php echo $base_url.$user_info['link']; ?>"><?php echo $user_info['name']; ?></a> <span>&</span> <a href="<?php echo $my_info['link']; ?>" id="match_name"><?php echo $my_info['name']; ?></a>
-								</h3>
+								</p>
 			        		</div>
 
 			        		<div class="clearfix"></div>

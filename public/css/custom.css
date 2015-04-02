@@ -171,6 +171,11 @@ span.stateface {
         width: 100px;
         height: 100px; }
       #match_modal .modal-body .col-lg-6 button {
+        font-size: 10px; } }
+  #match_modal .modal-body p {
+    margin-bottom: 0; }
+    @media screen and (max-width: 768px) {
+      #match_modal .modal-body p {
         font-size: 12px; } }
 
 #gallery_modal .modal-backdrop {
