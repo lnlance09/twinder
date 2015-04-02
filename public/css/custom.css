@@ -122,7 +122,7 @@ span.stateface {
         font-size: 28px;
         margin: 0;
         padding: 0; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           .modal .modal-content .modal-header h3 {
             font-size: 20px; } }
         .modal .modal-content .modal-header h3 .close {
@@ -130,13 +130,13 @@ span.stateface {
           margin-top: 5px; }
       .modal .modal-content .modal-header i {
         color: #000; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           .modal .modal-content .modal-header i {
             font-size: 20px; } }
     .modal .modal-content h4 {
       font-size: 32px;
       text-align: center; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         .modal .modal-content h4 {
           font-size: 22px; } }
     .modal .modal-content .modal-body {
@@ -166,7 +166,7 @@ span.stateface {
       height: 172px;
       border: solid 1px #ddd;
       padding: 5px; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #match_modal .modal-body .col-lg-6 img {
         width: 100px;
         height: 100px; }
@@ -174,7 +174,7 @@ span.stateface {
         font-size: 10px; } }
   #match_modal .modal-body p {
     margin-bottom: 0; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #match_modal .modal-body p {
         font-size: 12px; } }
 
@@ -230,7 +230,7 @@ ul.list-group li {
   margin: 0 auto;
   z-index: 99999;
   border: none; }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     .navbar {
       padding: 0 20px;
       border-bottom: solid 1px #555; }
@@ -264,14 +264,14 @@ ul.list-group li {
       color: #ddd; }
       .navbar .navbar-brand:hover .svg path {
         fill: #fff; }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     .navbar .navbar-collapse {
       width: 100%;
       padding-left: 0;
       padding-right: 0;
       margin-left: 0;
       margin-right: 0; } }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     .navbar .navbar-collapse ul.navbar-nav {
       float: none !important;
       -webkit-padding-start: 0 !important;
@@ -287,7 +287,7 @@ ul.list-group li {
       color: #fff;
       font-size: 16px;
       outline: none; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         .navbar .navbar-collapse ul.navbar-nav > li a {
           font-size: 13px; } }
     .navbar .navbar-collapse ul.navbar-nav > li.active > a:hover {
@@ -315,7 +315,7 @@ ul.list-group li {
           display: inline;
           margin-bottom: 0;
           vertical-align: middle; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           .navbar .navbar-collapse ul.navbar-nav > li.dropdown a.dropdown-toggle #like_count {
             float: right;
             margin-top: 6px; } }
@@ -339,11 +339,11 @@ ul.list-group li {
 @media screen and (min-width: 992px) {
   #sidebar-wrapper {
     display: none; } }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 799px) {
   #sidebar-wrapper {
-    margin-left: -365px;
+    margin-left: -400px;
     left: 0;
-    width: 365px;
+    width: 400px;
     background: #f0f0f0;
     position: fixed;
     height: 100%;
@@ -352,7 +352,7 @@ ul.list-group li {
     #sidebar-wrapper .sidebar-nav {
       display: block;
       float: left;
-      width: 365px;
+      width: 400px;
       list-style: none;
       margin: 0;
       padding: 0;
@@ -381,10 +381,10 @@ ul.list-group li {
       font-size: 12px; }
 
   #wrapper.active {
-    margin-left: 365px;
+    margin-left: 400px;
     border-left: solid 1px #ddd; }
     #wrapper.active #sidebar-wrapper {
-      left: 365px; } }
+      left: 400px; } }
 form {
   margin-bottom: 0; }
 
@@ -393,7 +393,7 @@ input[type=password],
 textarea.form-control {
   border-radius: 0;
   box-shadow: none; }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     input[type=text],
     input[type=password],
     textarea.form-control {
@@ -479,7 +479,7 @@ button:focus {
   #footer #list_name {
     background-color: #82b919;
     background-image: url("../img/bg.png"); }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #footer #list_name {
         padding: 20px 0; } }
     @media screen and (min-width: 992px) {
@@ -493,14 +493,14 @@ button:focus {
       color: #fff;
       float: left;
       width: 25%; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #footer #list_name .col-lg-3 {
           display: none; } }
       #footer #list_name .col-lg-3 .fa {
         color: #fff !important; }
     #footer #list_name #slogan {
       display: none; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #footer #list_name #slogan {
           display: block;
           font-size: 22px;
@@ -512,7 +512,7 @@ button:focus {
     @media screen and (min-width: 992px) {
       #footer #sub_footer {
         padding: 0 120px; } }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #footer #sub_footer {
         text-align: center; } }
     #footer #sub_footer .col-lg-3 {
@@ -520,7 +520,7 @@ button:focus {
       width: 25%;
       margin: 0;
       padding: 0; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #footer #sub_footer .col-lg-3 {
           width: 100%; } }
       #footer #sub_footer .col-lg-3 ul {
@@ -531,14 +531,14 @@ button:focus {
         #footer #sub_footer .col-lg-3 ul li {
           text-align: left;
           padding: 6px 0; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 799px) {
             #footer #sub_footer .col-lg-3 ul li {
               text-align: center; } }
           #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
             display: none;
             font-size: 20px;
             color: #666; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 799px) {
               #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
                 display: inline; } }
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
@@ -616,7 +616,7 @@ span.sub_tip {
 
 #header-section {
   min-height: 250px; }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     #header-section {
       padding: 0 20px; } }
   @media screen and (min-width: 992px) {
@@ -633,7 +633,7 @@ span.sub_tip {
     margin-bottom: 12px;
     padding: 2px 10px 10px 10px;
     width: 100%; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #header-section .page-header {
         font-size: 22px; } }
     #header-section .page-header .img-circle {
@@ -722,7 +722,7 @@ span.sub_tip {
   .slide_wrapper .settings_box {
     padding: 15px 30px 25px 30px;
     border: none; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       .slide_wrapper .settings_box {
         padding: 10px 30px 0 30px; } }
     .slide_wrapper .settings_box h2 {
@@ -759,7 +759,7 @@ span.sub_tip {
           background: #f0f0f0;
           border-right: none;
           width: 50px; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 799px) {
             .slide_wrapper #location_select_box .col-lg-6 .form-group .input-group-addon {
               width: 40px; } }
           .slide_wrapper #location_select_box .col-lg-6 .form-group .input-group-addon span {
@@ -769,7 +769,7 @@ span.sub_tip {
           box-shadow: none;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 799px) {
             .slide_wrapper #location_select_box .col-lg-6 .form-group .form-control {
               font-size: 12px; } }
         .slide_wrapper #location_select_box .col-lg-6 .form-group #city_addon {
@@ -823,7 +823,7 @@ span.sub_tip {
   #terms h2 {
     font-size: 26px;
     margin-top: 7px; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #faq h2,
       #about h2,
       #terms h2 {
@@ -897,7 +897,7 @@ span.sub_tip {
     font-size: 22px;
     cursor: pointer;
     transition: 0.3s; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #settings_form .settings_box .selector {
         border-bottom: solid 1px #ddd; } }
     @media screen and (min-width: 992px) {
@@ -983,7 +983,7 @@ span.sub_tip {
         top: 385px;
         background: #fff;
         border-bottom: solid 1px #ddd; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           #profile-section .container #focus_box #stripe {
             padding: 0 20px;
             display: none; } }
@@ -1027,7 +1027,7 @@ span.sub_tip {
         margin-top: -150px;
         min-height: 300px !important;
         background: #f0f0f0; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           #profile-section .container #focus_box #profile_page_info {
             padding: 0 20px; } }
         @media screen and (min-width: 992px) {
@@ -1080,7 +1080,7 @@ span.sub_tip {
           z-index: 999;
           border: none;
           background: transparent; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 799px) {
             #profile-section .container #focus_box #profile_page_info .col-lg-9 {
               margin-top: 0px;
               width: 100%; } }
@@ -1088,7 +1088,7 @@ span.sub_tip {
             padding: 0;
             margin-top: 20px;
             margin-left: 50px; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 799px) {
               #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper {
                 margin-top: 0;
                 margin-left: 0; } }
@@ -1104,7 +1104,7 @@ span.sub_tip {
                   font-size: 18px;
                   cursor: pointer;
                   text-transform: capitalize; }
-                  @media screen and (max-width: 768px) {
+                  @media screen and (max-width: 799px) {
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li {
                       margin-left: 10px;
                       font-size: 13px; } }
@@ -1133,7 +1133,7 @@ span.sub_tip {
                 font-size: 22px;
                 padding: 7px;
                 height: auto; }
-                @media screen and (max-width: 768px) {
+                @media screen and (max-width: 799px) {
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .input-group .form-control {
                     font-size: 16px; } }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box {
@@ -1222,7 +1222,7 @@ span.sub_tip {
             margin-bottom: 0;
             width: 120px;
             height: 120px; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 799px) {
               #profile-section .container #focus_box ul#sub_pics li img {
                 width: 135px;
                 height: 135px; } }
@@ -1235,7 +1235,7 @@ span.sub_tip {
     cursor: pointer;
     background: #fff;
     z-index: 99; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #profile-section .timer_box {
         border-top: solid 1px #ddd; }
         #profile-section .timer_box:last-of-type {
@@ -1381,13 +1381,13 @@ span.sub_tip {
   #discover_box #users_load .jumbotron {
     text-align: left;
     border: solid 1px #ccc; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #discover_box #users_load .jumbotron {
         padding: 12px;
         margin-bottom: 15px; }
         #discover_box #users_load .jumbotron button {
           font-size: 13px; } }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #discover_box #users_load .jumbotron h1 {
         font-size: 18px;
         height: auto !important;
@@ -1397,11 +1397,11 @@ span.sub_tip {
       display: inline;
       border: solid 1px #ddd;
       padding: 5px; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #discover_box #users_load .jumbotron h1 img {
           width: 84px;
           height: 84px; } }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #discover_box #users_load .jumbotron #profile_discover p {
         font-size: 13px; } }
     #discover_box #users_load .jumbotron #profile_discover p + p {
@@ -1417,14 +1417,14 @@ span.sub_tip {
     background: #eee;
     z-index: 999;
     border: solid 1px #ccc; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #decide_box #like_or_pass {
         padding: 10px; } }
     #decide_box #like_or_pass #like_user {
       float: left; }
     #decide_box #like_or_pass #pass_user {
       float: right; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #decide_box #like_or_pass #pass_user {
         float: left; }
       #decide_box #like_or_pass #like_user {
@@ -1472,14 +1472,14 @@ span.sub_tip {
   #chart_load #chart_data #glance h3 {
     font-size: 24px;
     color: #000; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 799px) {
       #chart_load #chart_data #glance h3 {
         font-size: 20px; } }
   #chart_load #chart_data #chart_block {
     padding: 10px; }
     #chart_load #chart_data #chart_block ul {
       margin-bottom: 0; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #chart_load #chart_data #chart_block ul {
           margin-left: 10px; } }
       #chart_load #chart_data #chart_block ul li {
@@ -1491,10 +1491,10 @@ span.sub_tip {
         cursor: auto; }
         #chart_load #chart_data #chart_block ul li:hover {
           color: #000 !important; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 799px) {
           #chart_load #chart_data #chart_block ul li {
             font-size: 16px; } }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     #chart_load #chart_data #mr,
     #chart_load #chart_data #mrs {
       margin-top: 9px; } }
@@ -1519,7 +1519,7 @@ span.sub_tip {
     #chart_load #chart_data #mrs .hottest_name .salutation {
       font-weight: 700;
       font-size: 20px; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 799px) {
         #chart_load #chart_data #mr .hottest_name .salutation,
         #chart_load #chart_data #mrs .hottest_name .salutation {
           font-size: 16px; } }
@@ -1537,7 +1537,7 @@ span.sub_tip {
   border-bottom: solid 1px #ddd;
   z-index: 9999;
   background: #fff; }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 799px) {
     #search_container {
       padding: 0 20px; } }
   @media screen and (min-width: 992px) {
