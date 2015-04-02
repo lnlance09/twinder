@@ -72,6 +72,10 @@
         min-height: 630px;
         background: $white;
 
+        @media screen and (max-width: $break-small) {
+            padding-top: 50px;
+        }
+
         #settings_submit {
             padding: 20px 0;
             border-top: solid 1px #ccc;
