@@ -81,6 +81,18 @@
 
         .col-lg-6 {
             width: 50%;
+
+            img {
+                width: 172px;
+                height: 172px;
+            }
+
+            @media screen and (max-width: $break-small) {
+                img {
+                    width: 84px;
+                    height: 84px;
+                }
+            }
         }
     }
 }

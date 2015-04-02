@@ -274,8 +274,7 @@
 	                        	</div>
 	                        </div>
 
-	                        <div class="modal-footer">
-	                        </div>
+	                        <div class="modal-footer"></div>
 	                    </form>
                     </div>
                 </div>
@@ -299,13 +298,13 @@
 			      		<div class="modal-body">
 			        		<div class="col-lg-6 text-right">
 			        			<div>
-									<img src="<?php echo $user_info['profile_pic']; ?>" width="172" height="172" alt="<?php echo $user_info['name']; ?>">
+									<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>">
 								</div>
 			        		</div>
 
 			        		<div class="col-lg-6">
 								<div>
-									<img src="<?php echo $my_info['pic']; ?>" width="172" height="172" alt="<?php echo $my_info['name']; ?>" id="match_pic">
+									<img src="<?php echo $my_info['pic']; ?>" alt="<?php echo $my_info['name']; ?>" id="match_pic">
 								</div>
 			        		</div>
 
