@@ -236,7 +236,7 @@ ul.list-group li {
       border-bottom: solid 1px #555; }
       .navbar .container {
         opacity: 0.8; } }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1119px) {
     .navbar {
       padding: 0 120px; } }
   .navbar .navbar-toggle {
@@ -297,7 +297,7 @@ ul.list-group li {
     .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
       padding: 0;
       background: #0993c7; }
-      @media screen and (min-width: 992px) {
+      @media screen and (min-width: 1119px) {
         .navbar .navbar-collapse ul.navbar-nav > li.dropdown {
           padding: 0 20px; } }
       .navbar .navbar-collapse ul.navbar-nav > li.dropdown:hover {
@@ -336,7 +336,7 @@ ul.list-group li {
   transition: all .4s ease 0s;
   height: 100%; }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1119px) {
   #sidebar-wrapper {
     display: none; } }
 @media screen and (max-width: 799px) {
@@ -478,13 +478,11 @@ button:focus {
   z-index: 99999999; }
   #footer #list_name {
     background-color: #82b919;
-    background-image: url("../img/bg.png"); }
+    background-image: url("../img/bg.png");
+    padding: 0 120px; }
     @media screen and (max-width: 799px) {
       #footer #list_name {
         padding: 20px 0; } }
-    @media screen and (min-width: 992px) {
-      #footer #list_name {
-        padding: 0 120px; } }
     #footer #list_name .col-lg-3 {
       font-size: 24px;
       font-weight: 600;
@@ -509,7 +507,7 @@ button:focus {
   #footer #sub_footer {
     background-color: #fff;
     text-align: left; }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1119px) {
       #footer #sub_footer {
         padding: 0 120px; } }
     @media screen and (max-width: 799px) {
@@ -619,7 +617,7 @@ span.sub_tip {
   @media screen and (max-width: 799px) {
     #header-section {
       padding: 0 20px; } }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1119px) {
     #header-section {
       padding: 0 120px; } }
   #header-section .container {
@@ -900,7 +898,7 @@ span.sub_tip {
     @media screen and (max-width: 799px) {
       #settings_form .settings_box .selector {
         border-bottom: solid 1px #ddd; } }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1119px) {
       #settings_form .settings_box .selector {
         border-right: solid 1px #ddd; } }
     #settings_form .settings_box .selector:last-of-type {
@@ -987,7 +985,7 @@ span.sub_tip {
           #profile-section .container #focus_box #stripe {
             padding: 0 20px;
             display: none; } }
-        @media screen and (min-width: 992px) {
+        @media screen and (min-width: 1119px) {
           #profile-section .container #focus_box #stripe {
             padding: 0 120px; } }
         #profile-section .container #focus_box #stripe .col-lg-8 {
@@ -1009,12 +1007,12 @@ span.sub_tip {
       #profile-section .container #focus_box #resize_stripe {
         width: 100%;
         background: #fff; }
-        @media screen and (min-width: 992px) {
+        @media screen and (min-width: 1119px) {
           #profile-section .container #focus_box #resize_stripe {
             display: none; } }
       #profile-section .container #focus_box #resize_edit {
         margin-top: 12px; }
-        @media screen and (min-width: 992px) {
+        @media screen and (min-width: 1119px) {
           #profile-section .container #focus_box #resize_edit {
             display: none; } }
         #profile-section .container #focus_box #resize_edit button .fa {
@@ -1030,7 +1028,7 @@ span.sub_tip {
         @media screen and (max-width: 799px) {
           #profile-section .container #focus_box #profile_page_info {
             padding: 0 20px; } }
-        @media screen and (min-width: 992px) {
+        @media screen and (min-width: 1119px) {
           #profile-section .container #focus_box #profile_page_info {
             padding: 0 120px; } }
         #profile-section .container #focus_box #profile_page_info h1.static {
@@ -1540,7 +1538,7 @@ span.sub_tip {
   @media screen and (max-width: 799px) {
     #search_container {
       padding: 0 20px; } }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1119px) {
     #search_container {
       padding: 0 120px; } }
   #search_container .input-group {

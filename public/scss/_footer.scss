@@ -7,13 +7,10 @@
     #list_name {
         background-color: $green;
         background-image: url('../img/bg.png');
+        padding: 0 $side-padding;
 
         @media screen and (max-width: $break-small) {
             padding: 20px 0;
-        }
-
-        @media screen and (min-width: $break-large) {
-            padding: 0 $side-padding;
         }
 
         .col-lg-3 {
