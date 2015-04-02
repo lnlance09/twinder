@@ -394,7 +394,6 @@ textarea.form-control {
     input[type=text],
     input[type=password],
     textarea.form-control {
-      -webkit-appearance: caret;
       -moz-appearance: caret; } }
 
 .input-group {
@@ -529,17 +528,19 @@ button:focus {
               text-align: center; } }
           #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
             display: none;
-            font-size: 20px;
-            color: #666; }
+            color: #444; }
             @media screen and (max-width: 800px) {
               #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
                 display: inline;
-                font-size: 19px; } }
+                font-weight: 600; } }
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
           #footer #sub_footer .col-lg-3 ul li a {
-            font-size: 15px;
-            color: #444; }
+            color: #666;
+            font-size: 16px; }
+            @media screen and (max-width: 800px) {
+              #footer #sub_footer .col-lg-3 ul li a {
+                font-size: 12px; } }
             #footer #sub_footer .col-lg-3 ul li a:hover {
               text-decoration: underline; }
   #footer #copyright {

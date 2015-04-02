@@ -9,7 +9,7 @@ textarea.form-control {
     box-shadow: none;
 
     @media screen and (max-width: $break-small) {
-        -webkit-appearance: caret;
+        //-webkit-appearance: caret;
         -moz-appearance: caret;
     }
 }
