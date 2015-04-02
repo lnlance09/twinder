@@ -17,6 +17,8 @@
               img {
                   vertical-align: middle !important;
                   display: inline;
+                  border: solid 1px #ddd;
+                  padding: 5px;
 
                   @media screen and (max-width: $break-small) {
                       width: 84px;
