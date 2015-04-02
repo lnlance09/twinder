@@ -506,10 +506,8 @@ button:focus {
           font-weight: 700; } }
   #footer #sub_footer {
     background-color: #fff;
-    text-align: left; }
-    @media screen and (min-width: 1119px) {
-      #footer #sub_footer {
-        padding: 0 120px; } }
+    text-align: left;
+    padding: 0 120px; }
     @media screen and (max-width: 799px) {
       #footer #sub_footer {
         text-align: center; } }
@@ -613,13 +611,11 @@ span.sub_tip {
   z-index: 99999999; }
 
 #header-section {
-  min-height: 250px; }
+  min-height: 250px;
+  padding: 0 120px; }
   @media screen and (max-width: 799px) {
     #header-section {
       padding: 0 20px; } }
-  @media screen and (min-width: 1119px) {
-    #header-section {
-      padding: 0 120px; } }
   #header-section .container {
     width: 100%;
     padding-left: 0 !important;
