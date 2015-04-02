@@ -341,9 +341,9 @@ ul.list-group li {
     display: none; } }
 @media screen and (max-width: 768px) {
   #sidebar-wrapper {
-    margin-left: -400px;
+    margin-left: -350px;
     left: 0;
-    width: 400px;
+    width: 350px;
     background: #f0f0f0;
     position: fixed;
     height: 100%;
@@ -352,7 +352,7 @@ ul.list-group li {
     #sidebar-wrapper .sidebar-nav {
       display: block;
       float: left;
-      width: 400px;
+      width: 350px;
       list-style: none;
       margin: 0;
       padding: 0;
@@ -381,10 +381,10 @@ ul.list-group li {
       font-size: 12px; }
 
   #wrapper.active {
-    margin-left: 400px;
+    margin-left: 350px;
     border-left: solid 1px #ddd; }
     #wrapper.active #sidebar-wrapper {
-      left: 400px; } }
+      left: 350px; } }
 form {
   margin-bottom: 0; }
 
