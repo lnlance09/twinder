@@ -229,16 +229,14 @@ ul.list-group li {
   background: #0993c7;
   margin: 0 auto;
   z-index: 99999;
-  border: none; }
+  border: none;
+  padding: 0 120px; }
   @media screen and (max-width: 800px) {
     .navbar {
       padding: 0 20px;
       border-bottom: solid 1px #555; }
       .navbar .container {
         opacity: 0.8; } }
-  @media screen and (min-width: 1119px) {
-    .navbar {
-      padding: 0 120px; } }
   .navbar .navbar-toggle {
     border: none;
     background: #0993c7;
@@ -273,7 +271,6 @@ ul.list-group li {
       margin-right: 0; } }
   @media screen and (max-width: 800px) {
     .navbar .navbar-collapse ul.navbar-nav {
-      float: none !important;
       -webkit-padding-start: 0 !important;
       margin: 0 0 8px 0; } }
   .navbar .navbar-collapse ul.navbar-nav > li {
@@ -536,7 +533,8 @@ button:focus {
             color: #666; }
             @media screen and (max-width: 800px) {
               #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-                display: inline; } }
+                display: inline;
+                font-size: 19px; } }
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
           #footer #sub_footer .col-lg-3 ul li a {
@@ -664,7 +662,7 @@ span.sub_tip {
     background: #fff; }
     @media screen and (max-width: 800px) {
       #header-section #signin {
-        padding-top: 50px; } }
+        padding-top: 100px; } }
     #header-section #signin #settings_submit {
       padding: 20px 0;
       border-top: solid 1px #ccc; }

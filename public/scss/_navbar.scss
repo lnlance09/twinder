@@ -7,6 +7,7 @@
     margin: 0 auto; 
     z-index: 99999;
     border: none;
+    padding: 0 $side-padding;
 
     @media screen and (max-width: $break-small) {
         padding: 0 20px;
@@ -15,10 +16,6 @@
         .container {
             opacity: 0.8;
         }
-    }
-    
-    @media screen and (min-width: $break-large) {
-        padding: 0 $side-padding;
     }
 
     .navbar-toggle {
@@ -73,7 +70,6 @@
 
         ul.navbar-nav {
             @media screen and (max-width: $break-small) {
-                float: none !important;
                 -webkit-padding-start: 0 !important;
                 margin: 0 0 8px 0;
             }
