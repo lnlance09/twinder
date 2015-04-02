@@ -171,7 +171,7 @@ span.stateface {
         width: 100px;
         height: 100px; }
       #match_modal .modal-body .col-lg-6 button {
-        font-size: 16px; } }
+        font-size: 14px; } }
 
 #gallery_modal .modal-backdrop {
   opacity: 0.7; }
@@ -1377,11 +1377,15 @@ span.sub_tip {
     text-align: left;
     border: solid 1px #ccc; }
     @media screen and (max-width: 768px) {
+      #discover_box #users_load .jumbotron {
+        padding-top: 12px; }
+        #discover_box #users_load .jumbotron button {
+          font-size: 12px; } }
+    @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron h1 {
         font-size: 18px;
         height: auto !important;
-        margin-bottom: 10px !important;
-        margin-top: 0; } }
+        margin-bottom: 10px !important; } }
     #discover_box #users_load .jumbotron h1 img {
       vertical-align: middle !important;
       display: inline;
@@ -1393,7 +1397,7 @@ span.sub_tip {
           height: 84px; } }
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron #profile_discover p {
-        font-size: 14px; } }
+        font-size: 12px; } }
 
 #decide_box {
   position: relative; }

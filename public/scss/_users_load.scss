@@ -6,12 +6,19 @@
           text-align: left;
           border: solid 1px #ccc;
 
+          @media screen and (max-width: $break-small) {
+            padding-top: 12px;
+
+            button {
+              font-size: 12px;
+            }
+          }
+
           h1 {
               @media screen and (max-width: $break-small) {
                   font-size: 18px;
                   height: auto !important;
                   margin-bottom: 10px !important;
-                  margin-top: 0;
               }
 
               img {
@@ -30,7 +37,7 @@
           #profile_discover {
               p {
                   @media screen and (max-width: $break-small) {
-                      font-size: 14px;
+                      font-size: 12px;
                   }
               }
           }
