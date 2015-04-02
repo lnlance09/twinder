@@ -187,10 +187,10 @@
 }
 
 @media screen and (max-width: $break-small) {
-    $width: 350px;
+    $width: 365px;
 
     #sidebar-wrapper {
-        margin-left: -350px;
+        margin-left: -365px;
         left: 0;
         width: $width;
         background: #f0f0f0;
