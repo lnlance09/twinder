@@ -7,10 +7,10 @@
           border: solid 1px #ccc;
 
           @media screen and (max-width: $break-small) {
-            padding-top: 12px;
+            padding: 12px;
 
             button {
-              font-size: 12px;
+              font-size: 13px;
             }
           }
 
@@ -37,7 +37,7 @@
           #profile_discover {
               p {
                   @media screen and (max-width: $break-small) {
-                      font-size: 12px;
+                      font-size: 13px;
                   }
               }
           }

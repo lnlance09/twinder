@@ -1378,9 +1378,9 @@ span.sub_tip {
     border: solid 1px #ccc; }
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron {
-        padding-top: 12px; }
+        padding: 12px; }
         #discover_box #users_load .jumbotron button {
-          font-size: 12px; } }
+          font-size: 13px; } }
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron h1 {
         font-size: 18px;
@@ -1397,7 +1397,7 @@ span.sub_tip {
           height: 84px; } }
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron #profile_discover p {
-        font-size: 12px; } }
+        font-size: 13px; } }
 
 #decide_box {
   position: relative; }
