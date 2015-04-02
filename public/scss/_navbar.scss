@@ -187,11 +187,11 @@
 }
 
 @media screen and (max-width: $break-small) {
-    $width: 150px;
-    $neg_width: -150px;
+    $width: 120px;
+    $neg_width: -120px;
 
     #sidebar-wrapper {
-        margin-left: -150px;
+        margin-left: -120px;
         left: 0;
         width: $width;
         background: #f0f0f0;
@@ -239,6 +239,7 @@
             width: 100%;
             color: #666;
             position: absolute;
+            font-size: 12px;
         }
     }
 

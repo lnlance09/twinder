@@ -5,7 +5,7 @@
     position: fixed;
     top: 50px;
     border: none;
-    border-bottom: solid 1px #ccc;
+    border-bottom: solid 1px #ddd;
     
     @media screen and (max-width: $break-small) {
         padding: 0 20px;
@@ -33,7 +33,7 @@
             box-shadow: none !important;
             font-size: 18px;
             padding: 12px 10px;
-            height: 35px;
+            height: 42px;
 
             &:focus {
                 outline: none !important;

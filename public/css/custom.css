@@ -325,9 +325,9 @@ ul.list-group li {
     display: none; } }
 @media screen and (max-width: 768px) {
   #sidebar-wrapper {
-    margin-left: -150px;
+    margin-left: -120px;
     left: 0;
-    width: 150px;
+    width: 120px;
     background: #f0f0f0;
     position: fixed;
     height: 100%;
@@ -336,7 +336,7 @@ ul.list-group li {
     #sidebar-wrapper .sidebar-nav {
       display: block;
       float: left;
-      width: 150px;
+      width: 120px;
       list-style: none;
       margin: 0;
       padding: 0;
@@ -361,13 +361,14 @@ ul.list-group li {
       display: block;
       width: 100%;
       color: #666;
-      position: absolute; }
+      position: absolute;
+      font-size: 12px; }
 
   #wrapper.active {
-    margin-left: 150px;
+    margin-left: 120px;
     border-left: solid 1px #ddd; }
     #wrapper.active #sidebar-wrapper {
-      left: 150px; } }
+      left: 120px; } }
 form {
   margin-bottom: 0; }
 
@@ -623,7 +624,7 @@ span.sub_tip {
       width: 50px; }
   #header-section #profile_top {
     min-height: 340px;
-    padding: 110px 0 20px 0;
+    padding: 116px 0 20px 0;
     background: #fff;
     height: auto;
     overflow: hidden; }
@@ -647,7 +648,7 @@ span.sub_tip {
       margin-top: 8px;
       display: block; }
   #header-section #signin {
-    padding: 95px 0 0 0;
+    padding: 101px 0 0 0;
     height: auto;
     min-height: 630px;
     background: #fff; }
@@ -705,6 +706,9 @@ span.sub_tip {
   .slide_wrapper .settings_box {
     padding: 15px 30px 25px 30px;
     border: none; }
+    @media screen and (max-width: 768px) {
+      .slide_wrapper .settings_box {
+        padding: 10px 30px 0 30px; } }
     .slide_wrapper .settings_box h2 {
       margin-top: 12px;
       font-size: 24px; }
@@ -1501,7 +1505,7 @@ span.sub_tip {
   position: fixed;
   top: 50px;
   border: none;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px #ddd;
   z-index: 9999;
   background: #fff; }
   @media screen and (max-width: 768px) {
@@ -1522,7 +1526,7 @@ span.sub_tip {
       box-shadow: none !important;
       font-size: 18px;
       padding: 12px 10px;
-      height: 35px; }
+      height: 42px; }
       #search_container .input-group .form-control:focus {
         outline: none !important; }
 

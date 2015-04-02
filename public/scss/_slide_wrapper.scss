@@ -8,6 +8,10 @@
         padding: 15px 30px 25px 30px;
         border: none;
 
+        @media screen and (max-width: $break-small) {
+            padding: 10px 30px 0 30px;
+        }
+
         h2 {
             margin-top: 12px;
             font-size: 24px;
