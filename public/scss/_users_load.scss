@@ -8,6 +8,7 @@
 
           @media screen and (max-width: $break-small) {
             padding: 12px;
+            margin-bottom: 15px;
 
             button {
               font-size: 13px;
@@ -39,6 +40,10 @@
                   @media screen and (max-width: $break-small) {
                       font-size: 13px;
                   }
+
+                + p {
+                  margin-bottom: 0;
+                }
               }
           }
       }
@@ -56,6 +61,10 @@
       background: #eee;
       z-index: 999;
       border: solid 1px #ccc;
+
+      @media screen and (max-width: $break-small) {
+        padding: 10px;
+      }
 
       #like_user {
         float: left;

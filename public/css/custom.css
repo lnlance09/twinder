@@ -171,7 +171,7 @@ span.stateface {
         width: 100px;
         height: 100px; }
       #match_modal .modal-body .col-lg-6 button {
-        font-size: 14px; } }
+        font-size: 12px; } }
 
 #gallery_modal .modal-backdrop {
   opacity: 0.7; }
@@ -1378,7 +1378,8 @@ span.sub_tip {
     border: solid 1px #ccc; }
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron {
-        padding: 12px; }
+        padding: 12px;
+        margin-bottom: 15px; }
         #discover_box #users_load .jumbotron button {
           font-size: 13px; } }
     @media screen and (max-width: 768px) {
@@ -1398,6 +1399,8 @@ span.sub_tip {
     @media screen and (max-width: 768px) {
       #discover_box #users_load .jumbotron #profile_discover p {
         font-size: 13px; } }
+    #discover_box #users_load .jumbotron #profile_discover p + p {
+      margin-bottom: 0; }
 
 #decide_box {
   position: relative; }
@@ -1409,6 +1412,9 @@ span.sub_tip {
     background: #eee;
     z-index: 999;
     border: solid 1px #ccc; }
+    @media screen and (max-width: 768px) {
+      #decide_box #like_or_pass {
+        padding: 10px; } }
     #decide_box #like_or_pass #like_user {
       float: left; }
     #decide_box #like_or_pass #pass_user {
