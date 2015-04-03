@@ -6,9 +6,9 @@
 .facebook.com	TRUE	/	FALSE	1422980781	reg_ext_ref	deleted
 .facebook.com	TRUE	/	FALSE	2	reg_fb_ref	deleted
 .facebook.com	TRUE	/	FALSE	2	reg_fb_gate	deleted
-.facebook.com	TRUE	/	TRUE	1435733930	c_user	15725716
-#HttpOnly_.facebook.com	TRUE	/	FALSE	1435733930	fr	0Fj5ZH3s2brnXQsOm.AWXDQthyVr61Lw6hypugCWBblCE.BVA1UC.vj.AAA.0.AWWLHqs2
-#HttpOnly_.facebook.com	TRUE	/	TRUE	1435733930	xs	6%3Ad0MBbXUmELdPhw%3A2%3A1426281730%3A12188
-.facebook.com	TRUE	/	FALSE	1435733930	csm	2
-#HttpOnly_.facebook.com	TRUE	/	TRUE	1435733930	s	Aa7tU9zlzfy3b2Is.BVA1UC
+.facebook.com	TRUE	/	TRUE	1435822422	c_user	15725716
+#HttpOnly_.facebook.com	TRUE	/	FALSE	1435822422	fr	0Fj5ZH3s2brnXQsOm.AWXX5UilmSQN-Pq6IXAYyj7ZSj8.BVA1UC.vj.AAA.0.AWUUy5EV
+#HttpOnly_.facebook.com	TRUE	/	TRUE	1435822422	xs	6%3Ad0MBbXUmELdPhw%3A2%3A1426281730%3A12188
+.facebook.com	TRUE	/	FALSE	1435822422	csm	2
+#HttpOnly_.facebook.com	TRUE	/	TRUE	1435822422	s	Aa7tU9zlzfy3b2Is.BVA1UC
 #HttpOnly_.facebook.com	TRUE	/	TRUE	1489353730	lu	gQc2Uu4ZEiWhKZQaVbVlDAkA
