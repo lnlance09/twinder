@@ -777,6 +777,8 @@
 			$count = $query->num_rows();
 			$i = 0;
 
+			//echo $count;
+			//die;
 			foreach($query->result() as $row) {
 				$return[$i] = array('to' => $row->user_from,
 									'from' => $row->user_to,

@@ -363,7 +363,8 @@ ul.list-group li {
           background: #fff;
           padding: 10px;
           color: #090127;
-          transition: 0.4s; }
+          transition: 0.4s;
+          font-size: 20px; }
         #sidebar-wrapper .sidebar-nav li:hover a {
           background: #07f;
           color: #fff; }
@@ -1552,7 +1553,7 @@ span.sub_tip {
     height: 100%;
     margin-top: 2px; }
     #search_container .input-group .input-group-addon {
-      font-size: 16px;
+      font-size: 20px;
       color: #0993c7; }
     #search_container .input-group .form-control {
       border: none !important;

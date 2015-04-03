@@ -5,7 +5,8 @@
 <?php
     if($count > 0) {
     	for($i=0;$i<$count;$i++) {
-    		if($messages[$i]['from'] == $user_one['id']) {
+    		// if(!empty($messages[$i]['message'])) {
+    			if($messages[$i]['from'] == $user_one['id']) {
 ?>
 		<li class="other">
 			<div class="avatar" onclick="location.href='<?php echo $base_url.$user_two['link']; ?>'">
@@ -18,7 +19,7 @@
       		</div>
 		</li>
 <?php
-			} else {
+				} else {
 ?>
 		<li class="self">
 			<div class="avatar" onclick="location.href='<?php echo $base_url.$user_one['link']; ?>'" >
@@ -31,8 +32,9 @@
       		</div>
 		</li>
 <?php
+				}
 			}
-		}
+		// }
 	} else {
 ?>
 		<div class="none">
