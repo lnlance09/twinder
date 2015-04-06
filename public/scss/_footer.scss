@@ -84,6 +84,10 @@
                             display: inline;
                             font-weight: 600;
                         }
+
+                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                            font-size: 16px;
+                        }
                     }
 
                     .twitter-follow-button {
@@ -94,10 +98,12 @@
                         color: #666;
                         font-size: 16px;
 
+                        // Phone
                         @media screen and (max-width: $break-medium) {
                             font-size: 12px;
                         }
 
+                        // Tablet
                         @media (min-width: $break-small) and (max-width: $break-medium) {
                             font-size: 16px;
                         }
