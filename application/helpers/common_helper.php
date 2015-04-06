@@ -207,7 +207,7 @@
 				$decimal = ceil($num/100)-($floor*10); 
 				return $floor.'.'.$decimal.'k';
 			} else {
-				return $num;
+				return number_format($num);
 			}
 		}
 

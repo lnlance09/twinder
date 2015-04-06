@@ -546,7 +546,7 @@ button:focus {
                 font-weight: 600; } }
   @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
     #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-      font-size: 16px; } }
+      font-size: 18px; } }
 
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
@@ -1521,37 +1521,36 @@ span.sub_tip {
         @media screen and (max-width: 980px) {
           #chart_load #chart_data #chart_block ul li {
             font-size: 16px; } }
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #chart_load #chart_data #chart_block ul li {
+      width: 100%; } }
+
   @media screen and (max-width: 980px) {
-    #chart_load #chart_data #mr,
-    #chart_load #chart_data #mrs {
+    #chart_load #chart_data #mr, #chart_load #chart_data #mrs {
       margin-top: 9px; } }
-  #chart_load #chart_data #mr img,
-  #chart_load #chart_data #mrs img {
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #chart_load #chart_data #mr, #chart_load #chart_data #mrs {
+      width: 100%; } }
+
+  #chart_load #chart_data #mr img, #chart_load #chart_data #mrs img {
     padding: 5px;
     border: solid 1px #ccc; }
-  #chart_load #chart_data #mr .svg,
-  #chart_load #chart_data #mrs .svg {
+  #chart_load #chart_data #mr .svg, #chart_load #chart_data #mrs .svg {
     width: 120px !important;
     height: 120px !important; }
-    #chart_load #chart_data #mr .svg path,
-    #chart_load #chart_data #mrs .svg path {
+    #chart_load #chart_data #mr .svg path, #chart_load #chart_data #mrs .svg path {
       fill: #0993c7; }
-    #chart_load #chart_data #mr .svg#lance path,
-    #chart_load #chart_data #mrs .svg#lance path {
+    #chart_load #chart_data #mr .svg#lance path, #chart_load #chart_data #mrs .svg#lance path {
       fill: #ffa500; }
-  #chart_load #chart_data #mr .hottest_name,
-  #chart_load #chart_data #mrs .hottest_name {
+  #chart_load #chart_data #mr .hottest_name, #chart_load #chart_data #mrs .hottest_name {
     margin-left: 10px; }
-    #chart_load #chart_data #mr .hottest_name .salutation,
-    #chart_load #chart_data #mrs .hottest_name .salutation {
+    #chart_load #chart_data #mr .hottest_name .salutation, #chart_load #chart_data #mrs .hottest_name .salutation {
       font-weight: 700;
       font-size: 20px; }
       @media screen and (max-width: 980px) {
-        #chart_load #chart_data #mr .hottest_name .salutation,
-        #chart_load #chart_data #mrs .hottest_name .salutation {
+        #chart_load #chart_data #mr .hottest_name .salutation, #chart_load #chart_data #mrs .hottest_name .salutation {
           font-size: 16px; } }
-      #chart_load #chart_data #mr .hottest_name .salutation + span,
-      #chart_load #chart_data #mrs .hottest_name .salutation + span {
+      #chart_load #chart_data #mr .hottest_name .salutation + span, #chart_load #chart_data #mrs .hottest_name .salutation + span {
         font-size: 16px; }
 
 /**

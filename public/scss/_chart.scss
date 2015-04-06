@@ -6,7 +6,6 @@
 
     #chart_data {
         #glance {
-          
             h3 {
                 font-size: 24px;
                 color: $black;
@@ -41,16 +40,22 @@
 
                     @media screen and (max-width: $break-medium) {
                         font-size: 16px;
+
+                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                            width: 100%;
+                        }
                     }
                 }
             }
         }
 
-        #mr,
-        #mrs {
-            
+        #mr, #mrs {
             @media screen and (max-width: $break-medium) {
                 margin-top: 9px;
+
+                @media (min-width: $break-small) and (max-width: $break-medium) {
+                    width: 100%;
+                }
             }
 
             img {
