@@ -236,9 +236,7 @@ ul.list-group li {
   @media screen and (max-width: 980px) {
     .navbar {
       padding: 0 20px;
-      border-bottom: solid 1px #555; }
-      .navbar .container {
-        opacity: 0.8; } }
+      border-bottom: solid 1px #555; } }
   .navbar .navbar-toggle {
     border: none;
     background: #0993c7;
@@ -994,7 +992,7 @@ span.sub_tip {
         top: 385px;
         background: #fff;
         border-bottom: solid 1px #ddd; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 980px) {
           #profile-section .container #focus_box #stripe {
             padding: 0 20px;
             display: none; } }
@@ -1038,7 +1036,7 @@ span.sub_tip {
         margin-top: -150px;
         min-height: 300px !important;
         background: #f0f0f0; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 980px) {
           #profile-section .container #focus_box #profile_page_info {
             padding: 0 20px; } }
         @media screen and (min-width: 1200px) {
@@ -1091,7 +1089,7 @@ span.sub_tip {
           z-index: 999;
           border: none;
           background: transparent; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 980px) {
             #profile-section .container #focus_box #profile_page_info .col-lg-9 {
               margin-top: 0px;
               width: 100%; } }
@@ -1099,7 +1097,7 @@ span.sub_tip {
             padding: 0;
             margin-top: 20px;
             margin-left: 50px; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 980px) {
               #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper {
                 margin-top: 0;
                 margin-left: 0; } }
@@ -1115,7 +1113,7 @@ span.sub_tip {
                   font-size: 18px;
                   cursor: pointer;
                   text-transform: capitalize; }
-                  @media screen and (max-width: 768px) {
+                  @media screen and (max-width: 980px) {
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li {
                       margin-left: 10px;
                       font-size: 13px; } }
@@ -1144,7 +1142,7 @@ span.sub_tip {
                 font-size: 22px;
                 padding: 7px;
                 height: auto; }
-                @media screen and (max-width: 768px) {
+                @media screen and (max-width: 980px) {
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .input-group .form-control {
                     font-size: 16px; } }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box {
@@ -1233,7 +1231,7 @@ span.sub_tip {
             margin-bottom: 0;
             width: 120px;
             height: 120px; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 980px) {
               #profile-section .container #focus_box ul#sub_pics li img {
                 width: 135px;
                 height: 135px; } }
@@ -1496,14 +1494,14 @@ span.sub_tip {
   #chart_load #chart_data #glance h3 {
     font-size: 24px;
     color: #000; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #chart_load #chart_data #glance h3 {
         font-size: 20px; } }
   #chart_load #chart_data #chart_block {
     padding: 10px; }
     #chart_load #chart_data #chart_block ul {
       margin-bottom: 0; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #chart_load #chart_data #chart_block ul {
           margin-left: 10px; } }
       #chart_load #chart_data #chart_block ul li {
@@ -1515,10 +1513,10 @@ span.sub_tip {
         cursor: auto; }
         #chart_load #chart_data #chart_block ul li:hover {
           color: #000 !important; }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 980px) {
           #chart_load #chart_data #chart_block ul li {
             font-size: 16px; } }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 980px) {
     #chart_load #chart_data #mr,
     #chart_load #chart_data #mrs {
       margin-top: 9px; } }
@@ -1543,7 +1541,7 @@ span.sub_tip {
     #chart_load #chart_data #mrs .hottest_name .salutation {
       font-weight: 700;
       font-size: 20px; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #chart_load #chart_data #mr .hottest_name .salutation,
         #chart_load #chart_data #mrs .hottest_name .salutation {
           font-size: 16px; } }
