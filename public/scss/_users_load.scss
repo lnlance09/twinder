@@ -6,7 +6,7 @@
           text-align: left;
           border: solid 1px #ccc;
 
-          @media screen and (max-width: $break-small) {
+          @media screen and (max-width: $break-medium) {
             padding: 12px;
             margin-bottom: 15px;
 
@@ -16,7 +16,7 @@
           }
 
           h1 {
-              @media screen and (max-width: $break-small) {
+              @media screen and (max-width: $break-medium) {
                   font-size: 18px;
                   height: auto !important;
                   margin-bottom: 10px !important;
@@ -28,7 +28,7 @@
                   border: solid 1px #ddd;
                   padding: 5px;
 
-                  @media screen and (max-width: $break-small) {
+                  @media screen and (max-width: $break-medium) {
                       width: 84px;
                       height: 84px;
                   }
@@ -37,7 +37,7 @@
 
           #profile_discover {
               p {
-                  @media screen and (max-width: $break-small) {
+                  @media screen and (max-width: $break-medium) {
                       font-size: 13px;
                   }
 
@@ -62,7 +62,7 @@
       z-index: 999;
       border: solid 1px #ccc;
 
-      @media screen and (max-width: $break-small) {
+      @media screen and (max-width: $break-medium) {
         padding: 10px;
       }
 
@@ -74,7 +74,7 @@
         float: right;
       }
 
-      @media screen and (max-width: $break-small) {
+      @media screen and (max-width: $break-medium) {
         #pass_user {
           float: left;
         }
@@ -87,7 +87,7 @@
 }
 
 h1#geo_error {
-  @media screen and (max-width: $break-small) {
+  @media screen and (max-width: $break-medium) {
     font-size: 16px;
   }
 }

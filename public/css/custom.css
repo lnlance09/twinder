@@ -26,8 +26,7 @@ span.stateface {
     fill: #ffa500;
     transition: 0.8s; }
 
-#like_user,
-#pass_user {
+#like_user, #pass_user {
   cursor: pointer;
   transition: 0.2s; }
 
@@ -58,6 +57,10 @@ span.stateface {
 #twitter_svg {
   width: 180px;
   height: 180px; }
+  @media screen and (max-width: 980px) {
+    #twitter_svg {
+      width: 100px;
+      height: 100px; } }
   #twitter_svg path {
     fill: #0993c7; }
   #twitter_svg + button {
@@ -862,7 +865,8 @@ span.sub_tip {
     z-index: 2;
     overflow: hidden;
     padding: 5px;
-    border: solid 1px #ccc; }
+    border: solid 1px #ccc;
+    background: #fff; }
 
 .circle {
   position: absolute;
@@ -1235,7 +1239,6 @@ span.sub_tip {
       #profile-section .container #focus_box ul#sub_pics {
         list-style: none;
         -webkit-padding-start: 0;
-        margin: 0;
         width: 300px; }
         @media (min-width: 768px) and (max-width: 980px) {
           #profile-section .container #focus_box ul#sub_pics {
@@ -1422,13 +1425,13 @@ span.sub_tip {
   #discover_box #users_load .jumbotron {
     text-align: left;
     border: solid 1px #ccc; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #discover_box #users_load .jumbotron {
         padding: 12px;
         margin-bottom: 15px; }
         #discover_box #users_load .jumbotron button {
           font-size: 13px; } }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #discover_box #users_load .jumbotron h1 {
         font-size: 18px;
         height: auto !important;
@@ -1438,11 +1441,11 @@ span.sub_tip {
       display: inline;
       border: solid 1px #ddd;
       padding: 5px; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #discover_box #users_load .jumbotron h1 img {
           width: 84px;
           height: 84px; } }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #discover_box #users_load .jumbotron #profile_discover p {
         font-size: 13px; } }
     #discover_box #users_load .jumbotron #profile_discover p + p {
@@ -1458,20 +1461,20 @@ span.sub_tip {
     background: #eee;
     z-index: 999;
     border: solid 1px #ccc; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #decide_box #like_or_pass {
         padding: 10px; } }
     #decide_box #like_or_pass #like_user {
       float: left; }
     #decide_box #like_or_pass #pass_user {
       float: right; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #decide_box #like_or_pass #pass_user {
         float: left; }
       #decide_box #like_or_pass #like_user {
         float: right; } }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 980px) {
   h1#geo_error {
     font-size: 16px; } }
 

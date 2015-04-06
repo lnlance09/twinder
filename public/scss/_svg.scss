@@ -12,8 +12,7 @@
     }
 }
 
-#like_user,
-#pass_user {
+#like_user, #pass_user {
     cursor: pointer;
     transition: 0.2s;
 }
@@ -63,6 +62,11 @@
 #twitter_svg {
     width: 180px;
     height: 180px;
+
+    @media screen and (max-width: $break-medium) {
+        width: 100px;
+        height: 100px;
+    }
 
     path {
         fill: $blue;
