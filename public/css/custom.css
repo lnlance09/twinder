@@ -1440,6 +1440,10 @@ span.sub_tip {
       #decide_box #like_or_pass #like_user {
         float: right; } }
 
+@media screen and (max-width: 768px) {
+  h1#geo_error {
+    font-size: 14px; } }
+
 .rotate-left,
 .rotate-right {
   opacity: 0;

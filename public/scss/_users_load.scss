@@ -86,6 +86,12 @@
   }
 }
 
+h1#geo_error {
+  @media screen and (max-width: $break-small) {
+    font-size: 14px;
+  }
+}
+
 .rotate-left,
 .rotate-right {
     opacity: 0;

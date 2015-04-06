@@ -4,7 +4,7 @@
 	<div id="header-section">
         <div class="container" id="profile_top">
 			<div class="col-lg-12 text-center">
-				<h1>
+				<h1 id="geo_error">
 					<i class="fa fa-globe fa-lg"></i> There's nobody new around you...
 				</h1>
        	 	</div>
