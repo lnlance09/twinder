@@ -542,6 +542,9 @@ button:focus {
             @media screen and (max-width: 980px) {
               #footer #sub_footer .col-lg-3 ul li a {
                 font-size: 12px; } }
+            @media (min-width: 768px) and (max-width: 980px) {
+              #footer #sub_footer .col-lg-3 ul li a {
+                font-size: 16px; } }
             #footer #sub_footer .col-lg-3 ul li a:hover {
               text-decoration: underline; }
   #footer #copyright {

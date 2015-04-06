@@ -97,6 +97,10 @@
                         @media screen and (max-width: $break-medium) {
                             font-size: 12px;
                         }
+
+                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                            font-size: 16px;
+                        }
             
                         &:hover {
                             text-decoration: underline;
