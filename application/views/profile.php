@@ -150,7 +150,7 @@
 ?>
 			                    <li name="<?php echo $size_two; ?>" data-toggle="modal" data-target="#gallery_modal">
 			                        <a href="#">
-			                            <img src="<?php echo $size_one; ?>" width="115" height="115" class="thumbnail" alt="<?php echo $user_info['name']; ?>" />
+			                            <img src="<?php echo $size_one; ?>" width="115" height="115" class="thumbnail" alt="<?php echo $user_info['name']; ?>">
 			                        </a>
 			                    </li>
 <?php
@@ -159,7 +159,8 @@
 		                	</ul>
 
 		                	<div class="clearfix"></div>
-
+							
+							<!-- Link to report the user -->
 <?php
 	if($report) {
 ?>

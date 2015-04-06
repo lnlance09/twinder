@@ -413,8 +413,12 @@
             ul#sub_pics {
                 list-style: none;
                 -webkit-padding-start: 0;
-                width: 300px;
                 margin: 0;
+                width: 300px;
+
+                @media (min-width: $break-small) and (max-width: $break-medium) {
+                    width: 100%;
+                }
 
                 li {
                     display: inline-block;
