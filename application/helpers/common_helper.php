@@ -206,8 +206,10 @@
 				$floor = floor($num/1000);
 				$decimal = ceil($num/100)-($floor*10); 
 				return $floor.'.'.$decimal.'k';
-			} else {
+			} elseif(is_numeric($num)) {
 				return number_format($num);
+			} else {
+				return $num;
 			}
 		}
 
