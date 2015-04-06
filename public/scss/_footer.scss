@@ -83,10 +83,10 @@
                         @media screen and (max-width: $break-medium) {
                             display: inline;
                             font-weight: 600;
-                        }
 
-                        @media (min-width: $break-small) and (max-width: $break-medium) {
-                            font-size: 16px;
+                            @media (min-width: $break-small) and (max-width: $break-medium) {
+                                font-size: 16px;
+                            }
                         }
                     }
 

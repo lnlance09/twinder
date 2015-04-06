@@ -540,9 +540,10 @@ button:focus {
               #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
                 display: inline;
                 font-weight: 600; } }
-            @media (min-width: 768px) and (max-width: 980px) {
-              #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-                font-size: 16px; } }
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
+      font-size: 16px; } }
+
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
           #footer #sub_footer .col-lg-3 ul li a {
