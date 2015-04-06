@@ -43,6 +43,7 @@
 
                         @media (min-width: $break-small) and (max-width: $break-medium) {
                             width: 100%;
+                            font-size: 20px;
                         }
                     }
                 }
@@ -87,10 +88,18 @@
 
                     @media screen and (max-width: $break-medium) {
                         font-size: 16px;
+
+                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                            font-size: 20px;
+                        }
                     }   
 
                     + span {
                         font-size: 16px;
+
+                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                            font-size: 20px;
+                        }
                     }
                 }
             }

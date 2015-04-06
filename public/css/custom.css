@@ -1523,7 +1523,8 @@ span.sub_tip {
             font-size: 16px; } }
   @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
     #chart_load #chart_data #chart_block ul li {
-      width: 100%; } }
+      width: 100%;
+      font-size: 20px; } }
 
   @media screen and (max-width: 980px) {
     #chart_load #chart_data #mr, #chart_load #chart_data #mrs {
@@ -1550,8 +1551,15 @@ span.sub_tip {
       @media screen and (max-width: 980px) {
         #chart_load #chart_data #mr .hottest_name .salutation, #chart_load #chart_data #mrs .hottest_name .salutation {
           font-size: 16px; } }
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #chart_load #chart_data #mr .hottest_name .salutation, #chart_load #chart_data #mrs .hottest_name .salutation {
+      font-size: 20px; } }
+
       #chart_load #chart_data #mr .hottest_name .salutation + span, #chart_load #chart_data #mrs .hottest_name .salutation + span {
         font-size: 16px; }
+        @media (min-width: 768px) and (max-width: 980px) {
+          #chart_load #chart_data #mr .hottest_name .salutation + span, #chart_load #chart_data #mrs .hottest_name .salutation + span {
+            font-size: 20px; } }
 
 /**
  * Autocomplete
