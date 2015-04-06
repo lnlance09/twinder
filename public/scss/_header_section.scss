@@ -2,7 +2,7 @@
     min-height: 250px;
     padding: 0 $side-padding;
     
-    @media screen and (max-width: $break-small) {
+    @media screen and (max-width: $break-medium) {
         padding: 0 20px;
     }
 

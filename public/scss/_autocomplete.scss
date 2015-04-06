@@ -7,7 +7,7 @@
     border: none;
     border-bottom: solid 1px #ddd;
     
-    @media screen and (max-width: $break-small) {
+    @media screen and (max-width: $break-medium) {
         padding: 0 20px;
     }
     
@@ -72,8 +72,7 @@
     background: $white;
     text-align: center;
 
-    .input-group,
-    .form-control {
+    .input-group, .form-control {
         border-bottom: none;
         border: none !important;
     }

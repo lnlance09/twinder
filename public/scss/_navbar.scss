@@ -26,6 +26,12 @@
         &:hover {
             color: #ccc;
         }
+
+        &#main_icon {
+            @media screen and (min-width: $break-large) {
+                display: none;
+            }
+        }
     }
 
     .container {
@@ -98,12 +104,12 @@
                 }
 
                 &.active {
-                    > a:hover {
+                    > a:hover, > a:focus {
                         background: $blue;
                     }
 
-                    > a:focus {
-                        background: $blue;
+                    @media screen and (max-width: $break-medium) {
+                        display: none;
                     }
                 }
 
@@ -138,6 +144,13 @@
                                 display: inline;
                                 margin-bottom: 0;
                                 vertical-align: middle;
+                            }
+
+                            #like_count {
+                                @media screen and (max-width: $break-medium) {
+                                    float: right;
+                                    margin-top: 6px;
+                                }
                             }
 
                             span#header_name {
