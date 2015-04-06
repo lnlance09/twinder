@@ -133,6 +133,8 @@ span.stateface {
         @media screen and (max-width: 768px) {
           .modal .modal-content .modal-header i {
             font-size: 20px; } }
+      .modal .modal-content .modal-header .fa-globe {
+        color: #82b919 !important; }
     .modal .modal-content h4 {
       font-size: 32px;
       text-align: center; }
@@ -395,7 +397,9 @@ textarea.form-control {
     input[type=text],
     input[type=password],
     textarea.form-control {
-      -moz-appearance: caret; } }
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none; } }
 
 .input-group {
   width: 100%;
@@ -1663,8 +1667,7 @@ a {
 .noUi-connect {
   background: #ffa500 !important; }
 
-#about_box,
-#bottom_box {
+#about_box, #bottom_box {
   border-left: none;
   border-right: none;
   color: #fff;
@@ -1677,8 +1680,7 @@ a {
   margin-top: -90px;
   border: solid 1px #ddd; }
 
-.none,
-.main_none {
+.none, .main_none {
   padding: 8px;
   text-align: center;
   background: #fff;

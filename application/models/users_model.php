@@ -204,7 +204,7 @@
 			$users = $this->FindUsers($auth);
 			
 			if(array_key_exists('message', $users)) {
-				if(trim($users['message']) == 'recs timeout') {
+				if(trim($users['message']) == 'recs timeout' || trim($users['message'])  == 'recs exhausted') {
 					return FALSE;
 				} 
 			} else {
@@ -515,7 +515,6 @@
 						break;
 				}
 			}
-			// var_dump($gender);
 
 			return array('gender' => $gender, 
 						'city' => $city, 

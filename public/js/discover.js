@@ -7,7 +7,6 @@ $(document).ready(function() {
      */
     function AddCircle() {
         var $circle = $('<div class="circle"></div>');
-        
         $circle.animate({
             'width': '600px',
             'height': '600px',
@@ -29,7 +28,6 @@ $(document).ready(function() {
     function LoadUsers(position) {
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
-
         var user_url = base_url +'users/DiscoverLoad';
         var data = 'auth='+ auth +'&lon='+ lon +'&lat='+ lat +'&index=0&type=new';
 
@@ -147,21 +145,24 @@ $(document).ready(function() {
     function ShowError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                alert("Twinder must access your current location to find new matches for you");
+                var str = "Twinder must access your current location to find new matches for you";
                 break;
 
             case error.POSITION_UNAVAILABLE:
-                alert("Location information is unavailable");
+                var str = "Location information is unavailable";
                 break;
 
             case error.TIMEOUT:
-                alert("The request to get user location timed out");
+                var str = "The request to get user location timed out";
                 break;
 
             case error.UNKNOWN_ERROR:
-                alert("An unknown error occurred");
+                var str = "An unknown error occurred";
                 break;
         }
+
+        // Show the modal
+        $('#geo_modal').modal('show');
     }
 
     // Get the longitude and latitude coordinates

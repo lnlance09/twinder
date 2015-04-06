@@ -29,9 +29,10 @@
 	       	 	</div>
 	       	</div>
 
+			<!-- Hidden for the JS to work -->
 			<div class="hidden" id="user_at_num">0</div>
 
-			<!-- Modal -->
+			<!-- Match Modal -->
 			<div class="modal fade" id="match_modal">
 				<div class="modal-dialog">
 			    	<div class="modal-content">
@@ -69,6 +70,32 @@
 			      		<div class="modal-footer">
 			      			<button class="btn btn-success" type="button" id="msg_match"></button>
 			      			<button class="btn btn-primary" type="button" data-dismiss="modal">Keep Playing</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+
+			<!-- Geo Modal -->
+			<div class="modal fade" id="geo_modal">
+				<div class="modal-dialog">
+			    	<div class="modal-content">
+			    		<div class="modal-header">
+    						<h3 class="modal-title">
+    							<i class="fa fa-globe"></i> Geolocation Error
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    						</h3>
+						</div>
+
+			      		<div class="modal-body">
+			        		<div class="col-lg-12 text-center">
+			        			<p></p>
+			        		</div>
+
+			        		<div class="clearfix"></div>
+			      		</div>
+
+			      		<div class="modal-footer">
+			      			<button class="btn btn-primary" type="button" data-dismiss="modal">Close</button>
 			      		</div>
 			    	</div>
 			  	</div>

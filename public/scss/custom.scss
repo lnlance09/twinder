@@ -63,8 +63,7 @@ a {
     outline: none;
     text-decoration: none;
 
-    &:hover,
-    &:focus {
+    &:hover, &:focus {
         outline: none;
         text-decoration: none;
     }
@@ -86,8 +85,7 @@ a {
     background: $salmon !important;
 }
 
-#about_box,
-#bottom_box {
+#about_box, #bottom_box {
     border-left: none;
     border-right: none;
     color: $white;
@@ -102,8 +100,7 @@ a {
     border: solid 1px $border-color;
 }
 
-.none, 
-.main_none {
+.none, .main_none {
     padding: 8px;
     text-align: center;
     background: $white;

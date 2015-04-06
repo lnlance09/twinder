@@ -10,7 +10,10 @@ textarea.form-control {
 
     @media screen and (max-width: $break-small) {
         //-webkit-appearance: caret;
-        -moz-appearance: caret;
+        //-moz-appearance: caret;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
     }
 }
 
