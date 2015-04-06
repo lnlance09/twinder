@@ -1070,6 +1070,9 @@ span.sub_tip {
           cursor: auto; }
           #profile-section .container #focus_box #profile_page_info .thumbnail:hover {
             border: solid 1px #ccc; }
+          @media (min-width: 768px) and (max-width: 980px) {
+            #profile-section .container #focus_box #profile_page_info .thumbnail {
+              background: transparent; } }
           #profile-section .container #focus_box #profile_page_info .thumbnail #main_img {
             cursor: pointer;
             margin-bottom: 0;
