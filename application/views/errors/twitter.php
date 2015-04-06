@@ -12,7 +12,7 @@
 <?php
 	}
 ?>	
-		<p>
+		<p id="twit_error">
 <?php
 	if($can_link) {
 		echo 'Hi, '.$name.'. <br><br>';
