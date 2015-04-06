@@ -76,6 +76,8 @@
 	                    	<a href="#" class="thumbnail">
 	                        	<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" id="main_img">
 	                        </a>
+
+	                        <div class="clearfix"></div>
 	                        
 		                    <form method="POST" action="<?php echo $base_url; ?>users/EditProfile" id="edit_profile">
 		                    	<!-- Name and age of user -->
