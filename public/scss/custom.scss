@@ -85,6 +85,12 @@ a {
     background: $salmon !important;
 }
 
+#twit_error {
+    @media screen and (max-width: $break-medium) {
+        font-size: 16px;
+    }
+}
+
 #about_box, #bottom_box {
     border-left: none;
     border-right: none;
