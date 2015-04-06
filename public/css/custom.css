@@ -507,6 +507,10 @@ button:focus {
           font-size: 22px;
           color: #fff;
           font-weight: 700; } }
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #footer #list_name #slogan {
+      font-size: 28px; } }
+
   #footer #sub_footer {
     background-color: #fff;
     text-align: left;

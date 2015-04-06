@@ -39,6 +39,10 @@
                font-size: 22px;
                color: $white; 
                font-weight: 700;
+
+                @media (min-width: $break-small) and (max-width: $break-medium) {
+                    font-size: 28px;
+                }
             }
         }
     }
