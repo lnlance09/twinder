@@ -1065,15 +1065,17 @@ span.sub_tip {
           margin: 10px 0 0 5px;
           z-index: 9999;
           width: 105%; }
-        #profile-section .container #focus_box #profile_page_info .thumbnail {
+        #profile-section .container #focus_box #profile_page_info a.thumbnail {
           margin-bottom: 9px;
           cursor: auto; }
-          #profile-section .container #focus_box #profile_page_info .thumbnail:hover {
+          #profile-section .container #focus_box #profile_page_info a.thumbnail:hover {
             border: solid 1px #ccc; }
           @media (min-width: 768px) and (max-width: 980px) {
-            #profile-section .container #focus_box #profile_page_info .thumbnail {
-              background: transparent; } }
-          #profile-section .container #focus_box #profile_page_info .thumbnail #main_img {
+            #profile-section .container #focus_box #profile_page_info a.thumbnail {
+              background: transparent;
+              border: none;
+              text-align: left; } }
+          #profile-section .container #focus_box #profile_page_info a.thumbnail #main_img {
             cursor: pointer;
             margin-bottom: 0;
             width: 230px;

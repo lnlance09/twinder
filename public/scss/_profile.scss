@@ -143,7 +143,7 @@
                     width: 105%;
                 }
 
-                .thumbnail {
+                a.thumbnail {
                     margin-bottom: 9px;
                     cursor: auto;
 
@@ -153,6 +153,8 @@
 
                     @media (min-width: $break-small) and (max-width: $break-medium) {
                         background: transparent;
+                        border: none;
+                        text-align: left;
                     }
 
                     #main_img {
