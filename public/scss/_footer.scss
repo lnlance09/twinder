@@ -9,12 +9,12 @@
         background-image: url('../img/bg.png');
         padding: 0 $side-padding;
 
-        @media screen and (max-width: $break-small) {
+        @media screen and (max-width: $break-medium) {
             padding: 20px 0;
         }
 
         .col-lg-3 {
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                display: none; 
             }
 
@@ -34,7 +34,7 @@
         #slogan {
             display: none;
 
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                display: block;
                font-size: 22px;
                color: $white; 
@@ -48,7 +48,7 @@
         text-align: left;
         padding: 0 $side-padding;
         
-        @media screen and (max-width: $break-small) {
+        @media screen and (max-width: $break-medium) {
             text-align: center;
         }
 
@@ -58,7 +58,7 @@
             margin: 0;
             padding: 0;
 
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                 width: 100%;
             }
 
@@ -72,16 +72,15 @@
                     text-align: left;
                     padding: 6px 0;
 
-                    @media screen and (max-width: $break-small) {
+                    @media screen and (max-width: $break-medium) {
                         text-align: center;
                     }
 
-                    &#users_foot,
-                    &#places_foot {
+                    &#users_foot, &#places_foot {
                         display: none; 
                         color: #444;
 
-                        @media screen and (max-width: $break-small) {
+                        @media screen and (max-width: $break-medium) {
                             display: inline;
                             font-weight: 600;
                         }
@@ -95,7 +94,7 @@
                         color: #666;
                         font-size: 16px;
 
-                        @media screen and (max-width: $break-small) {
+                        @media screen and (max-width: $break-medium) {
                             font-size: 12px;
                         }
             

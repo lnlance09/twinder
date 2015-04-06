@@ -477,7 +477,7 @@ button:focus {
     background-color: #82b919;
     background-image: url("../img/bg.png");
     padding: 0 120px; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #footer #list_name {
         padding: 20px 0; } }
     #footer #list_name .col-lg-3 {
@@ -488,14 +488,14 @@ button:focus {
       color: #fff;
       float: left;
       width: 25%; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #footer #list_name .col-lg-3 {
           display: none; } }
       #footer #list_name .col-lg-3 .fa {
         color: #fff !important; }
     #footer #list_name #slogan {
       display: none; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #footer #list_name #slogan {
           display: block;
           font-size: 22px;
@@ -505,7 +505,7 @@ button:focus {
     background-color: #fff;
     text-align: left;
     padding: 0 120px; }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 980px) {
       #footer #sub_footer {
         text-align: center; } }
     #footer #sub_footer .col-lg-3 {
@@ -513,7 +513,7 @@ button:focus {
       width: 25%;
       margin: 0;
       padding: 0; }
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 980px) {
         #footer #sub_footer .col-lg-3 {
           width: 100%; } }
       #footer #sub_footer .col-lg-3 ul {
@@ -524,13 +524,13 @@ button:focus {
         #footer #sub_footer .col-lg-3 ul li {
           text-align: left;
           padding: 6px 0; }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 980px) {
             #footer #sub_footer .col-lg-3 ul li {
               text-align: center; } }
           #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
             display: none;
             color: #444; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 980px) {
               #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
                 display: inline;
                 font-weight: 600; } }
@@ -539,7 +539,7 @@ button:focus {
           #footer #sub_footer .col-lg-3 ul li a {
             color: #666;
             font-size: 16px; }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 980px) {
               #footer #sub_footer .col-lg-3 ul li a {
                 font-size: 12px; } }
             #footer #sub_footer .col-lg-3 ul li a:hover {
