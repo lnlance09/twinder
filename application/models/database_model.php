@@ -121,7 +121,7 @@
 		 * @param {string} [city] The city of the user who is currently logged in
 		 * @param {string} [state] The state of the user who is currently logged in
 		 */
-		public function SyncMessages($updates, $my_tinder_id, $distance, $lon, $lat, $city, $state) {
+		public function SyncMessages($updates, $tinder_id, $distance, $lon, $lat, $city, $state) {
 			for($i=0;$i<count($updates);$i++) {
 				// Get the match ID for each
 				$match_id = $updates[$i]['_id'];
@@ -150,7 +150,7 @@
 						$this->InsertPics($person['_id'], ReturnPicsArray($person['photos']));
 						
 						// Insert each user's likes
-						$this->InsertIntoLikes($my_tinder_id, $person['_id'], $match_id, $last_active, $created_at);
+						$this->InsertIntoLikes($tinder_id, $person['_id'], $match_id, $last_active, $created_at);
 
 						// Check to see if each user has a row existing in the last_seen table
 						$last = $this->GetLastSeen($person['_id']);
@@ -158,7 +158,7 @@
 						// If there is a record of the user existing, then see if your distance to him/her is closer 
 						if(empty($last)) {
 							$data = array('seen_id' => $person['_id'],
-										'seen_by_id' => $my_tinder_id,
+										'seen_by_id' => $tinder_id,
 										'lon' => $lon,
 										'lat' => $lat,
 										'city' => $city,
@@ -293,7 +293,7 @@
 		public function GetLikeCount($tinder_id, $inverse, $q = NULL) {
 			$params = array($tinder_id);
 
-			$sql = "SELECT users.id, likes.id
+			$sql = "SELECT users.tinder_id, likes.id
 					FROM users
 					JOIN likes";
 
@@ -308,6 +308,7 @@
 				array_push($params, '%'.trim($q).'%');
 			}
 
+			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, $params);
 			return $query->num_rows();
 		}
@@ -337,15 +338,12 @@
 				array_push($params, '%'.trim($q).'%');
 			}
 
-			$sql .= " ORDER BY likes.datetime DESC";
-
+			$sql .= " GROUP BY users.tinder_id ORDER BY likes.datetime DESC";
 			$query = $this->db->query($sql, $params);
 			$count = $query->num_rows();
 			$i = 0;
 
 			$return = [];
-			// $result = $query->result();
-			// FormatArray($result, TRUE);
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -387,8 +385,8 @@
 					$this->db->where(array('user_one' => $tinder_id, 'user_two' => $my_id));
 					$this->db->update('likes', array('match_id' => $match_id));
 				} else {
+					// If there is no record, then create one
 					if($match_id != 'false' && !empty($match_id)) {
-						// If there is no record, then create one
 						$data = array('user_one' => $tinder_id,
 									'user_two' => $my_id,
 									'match_id' => $match_id,
@@ -837,6 +835,7 @@
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
+			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($tinder_id, '%'.trim($q).'%'));
 			return $query->num_rows();
 		}
@@ -863,6 +862,7 @@
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
+			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($tinder_id, '%'.trim($q).'%'));
 			$count = $query->num_rows();
 			$i = 0;
@@ -912,6 +912,7 @@
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
+			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($my_id, $his_id, '%'.trim($q).'%'));
 			return $query->num_rows();
 		}
@@ -939,6 +940,7 @@
 				$sql .= " AND users.first_name LIKE ?";
 			}
 
+			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($my_id, $his_id, '%'.trim($q).'%'));
 			$count = $query->num_rows();
 			$i = 0;

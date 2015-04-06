@@ -508,7 +508,7 @@
 
 				if($user_id) {
 					// Save the client's Tinder ID
-					$my_tinder_id = $this->session->userdata('tinder_id');
+					$tinder_id = $this->session->userdata('tinder_id');
 
 					// Get the user ID from the URL
 					$id = $this->input->get('id');
@@ -533,7 +533,7 @@
 
 						// Remove the batch user from the DB and then insert him/her into the likes table
 						$this->database->RemoveBatchUser($id, $user_id);
-						$this->database->InsertIntoLikes($my_tinder_id, $id, $match, $last_active, $created_at);
+						$this->database->InsertIntoLikes($tinder_id, $id, $match, $last_active, $created_at);
 
 						// Echo out the match ID
 						echo $match_id;

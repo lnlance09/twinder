@@ -3,10 +3,10 @@
  */
 .navbar {
     position: fixed;
+    border: none;
+    z-index: 99999;
     background: $blue;
     margin: 0 auto; 
-    z-index: 99999;
-    border: none;
     padding: 0 $side-padding;
 
     @media screen and (max-width: $break-medium) {

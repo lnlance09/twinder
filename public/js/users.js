@@ -17,6 +17,10 @@ $(document).ready(function() {
         var tenth = distance*0.05;
         var zoom = parseInt(10)-parseInt(tenth);
 
+        if(zoom < 0) {
+            var zoom = 4;
+        }
+
         // Set the position
         var LatLon = new google.maps.LatLng(lat, lon);
         var options = {

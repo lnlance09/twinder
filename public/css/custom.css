@@ -228,10 +228,10 @@ ul.list-group li {
  */
 .navbar {
   position: fixed;
+  border: none;
+  z-index: 99999;
   background: #0993c7;
   margin: 0 auto;
-  z-index: 99999;
-  border: none;
   padding: 0 120px; }
   @media screen and (max-width: 980px) {
     .navbar {
@@ -860,7 +860,9 @@ span.sub_tip {
     position: relative;
     line-height: 100px;
     z-index: 2;
-    overflow: hidden; }
+    overflow: hidden;
+    padding: 5px;
+    border: solid 1px #ccc; }
 
 .circle {
   position: absolute;
@@ -1523,7 +1525,6 @@ span.sub_tip {
             font-size: 16px; } }
   @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
     #chart_load #chart_data #chart_block ul li {
-      width: 100%;
       font-size: 20px; } }
 
   @media screen and (max-width: 980px) {
