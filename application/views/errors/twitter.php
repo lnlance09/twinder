@@ -8,7 +8,7 @@
 	if($can_link) {
 ?>
 		<br><br>
-		<button class="btn btn-default" type="button" id="twitter_sign_in" onclick="location.href='<?php echo $base_url; ?>home/TwitterRedirect'"><i class="fa fa-twitter fa-lg"></i> Sign in with Twitter</button>
+		<button class="btn btn-default" type="button" id="twitter_sign_in" onclick="location.href='<?php echo $base_url; ?>home/TwitterRedirect'"><i class="fa fa-twitter fa-lg"></i> Sign in with Twitter</button><br>
 <?php
 	}
 ?>	

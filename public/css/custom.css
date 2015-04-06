@@ -1207,6 +1207,9 @@ span.sub_tip {
                     width: 24px;
                     padding: 0;
                     border: none; }
+                  @media screen and (max-width: 980px) {
+                    #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p {
+                      font-size: 16px; } }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p img {
                     width: 100%; }
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #connections_box #con_load_box #media_container .media.tweet p img.media_pic {
