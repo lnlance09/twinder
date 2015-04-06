@@ -14,7 +14,6 @@
     	for($i=0;$i<$end;$i++) {
             // Define the style
             $style = ($i == ($end-1) ? 'style="border-bottom: solid 1px #ccc;"' : NULL);
-
             $id = $hot['users'][$i]['tinder_id'];
     		$name = $hot['users'][$i]['name'];
     		$age = $hot['users'][$i]['age'];
