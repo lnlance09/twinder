@@ -1129,6 +1129,10 @@ span.sub_tip {
                     #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li {
                       margin-left: 10px;
                       font-size: 13px; } }
+  @media screen and (max-width: 980px) and (min-width: 768px) and (max-width: 980px) {
+    #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li {
+      font-size: 18px; } }
+
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li:first-of-type {
                     margin-left: 0; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li#active {
@@ -1264,6 +1268,10 @@ span.sub_tip {
         border-top: solid 1px #ddd; }
         #profile-section .timer_box:last-of-type {
           border-bottom: solid 1px #ddd; } }
+  @media screen and (max-width: 768px) and (min-width: 768px) and (max-width: 980px) {
+    #profile-section .timer_box {
+      width: 25%; } }
+
     #profile-section .timer_box .border_active {
       bottom: 0;
       margin-top: 6px;

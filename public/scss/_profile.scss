@@ -228,6 +228,10 @@
                                     @media screen and (max-width: $break-medium) {
                                         margin-left: 10px;
                                         font-size: 13px;
+
+                                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                                            font-size: 18px;
+                                        }
                                     }
 
                                     &:first-of-type {

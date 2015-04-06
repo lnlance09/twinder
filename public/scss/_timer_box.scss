@@ -11,6 +11,10 @@
         &:last-of-type {
             border-bottom: solid 1px #ddd;   
         }
+
+        @media (min-width: $break-small) and (max-width: $break-medium) {
+            width: 25%;
+        }
     }
 
     .border_active {
