@@ -6,18 +6,8 @@
     z-index: 99;
 
     @media screen and (max-width: $break-medium) {
-        border-top: solid 1px #ddd;
-        border-bottom: solid 1px #ddd;
         width: 25%;
         float: left;
-
-        &:last-of-type {
-            border-right: solid 1px #ddd;   
-        }
-
-        &:first-of-type {
-            border-left: solid 1px #ddd;   
-        }
     }
 
     .border_active {
