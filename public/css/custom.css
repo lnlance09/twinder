@@ -68,6 +68,9 @@ span.stateface {
   #twitter_svg + p {
     font-size: 24px;
     margin-top: 20px; }
+    @media screen and (max-width: 980px) {
+      #twitter_svg + p {
+        font-size: 14px; } }
 
 /**
  * Font-Awesome
@@ -1141,15 +1144,6 @@ span.sub_tip {
                     margin-left: 0; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li#active {
                     color: #0993c7; }
-            #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #twitter_sign_in {
-              font-size: 22px; }
-              #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #twitter_sign_in .fa {
-                color: #0993c7; }
-              #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper #twitter_sign_in + p {
-                font-size: 18px;
-                margin-top: 10px;
-                text-align: left;
-                margin: 0; }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .input-group {
               height: auto;
               border: solid 1px #ccc; }
@@ -1709,10 +1703,6 @@ a {
 
 .noUi-connect {
   background: #ffa500 !important; }
-
-@media screen and (max-width: 980px) {
-  #twit_error {
-    font-size: 16px; } }
 
 #about_box, #bottom_box {
   border-left: none;

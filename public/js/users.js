@@ -372,7 +372,7 @@ $(document).ready(function() {
 
     // Load the connections
     var active_tab = $('.panel-heading ul li#active').attr('name');
-    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter +'&twitter_id='+ twitter_id;
+    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter +'&twitter_id='+ twitter_id +'&name='+ first_name;
 
     $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
         $('.panel-heading ul li').click(function() {
