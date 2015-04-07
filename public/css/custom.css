@@ -1011,12 +1011,13 @@ span.sub_tip {
         width: 100%;
         top: 385px;
         background: #fff;
-        border-bottom: solid 1px #ddd;
-        padding: 0 20px;
-        display: none; }
+        border-bottom: solid 1px #ddd; }
         @media screen and (min-width: 1200px) {
           #profile-section .container #focus_box #stripe {
             padding: 0 120px; } }
+        @media screen and (max-width: 1024px) {
+          #profile-section .container #focus_box #stripe {
+            display: none; } }
         #profile-section .container #focus_box #stripe .col-lg-8 {
           padding: 0; }
           #profile-section .container #focus_box #stripe .col-lg-8 .row {
@@ -1150,6 +1151,8 @@ span.sub_tip {
                     margin-left: 0; }
                   #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-heading ul li#active {
                     color: #0993c7; }
+            #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .panel-body {
+              padding: 10px; }
             #profile-section .container #focus_box #profile_page_info .col-lg-9 #con_wrapper .input-group {
               height: auto;
               border: solid 1px #ccc; }
@@ -1249,6 +1252,9 @@ span.sub_tip {
         -webkit-padding-start: 0;
         width: 100%; }
         @media screen and (min-width: 320px) and (max-width: 320px) {
+          #profile-section .container #focus_box ul#sub_pics {
+            width: 300px; } }
+        @media screen and (min-width: 1200px) {
           #profile-section .container #focus_box ul#sub_pics {
             width: 300px; } }
         #profile-section .container #focus_box ul#sub_pics li {
