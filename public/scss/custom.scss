@@ -107,6 +107,10 @@ a {
     font-size: 24px;
     padding: 30px 10px;
     color: $black;
+
+    @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+        font-size: 20px;
+    }
 }
 
 .main_none {

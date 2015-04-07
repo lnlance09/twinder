@@ -8,10 +8,10 @@
     background: $blue;
     margin: 0 auto; 
     padding: 0 $side-padding;
+    border-bottom: solid 1px #555;
 
     @media screen and (max-width: $break-medium) {
         padding: 0 20px;
-        border-bottom: solid 1px #555;
     }
 
     .navbar-toggle {
@@ -73,7 +73,6 @@
         ul.navbar-nav {
             @media screen and (max-width: $break-medium) {
                 -webkit-padding-start: 0 !important;
-                margin: 0 0 8px 0;
             }
 
             > li {
@@ -104,8 +103,11 @@
                         background: $blue;
                     }
 
-                    @media screen and (max-width: $break-medium) {
-                        display: none;
+                    @media screen and (max-width: $break-small) {
+
+                        @media screen and (min-width: $break-medium) {
+                            display: none;
+                        }
                     }
                 }
 

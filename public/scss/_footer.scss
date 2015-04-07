@@ -9,12 +9,12 @@
         background-image: url('../img/bg.png');
         padding: 0 $side-padding;
 
-        @media screen and (max-width: $break-medium) {
+        @media screen and (max-width: $break-small) {
             padding: 20px 0;
         }
 
         .col-lg-3 {
-            @media screen and (max-width: $break-medium) {
+            @media screen and (max-width: $break-small) {
                display: none; 
             }
 
@@ -34,7 +34,7 @@
         #slogan {
             display: none;
 
-            @media screen and (max-width: $break-medium) {
+            @media screen and (max-width: $break-small) {
                display: block;
                font-size: 22px;
                color: $white; 
@@ -52,7 +52,7 @@
         text-align: left;
         padding: 0 $side-padding;
         
-        @media screen and (max-width: $break-medium) {
+        @media screen and (max-width: $break-small) {
             text-align: center;
         }
 
@@ -62,7 +62,7 @@
             margin: 0;
             padding: 0;
 
-            @media screen and (max-width: $break-medium) {
+            @media screen and (max-width: $break-small) {
                 width: 100%;
             }
 
@@ -76,7 +76,7 @@
                     text-align: left;
                     padding: 6px 0;
 
-                    @media screen and (max-width: $break-medium) {
+                    @media screen and (max-width: $break-small) {
                         text-align: center;
                     }
 
@@ -84,13 +84,17 @@
                         display: none; 
                         color: #444;
 
-                        @media screen and (max-width: $break-medium) {
+                        @media screen and (max-width: $break-small) {
                             display: inline;
                             font-weight: 600;
 
-                            @media (min-width: $break-small) and (max-width: $break-medium) {
+                            @media screen and (min-width: $break-small) and (max-width: $break-medium) {
                                 font-size: 18px;
-                            }
+                            } 
+                        }
+
+                        @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                            font-size: 12px;
                         }
                     }
 
@@ -103,13 +107,17 @@
                         font-size: 16px;
 
                         // Phone
-                        @media screen and (max-width: $break-medium) {
+                        @media screen and (max-width: $break-small) {
                             font-size: 12px;
                         }
 
                         // Tablet
                         @media (min-width: $break-small) and (max-width: $break-medium) {
                             font-size: 16px;
+                        }
+
+                        @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                            font-size: 10px;
                         }
             
                         &:hover {

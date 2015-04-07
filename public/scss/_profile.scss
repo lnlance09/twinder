@@ -11,7 +11,7 @@
             background: $white;
             border-bottom: none;
             text-align: left;
-            margin-top: 85px;
+            margin-top: 95px;
 
             #ping_wrapper {
                 background: $white;
@@ -35,10 +35,10 @@
                 background: #fff;
                 border-bottom: solid 1px #ddd;
 
-                @media screen and (max-width: $break-medium) {
+                //@media screen and (max-width: $break-medium) {
                     padding: 0 20px;
                     display: none;
-                }
+                //}
                 
                 @media screen and (min-width: $break-large) {
                     padding: 0 $side-padding;
@@ -152,7 +152,6 @@
                     }
 
                     @media (min-width: $break-small) and (max-width: $break-medium) {
-                        background: transparent;
                         border: none;
                         float: left;
                     }
@@ -234,6 +233,10 @@
                                         }
                                     }
 
+                                    @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                                        font-size: 10px;
+                                    }
+
                                     &:first-of-type {
                                         margin-left: 0;
                                     }
@@ -300,9 +303,13 @@
 
                                             span.pull-right {
                                                 font-size: 18px;
+                                            }
 
-                                                .fa {
+                                            @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                                                font-size: 16px;
 
+                                                span.pull-right {
+                                                    font-size: 16px;
                                                 }
                                             }
                                         }
@@ -310,6 +317,10 @@
                                         p {
                                             margin: 0;
                                             font-size: 16px;
+
+                                            @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                                                font-size: 14px;
+                                            }
                                         }
 
                                         img {
@@ -408,19 +419,20 @@
             ul#sub_pics {
                 list-style: none;
                 -webkit-padding-start: 0;
-                width: 300px;
+                width: 100%;
 
-                @media (min-width: $break-small) and (max-width: $break-medium) {
-                    width: 800px;
+                @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                    width: 300px;
                 }
 
                 li {
                     display: inline-block;
-                    margin-left: 10px;
-                    margin-top: 10px;
+                    padding: 5px;
 
-                    &:nth-of-type(odd) {
-                        margin-left: 0;
+                    @media screen and (min-width: $break-large) {
+                        &:nth-of-type(odd) {
+                            margin-left: 0;
+                        }
                     }
 
                     img {
@@ -428,9 +440,14 @@
                         width: 120px;
                         height: 120px;
 
-                        @media screen and (max-width: $break-medium) {
-                            width: 135px;
-                            height: 135px;
+                        @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                            width: 70px;
+                            height: 70px;  
+                        }
+
+                        @media screen and (max-width: $break-small) {
+                            width: 120px;
+                            height: 120px;
                         }
                     }
                 }
