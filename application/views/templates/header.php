@@ -155,7 +155,7 @@
 ?>
             </ul>
 
-            <span>Twinder v1.0</span>
+            <span></span>
         </div>
 
         <div id="search_container">
