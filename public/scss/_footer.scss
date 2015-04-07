@@ -7,14 +7,18 @@
     #list_name {
         background-color: $green;
         background-image: url('../img/bg.png');
-        padding: 0 $side-padding;
+        padding: 0 20px;
+    
+        @media screen and (min-width: $break-large) {
+            padding: 0 $side-padding;
+        }
 
-        @media screen and (max-width: $break-small) {
+        @media screen and (max-width: $break-medium) {
             padding: 20px 0;
         }
 
         .col-lg-3 {
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                display: none; 
             }
 
@@ -34,7 +38,7 @@
         #slogan {
             display: none;
 
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                display: block;
                font-size: 22px;
                color: $white; 
@@ -49,11 +53,11 @@
 
     #sub_footer {
         background-color: $white;
-        text-align: left;
-        padding: 0 $side-padding;
+        text-align: center;
+        padding: 0 20px;
         
-        @media screen and (max-width: $break-small) {
-            text-align: center;
+        @media screen and (min-width: $break-large) {
+            padding: 0 $side-padding;
         }
 
         .col-lg-3 {
@@ -62,7 +66,7 @@
             margin: 0;
             padding: 0;
 
-            @media screen and (max-width: $break-small) {
+            @media screen and (max-width: $break-medium) {
                 width: 100%;
             }
 
@@ -76,15 +80,14 @@
                     text-align: left;
                     padding: 6px 0;
 
-                    @media screen and (max-width: $break-small) {
+                    @media screen and (max-width: $break-medium) {
                         text-align: center;
                     }
 
                     &#users_foot, &#places_foot {
-                        display: none; 
                         color: #444;
 
-                        @media screen and (max-width: $break-small) {
+                        @media screen and (max-width: $break-medium) {
                             display: inline;
                             font-weight: 600;
 
