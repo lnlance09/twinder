@@ -185,7 +185,7 @@
 }
 
 @media screen and (max-width: $break-medium) {
-    $width: 400px;
+    $width: $break-medium;
 
     #sidebar-wrapper {
         margin-left: -400px;
@@ -239,7 +239,7 @@
             position: absolute;
             font-size: 12px;
         }
-    }
+    }   
 
     #wrapper.active {
         margin-left: $width;
@@ -247,6 +247,73 @@
     
         #sidebar-wrapper {
             left: $width;
+        }
+    }
+
+    @media screen and (max-width: $break-small) {
+        $width: $break-medium;
+
+        #sidebar-wrapper {
+            margin-left: -400px;
+            left: 0;
+            width: $width;
+            background: #f0f0f0;
+            position: fixed;
+            height: 100%;
+            z-index: 10000;
+            transition: all .4s ease 0s;
+
+            .sidebar-nav {
+                display: block;
+                float: left;
+                width: $width;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                padding-top: 54px;
+
+                li {
+                    border-bottom: solid 1px #ddd;
+                    cursor: pointer;
+                    transition: 0.4s;
+
+                    a {
+                        display: block;
+                        background: $white;
+                        padding: 10px;
+                        color: #090127;
+                        transition: 0.4s;
+                        font-size: 20px;
+                    }
+
+                    &:hover {
+                        a {
+                            background: #07f;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+
+            span {
+                bottom: 4px;
+                right: 0;
+                text-align: center;
+                display: block;
+                width: 100%;
+                color: #666;
+                position: absolute;
+                font-size: 12px;
+            }
+        }   
+
+        #wrapper.active {
+            margin-left: $width;
+            border-left: solid 1px #ddd;
+        
+            #sidebar-wrapper {
+                left: $width;
+            }
         }
     }
 }
