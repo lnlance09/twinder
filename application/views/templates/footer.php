@@ -48,7 +48,6 @@
 
                 <div class="col-lg-3">
                     <ul>
-                        <li id="users_foot">Random Users</li>
 <?php
     // Loop thru the random users
     for($i=0;$i<4;$i++) {
@@ -66,7 +65,6 @@
 
                 <div class="col-lg-3">
                     <ul>
-                        <li id="places_foot">Random Places</li>
 <?php
     // Loop thru the random locations
     for($i=0;$i<4;$i++) {

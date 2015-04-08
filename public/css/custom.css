@@ -486,6 +486,8 @@ button:focus {
 #footer {
   z-index: 99999999; }
   #footer #list_name {
+    border-top: solid 1px #888;
+    border-bottom: solid 1px #555;
     background-color: #82b919;
     background-image: url("../img/bg.png");
     padding: 0 20px; }
@@ -546,19 +548,6 @@ button:focus {
           @media screen and (max-width: 1024px) {
             #footer #sub_footer .col-lg-3 ul li {
               text-align: center; } }
-          #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-            color: #444; }
-            @media screen and (max-width: 1024px) {
-              #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-                display: inline;
-                font-weight: 600; } }
-  @media screen and (max-width: 1024px) and (min-width: 768px) and (max-width: 1024px) {
-    #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-      font-size: 18px; } }
-
-            @media screen and (min-width: 320px) and (max-width: 320px) {
-              #footer #sub_footer .col-lg-3 ul li#users_foot, #footer #sub_footer .col-lg-3 ul li#places_foot {
-                font-size: 12px; } }
           #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
           #footer #sub_footer .col-lg-3 ul li a {
@@ -1039,7 +1028,7 @@ span.sub_tip {
       #profile-section .container #focus_box #resize_stripe {
         width: 100%;
         background: #fff;
-        border: solid 1px #ccc;
+        border: solid 1px #ddd;
         padding: 0 20px; }
         @media screen and (min-width: 1200px) {
           #profile-section .container #focus_box #resize_stripe {
@@ -1260,7 +1249,8 @@ span.sub_tip {
             width: 300px; } }
         @media screen and (min-width: 1200px) {
           #profile-section .container #focus_box ul#sub_pics {
-            width: 300px; } }
+            width: 300px;
+            margin-top: 10px; } }
         #profile-section .container #focus_box ul#sub_pics li {
           display: inline-block;
           padding: 5px; }

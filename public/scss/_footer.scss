@@ -5,6 +5,8 @@
     z-index: 99999999;
 
     #list_name {
+        border-top: solid 1px #888;
+        border-bottom: solid 1px #555;
         background-color: $green;
         background-image: url('../img/bg.png');
         padding: 0 20px;
@@ -82,23 +84,6 @@
 
                     @media screen and (max-width: $break-medium) {
                         text-align: center;
-                    }
-
-                    &#users_foot, &#places_foot {
-                        color: #444;
-
-                        @media screen and (max-width: $break-medium) {
-                            display: inline;
-                            font-weight: 600;
-
-                            @media screen and (min-width: $break-small) and (max-width: $break-medium) {
-                                font-size: 18px;
-                            } 
-                        }
-
-                        @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
-                            font-size: 12px;
-                        }
                     }
 
                     .twitter-follow-button {
