@@ -487,9 +487,8 @@ button:focus {
   z-index: 99999999; }
   #footer #list_name {
     border-top: solid 1px #888;
-    border-bottom: solid 1px #555;
+    border-bottom: solid 1px #fff;
     background-color: #82b919;
-    background-image: url("../img/bg.png");
     padding: 0 20px; }
     @media screen and (min-width: 1200px) {
       #footer #list_name {
@@ -499,7 +498,6 @@ button:focus {
         padding: 20px 0; } }
     #footer #list_name .col-lg-3 {
       font-size: 24px;
-      font-weight: 600;
       padding: 8px 0;
       text-align: left;
       color: #fff;
@@ -509,7 +507,8 @@ button:focus {
         #footer #list_name .col-lg-3 {
           display: none; } }
       #footer #list_name .col-lg-3 .fa {
-        color: #fff !important; }
+        color: #fff !important;
+        font-weight: 600; }
     #footer #list_name #slogan {
       display: none; }
       @media screen and (max-width: 1024px) {
