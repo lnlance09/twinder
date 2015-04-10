@@ -29,11 +29,8 @@
 			$this->db->where('user_id', $id);
 			$this->db->limit(1);
 			$query = $this->db->get('batches');
-
-			foreach($query->result() as $row) {
-				$tinder_id = $row->tinder_id;
-			}
-			return $tinder_id;
+			$result = $query->result();
+			return $result[0]->tinder_id;
 		}
 
 		/**
@@ -1387,15 +1384,14 @@
 					ON users.tinder_id = last_seen.seen_id
 					WHERE last_seen.state = ?";
 
-			if($gender) {
+			if(is_numeric($gender)) {
 				$sql .= " AND users.gender = ?";
 				array_push($data, $gender);
 			}
 
 			$query = $this->db->query($sql, $data);
 			$result = $query->result();
-			$count = $result[0]->count;
-			return array('count' => $count, 'avg_age' => ceil($result[0]->age));
+			return array('count' => $result[0]->count, 'avg_age' => ceil($result[0]->age));
 		}
 
 		/**

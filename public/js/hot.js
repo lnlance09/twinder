@@ -398,8 +398,8 @@ $(document).ready(function() {
         // If the location parameters aren't set, then get the user's current location
         if(set == 'false') {
             // Update the new lon & lat coordinates with the default to NYC
-            var lon = '-73.9844';
-            var lat = '40.7590';
+            var lon = -122.4206;
+            var lat = 37.7750;
             $('#drag_lon').text(lon);
             $('#drag_lat').text(lat);
             GetLocationName(lon, lat);
