@@ -95,7 +95,7 @@
 ?>
 	                    		<!-- Bio -->
 	                            <div id="about_quote">
-	                                <?php echo $user_info['bio']; ?>
+	                                <?php echo BioLinks($user_info['bio']); ?>
 	                            </div>
 
 								<!-- Bio Edit -->
