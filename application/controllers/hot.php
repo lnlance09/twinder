@@ -96,11 +96,6 @@
 				// Format the user's profile link
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
-				
-				// Get all of the state data for the pie chart
-				$all_chart = $this->database->GetUsersInState($state['abbrev']);
-				$male_chart = $this->database->GetUsersInState($state['abbrev'], 0);
-				$female_chart = $this->database->GetUsersInState($state['abbrev'], 1);
 
 				// Store all of the gender filters in an array
 				$genders = array(array('num' => 0, 'name' => 'men'),
@@ -142,10 +137,7 @@
 									'max' => $max,
 									'q' => $q,
 									'page' => $page,
-									'set' => $set,
-									'chart_data' => $all_chart,
-									'male_percentage' => $male_chart['count'],
-									'female_percentage' => $female_chart['count']);
+									'set' => $set);
 
 				// Get all of the data for the footer view
 				$locations = $this->loc->RandomLocations();
