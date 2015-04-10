@@ -41,6 +41,7 @@ $(document).ready(function() {
                 position: LatLon,
                 draggable: true,
                 animation: google.maps.Animation.DROP,
+                // icon: 'http://maps.google.com/mapfiles/ms/icons/red-pushpin.png',
             });
 
         // Make the marker draggable

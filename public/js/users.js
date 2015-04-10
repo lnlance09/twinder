@@ -45,7 +45,7 @@ $(document).ready(function() {
             map: map,
             position: LatLon,
             draggable: true,
-            animation: google.maps.Animation.DROP,
+            animation: google.maps.Animation.BOUNCE,
         });
 
         // Zoom in and center the marker upon click of the marker

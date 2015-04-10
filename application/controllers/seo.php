@@ -26,10 +26,13 @@
 			}
 
 			public function Test() {
-				$auth = '16880500-7df7-4892-b954-28676bc32eeb';
-
-				$info = $this->user->ProfileInfo($auth);
-				FormatArray($info);
+				$info = $this->database->NewQuery(-73.9844, 40.7590);
+				FormatArray($info, TRUE);
+				/*
+				$auth = '2740a27d-fa00-405c-afb2-a866ae38886f';
+				$info = $this->user->UpdateSettings($auth, 20, 20, 18, 1, 1);
+				FormatArray($info, TRUE);
+				*/
 				// $this->database->FlushDB();
 				// die;
 			}

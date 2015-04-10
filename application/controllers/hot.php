@@ -78,16 +78,13 @@
 				}
 
 				// The number of user that meet this criteria
-				$query = $this->database->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
+				$hot = $this->database->GetHottest(TRUE, $gender, $min, $max, $q, $lon, $lat, $distance);
 
 				// Check to see if the client is logged in
 				if($user_id) {
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Get the mactch count of the user who is currently logged in
 					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
 					$session = FALSE;
@@ -132,7 +129,7 @@
 									'profile_pic' => $profile_pic);
 
 				// Define the body info
-				$body_info = array('hot_count' => $hot['count'],
+				$body_info = array('hot_count' => $hot,
 									'genders' => $genders,
 									'gender' => strtolower($gender),
 									'city' => $city['name'],
@@ -169,8 +166,7 @@
 				}
 				
 				// Get all of the hottest users
-				$query = $this->database->HotQuery($gender, $min, $max, $q);
-				$hot = $this->database->GetHottest($query, $lon, $lat, $distance);
+				$hot = $this->database->GetHottest(FALSE, $gender, $min, $max, $q, $lon, $lat, $distance);
 				$count = $hot['count'];
 
 				// Get the city and state
@@ -182,12 +178,7 @@
 				// var_dump($page);
 
 				// Validate the page
-				if($page < $pages) {
-					$page = $page;
-				} else {
-					$page = 0;
-				}
-
+				$page = ($page < $pages ? $page : 0);
 				$start = $page*$per_page;
 
 				if($page == ($pages-1)) {

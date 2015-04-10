@@ -331,11 +331,11 @@
 			            
 			            <div class="media-body text-left">
 			                <h4 class="media-heading">
-			                    <a href="'.$base_url.$link.'" title="'.$name.'">'.$name.'</a>
+			                    Last Seen By <a href="'.$base_url.$link.'" title="'.$name.'">'.$name.'</a>
 			                </h4>
 
 			                <p>
-			                    '.$loc_data['miles_away'].' miles away from '.$loc_data['city'].', '.$loc_data['state'].' <br>
+			                    '.number_format($loc_data['miles_away']).' miles away from '.$loc_data['city'].', '.$loc_data['state'].' <br>
 
 			                    '.FormatTime($loc_data['datetime']).'
 			                </p>

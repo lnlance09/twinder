@@ -160,6 +160,16 @@
 		}
 
 		/**
+		 * Get the meta data belonging to the user currently logged in
+		 * @param {string} [auth] The API token
+		 * @return {array} An array from Tinder's API
+		 */
+		public function GetMeta($auth) {
+			$info = SendRequest('meta', $auth, FALSE, FALSE);
+			return @json_decode($info, TRUE);
+		}
+
+		/**
 		 * Search for users on Tinder by specific lat & lon coordinates
 		 * @param {string} [auth] The auth token of the user who is logged in
 		 * @param {decimal} [lon] The longitude coordinate

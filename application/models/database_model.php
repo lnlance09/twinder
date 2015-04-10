@@ -5,6 +5,9 @@
 
 			// Load the helper file
 			$this->load->helper('common_helper');
+
+			// Set the memory limit to unlimited
+			ini_set('memory_limit', '-1');
 		}
 
 		public function FlushDB() {
@@ -1128,18 +1131,27 @@
 		}
 
 		/**
-		 * Query the DB to get all of the hottest user who fit the specfied criteria except for the distance which cannot be done with MySQL
-		 * @param {int} [gender] The gender filter. 0 for men. 1 for women. -1 for both
-		 * @param {int} [min] The age minimum
-		 * @param {int} [max] The age maximum
-		 * @param {string} [q] The query string to match each user's first name with
+		 * Return an array contaning users that have been filtered by their location
+		 * @param {int} [num] Whether or not to return just the count
+		 * @param {int} [gender] The gender of the search
+		 * @param {int} [min] The minimum age
+		 * @param {int} [max] The maximum age
+		 * @param {string} [q] The query string
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 * @param {int} [distance] The distance filter value in miles
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
-		public function HotQuery($gender, $min, $max, $q) {
+		public function GetHottest($num, $gender, $min, $max, $q, $lon, $lat, $distance) {
 			$params = [];
 
-			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic, users.bio, last_seen.*
-					FROM users 
+			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.username, users.profile_pic, users.bio ";
+
+			if(!empty($lon) && !empty($lat)) {
+				$sql .= ", (3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance ";
+			}
+
+			$sql .= "FROM users 
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
 
@@ -1171,45 +1183,37 @@
 				$sql .= " AND users.first_name LIKE ? ";
 			}
 
+			if(!empty($lon) && !empty($lat)) {
+				array_push($params, $distance);
+				$sql .= " HAVING distance < ?";
+			}
+
 			$query = $this->db->query($sql, $params);
-			return array('count' => $query->num_rows(), 'result' => $query->result());
-		}
+			$count = $query->num_rows();
 
-		/**
-		 * Return an array contaning users that have been filtered by their location
-		 * @param {string} [sql] The results from the query
-		 * @param {decimal} [lon] The longitude coordinate
-		 * @param {decimal} [lat] The latitude coordinate
-		 * @param {int} [distance] The distance filter value in miles
-		 * @return {array} An array containing the number of rows returned and info about the users
-		 */
-		public function GetHottest($sql, $lon, $lat, $distance) {
-			$return = [];
+			if($num) {
+				return $count;
+			} else {
+				$data = [];
+				$i = 0;
 
-			foreach($sql['result'] as $row) {
-				// Get each user's match count
-				$like_count = $this->GetLikeCount($row->tinder_id, TRUE);
-
-				// Get the distance between the client and the users
-				$between = $this->loc->Haversine($row->lat, $row->lon, $lat, $lon);
-
-				// If the distance is within the user's settings limit, then push it into the greater array
-				if($between < $distance) {
-					$new_data = array('tinder_id' => $row->tinder_id,
+				foreach($query->result() as $row) {
+					$data[$i] = array('tinder_id' => $row->tinder_id,
 									'name' => $row->first_name,
 									'age' => $row->age,
 									'bio' => BioDefault($row->bio, $row->first_name),
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
-									'distance' => $between,
-									'like_count' => $like_count);
-					array_push($return, $new_data);
+									'distance' => $row->distance,
+									'like_count' => $this->GetLikeCount($row->tinder_id, TRUE));
+					
+					$i++;
 				}
-			}
 
-			// Sort the results by like count
-			usort($return, 'SortByLikes');
-			return array('count' => count($return), 'users' => $return);
+				// Sort the results by like count
+				usort($data, 'SortByLikes');
+				return array('count' => $count, 'users' => $data);
+			}
 		}
 
 		/**

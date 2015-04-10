@@ -261,6 +261,7 @@
 						'OK' => 'OKLAHOMA',
 						'OR' => 'OREGON',
 						'PA' => 'PENNSYLVANIA',
+						'PR' => 'PUERTO RICO',
 						'RI' => 'RHODE ISLAND',
 						'SC' => 'SOUTH CAROLINA',
 						'SD' => 'SOUTH DAKOTA',
