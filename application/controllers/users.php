@@ -186,7 +186,7 @@
 						}
 
 						// Get all of the data for the footer view
-						$locations = $this->loc->RandomLocations(5);
+						$locations = $this->loc->FooterPlaces();
 						$rand_users = $this->database->GetAllUsers(5);
 						$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
@@ -237,7 +237,7 @@
 									'name' => $this->session->userdata('first_name'));
 
 					// Get all of the data for the footer view
-					$locations = $this->loc->RandomLocations();
+					$locations = $this->loc->FooterPlaces();
 					$rand_users = $this->database->GetAllUsers(5);
 					$footer_info = array('locations' => $locations, 'users' => $rand_users);
 

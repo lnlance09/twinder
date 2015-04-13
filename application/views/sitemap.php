@@ -15,7 +15,7 @@
 		<priority>0.8</priority>
 	</url>
 
-<?php 
+<?php
 	for($i=0;$i<count($users);$i++) { 
 ?>
     <url>

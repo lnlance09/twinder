@@ -226,20 +226,14 @@
 			return $return;
 		}
 
-		public function FooterPlaces($lon, $lat) {
-			$sql = "SELECT locations.city, locations.state_abbrev,
-					(3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance
-					FROM locations
-					JOIN last_seen
-					ON locations.city = last_seen.city
-					GROUP BY locations.city
-					HAVING distance < 50
+		public function FooterPlaces() {
+			$sql = "SELECT city, state_abbrev
+					FROM locations 
+					WHERE id > ?
+					GROUP BY state
 					LIMIT 5";
-			$query = $this->db->query($sql);
+			$query = $this->db->query($sql, array(mt_rand(95867, 125976)));
 			$count = $query->num_rows();
-			echo $count;
-			die;
-			
 			$i = 0;
 
 			$return = [];

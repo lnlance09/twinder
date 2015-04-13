@@ -35,7 +35,7 @@
 			}
 
 			public function Test() {
-				$info = $this->loc->FooterPlaces(-80.26355, 25.771126);
+				$info = $this->loc->FooterPlaces();
 				// $info = $this->database->NewQuery(-73.9844, 40.7590);
 				FormatArray($info, TRUE);
 				
