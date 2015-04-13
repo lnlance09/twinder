@@ -7,7 +7,7 @@
 			$this->load->helper('common_helper');
 
 			// Set the memory limit to unlimited
-			ini_set('memory_limit', '-1');
+			ini_set('memory_limit', -1);
 		}
 
 		public function FlushDB() {
@@ -1201,14 +1201,13 @@
 									'bio' => BioDefault($row->bio, $row->first_name),
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
-									'distance' => $row->distance,
-									'like_count' => $this->GetLikeCount($row->tinder_id, TRUE));
+									'distance' => $row->distance);
 					
 					$i++;
 				}
 
 				// Sort the results by like count
-				usort($data, 'SortByLikes');
+				// usort($data, 'SortByLikes');
 				return array('count' => $count, 'users' => $data);
 			}
 		}
@@ -1345,10 +1344,14 @@
 		 * Query the DB to get all the users from the users table
 		 * @return {array|boolean} An array containing the links, names and ages of the users
 		 */
-		public function GetAllUsers() {
-			$sql = "SELECT username, tinder_id, first_name, age, profile_pic 
-					FROM users";
-			$query = $this->db->query($sql);
+		public function GetAllUsers($limit = NULL) {
+			$this->db->select('username, tinder_id, first_name, age, profile_pic');
+
+			if($limit) {
+				$this->db->limit($limit);
+			}
+
+			$query = $this->db->get('users');
 			$count = $query->num_rows();
 			$i = 0;
 

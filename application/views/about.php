@@ -9,20 +9,32 @@
 
             <div id="about">
                 <p>
-                    Twinder is what I like to describe as a splendid mix of elements from both Twitter and Tinder. 
+                    Twinder is essentially just a Tinder web client. 
+                    All of the users that are featured on this website are real Tinder users whose information has been collected with the Twinder.
+                    You can use Twinder to search for Tinder users based upon variables like location, gender and distance.
                     Everything that you do while logged into Twinder will also be done on the app itself. 
-                    But, the opposite isn't entirely true.  that you do on the actual Tinder app will be reflected on WeTinder.
+                    But, the opposite isn't entirely true. 
+                    During the process of <a href="http://lancenewman.me/reverse-engineering-the-tinder-api/" target="_blank">reverse engineering Tinder's API</a> a while back, I decided to put my own creative spin on what seems to now be a waning product.
                 </p>
 
                 <p>
-                    About one year ago, I <a href="http://lancenewman.me/reverse-engineering-the-tinder-api/" target="_blank">reverse engineered Tinder's API</a> with a little help from <a href="http://www.charlesproxy.com/" target="_blank">Charles</a>, a reverse proxy tool that allows people to sniff out the traffic from a third party device like a tablet or a phone.
-                    Once I knew what types of HTTP requests triggered the right kind of actions on the app, I effectively replicated them with cURL, a HTTP library that's used to send and receive requests.
+                    Even during its earliest days, Tinder has been a wildly popular app. 
+                    But, over the past few months or so, it's easy to get the impression that Tinder is losing some of its momentum.
+                    Their most recent decision to start limiting likes and start charging for their service kind of reaks a sense of desperation.
+                    It also speaks volumes about Tinder's priorities; or lack thereof. 
+                    Tinder's seems more satisfied with cashing out on a popular idea than with providing a remarkable product. 
                 </p>
 
                 <p>
-                    Soon thereafter, it came to my attention that although Tinder was a wildly popular app, it was lacking in some key areas.
-                    For starters, there was too much anonymity. Sure, anonymity is great because it helps users keep their distance from the crowds of creepy males on Tinder that will swipe right on just about anything with two legs.
-                    But, an online directory of Tinder users would serve an enormously useful purpose. It would grant more choices to millions of Tinder users. It would let users search for people in partcular instead of just having to hope that you run into thanks to to sheer luck. It would also rank the most popular and most desired Tinder users based upon a number of key factors.
+                    But, that's perfectly okay with me because it's given me an outlet to invest my mental energy. 
+                    To commence, let's focus on how Twinder helps improve the user experience.
+                </p>
+
+                <p>
+                    Twinder has its own set of features that really helps separate itself from its already established counterpart, Tinder. 
+                    It has always seemed a bit strange that Tinder's <a href="http://gotinder.com" target="_blank">website</a> was nothing more than just a few static pages.
+                    Seriously. Their website doesn't have any of the functionality that the app does. 
+                    It's really just a website that tells you to go download the app on your phone.
                 </p>
             </div>
         </div>

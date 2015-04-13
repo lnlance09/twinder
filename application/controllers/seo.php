@@ -21,13 +21,24 @@
 				// Get all of the matches from the DB
 				$matches = $this->database->GetAllMatches();
 
+				// Get the most popular place
+				// $places = $this->loc->RandomLocations();
+
+				// Define the info for the sitemap view
+				$info = array('users' => $users, 
+							'matches' => $matches
+							// 'places' => $places
+							);
+
 				// Load all of the views
-				$this->load->view('sitemap', array('users' => $users, 'matches' => $matches)); 
+				$this->load->view('sitemap', $info); 
 			}
 
 			public function Test() {
-				$info = $this->database->NewQuery(-73.9844, 40.7590);
+				$info = $this->loc->FooterPlaces(-80.26355, 25.771126);
+				// $info = $this->database->NewQuery(-73.9844, 40.7590);
 				FormatArray($info, TRUE);
+				
 				/*
 				$auth = '2740a27d-fa00-405c-afb2-a866ae38886f';
 				$info = $this->user->UpdateSettings($auth, 20, 20, 18, 1, 1);

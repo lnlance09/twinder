@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text().trim(); 
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0993c7"}]}];
-    
+
     // Check to see if the user's browser supports GeoLocation
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(ShowPosition, ShowError);
@@ -214,8 +214,6 @@ $(document).ready(function() {
         
         // Change the URL
         window.history.replaceState('', title, new_url);
-
-        // Change the document's title
         document.title = title;
     }
 

@@ -569,6 +569,10 @@ button:focus {
     #footer #copyright p {
       color: #fff;
       margin: 0; }
+      #footer #copyright p a {
+        color: #f0f0f0; }
+        #footer #copyright p a:hover {
+          text-decoration: underline; }
 
 /**
  * Infowindow

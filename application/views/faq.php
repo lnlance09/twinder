@@ -9,11 +9,11 @@
 
             <div id="faq">
                 <h2>
-                    What is WeTinder?
+                    What is Twinder?
                 </h2>
 
                 <p>
-                    WeTinder is Tinder for the web. 
+                    Twinder is just Tinder for the web. 
                     It serves the same, exact functionality as the app, but just with a cool, new interface that's made exclusively for the web.
                 </p>
 

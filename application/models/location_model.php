@@ -8,6 +8,9 @@
 
 			// Define the URL for the MapQuest API
 			$this->mapquest_url = 'http://www.mapquestapi.com/geocoding/v1/address?';
+
+			// Set the memory limit to unlimited
+			ini_set('memory_limit', -1);
 		}
 
 		/**
@@ -200,8 +203,13 @@
 		 * Query the DB to get a random array of locations
 		 * @return An array containing random locations
 		 */
-		public function RandomLocations() {
+		public function RandomLocations($limit = NULL) {
 			$this->db->select('city, state_abbrev');
+
+			if($limit) {
+				$this->db->limit($limit);
+			}
+
 			$query = $this->db->get('locations');
 			$count = $query->num_rows();
 			$i = 0;
@@ -215,6 +223,33 @@
 			}
 
 			shuffle($return);
+			return $return;
+		}
+
+		public function FooterPlaces($lon, $lat) {
+			$sql = "SELECT locations.city, locations.state_abbrev,
+					(3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance
+					FROM locations
+					JOIN last_seen
+					ON locations.city = last_seen.city
+					GROUP BY locations.city
+					HAVING distance < 50
+					LIMIT 5";
+			$query = $this->db->query($sql);
+			$count = $query->num_rows();
+			echo $count;
+			die;
+			
+			$i = 0;
+
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
+
+				$i++;
+			}
+
 			return $return;
 		}
 

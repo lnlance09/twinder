@@ -123,6 +123,14 @@
         p {
             color: $white;
             margin: 0;
+
+            a {
+                color: #f0f0f0;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
     }
 }

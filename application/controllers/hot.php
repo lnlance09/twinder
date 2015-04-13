@@ -77,9 +77,6 @@
 					$set = 'false';
 				}
 
-				// The number of user that meet this criteria
-				$hot = $this->database->GetHottest(TRUE, $gender, $min, $max, $q, $lon, $lat, $distance);
-
 				// Check to see if the client is logged in
 				if($user_id) {
 					$session = TRUE;
@@ -113,7 +110,7 @@
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => $title,
 									'session' => $session,
-									'header' => 'The hottest',
+									'header' => 'Browse',
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
 									'match_count' => $match_count,
@@ -124,8 +121,7 @@
 									'profile_pic' => $profile_pic);
 
 				// Define the body info
-				$body_info = array('hot_count' => $hot,
-									'genders' => $genders,
+				$body_info = array('genders' => $genders,
 									'gender' => strtolower($gender),
 									'city' => $city['name'],
 									'state' => $state['name'],
@@ -140,8 +136,8 @@
 									'set' => $set);
 
 				// Get all of the data for the footer view
-				$locations = $this->loc->RandomLocations();
-				$rand_users = $this->database->GetAllUsers();
+				$locations = $this->loc->RandomLocations(5);
+				$rand_users = $this->database->GetAllUsers(5);
 				$footer_info = array('locations' => $locations, 'users' => $rand_users);
 
 				// Load all of the views

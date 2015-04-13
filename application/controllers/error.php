@@ -33,8 +33,8 @@
 				}
 
 				// Get the footer info
-				$locations = $this->loc->RandomLocations();
-				$rand_users = $this->database->GetAllUsers();
+				$locations = $this->loc->RandomLocations(5);
+				$rand_users = $this->database->GetAllUsers(5);
 
 				// Store all of the data that needs to be passed to the view as an array
 				$data = array('session' => $session,

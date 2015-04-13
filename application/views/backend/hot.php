@@ -19,7 +19,6 @@
     		$age = $hot['users'][$i]['age'];
             $bio = $hot['users'][$i]['bio'];
     		$img = $hot['users'][$i]['profile_pic'];
-            $likes = $hot['users'][$i]['like_count'];
             $link = $hot['users'][$i]['link'];
 ?>
             <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'" <?php echo $style; ?>>
@@ -32,8 +31,6 @@
                 <div class="media-body text-left">
                     <h4 class="media-heading">
                         <a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
-                    
-                        <span class="pull-right"><i class="fa fa-heart"></i> <?php echo $likes; ?></span>
                     </h4>
 
                     <p>

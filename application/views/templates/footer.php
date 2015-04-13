@@ -97,7 +97,7 @@
                 
             <div id="copyright">
                 <p>
-                    Twinder © 2015 - a Lance Newman production
+                    Twinder © 2015 - a <a href="http://twinder.io/users/lance">Lance Newman</a> production
                 </p>
             </div>
         </div>

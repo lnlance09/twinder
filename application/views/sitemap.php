@@ -10,12 +10,6 @@
     </url>
 
 	<url>
-		<loc>http://twinder.io/hot</loc>
-		<changefreq>hourly</changefreq>
-		<priority>0.9</priority>
-	</url>
-
-	<url>
 		<loc>http://twinder.io/signin</loc>
 		<changefreq>never</changefreq>
 		<priority>0.8</priority>
@@ -25,7 +19,7 @@
 	for($i=0;$i<count($users);$i++) { 
 ?>
     <url>
-        <loc><?= 'http://twinder.io/'.$users[$i]['link']; ?></loc>
+        <loc><?php echo 'http://twinder.io/'.$users[$i]['link']; ?></loc>
         <changefreq>daily</changefreq>
         <priority>0.7</priority>
     </url>
@@ -35,12 +29,24 @@
 	for($i=0;$i<count($matches);$i++) {
 ?>
 	<url>
-        <loc><?= 'http://twinder.io/matches/'.$matches[$i]['match_id']; ?></loc>
+        <loc><?php echo 'http://twinder.io/matches/'.$matches[$i]['match_id']; ?></loc>
         <changefreq>daily</changefreq>
         <priority>0.7</priority>
     </url>
 <?php
 	}
+
+	/*
+	for($i=0;$i<count($places);$i++) {
+?>
+	<url>
+        <loc><?= 'http://twinder.io/hot/'.$places[$i]['city'].'/'.$$places[$i]['state']; ?></loc>
+        <changefreq>daily</changefreq>
+        <priority>0.7</priority>
+    </url>
+<?php
+	}
+	*/
 ?>
 
     <url>

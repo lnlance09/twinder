@@ -84,7 +84,6 @@
 		                        <h1 class="static">
 									<?php echo $user_info['name'].', '.$user_info['age']; ?>
 	                            </h1>
-	                    
 <?php
 	// Display the username is necessary
 	if(!empty($user_info['username'])) {
