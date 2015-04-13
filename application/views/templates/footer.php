@@ -112,7 +112,7 @@
     if(in_array($controller, $maps_pages)) {
 ?>
     <!-- Google Maps JS -->
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
 <?php
     }
 

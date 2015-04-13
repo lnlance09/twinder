@@ -232,7 +232,7 @@
 					WHERE id > ?
 					GROUP BY state
 					LIMIT 5";
-			$query = $this->db->query($sql, array(mt_rand(95867, 125000)));
+			$query = $this->db->query($sql, array(mt_rand(95867, 105000)));
 			$count = $query->num_rows();
 			$i = 0;
 
