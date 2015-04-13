@@ -140,7 +140,7 @@
 						$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
 						
 						// Define the meta tags
-						$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']),
+						$meta_info = array('description' => 'http://twinder.io/'.MetaSubject($user_info['username'], $user_info['name']),
 										'img' => $user_info['profile_pic'],
 										'url' => $this->base_url.$user_info['link']);
 

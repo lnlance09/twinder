@@ -18,7 +18,6 @@
 
 			public function Index() {
 				$admin_id = $this->session->userdata('admin_id');
-	
 				$auth = $this->session->userdata('token');
 				$user_id = $this->session->userdata('user_id');
 				$tinder_id = $this->session->userdata('tinder_id');
