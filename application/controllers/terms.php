@@ -37,7 +37,7 @@
 
 				// Define the meta tags
 				$meta_info = array('description' => "Twinder's Terms of Service",
-									'img' => 'http://twinder.io/public/img/favicon.ico',
+									'img' => 'http://twinder.io/public/img/logo.jpg',
 									'url' => 'http://twinder.io/terms',
 									'type' => 'article');
 
