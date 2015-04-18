@@ -272,9 +272,7 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			// $sig = "Twinder.io - Twitter meets Tinder";
-			$sig = "";
-			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg."\r\n \r\n".$sig));
+			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg));
 			return @json_decode($info, TRUE);
 		}
 
