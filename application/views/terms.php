@@ -14,7 +14,7 @@
             <meta content="Dating" itemprop="genre">
             <meta content="url" itemprop="http://twinder.io/">
             <meta content="1" itemprop="version">
-            <meta content="Tinder, API, Tinder for Web, Twinder" itemprop="keywords">
+            <meta content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API" itemprop="keywords">
             <meta content="2015" itemprop="copyrightYear">
             <meta content="2015-04-01" itemprop="dateCreated">
         </div>

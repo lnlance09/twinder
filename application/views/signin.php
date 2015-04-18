@@ -3,16 +3,16 @@
 ?>
 	<div id="header-section">
         <div id="signin">
-            <h1 class="page-header">
-                <i class="fa fa-facebook-square"></i> <?php echo $header; ?>
+            <h1 class="page-header" itemscope itemtype="http://schema.org/WebPage">
+                <i class="fa fa-facebook-square"></i> 
+
+                <span itemprop="headline"><?php echo $header; ?></span>
             </h1>
 
             <form method="post" action="<?php echo $base_url; ?>signin/login" id="signin_form">
                 <input type="text" class="form-control" placeholder="Username, Email or Phone Number" name="username"><br>
                 <input type="password" class="form-control" placeholder="Password" name="password"><br>
-
                 <button class="btn btn-primary pull-right" type="submit" name="submit" value="submit">Sign in</button>
-
                 <div class="clearfix"></div>
             </form>
 
@@ -72,4 +72,11 @@
                 </div>
             </div>
         </div>
+
+        <meta content="Dating" itemprop="genre">
+        <meta content="url" itemprop="http://twinder.io/">
+        <meta content="1" itemprop="version">
+        <meta content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API" itemprop="keywords">
+        <meta content="2015" itemprop="copyrightYear">
+        <meta content="2015-04-01" itemprop="dateCreated">
     </div>
