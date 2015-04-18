@@ -27,7 +27,7 @@
 					header('Location: '.$this->base_url);
 				} else {
 					// Define the meta tags
-					$meta_info = array('description' => 'Sign In to Twinder',
+					$meta_info = array('description' => 'Sign In to Twinder.',
 									'img' => 'http://twinder.io/public/img/logo.jpg',
 									'url' => 'http://twinder.io/signin',
 									'type' => 'article');

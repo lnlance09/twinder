@@ -36,8 +36,8 @@
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Define the meta tags
-				$meta_info = array('description' => 'About Twinder',
-									'img' => 'http://twinder.io/public/img/favicon.ico',
+				$meta_info = array('description' => "Twinder is an online directory of Tinder users. Browse by location, age, gender and name. Use Twinder the same way you use Tinder on your phone. Sync your account now. It's free.",
+									'img' => 'http://twinder.io/public/img/logo.jpg',
 									'url' => 'http://twinder.io/about',
 									'type' => 'article');
 				

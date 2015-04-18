@@ -97,8 +97,8 @@
 
 				// Define the meta tags
 				$meta = array('title' => $title,
-							'description' => 'Twinder is an online directory of Tinder users. Browse by location, age, gender and name. Tinder for Web. Tinder Client',
-							'img' => 'http://twinder.io/public/img/favicon.ico',
+							'description' => 'Twinder is an online directory of Tinder users. Browse by location, age, gender and name. Tinder for Web. Trusted Tinder client',
+							'img' => 'http://twinder.io/public/img/logo.jpg',
 							'url' => 'http://twinder.io/'.$url,
 							'type' => 'website');
 

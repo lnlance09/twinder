@@ -127,7 +127,7 @@
 										'description' => MetaSubject($user_info['username'], $user_info['name']),
 										'img' => $user_info['profile_pic'],
 										'url' => 'http://twinder.io/'.$user_info['link'],
-										'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']);
+										'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']),
 										'type' => 'profile');
 
 						// Set all of the info that needs to be passed to the header view

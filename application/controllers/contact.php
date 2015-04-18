@@ -38,7 +38,7 @@
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Define the meta tags
-				$meta_info = array('description' => 'Contact Twinder',
+				$meta_info = array('description' => "Contact Twinder. We'll get back as soon as we can.",
 									'img' => 'http://twinder.io/public/img/logo.jpg',
 									'url' => 'http://twinder.io/contact',
 									'type' => 'article');
