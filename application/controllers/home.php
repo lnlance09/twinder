@@ -18,7 +18,8 @@
 
 			public function Index() {
 				header('Location: '.$this->base_url.'hot');
-			
+				die;
+
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 			
@@ -193,56 +194,6 @@
 				$state = $this->input->get('state');
 				$geo = $this->loc->MapquestLocation($city, $state);
 				echo json_encode($geo);
-			}
-
-			public function Twitter() {
-				// Get the user ID
-				$user_id = $this->session->userdata('user_id');
-			
-				if($user_id) {
-					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Load the Twitter model
-					$this->load->model('twitter_model', 'twitter');
-
-					// Get the OAuth token from the URL
-					$token = $this->input->get('oauth_token');
-					$verifier = $this->input->get('oauth_verifier');
-
-					// Get an access token and save the result as an array
-					$info = $this->twitter->AccessToken($token, $verifier);
-					parse_str($info, $data);
-					foreach($data as $key => $value) {
-						$$key = $value;
-					}
-					
-					// $screen_name = 'shelbyjsapp';
-					// Update the user's Twitter handle and user ID
-					$this->database->UpdateUser($tinder_id, array('twitter_username' => $screen_name, 'twitter_id' => $user_id));
-
-					// Get all of the user's Tweets
-					$tweets = $this->twitter->FetchTweets($screen_name, 200);
-					// FormatArray($tweets);
-
-					// Sync the user's Tweets with the DB
-					$this->database->SyncTweets($user_id, $tweets);
-
-					// Get the link to the user's profile
-					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-
-					// Go back to the user's home page
-					header('Location: '.$this->base_url.$link.'/tweets');
-				} else {
-					header('Location: '.$this->base_url);
-				}
-			}
-
-			public function TwitterRedirect() {
-				// Load the Twitter model
-				$this->load->model('twitter_model', 'twitter');
-
-				// Authenticate the user and redirect them to http://twitter.io/home/Twitter
-				$this->twitter->Authenticate();
 			}
 		}
 	}

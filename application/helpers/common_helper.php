@@ -24,15 +24,17 @@
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-		    if($post) {
+		    if($post === TRUE) {
 		    	curl_setopt($ch, CURLOPT_POST, TRUE);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-		    } elseif($post == 'PUT') {
-		    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		    	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-		    } elseif($post == 'DELETE') {
-		    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-		    }
+		    } else{
+		    	if($post == 'PUT') {
+			    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+			    	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+			    } elseif($post == 'DELETE') {
+			    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+			    }
+			}
 
 		    $data = curl_exec($ch);
 		    curl_close($ch);
@@ -214,34 +216,48 @@
 		}
 
 		/**
+		 * Return a list of openers for chats
+		 */
+		function Openers() {
+			$data = array("This screen would look a lot better with a conversation in it.",
+						"Do you believe in love at first swipe?",
+						"Say something sweet.",
+						"Tell them why you swiped right.",
+						"They wont know until you tell them.");
+			return $data[mt_rand(0, count($data)-1)];
+		}
+
+		/**
 		 * Find out how long ago a given time was
 		 * @param {string} [time] The time
 		 */
 		function FormatTime($time) {
 			if($time != 'Just now' && substr($time, -3) != 'ago') {
 				$time = date_diff(date_create(), date_create($time));
+				// FormatArray($time);
 
 				// Format the date difference by minutes, hours, days and months
+				$seconds = $time->format('%s');
 				$mins = $time->format('%i');
 				$hours = $time->format('%h');
 				$days = $time->format('%d');
 				$months = $time->format('%m');
 
-				if(ceil($mins/60) > 1) {
-					if(ceil($hours/24) > 1) {
-						if(ceil($days/30) > 1) {
-							$format = $days.' months ago';
-						} else {
-							$format = $days.' days ago';
-						}
-					} else {
-						$format = $hours.' hours ago';
-					}
+				if($months > 0) {
+					$format = $months.' months ago';
 				} else {
-					if($mins == 0) {
-						$format = 'Just now';
+					if($days > 0) {
+						$format = $days.' days ago';
 					} else {
-						$format = $mins.' mins ago';
+						if($hours > 0) {
+							$format = $hours.' hours ago';
+						} else {
+							if($mins > 0) {
+								$format = $mins.' minutes ago';
+							} else {
+								$format = $seconds.' seconds ago';
+							}
+						}
 					}
 				}
 
@@ -374,11 +390,6 @@
 
 	                return 'thumbs-down';
 	                break;
-
-	            case'tweets':
-
-	                return 'twitter';
-	                break;
 	        }
 	    }
 
@@ -451,6 +462,7 @@
 		 */
 		function ReturnTabs($tab, $same, $session) {
 			switch($tab) {
+				default:
 				case'likes':
 				case'liked_by':
 				case'mutual_likes':
@@ -473,7 +485,7 @@
 					if(!$same && $session) {
 						array_push($tabs, 'mutual_passes');
 					}
-					break;	
+					break;
 
 				case'matches':
 				case'mutual_matches':
@@ -485,19 +497,6 @@
 						array_push($tabs, 'mutual_matches');
 					}
 					break;
-
-				case'tweets':
-				case'tweets_and_replies':
-				case'photos_and_videos':
-
-					$tabs = array('tweets', 'tweets_and_replies', 'photos_and_videos');
-					$active = 'tweets';
-					break;
-
-				default:
-
-					$tabs = array('likes', 'liked_by', 'mutual_likes');
-					$active = 'likes';
 			}
 
 			return array('tabs' => $tabs, 'active' => $active);
@@ -513,7 +512,7 @@
 		 * @param {int} [max] The maxmimum age filter
 		 */
 		function DefineTitle($gender, $city, $state, $distance, $min, $max) {
-			$title = 'The hottest ';
+			$title = 'Browse ';
 
 			// Format the gender
 			if($gender == 'men' || $gender == 'women') {

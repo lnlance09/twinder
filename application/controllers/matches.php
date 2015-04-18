@@ -36,6 +36,7 @@
 					// die;
 
 					if($match) {
+						// Make sure that the person viewing the thread is allowed to
 						if($tinder_id == $match['user_one']['id'] || $tinder_id == $match['user_two']['id']) {
 							// Get info about the given match
 							$live = $this->user->GetMatchInfo($id, $auth);
@@ -51,54 +52,40 @@
 							} else {
 								$can_send = FALSE;
 							}
-						}  else {
-							$can_send = FALSE;
+
+							// Format the user's profile pic and their page link
+							$profile_img = ChangePicSize($profile_pic, 172);
+							$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+
+							// Set all of the info that needs to be passed to the header view
+							$header_info = array('title' => $match['user_one']['name'].' and '.$match['user_two']['name'],
+												'name' => $this->session->userdata('first_name'),
+												'auth' => $auth,
+												'session' => $session,
+												'tinder_id' => $tinder_id,
+												'profile_link' => $profile_link,
+												'profile_pic' => $profile_img);
+
+							// Define the body info
+							$body_info = array('match_id' => $id,
+											'user_one' => $match['user_one'],
+											'user_two' => $match['user_two'],
+											'my_tinder_id' => $tinder_id = $this->session->userdata('tinder_id'),
+											'unmatched' => $match['user_one']['unmatched'],
+											'can_send' => $can_send);
+
+							// Get all of the data for the footer view
+							$locations = $this->loc->FooterPlaces();
+							$rand_users = $this->database->GetAllUsers(5);
+							$footer_info = array('locations' => $locations, 'users' => $rand_users);
+
+							// Load all of the views
+							$this->load->view('templates/header', $header_info); 
+							$this->load->view('match', $body_info); 
+							$this->load->view('templates/footer', $footer_info); 
+						} else {
+							header('Location: '.$this->base_url);
 						}
-
-						// Update the matches new views
-						$views = $this->database->UpdateMatchViews($id, $match['user_one']['views']);
-
-						// Get the mactch count of the user who is currently logged in
-						$match_count = $this->database->GetMatchCount($tinder_id);
-
-						// Format the user's profile pic and their page link
-						$profile_img = ChangePicSize($profile_pic, 172);
-						$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-
-						// Define the meta tags
-						$meta_info = array('description' => '',
-										'img' => $match['user_one']['pic'],
-										'url' => $this->base_url.'matches/'.$id);
-
-						// Set all of the info that needs to be passed to the header view
-						$header_info = array('title' => $match['user_one']['name'].' and '.$match['user_two']['name'],
-											'name' => $this->session->userdata('first_name'),
-											'auth' => $auth,
-											'session' => $session,
-											'tinder_id' => $tinder_id,
-											'match_count' => $match_count,
-											'profile_link' => $profile_link,
-											'meta' => $meta_info,
-											'profile_pic' => $profile_img);
-
-						// Define the body info
-						$body_info = array('match_id' => $id,
-										'user_one' => $match['user_one'],
-										'user_two' => $match['user_two'],
-										'views' => $views,
-										'my_tinder_id' => $tinder_id = $this->session->userdata('tinder_id'),
-										'unmatched' => $match['user_one']['unmatched'],
-										'can_send' => $can_send);
-
-						// Get all of the data for the footer view
-						$locations = $this->loc->FooterPlaces();
-						$rand_users = $this->database->GetAllUsers(5);
-						$footer_info = array('locations' => $locations, 'users' => $rand_users);
-
-						// Load all of the views
-						$this->load->view('templates/header', $header_info); 
-						$this->load->view('match', $body_info); 
-						$this->load->view('templates/footer', $footer_info); 
 					} else {
 						header('Location: '.$this->base_url);
 					}
@@ -124,6 +111,9 @@
 				$id = $this->input->get('id');
 				$page = $this->input->get('page');
 
+				// Save the logged in user's Tinder ID
+				$my_id = $this->session->userdata('tinder_id');
+
 				// Get all of the users sorted by the given filter
 				$thread = $this->database->GetThread($id);
 				// FormatArray($thread);
@@ -134,11 +124,17 @@
 				// FormatArray($match);
 				// die;
 
+				$him = ($match['user_one'] == $my_id ? $match['user_two'] : $match['user_one']);
+
 				// Load the view
-				$data = array('messages' => $thread, 
-							'count' => count($thread),
+				$data = array('messages' => $thread['data'], 
+							'count' => $thread['count'],
 							'user_one' => $match['user_one'],
 							'user_two' => $match['user_two'],
+							'his_name' => $him['name'],
+							'his_img' => $him['pic'],
+							'his_link' => $this->base_url.$him['link'],
+							'datetime' => $match['created_at'],
 							'page' => $page);
 				$this->load->view('backend/thread', $data); 
 			}

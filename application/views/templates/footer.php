@@ -8,6 +8,7 @@
     // Get the method
     $method = $this->router->fetch_method();
 
+    // Define the slider and maps pages
     $maps_pages = array('users', 'settings', 'hot');
     $slider_pages = array('settings', 'hot');
 ?>
@@ -29,7 +30,7 @@
                     <i class="fa fa-twitter"></i> Follow Us
                 </div>
 
-                <div class="col-lg-12" id="slogan">Tinder meets Twitter</div>
+                <div class="col-lg-12" id="slogan">Tinder for Web</div>
 
                 <div class="clearfix"></div>
             </div>
@@ -136,27 +137,11 @@
     <!-- Charts JS -->
     <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
 <?php
-        } elseif($method == 'Lance') {
-?>
-    <script src="<?php echo $js_url.'lance'; ?>.js"></script>
-<?php
         }
 ?>
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
 <?php
-    } if($controller == 'matches') {
-?>
-    <script>
-        var disqus_shortname = 'twinder';
-        
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-<?php
-    }
+    } 
 
     if($base_url != '/wetinder/') {
 ?>

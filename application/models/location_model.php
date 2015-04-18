@@ -39,12 +39,12 @@
 		 * @return {int} The number of rows returned from the query
 		 */
 		public function CheckState($state) {
-			$sql = "SELECT id 
+			$sql = "SELECT COUNT(*) AS count
 					FROM locations 
 					WHERE state = ? 
 					OR state_abbrev = ?"; 
-			$query = $this->db->query($sql, array($state, $state));
-			return $query->num_rows();
+			$query = $this->db->query($sql, array($state, $state))->result();
+			return $query[0]->count;
 		}
 
 		/**
@@ -81,6 +81,7 @@
 		 * @return {array} An array containing the number of rows returned and the states
 		 */
 		public function GetStates($state) {
+			$this->db->cache_on();
 			$this->db->select('state, state_abbrev');
 			$this->db->like('state', $state);
 			$this->db->order_by('state', 'asc');
@@ -108,6 +109,7 @@
 		 * @return {array} An array containing the number of rows and info about the cities
 		 */
 		public function GetCities($state, $city) {
+			$this->db->cache_on();
 			$this->db->select('city, lon, lat');
 			$this->db->where('state', $state);
 			$this->db->like('city', $city);
@@ -204,6 +206,8 @@
 		 * @return An array containing random locations
 		 */
 		public function RandomLocations($limit = NULL) {
+			// Turn on DB caching
+			$this->db->cache_on();
 			$this->db->select('city, state_abbrev');
 
 			if($limit) {
@@ -226,6 +230,10 @@
 			return $return;
 		}
 
+		/**
+		 * Return a semi-random list of locations for the footer
+		 * @return {array} An array containing 5 locations
+		 */
 		public function FooterPlaces() {
 			$sql = "SELECT city, state_abbrev
 					FROM locations 

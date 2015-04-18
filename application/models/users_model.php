@@ -403,6 +403,15 @@
 			
 			if($decode['status'] == 200) {
 				$user = $decode['results'];
+
+				if(array_key_exists('instagram', $user)) {
+					$instagram = array('username' => $user['instagram']['username'],
+									'profile_pic' => $user['instagram']['profile_picture'],
+									'photos' => $user['instagram']['photos']);
+				} else {
+					$instagram = FALSE;
+				}
+
 				return array('tinder_id' => $user['_id'],
 							'distance' => $user['distance_mi'],
 							'name' => $user['name'],
@@ -413,7 +422,8 @@
 							'age' => ReturnAge($user['birth_date']),
 							'last_activity_date' => $user['ping_time'],
 							'profile_pic' => ReturnProfilePic($user['photos']),
-							'pics' => ReturnPicsArray($user['photos'])); 
+							'pics' => ReturnPicsArray($user['photos']),
+							'instagram' => $instagram); 
 			} else {
 				return FALSE;
 			}

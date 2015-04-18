@@ -34,9 +34,6 @@
 
 					// Get the city and state based upon the lon & lat coordinates
 					$loc = $this->loc->MapquestLatLon($lat, $lon);
-					
-					// Get the match count of the user who is currently logged in
-					$match_count = $this->database->GetMatchCount($tinder_id);
 
 					// Get the user's profile link
 					$profile_link = FormatUserLink($tinder_id, $username);
@@ -78,7 +75,6 @@
 										'name' => $this->session->userdata('first_name'),
 										'auth' => $auth,
 										'tinder_id' => $tinder_id,
-										'match_count' => $match_count,
 										'profile_link' => $profile_link,
 										'profile_pic' => $profile_pic);
 

@@ -4,7 +4,6 @@
     $img_url = $public_url.'img/';
 
     // Adjust the plurality
-    $grammar = ($views != 1 ? 'views' : 'view');
     $other = ($user_one['id'] == $my_tinder_id ? $user_two : $user_one);
 ?>
 	<div id="header-section">
@@ -33,30 +32,6 @@
 <?php
     }
 ?>
-
-                <div class="panel panel-default" id="comment_box">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <i class="fa fa-comments fa-lg"></i> Comments
-
-                            <span class="pull-right"><?php echo $views.' '.$grammar; ?></span>
-
-                            <a class="twitter-share-button pull-right" 
-                                href="<?php echo $base_url.'matches/'.$match_id; ?>"
-                                data-related="twitterdev"
-                                data-size="medium"
-                                data-count="horizontal">
-                                Tweet
-                            </a>
-
-                            <span class="clearfix"></span>
-                        </h3>
-                    </div>
-
-                    <div class="panel-body">
-                        <div id="disqus_thread"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

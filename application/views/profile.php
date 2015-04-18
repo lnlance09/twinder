@@ -1,8 +1,7 @@
  <?php
     $base_url = $this->config->base_url();
-    // FormatArray($user_info);
 ?>
-    <div id="profile-section">
+    <div id="profile-section" itemscope itemtype="http://schema.org/ProfilePage">
         <div class="container">
             <div id="single_users_load">
             	<div id="focus_box">
@@ -70,49 +69,121 @@
 						<div class="clearfix"></div>
 					</div>						
 
-	                <div id="profile_page_info">
+	                <div id="profile_page_info" itemprop="about" itemscope itemtype="http://schema.org/Person">
 	                	<!-- Profile Pic -->
 	                    <div class="col-lg-3">
-	                    	<a href="#" class="thumbnail">
-	                        	<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" id="main_img">
-	                        </a>
+	                    	<div itemprop="primaryImageOfPage" itemscope itemtype="http://schema.org/ImageObject">
+	                    		<a href="#" class="thumbnail" itemprop="contentUrl">
+	                        		<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" id="main_img" itemprop="thumbnailUrl">
+	                        	</a>
+							</div>
 
 	                        <div class="clearfix"></div>
 	                        
 		                    <form method="POST" action="<?php echo $base_url; ?>users/EditProfile" id="edit_profile">
 		                    	<!-- Name and age of user -->
-		                        <h1 class="static">
-									<?php echo $user_info['name'].', '.$user_info['age']; ?>
+		                        <h1 class="static" itemprop="name">
+									<a href="" itemprop="url"><?php echo $user_info['name']; ?>, <?php echo $user_info['age']; ?></a>
 	                            </h1>
 <?php
 	// Display the username is necessary
 	if(!empty($user_info['username'])) {
 ?>
-								<p>@<?php echo $user_info['username']; ?></p>
+								<p>@<a href="http://twinder.io/users/<?php echo $user_info['username']; ?>" itemprop="significantLink"><?php echo $user_info['username']; ?></a></p>
 <?php
 	}
 ?>
 	                    		<!-- Bio -->
-	                            <div id="about_quote">
+	                            <div id="about_quote" itemprop="description">
 	                                <?php echo BioLinks($user_info['bio']); ?>
 	                            </div>
+
+	                            <meta itemprop="birthDate" content="<?php echo date('Y-m-d', strtotime($user_info['dob'])); ?>">
+								<meta itemprop="gender" content="<?php echo $user_info['gender']; ?>">
 
 								<!-- Bio Edit -->
 	                            <textarea id="bio_text" class="form-control"><?php echo $user_info['bio']; ?></textarea>
 
-								<ul id="user_info">
+								<ul id="user_info" itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
 									<!-- City and state -->
-									<li><i class="fa fa-map-marker fa-fw"></i> Last seen near <a href="<?php echo $base_url.'hot/gender/both/city/'.$city.'/state/'.$state.'/'; ?>"><?php echo $city.', '.$state; ?></a></li>
+									<li>
+										<i class="fa fa-map-marker fa-fw"></i> 
+										Last seen @ 
+
+										<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+											<a href="<?php echo $base_url.'hot/gender/both/city/'.$city.'/state/'.$state.'/'; ?>" itemprop="url">
+												<span itemprop="addressLocality"><?php echo $city; ?></span>, 
+												<span itemprop="addressRegion"><?php echo $state; ?></span>
+											</a>
+										</span>
+									</li>
+
 									<li><i class="fa fa-clock-o fa-fw"></i> Last active <?php echo FormatTime($user_info['last_activity_date']); ?></li>
+									<li><i class="fa fa-eye fa-fw"></i> <?php echo number_format($user_info['views']); ?> views</li>
+								
+									<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+							            <meta content="<?php echo $lat; ?>" itemprop="latitude">
+							            <meta content="<?php echo $lat; ?>" itemprop="longitude">
+							        </span>
+								</ul>
+
+								<div id="votes">
+									<div class="progress">
+										<div class="progress-bar progress-bar-primary mypopover" 
+											role="progressbar" 
+											aria-valuenow="<?php echo $votes['up_pct']; ?>" 
+											aria-valuemin="1" 
+											aria-valuemax="100" 
+											title="Hot" 
+											data-original-title="Hot" 
+											data-content="<?php echo $votes['up']; ?> votes" 
+											data-placement="bottom" 
+											data-toggle="popover" 
+											style="width:<?php echo ($votes['up_pct'] == 0 ? 50 : $votes['up_pct']); ?>%">
+											<?php echo $votes['up_pct']; ?>%
+										</div>
+
+										<div class="progress-bar progress-bar-warning mypopover" 
+											role="progressbar" 
+											aria-valuenow="<?php echo $votes['down_pct']; ?>" 
+											aria-valuemin="1" 
+											aria-valuemax="100" 
+											title="Not" 
+											data-original-title="Not" 
+											data-content="<?php echo $votes['down']; ?> votes" 
+											data-placement="bottom" 
+											data-toggle="popover" 
+											style="width: <?php echo ($votes['down_pct'] == 0 ? 50 : $votes['down_pct']); ?>%">
+											<?php echo $votes['down_pct']; ?>%
+										</div>
+									</div>
+
+									<div id="vote_stats">
 <?php
-	if($twitter['access'] == 'true') {
+	if($can_vote === FALSE) {
 ?>
-									<li><i class="fa fa-twitter fa-fw"></i> <a href="https://twitter.com/<?php echo $twitter['handle']; ?>" target="_blank"><?php echo $twitter['handle']; ?></a></li>
+										<div class="col-lg-6">
+											<button class="btn btn-default" type="button" id="click_hot"><i class="fa fa-thumbs-up"></i> Hot</button>
+										</div>		
+								
+										<div class="col-lg-6">
+											<button class="btn btn-default" type="button" id="click_not"><i class="fa fa-thumbs-down"></i> Not</button>
+										</div>
+
+										<div class="clearfix"></div>
+<?php
+	} elseif($can_vote == 0) {
+?>
+										<button class="btn btn-warning voted" type="button">#ivotednot</button>
+<?php
+	} elseif($can_vote == 1) {
+?>
+										<button class="btn btn-primary voted" type="button">#ivotedhot</button>
 <?php
 	}
 ?>
-									<li><i class="fa fa-camera-retro fa-fw"></i> <?php echo $pic_count; ?> photos</li>
-								</ul>
+									</div>
+								</div>
 
 								<!-- The edit, like and unmatch buttons for mobile display -->
 								<div id="resize_edit">
@@ -138,6 +209,8 @@
 <?php
 		}
 	}
+
+
 ?>
 								</div>
 		                    </form>
@@ -222,7 +295,7 @@
 					            
 									<!-- Connections box where users are loaded -->
 						            <div id="connections_box">
-						                <div id="con_load_box">
+						                <div id="con_load_box" itemprop="follows" itemscope itemtype="http://schema.org/Person">
 						                    <div class="ajax-loader">
 						                        <i class="fa fa-circle-o-notch fa-2x fa-spin"></i>
 						                    </div>
@@ -361,9 +434,6 @@
         <div class="hidden" id="lon"><?php echo $lon; ?></div>
         <div class="hidden" id="lat"><?php echo $lat; ?></div>
         <div class="hidden" id="radius"><?php echo $distance; ?></div>
-        <div class="hidden" id="twitter"><?php echo $twitter['access']; ?></div>
-        <div class="hidden" id="handle"><?php echo $twitter['handle']; ?></div>
-        <div class="hidden" id="twitter_id"><?php echo $twitter['id']; ?></div>
         <div class="hidden" id="first_name"><?php echo $user_info['name']; ?></div>
         <div class="hidden" id="gender"><?php echo $user_info['gender']; ?></div>
         <div class="hidden" id="active_tab"><?php echo $tab_active; ?></div>

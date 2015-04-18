@@ -26,31 +26,28 @@
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Get the match count of the user who is currently logged in
-					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
 					$session = FALSE;
 					$auth = NULL;
 					$tinder_id = NULL;
-					$match_count = NULL;
 				}
 
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Define the meta tags
-				$meta_info = array('description' => 'Commonly asked questions about Twinder',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'faq');
+				$meta_info = array('description' => 'Frequently asked questions about Twinder',
+									'img' => 'http://twinder.io/public/img/favicon.ico',
+									'url' => 'http://twinder.io/faq',
+									'type' => 'article');
 
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => 'Frequently Asked Questions',
+									'type' => 'article',
 									'session' => $session,
 									'header' => 'Frequently Asked Questions',
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
-									'match_count' => $match_count,
 									'name' => $this->session->userdata('first_name'),
 									'meta' => $meta_info,
 									'profile_link' => $profile_link,

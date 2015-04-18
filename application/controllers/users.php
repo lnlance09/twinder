@@ -14,16 +14,12 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
-
 				// Get the URL segments
 				$id = $this->uri->segment(2, NULL);
 				$tab = $this->uri->segment(3, 'likes');
 
 				// Get the info about the user
 				$user_info = $this->database->GetUserInfo($id);
-				// FormatArray($user_info);
-				// die;
 
 				// If the user actually exists in the DB
 				if($user_info) {
@@ -40,9 +36,6 @@
 						$lon = $this->session->userdata('lon');
 						$lat = $this->session->userdata('lat');
 						$pic = $this->session->userdata('profile_pic');
-
-						// Get the mactch count of the user who is currently logged in
-						$match_count = $this->database->GetMatchCount($tinder_id);
 
 						// Findout if the user is viewing their own profile
 						$same = ($id == $tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
@@ -63,6 +56,10 @@
 										'gender' => $live_info['gender'],
 										'first_name' => $live_info['name'],
 										'last_activity_date' => $live_info['last_activity_date']);
+							if($live_info['instagram']) {
+								$data['ig_username'] = $live_info['instagram']['username'];
+							}
+
 							$this->database->UpdateUser($live_info['tinder_id'], $data);
 
 							// Add these elements to the array
@@ -78,13 +75,12 @@
 							$edit = $this->user->CanEdit($user_info['tinder_id'], $tinder_id);
 						} else {
 							// Get all of the data for the view
-							$locations = $this->loc->RandomLocations();
-							$rand_users = $this->database->GetAllUsers();
+							$locations = $this->loc->FooterPlaces();
+							$rand_users = $this->database->GetAllUsers(5);
 
 							$_user = array('name' => $user_info['name'], 
 										'gender' => FormatPossesion($user_info['gender']), 
 										'pic' => ChangePicSize($user_info['profile_pic'], 84));
-
 							$info = array('name' => $name,
 										'auth' => $token,
 										'tinder_id' => $tinder_id,
@@ -100,27 +96,17 @@
 							$active = FALSE;
 						}
 					} else {
-						// User stats
-						$match_count = NULL;
-
-						// Page permissions
 						$report = FALSE;
 						$like = FALSE;
 						$edit = FALSE;
-
-						// User variables
 						$name = NULL;
 						$pic = NULL;
 						$token = NULL;
 						$tinder_id = NULL;
 						$username = NULL;
-
-						// Location
 						$lon = NULL;
 						$lat = NULL;
 						$distance = NULL;
-
-						// Active
 						$active = TRUE;
 						$same = FALSE;
 					}
@@ -133,31 +119,45 @@
 						// Get the tab list based upon the tab in the URL
 						$tabs = ReturnTabs($tab, $same, $session);
 
-						// Find out if this user has authorized Twitter for their account
-						$twitter = (!empty($user_info['twitter_handle']) ? 'true' : 'false');
-
 						// Update the user's last seen position
 						$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
 						
 						// Define the meta tags
-						$meta_info = array('description' => MetaSubject($user_info['username'], $user_info['name']),
+						$meta_info = array('title' => MetaSubject($user_info['username'], $user_info['name']),
+										'description' => MetaSubject($user_info['username'], $user_info['name']),
 										'img' => $user_info['profile_pic'],
-										'url' => 'http://twinder.io/'.$user_info['link']);
+										'url' => 'http://twinder.io/'.$user_info['link'],
+										'type' => 'article');
 
 						// Set all of the info that needs to be passed to the header view
 						$header_info = array('title' => $user_info['name'],
+											'type' => 'profile',
 											'session' => $session,
 											'header' => $user_info['name'],
 											'auth' => $token,
 											'tinder_id' => $tinder_id,
 											'name' => $name,
-											'match_count' => $match_count,
+											'profile_name' => $user_info['name'],
+											'gender' => $user_info['gender'],
+											'username' => $user_info['username'],
 											'meta' => $meta_info,
 											'profile_link' => $profile_link,
 											'profile_pic' => $profile_pic);
 
+						// Update the user's views
+						$user_info['views'] = $this->database->UpdateProfileViews($user_info['views'], $user_info['tinder_id']); 
+						
+						// Can vote
+						$session_id = (!$tinder_id ? $this->session->userdata('session_id') : $tinder_id);
+						$can_vote = $this->database->CheckVote($session_id, $user_info['tinder_id']);
+						// var_dump($can_vote);
+						// die;
+
+						// Get the votes of the user
+						$votes = $this->database->GetVoteStats($id);
+
 						// Get all of the stats of the user who is being viewed
-						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id, $user_info['twitter_id']);
+						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id);
 						
 						// Set all of the info that needs to be passed to the body view
 						$body_info = array('user_info' => $user_info,
@@ -172,7 +172,8 @@
 										'state' => $last_seen['data']['state'],
 										'distance' => $last_seen['data']['miles_away'],
 										'last_seen' => FormatLastSeenText($last_seen, $this->base_url),
-										'twitter' => array('access' => $twitter, 'handle' => $user_info['twitter_handle'], 'id' => $user_info['twitter_id']),
+										'can_vote' => $can_vote,
+										'votes' => $votes,
 										'stats' => $user_stats,
 										'con_icon' => ReturnFA($tabs['active']),
 										'sub_tab' => $tab,
@@ -208,16 +209,14 @@
 					$tinder_id = $this->session->userdata('tinder_id');
 					$pic = $this->session->userdata('profile_pic');
 
-					// Get the mactch count of the user who is currently logged in
-					$match_count = $this->database->GetMatchCount($tinder_id);
-
 					// Save the user's link to their profile
 					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 					$profile_pic = ChangePicSize($pic, 84);
 
-					$meta_info = array('description' => 'Discover on Twinder',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'users/Discover');
+					$meta = array('description' => 'Discover on Twinder',
+								'img' => 'http://twinder.io/public/img/favicon.ico',
+								'url' => 'http://twinder.io/users/Discover',
+								'type' => 'article');
 
 					// Set all of the info that needs to be passed to the header view
 					$header_info = array('title' => 'Play',
@@ -225,9 +224,8 @@
 										'header' => NULL,
 										'auth' => $this->session->userdata('token'),
 										'tinder_id' => $tinder_id,
-										'match_count' => $match_count,
 										'name' => $this->session->userdata('first_name'),
-										'meta' => $meta_info,
+										'meta' => $meta,
 										'profile_link' => $profile_link,
 										'profile_pic' => $profile_pic);
 
@@ -268,6 +266,16 @@
 
 					// If the user is requesting a new batch, then ping the location in request a fresh batch of users
 					if($type == 'new') {
+						// See if the user is traveling
+						$meta = $this->user->GetMeta($token);
+
+						if(array_key_exists('travel', $meta)) {
+							if($meta['travel']['is_traveling'] == 1) {
+								$lon = $meta['travel']['travel_pos']['lon'];
+								$lat = $meta['travel']['travel_pos']['lat'];
+							}
+						}
+
 						// Set the session data for the latitude and longitude
 						$this->session->set_userdata(array('lon' => $lon, 'lat' => $lat));
 
@@ -315,8 +323,6 @@
 
 			public function GetConnections() {
 				// Get the query parameters from the URL
-				$twitter = $this->input->get('twitter');
-				$twitter_id = $this->input->get('twitter_id');
 				$page = $this->input->get('page');
 				$type = $this->input->get('type');
 				$id = $this->input->get('id');
@@ -350,7 +356,7 @@
 
 					case'mutual_matches':
 
-						$results = $this->database->GetMutualMatches($id, $tinder_id);
+						$results = $this->database->GetMutualMatches($id, $tinder_id, $q);
 						break;
 
 					case'passes':
@@ -365,94 +371,40 @@
 
 					case'passed_by':
 
-						$results = $this->database->GetPasses($id, TRUE, $q);
-						break;
-
-					case'tweets':
-
-						$results = $this->database->GetTweets($twitter_id, FALSE, FALSE, $q);
-						break;
-
-					case'tweets_and_replies':
-
-						$results = $this->database->GetTweets($twitter_id, TRUE, FALSE, $q);
-						break;
-
-					case'photos_and_videos':
-
-						$results = $this->database->GetTweets($twitter_id, TRUE, TRUE, $q);
+						$results = $this->database->GetMutualPasses($id, TRUE, $q);
 						break;
 				}
 				// FormatArray($results, TRUE);
 
-				// If the tweets are being requested but the user hasn't authorized Twinder on Tinder
-				if($type == 'tweets' && $twitter == 'false') {
-					if($id == $tinder_id) {
-						$can_link = TRUE;
-						$name = $this->session->userdata('first_name');
-						$gender = NULL;
-					} else {
-						$can_link = FALSE;
-						$name = $this->input->get('name');
-						$gender = $this->input->get('gender');
-					}
+				// Get the stats for the pagination
+				$count = $results['count'];
+				$per_page = 10;
+				$new_page = $page+1;
+				$pages = ceil($count/$per_page);
+				$start = $page*$per_page;
 
-					// Save all of the data to an array
-					$data = array('name' => $name, 
-								'gender' => FormatPossesion($gender), 
-								'can_link' => $can_link);
-
-            		// Load the view
-					$this->load->view('errors/twitter', $data);
-		        } else {
-					// Get the stats for the pagination
-					$count = $results['count'];
-					$per_page = 10;
-					$new_page = $page+1;
-					$pages = ceil($count/$per_page);
-					$start = $page*$per_page;
-
-					if($page == ($pages-1)) {
-						$mod = $count%$per_page;
-						$end = ($mod > 0 ? $start+$mod : $start+$per_page);
-					} else {
-						$end = $start+$per_page;
-					}
-
-					$info = array('connections' => $results['users'],
-								'id' => $id,
-								'type' => $type,
-								'count' => $count,
-								'left_over' => $count-($new_page*$per_page),
-								'end' => ceil($end),
-								'pages' => $pages,
-								'page' => $page,
-								'new_page' => $new_page,
-								'twitter_id' => $twitter_id);
-					
-					// Determine which view to load
-					switch($type) {
-						case'matches':
-						case'mutual_matches':
-	
-							$view = 'matches';
-							break;
-
-						case'tweets':
-						case'tweets_and_replies':
-						case'photos_and_videos':
-
-							$view = 'tweets';
-							break;
-
-						default:
-
-							$view = 'connections';
-					}
-					
-					// Load the view
-					$this->load->view('backend/'.$view, $info);
+				if($page == ($pages-1)) {
+					$mod = $count%$per_page;
+					$end = ($mod > 0 ? $start+$mod : $start+$per_page);
+				} else {
+					$end = $start+$per_page;
 				}
+
+				$info = array('connections' => $results['users'],
+							'id' => $id,
+							'type' => $type,
+							'count' => $count,
+							'left_over' => $count-($new_page*$per_page),
+							'end' => ceil($end),
+							'pages' => $pages,
+							'page' => $page,
+							'new_page' => $new_page);
+
+				// Determine which view to load
+				$view = ($type == 'matches' || $type == 'mutual_matches' ? 'matches' : 'connections');
+				
+				// Load the view
+				$this->load->view('backend/'.$view, $info);
 			}
 
 			public function GetMatchInfo() {
@@ -658,9 +610,14 @@
 
 					// Unmatch the user by sending a request to Tinder's API
 					$unmatch = $this->user->UnmatchUser($match_id, $auth);
+					// echo $unmatch;
 
-					// Update the likes table to 'unmatched'
-					$this->database->UnmatchUser($this->session->userdata('tinder_id'), $match_id);
+					if(is_array($unmatch)) {
+						if($unmatch['status'] == 200) {
+							// Update the likes table to 'unmatched'
+							$this->database->UnmatchUser($this->session->userdata('tinder_id'), $match_id);
+						}
+					}
 				}
 			}
 
@@ -679,8 +636,23 @@
 
 					// Update the user's row in the DB
 					$this->database->UpdateUser($tinder_id, array('bio' => $bio, 'gender' => $gender));
-					FormatArray($update);
+					// FormatArray($update);
 				}
+			}
+
+			public function Vote() {
+				// Get the ID from URL
+				$id = $this->input->get('id');
+				$vote = $this->input->get('vote');
+
+				// Save the logged in user's Tinder ID
+				$tinder_id = $this->session->userdata('tinder_id');
+				if(!$tinder_id) {
+					$tinder_id = $this->session->userdata('session_id');
+				}
+
+				// Insert the row into the DB if it hasn't been already
+				echo $this->database->InsertVote($tinder_id, $id, $vote);
 			}
 		}
 	}

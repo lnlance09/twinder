@@ -17,8 +17,6 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
-
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
@@ -30,8 +28,6 @@
 
 				// Get the validated query parameters
 				$valids = $this->user->ValidateParams($params);
-				// FormatArray($valids);
-				// die;
 				$gender = $valids['gender'];
 				$city = $valids['city'];
 				$state = $valids['state'];
@@ -52,14 +48,6 @@
 								'max' => $max,
 								'page' => $page);
 				
-				// Define the full URL with all of the parameters
-				$url = $this->base_url.'hot/'.$this->uri->assoc_to_uri($array);
-
-				// Add the search query parameter to the URL if necessary
-				if(!empty($q)) {
-					$url .= '?q='.$q;
-				}
-				
 				// Determine whether to use the coordinates of the city or the state
 				if($state['lon'] != NULL && $state['lat'] != NULL) {
 					if($city['lon'] != NULL && $city['lat'] != NULL) {
@@ -69,7 +57,6 @@
 						$lon = $state['lon'];
 						$lat = $state['lat'];
 					}
-
 					$set = 'true';
 				} else {
 					$lon = $this->session->userdata('lon');
@@ -82,12 +69,10 @@
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
-					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
 					$session = FALSE;
 					$auth = NULL;
 					$tinder_id = NULL;
-					$match_count = NULL;
 				}
 
 				// Format the user's profile link
@@ -102,20 +87,30 @@
 				// Define the title of the document based upon the query parameters
 				$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
 
+				// Define the full URL with all of the parameters
+				$url = 'hot/'.$this->uri->assoc_to_uri($array);
+
+				// Add the search query parameter to the URL if necessary
+				if(!empty($q)) {
+					$url .= '?q='.$q;
+				}
+
 				// Define the meta tags
-				$meta_info = array('description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
-									'img' => $this->base_url.'public/img/',
-									'url' => $url);
+				$meta = array('title' => $title,
+							'description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
+							'img' => 'http://twinder.io/public/img/favicon.ico',
+							'url' => 'http://twinder.io/'.$url,
+							'type' => 'article');
 
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => $title,
+									'type' => 'article',
 									'session' => $session,
 									'header' => 'Browse',
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
-									'match_count' => $match_count,
 									'name' => $this->session->userdata('first_name'),
-									'meta' => $meta_info,
+									'meta' => $meta,
 									'q' => $q,
 									'profile_link' => $profile_link,
 									'profile_pic' => $profile_pic);

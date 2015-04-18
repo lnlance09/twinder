@@ -64,6 +64,7 @@ $route['users/ReportUser'] = 'users/ReportUser/';
 $route['users/SendMessage'] = 'users/SendMessage/';
 $route['users/UpdateProfile'] = 'users/UpdateProfile/';
 $route['users/UnmatchUser'] = 'users/UnmatchUser/';
+$route['users/Vote'] = 'users/Vote/';
 
 /* Matches page */
 $route['matches/(:any)'] = 'matches/index/$1';

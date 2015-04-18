@@ -44,8 +44,7 @@
 			$ch = curl_init();  
 			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php/?login_attempt=1');
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);  
-			// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);  
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);   
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  

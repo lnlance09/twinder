@@ -1,14 +1,13 @@
 <?php
     $base_url = $this->config->base_url();
 ?>
-	<div id="header-section">
+	<div id="header-section" itemscope itemtype="http://schema.org/SearchResultsPage">
         <div id="signin">
             <h1 class="page-header">
-                <?php echo $header; ?>
+                <span itemprop="headline"><?php echo $header; ?></span>
 
                 <!-- Print out the number of users -->
                 <span id="hot_result_num" class="pull-right"></span>
-
                 <span class="clearfix"></span>
             </h1>
 
@@ -16,6 +15,7 @@
                 <form method="GET" action="<?php echo $base_url; ?>" id="search_hot">
                     <div id="filter_box">
                         <div class="col-lg-12 settings_box" id="location_select_box">
+                           
                             <!-- State Autocomplete -->
                             <div class="col-lg-6 pull-left">
                                 <div class="form-group">
@@ -76,13 +76,8 @@
                     <!-- Gender Button -->
 <?php
     for($i=0;$i<count($genders);$i++) {
-        if($gender == $genders[$i]['name']) {
-            $class = ' active';
-            $name = 'gender';
-        } else {
-            $class = '';
-            $name = '';
-        }
+        $class = ($gender == $genders[$i]['name'] ? ' active' : '');
+        $name = ($gender == $genders[$i]['name'] ? ' gender' : '');
 ?>
                     <div class="col-lg-4 text-center gender_filter<?php echo $class; ?>" title="<?php echo $genders[$i]['num']; ?>" name="<?php echo $name; ?>">
                         <?php echo ucwords($genders[$i]['name']); ?>
@@ -117,7 +112,6 @@
                 <div class="modal-header">
                     <h3 class="modal-title">
                         Twinder only works in 'Murica
-
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     </h3>
                 </div>

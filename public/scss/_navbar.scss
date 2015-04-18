@@ -8,7 +8,6 @@
     background: $blue;
     margin: 0 auto; 
     padding: 0 $side-padding;
-    border-bottom: solid 1px #555;
 
     @media screen and (max-width: $break-medium) {
         padding: 0 20px;
@@ -24,6 +23,11 @@
         }
 
         &#main_icon {
+            span {
+                font-size: 16px;
+                font-weight: 700;
+            }
+
             @media screen and (min-width: $break-large) {
                 display: none;
             }
@@ -90,12 +94,11 @@
                     background: inherit;
                     color: $white;
                     font-size: 16px;
+                    outline: none;
 
                     @media screen and (max-width: $break-medium) {
                         font-size: 13px;
                     }
-
-                    outline: none;
                 }
 
                 &.active {
@@ -104,11 +107,16 @@
                     }
 
                     @media screen and (max-width: $break-small) {
-
                         @media screen and (min-width: $break-medium) {
                             display: none;
                         }
                     }
+                }
+
+                .dropdown-menu {
+                    background: #fff;
+                    width: 100% !important;
+                    min-width: 0 !important;
                 }
 
                 &.dropdown {
@@ -231,7 +239,7 @@
             }
         }
 
-        span {
+        span:not(.glyphicon)  {
             bottom: 4px;
             right: 0;
             text-align: center;

@@ -26,38 +26,35 @@
 					$session = TRUE;
 					$auth = $this->session->userdata('token');
 					$tinder_id = $this->session->userdata('tinder_id');
-
-					// Get the match count of the user who is currently logged in
-					$match_count = $this->database->GetMatchCount($tinder_id);
 				} else {
 					$session = FALSE;
 					$auth = NULL;
 					$tinder_id = NULL;
-					$match_count = NULL;
 				}
 
 				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Define the meta tags
-				$meta_info = array('description' => 'A little bit about Twinder',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'about');
+				$meta_info = array('description' => 'About Twinder',
+									'img' => 'http://twinder.io/public/img/favicon.ico',
+									'url' => 'http://twinder.io/about',
+									'type' => 'article');
 				
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => 'About',
+									'type' => 'article',
 									'session' => $session,
 									'header' => 'About',
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
-									'match_count' => $match_count,
 									'name' => $this->session->userdata('first_name'),
 									'meta' => $meta_info,
 									'profile_link' => $profile_link,
 									'profile_pic' => $profile_pic);
 
 				// Get all of the data for the footer view
-				$locations = $this->loc->RandomLocations(5);
+				$locations = $this->loc->FooterPlaces();
 				$rand_users = $this->database->GetAllUsers(5);
 				$footer_info = array('locations' => $locations, 'users' => $rand_users);
 

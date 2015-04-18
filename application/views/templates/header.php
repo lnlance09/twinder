@@ -10,9 +10,9 @@
     // Get the method
     $method = $this->router->fetch_method();
     
+    // Define the pages that need the slider and the ones that need meta tags
     $slider_pages = array('settings', 'hot');
     $meta_pages = array('about', 'contact', 'faq', 'hot', 'signin', 'terms', 'users');
-
     $val = ($controller == 'hot' ? $q : NULL);
 ?>
 <!DOCTYPE html>
@@ -20,49 +20,55 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="author" content="Lance Newman">
+    
+    <!-- Google Plus -->
+    <link rel="publisher" href="https://plus.google.com/lnlance09">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
 <?php
     if(in_array($controller, $meta_pages)) {
 ?>
-    <!-- Meta Tags -->
-    <meta name="description" content="<?php echo $meta['description']; ?>">
-
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="<?php echo $title; ?>"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:image" content="<?php echo $meta['img']; ?>"/>
-    <meta property="og:url" content="<?php echo $meta['url']; ?>"/>
-    <meta property="og:description" content="<?php echo $meta['description']; ?>"/>
-
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Twinder">
+    <meta property="og:type" content="<?php echo $meta['type']; ?>">
+    <meta property="og:title" content="<?php echo $title; ?>">
+    <meta property="og:image" content="<?php echo $meta['img']; ?>">
+    <meta property="og:url" content="<?php echo $meta['url']; ?>">
+    <meta property="og:description" name="description" content="<?php echo $meta['description']; ?>">
+<?php
+        if($controller == 'users' && $method == 'index') {
+?>
+    <!-- Profile Meta Tags -->
+    <link rel="canonical" href="http://examples.opengraphprotocol.us/profile.html">
+    <meta property="profile:first_name" content="<?php echo $profile_name; ?>">
+    <meta property="profile:username" content="<?php echo $username; ?>">
+    <meta property="profile:gender" content="<?php echo $gender; ?>">
+<?php
+        }
+?>
     <!-- Twitter Cards -->
-    <meta name="twitter:card" content="<?php echo $title; ?>">
-    <meta name="twitter:url" content="<?php echo $meta['url']; ?>">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@TwinderIO">
     <meta name="twitter:title" content="<?php echo $title; ?>">
     <meta name="twitter:description" content="<?php echo $meta['description']; ?>">
+    <meta name="twitter:url" content="<?php echo $meta['url']; ?>">
     <meta name="twitter:image" content="<?php echo $meta['img']; ?>">
 <?php
     }
 ?>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
-
-    <!-- Google Fonts -->
+    <!-- CSS -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
-
-    <!-- Stateface Font CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
+    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>
-    <!-- CSS for sliders --> 
+    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
 <?php
@@ -81,7 +87,7 @@
                 </a>
 
                 <button type="button" class="navbar-toggle" id="main_icon">
-                    <i class="fa fa-list fa-lg"></i>
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
                 </button>
 
                 <div class="clearfix"></div>
@@ -97,21 +103,13 @@
                             <img src="<?php echo $profile_pic; ?>" alt="Me" class="thumbnail">
 
                             <span id="header_name"><?php echo $name; ?></span>
-
-                            <span id="like_count">
-                                <!-- The match count -->
-                                <i class="fa fa-heart" id="heart_icon"></i> 
-                                <span id="match_count_num"><?php echo $match_count; ?></span>
-                            </span> 
-
-                            <span class="clearfix"></span>
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?php echo $base_url; ?>users/discover">Play <i class="fa fa-play fa-fw"></i></a></li>
-                            <li><a href="<?php echo $base_url.$profile_link; ?>">Profile <i class="fa fa-user fa-fw"></i></a></li>
-                            <li><a href="<?php echo $base_url; ?>settings">Settings <i class="fa fa-cog fa-fw"></i></a></li>
-                            <li><a href="<?php echo $base_url; ?>users/Logout">Logout <i class="fa fa-sign-out fa-fw"></i></a></li>
+                            <li><a href="<?php echo $base_url; ?>users/discover">Play <span class="glyphicon glyphicon-play-circle"></span></a></li>
+                            <li><a href="<?php echo $base_url.$profile_link; ?>">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                            <li><a href="<?php echo $base_url; ?>settings">Settings <span class="glyphicon glyphicon-cog"></span></a></li>
+                            <li><a href="<?php echo $base_url; ?>users/Logout">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
                     </li>
 <?php
@@ -134,7 +132,6 @@
     <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
     <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
     <div id="auth" class="hidden"><?php echo $auth; ?></div>
-    <div id="controller" class="hidden"><?php echo $controller; ?></div>
 
     <div id="wrapper">
         <div id="sidebar-wrapper">
@@ -142,29 +139,25 @@
 <?php
     if($session) {
 ?>
-                <li><a href="<?php echo $base_url.'users/discover'; ?>"><i class="fa fa-play fa-fw"></i> Play</a></li>
-                <li><a href="<?php echo $base_url.$profile_link; ?>"><i class="fa fa-user fa-fw"></i> Profile</a></li>
-                <li><a href="<?php echo $base_url.'settings'; ?>"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
-                <li><a href="<?php echo $base_url.'users/Logout'; ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                <li><a href="<?php echo $base_url.'users/discover'; ?>"><span class="glyphicon glyphicon-play-circle"></span> Play</a></li>
+                <li><a href="<?php echo $base_url.$profile_link; ?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="<?php echo $base_url.'settings'; ?>"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                <li><a href="<?php echo $base_url.'users/Logout'; ?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 <?php
     } else {
 ?>
-                <li><a href="<?php echo $base_url.'signin'; ?>"><i class="fa fa-sign-in fa-fw"></i> Sign In</a></li>
+                <li><a href="<?php echo $base_url.'signin'; ?>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
 <?php
     }
 ?>
             </ul>
-
-            <span></span>
         </div>
 
         <div id="search_container">
             <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-
                     <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
-
                     <div class="clearfix"></div>
                 </div>
             </form>

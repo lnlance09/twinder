@@ -38,7 +38,14 @@
 	} else {
 ?>
 		<div class="none">
-			There are no results
+			<p>
+				You matched with <a href="<?php echo $his_link; ?>"><?php echo $his_name; ?></a><br> 
+				<?php echo $datetime; ?>
+			</p>
+
+			<img src="<?php echo $his_img; ?>" width="172" class="img-circle" alt="<?php echo $his_name; ?>"> 
+
+			<?php echo Openers(); ?>
 		</div>
 <?php
 	}

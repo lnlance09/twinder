@@ -18,20 +18,21 @@ $(document).ready(function() {
                     if(controller == 'matches') {
                         var match_id = $('#match_id').text();
 
-                        $('#match_load').html('<div class="ajax-loader"><i class="fa fa-circle-notch-o fa-spin"></i></div>');
+                        $('#match_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
 
-                        // Load the results
-                        var string = 'id='+ match_id +'&page=0';
-                        $('#match_load').load(base_url +'matches/Thread', string, function() {
-                            $('#match_load .ajax-loader').fadeOut();
+                        setTimeout(function() {
+                            // Load the results
+                            var string = 'id='+ match_id +'&page=0';
+                            $('#match_load').load(base_url +'matches/Thread', string, function() {
+                                $('#match_load .ajax-loader').fadeOut();
 
-                            $('[data-toggle="tooltip"]').tooltip({
-                                placement: 'top',
-                                html: true,
+                                $('[data-toggle="tooltip"]').tooltip({
+                                    placement: 'top',
+                                    html: true,
+                                });
                             });
-                        });
+                        }, 0);
                     }
-
                     // var obj = JSON.parse(data);
                     // console.log(data);
                 }

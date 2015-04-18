@@ -2,8 +2,8 @@
     $base_url = $this->config->base_url();
 ?>
 	<div id="header-section">
-        <div id="signin">
-            <h1 class="page-header">
+        <div id="signin" itemscope itemtype="http://schema.org/ContactPage">
+            <h1 class="page-header" itemprop="headline">
                 <?php echo $header; ?>
             </h1>
 
@@ -12,6 +12,15 @@
                 <button class="btn btn-success pull-right" type="submit" name="submit" value="submit">Send</button>
                 <div class="clearfix"></div>
             </form>
+
+            <meta content="Contact Twinder if you have any questions or concerns. Feel free to leave some feedback too." itemprop="description">
+            <meta content="Dating" itemprop="genre">
+            <meta content="name" itemprop="Twinder">
+            <meta content="url" itemprop="http://twinder.io/">
+            <meta content="1" itemprop="version">
+            <meta content="Tinder, API, Tinder for Web, Twinder" itemprop="keywords">
+            <meta content="2015" itemprop="copyrightYear">
+            <meta content="2015-04-01" itemprop="dateCreated">
         </div>
 
         <!-- Modal -->

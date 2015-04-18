@@ -26,17 +26,6 @@
 <?php 
 	} 
 
-	for($i=0;$i<count($matches);$i++) {
-?>
-	<url>
-        <loc><?php echo 'http://twinder.io/matches/'.$matches[$i]['match_id']; ?></loc>
-        <changefreq>daily</changefreq>
-        <priority>0.7</priority>
-    </url>
-<?php
-	}
-
-	/*
 	for($i=0;$i<count($places);$i++) {
 ?>
 	<url>
@@ -46,7 +35,6 @@
     </url>
 <?php
 	}
-	*/
 ?>
 
     <url>

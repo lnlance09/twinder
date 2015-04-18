@@ -2,8 +2,8 @@
     $base_url = $this->config->base_url();
 ?>
 	<div id="header-section">
-        <div id="signin">
-            <h1 class="page-header">
+        <div id="signin" itemscope itemtype="http://schema.org/AboutPage">
+            <h1 class="page-header" itemprop="headline">
                 <?php echo $header; ?>
             </h1>
 
@@ -14,7 +14,7 @@
                     You can use Twinder to search for Tinder users based upon variables like location, gender and distance.
                     Everything that you do while logged into Twinder will also be done on the app itself. 
                     But, the opposite isn't entirely true. 
-                    During the process of <a href="http://lancenewman.me/reverse-engineering-the-tinder-api/" target="_blank">reverse engineering Tinder's API</a> a while back, I decided to put my own creative spin on what seems to now be a waning product.
+                    During the process of <a href="http://lancenewman.me/reverse-engineering-the-tinder-api/" target="_blank" itemprop="relatedLink">reverse engineering Tinder's API</a> a while back, I decided to put my own creative spin on what seems to now be a waning product.
                 </p>
 
                 <p>
@@ -32,10 +32,19 @@
 
                 <p>
                     Twinder has its own set of features that really helps separate itself from its already established counterpart, Tinder. 
-                    It has always seemed a bit strange that Tinder's <a href="http://gotinder.com" target="_blank">website</a> was nothing more than just a few static pages.
+                    It has always seemed a bit strange that Tinder's <a href="http://gotinder.com" target="_blank" itemprop="sameAs">website</a> was nothing more than just a few static pages.
                     Seriously. Their website doesn't have any of the functionality that the app does. 
                     It's really just a website that tells you to go download the app on your phone.
                 </p>
             </div>
+
+            <meta content="" itemprop="description">
+            <meta content="Dating" itemprop="genre">
+            <meta content="name" itemprop="Twinder">
+            <meta content="url" itemprop="http://twinder.io/">
+            <meta content="1" itemprop="version">
+            <meta content="Tinder, API, Tinder for Web, Twinder" itemprop="keywords">
+            <meta content="2015" itemprop="copyrightYear">
+            <meta content="2015-04-01" itemprop="dateCreated">
         </div>
     </div>

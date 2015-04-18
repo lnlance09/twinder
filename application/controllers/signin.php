@@ -28,11 +28,13 @@
 				} else {
 					// Define the meta tags
 					$meta_info = array('description' => 'Sign In to Twinder',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url.'signin');
+									'img' => 'http://twinder.io/public/img/favicon.ico',
+									'url' => 'http://twinder.io/signin',
+									'type' => 'article');
 
 					// Set all of the info that needs to be passed to the header view
 					$header_info = array('title' => 'Sign In',
+										'type' => 'article',
 										'session' => FALSE,
 										'header' => 'Sign in to Facebook',
 										'meta' => $meta_info,

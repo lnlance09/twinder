@@ -2,14 +2,15 @@ $(document).ready(function() {
     var base_url = $('#base_url').text(); 
     var tinder_id = $('#user_tinder_id').text();
     var my_tinder_id = $('#my_tinder_id').text();
-    var twitter_id = $('#twitter_id').text();
-    var twitter = $('#twitter').text();
     var first_name = $('#first_name').text();
     var gender = $('#gender').text();
     var active_tab = $('#active_tab').text();
     var can_edit = $('#can_edit').text();
     var can_like = $('#like').text();
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0099dd"}]}];
+
+    // Popover for stats
+    $('.mypopover').popover();
 
     // Google Maps
     function Initialize(lat, lon) {
@@ -47,13 +48,6 @@ $(document).ready(function() {
             draggable: true,
             animation: google.maps.Animation.BOUNCE,
         });
-
-        // Zoom in and center the marker upon click of the marker
-        google.maps.event.addListener(marker, 'click', function() {
-            map.setZoom(16);
-            map.setCenter(marker.getPosition());
-            infowindow.open(map, marker);
-        });
     
         // Convert the miles to meters and draw the radius
         var radius = {
@@ -72,8 +66,6 @@ $(document).ready(function() {
 
         // Resize the map accordingly
         google.maps.event.trigger(map, 'resize');
-
-        // Adjust the height of the map
         $('#google_maps').css('height', '250px');
     }
 
@@ -92,8 +84,12 @@ $(document).ready(function() {
             e.preventDefault();
             
             // If the form is being opened to be edited
-            if($(this).attr('id') == 'click_to_edit') {
-                $(this).attr('class', 'btn btn-success pull-right');
+            if($(this).attr('id') == 'click_to_edit' || $(this).attr('id') == 'resize_click_to_edit') {
+                $('#about_quote').fadeOut(600, function() {
+                    $('#bio_text').fadeIn();
+                });
+
+                $(this).addClass('btn-success');
                 $(this).attr('type', 'submit');
                 $(this).attr('id', 'editing');
                 $(this).text('Done');
@@ -114,9 +110,15 @@ $(document).ready(function() {
                     }
                 });
 
-                $(this).attr('class', 'btn btn-primary pull-right');
+                $(this).addClass('btn-success');
                 $(this).attr('type', 'button');
-                $(this).attr('id', 'click_to_edit');
+
+                if($(this).attr('id') == 'click_to_edit') {
+                    $(this).attr('id', 'click_to_edit');
+                } else if($(this).attr('id') == 'resize_click_to_edit') {
+                    $(this).attr('id', 'resize_click_to_edit');
+                }
+                
                 $(this).text('Edit');
             }
         });
@@ -178,7 +180,7 @@ $(document).ready(function() {
     // Search thru connections upon keyup of the input field
     $('#search_connections').keyup(function(e) {
         var type = $('#active').attr('name');
-        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ $(this).val() +'&twitter_id='+ twitter_id;
+        var data = 'type='+ type + '&page=0&id='+ tinder_id +'&q='+ $(this).val();
         $('#con_load_box').load(base_url +'users/GetConnections', data);
     });
 
@@ -208,7 +210,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         console.log(data);
-                        $('#unmatch_user, #resize_unmatch_user').fadeOut(2000);
+                        $('#unmatch_user, #resize_unmatch_user').fadeOut(200);
                     }
                 });
             });
@@ -253,6 +255,47 @@ $(document).ready(function() {
             });
             break;
     }
+
+    $('#click_hot, #click_not').click(function() {
+        var tinder_id = $('#user_tinder_id').text();
+        var _id = $(this).attr('id');
+
+        if(_id == 'click_hot') {
+            var vote = 1;
+        } else {
+            var vote = 0;
+        }
+
+        $.ajax({
+            url: base_url +'users/Vote',
+            data: {
+                id: tinder_id,
+                vote: vote
+            },
+            success: function(data) {
+                console.log(data);
+                if(data == 'true') {
+                    if(_id == 'click_hot') {
+                        $('#vote_stats .col-lg-6:nth-of-type(2)').fadeOut(300, function() {
+                            $('#vote_stats .col-lg-6:nth-of-type(1)').attr('class', 'col-lg-12');
+                            $('#vote_stats button').attr('class', 'btn btn-primary');
+                            $('#vote_stats .col-lg-12').css('padding', '0');
+                            $('#vote_stats button').css('width', '100%');
+                            $('#vote_stats button').html('#ivotedhot');
+                        });
+                    } else {
+                        $('#vote_stats .col-lg-6:nth-of-type(1)').fadeOut(300, function() {
+                            $('#vote_stats .col-lg-6:nth-of-type(2)').attr('class', 'col-lg-12');
+                            $('#vote_stats button').attr('class', 'btn btn-warning');
+                            $('#vote_stats .col-lg-12').css('padding', '0');
+                            $('#vote_stats button').css('width', '100%');
+                            $('#vote_stats button').html('#ivotednot');
+                        });
+                    }
+                }
+            }
+        });
+    });
 
     // Load the connections upon hover
     $('.timer_box').click(function() {
@@ -306,30 +349,13 @@ $(document).ready(function() {
                     labels['mutual_passes'] = 'Mutual passes';
                 }
                 break;
-
-            case'tweets':
-
-                var fa = 'twitter';
-                var labels = {
-                    'tweets': 'Tweets',
-                    'tweets_and_replies': 'Tweets and replies',
-                    'photos_and_videos': 'Photos and videos'
-                };
-                break;
         }
 
-        if(type == 'tweets' && twitter == 'false') {
-            $('#con_wrapper .input-group').hide();
-        } else {
-            $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');
-            $('#con_wrapper .input-group').fadeIn();
-        }
+        $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');
+        $('#con_wrapper .input-group').fadeIn();
 
         // Define the query string
         var data = 'type='+ type + '&page=0&id='+ tinder_id;
-        if(type == 'tweets' || type == 'tweets_and_replies') {
-            data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
-        }
 
         // Load the new results
         $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
@@ -352,10 +378,6 @@ $(document).ready(function() {
                 ChangeURL(first_name, $(this).attr('name'));
 
                 var data = 'type='+ type + '&page=0&id='+ tinder_id;
-                if(type == 'tweets' || type == 'tweets_and_replies' || type == 'photos_and_videos') {
-                    data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender;
-                }
-
                 $('#con_load_box').load(base_url +'users/GetConnections', data);
             });
         });
@@ -372,7 +394,7 @@ $(document).ready(function() {
 
     // Load the connections
     var active_tab = $('.panel-heading ul li#active').attr('name');
-    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&twitter='+ twitter +'&twitter_id='+ twitter_id +'&name='+ first_name;
+    var data = 'type='+ active_tab +'&page=0&id='+ tinder_id +'&name='+ first_name;
 
     $('#con_load_box').load(base_url +'users/GetConnections', data, function() {
         $('.panel-heading ul li').click(function() {
@@ -384,10 +406,6 @@ $(document).ready(function() {
             ChangeURL(first_name, $(this).attr('name'));
 
             var data = 'type='+ type + '&page=0&id='+ tinder_id;
-            if(type == 'tweets' || type == 'tweets_and_replies' || type == 'photos_and_videos') {
-                data += '&twitter='+ twitter +'&name='+ first_name +'&gender='+ gender +'&twitter_id='+ twitter_id;
-            }
-
             $('#con_load_box').load(base_url +'users/GetConnections', data);
         });
     });

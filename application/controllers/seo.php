@@ -11,40 +11,26 @@
 
 				// Load all of the models
 				$this->load->model('users_model', 'user');
-				$this->load->model('twitter_model', 'twitter');
 			}
 
 			public function Index() {
 				// Set all of the info that needs to be passed to the header view
 				$users = $this->database->GetAllUsers();
 
-				// Get all of the matches from the DB
-				$matches = $this->database->GetAllMatches();
-
 				// Get the most popular place
-				// $places = $this->loc->RandomLocations();
+				$places = $this->loc->RandomLocations();
 
 				// Define the info for the sitemap view
-				$info = array('users' => $users, 
-							'matches' => $matches
-							// 'places' => $places
-							);
+				$info = array('users' => $users, 'places' => $places);
 
 				// Load all of the views
 				$this->load->view('sitemap', $info); 
 			}
 
 			public function Test() {
-				$info = $this->loc->FooterPlaces();
-				// $info = $this->database->NewQuery(-73.9844, 40.7590);
+				$info = $this->database->Rows();
+				// echo $info;
 				FormatArray($info, TRUE);
-				
-				/*
-				$auth = '2740a27d-fa00-405c-afb2-a866ae38886f';
-				$info = $this->user->UpdateSettings($auth, 20, 20, 18, 1, 1);
-				FormatArray($info, TRUE);
-				*/
-				// $this->database->FlushDB();
 				// die;
 			}
 

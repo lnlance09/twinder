@@ -17,6 +17,12 @@
 
         .none {
             border: none;
+
+            .img-circle {
+                border: solid 1px #ccc;
+                padding: 5px;
+                background: #f0f0f0;
+            }
         }
     }
 

@@ -2,8 +2,8 @@
     $base_url = $this->config->base_url();
 ?>
 	<div id="header-section">
-        <div id="signin">
-            <h1 class="page-header">
+        <div id="signin" itemscope itemtype="http://schema.org/QAPage">
+            <h1 class="page-header" itemprop="headline">
                 <?php echo $header; ?>
             </h1>
 
@@ -95,5 +95,14 @@
                     WeTinder will not allow you to use anything other than your real location.
                 </p>
             </div>
+
+            <meta content="" itemprop="description">
+            <meta content="Dating" itemprop="genre">
+            <meta content="name" itemprop="Twinder">
+            <meta content="url" itemprop="http://twinder.io/">
+            <meta content="1" itemprop="version">
+            <meta content="Tinder, API, Tinder for Web, Twinder" itemprop="keywords">
+            <meta content="2015" itemprop="copyrightYear">
+            <meta content="2015-04-01" itemprop="dateCreated">
         </div>
     </div>

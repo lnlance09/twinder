@@ -1,8 +1,7 @@
 /**
  * Font-Awesome
  */
-#heart_icon,
-#match_icon {
+#heart_icon, #match_icon {
     margin-left: 12px;
     margin-right: 7px;
 }
@@ -11,20 +10,12 @@
     color: #3b5998;
 }
 
-.fa-twitter {
-    color: $blue;
-}
-
 .fa-refresh {
     color: $green;
 }
 
 .fa-star {
     color: #e6c200;
-}
-
-.fa-retweet {
-    color: $green;
 }
 
 .fa-heart {
@@ -43,9 +34,7 @@
     color: #b4ff69;
 }
 
-.fa-map-marker,
-.fa-rocket,
-.fa-ban {
+.fa-map-marker, .fa-rocket, .fa-ban {
     color: #c61931;
 }
 

@@ -66,6 +66,8 @@
             .svg {
                 width: 120px !important;
                 height: 120px !important;
+                border: solid 2px #bbb;
+                padding: 4px;
 
                 path {
                     fill: $blue;

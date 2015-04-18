@@ -88,7 +88,7 @@
 
 			      		<div class="modal-body">
 			        		<div class="col-lg-12 text-center">
-			        			<p></p>
+			        			<p>Twinder needs to access your current location</p>
 			        		</div>
 
 			        		<div class="clearfix"></div>

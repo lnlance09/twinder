@@ -16,6 +16,17 @@
         text-align: left;
     }
 
+    &#interested_in {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    &#distance_bar {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        overflow: hidden;
+    }
+
     .slider {
         width: auto !important;
     }
@@ -89,8 +100,7 @@
             border-left: none;
         }
 
-        .form-control:focus,
-        .form-control:active {
+        .form-control:focus, .form-control:active {
             outline: none;
             border: solid 1px $border-color;
             box-shadow: none;
@@ -100,6 +110,9 @@
     #google_maps {
         height: 300px;
         padding: 0;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        overflow: hidden;
     }
 }
 

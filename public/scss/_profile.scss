@@ -39,12 +39,16 @@
                     padding: 0 $side-padding;
                 }
 
-                @media screen and (max-width: $break-medium) {
+                @media screen and (max-width: $break-large) {
                     display: none;
                 }
 
                 .col-lg-8 {
                     padding: 0;
+
+                    @media screen and (min-width: 1300px) {
+                        width: 68%;
+                    }
 
                     .row {
                         padding-left: 0;
@@ -86,7 +90,7 @@
             }
 
             #resize_edit {
-                margin-top: 12px;
+                margin: 10px 0;
 
                 @media screen and (min-width: $break-large) {
                     display: none;
@@ -126,6 +130,10 @@
                     font-size: 22px;
                     margin: 0 0 0 5px !important;
                     font-weight: 600;
+
+                    a {
+                        color: $black !important;
+                    }
 
                     + p {
                         font-size: 16px;
@@ -183,6 +191,45 @@
                         .fa {
                             font-size: 24px;
                             vertical-align: middle;
+                            color: #777;
+                        }
+                    }
+                }
+
+                #votes {
+                    margin-top: 12px;
+                    width: 255px;
+
+                    .progress-bar {
+                        cursor: pointer;
+                    }
+
+                    .progress {
+                        margin: 0;
+                    }
+
+                    #vote_stats {
+                        margin-top: 6px;
+
+                        .col-lg-6 {
+                            padding: 6px 0 0 0;
+
+                            button {
+                                width: 98%;
+
+                                .fa-thumbs-up {
+                                    color: $blue;
+                                }
+
+                                .fa-thumbs-down {
+                                    color: $salmon;
+                                }
+                            }
+                        }
+
+                        button {
+                            width: 100%;
+                            cursor: auto;
                         }
                     }
                 }
@@ -336,67 +383,6 @@
                                             background: $white;
                                         }
 
-                                        // Tweets
-                                        &.tweet {
-                                            h4 {
-                                                font-size: 14px;
-                                                color: #888;
-
-                                                a {
-                                                    color: $black;
-                                                    font-weight: bold;
-                                                }
-                                            }
-
-                                            a {
-                                                img {
-                                                    width: 24px;
-                                                    padding: 0;
-                                                    border: none;
-                                                }
-                                            }
-
-                                            p {
-                                                img {
-                                                    width: 100%;
-
-                                                    &.media_pic {
-                                                        margin-top: 9px;
-                                                    }
-                                                }
-
-                                                &.retweet {
-                                                    margin-bottom: 6px;
-                                                    font-size: 14px;
-                                                    color: #777;
-
-                                                    .fa {
-                                                        font-size: 20px;
-
-                                                        + span {
-                                                            margin-left: 10px;
-                                                        }
-                                                    }
-                                                }
-
-                                                &.tweet_stats {
-                                                    margin-top: 6px;
-
-                                                    span {
-                                                        color: #8899a6;
-
-                                                        &:last-of-type {
-                                                            margin-left: 15px;
-                                                        }
-
-                                                        .fa {
-                                                            font-size: 20px;
-                                                        } 
-                                                    }
-                                                }
-                                            }
-                                        }
-
                                         &:nth-of-type(odd) {
                                             background: #f7f7f7;
                                         }
@@ -445,6 +431,10 @@
                         }
                     }
 
+                    &:nth-of-type(odd) {
+                        padding-left: 0;
+                    }
+
                     img {
                         margin-bottom: 0;
                         width: 120px;
@@ -463,7 +453,7 @@
                 }
 
                 + .clearfix + a {
-                    margin-bottom: 10px;
+                    margin-bottom: 25px;
                     display: block;
                 }
             }
