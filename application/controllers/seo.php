@@ -15,23 +15,20 @@
 
 			public function Index() {
 				// Set all of the info that needs to be passed to the header view
-				$users = $this->database->GetAllUsers();
+				// $users = $this->database->GetAllUsers();
 
 				// Get the most popular place
 				$places = $this->loc->RandomLocations();
 
 				// Define the info for the sitemap view
-				$info = array('users' => $users, 'places' => $places);
+				$info = array('places' => $places);
 
 				// Load all of the views
 				$this->load->view('sitemap', $info); 
 			}
 
 			public function Test() {
-				$info = $this->database->Rows();
-				// echo $info;
-				FormatArray($info, TRUE);
-				// die;
+				
 			}
 
 			public function Ping() {

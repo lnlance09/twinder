@@ -99,7 +99,7 @@
 	                            </div>
 
 	                            <meta itemprop="birthDate" content="<?php echo date('Y-m-d', strtotime($user_info['dob'])); ?>">
-								<meta itemprop="gender" content="<?php echo $user_info['gender']; ?>">
+								<meta itemprop="gender" content="<?php echo FormatGender($user_info['gender']); ?>">
 
 								<!-- Bio Edit -->
 	                            <textarea id="bio_text" class="form-control"><?php echo $user_info['bio']; ?></textarea>

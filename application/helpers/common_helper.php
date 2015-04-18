@@ -452,7 +452,7 @@
 		 * @param {string} [name] The name of the user
 		 */
 		function MetaSubject($username, $name) {
-			return (empty($username) ? $name : $username).' on Twinder';
+			return (empty($username) ? $name : $username)."'s Tinder Profile";
 		}
 
 		/**
