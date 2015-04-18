@@ -97,10 +97,10 @@
 
 				// Define the meta tags
 				$meta = array('title' => $title,
-							'description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
+							'description' => 'Twinder is an online directory of Tinder users. Browse by location, age, gender and name. Tinder for Web. Tinder Client',
 							'img' => 'http://twinder.io/public/img/favicon.ico',
 							'url' => 'http://twinder.io/'.$url,
-							'type' => 'search');
+							'type' => 'website');
 
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => $title,

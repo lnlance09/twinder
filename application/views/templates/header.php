@@ -20,7 +20,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Tinder.io, Tinder Online">
+    <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API">
 
     <!-- Google Plus -->
     <link rel="publisher" href="https://plus.google.com/lnlance09">
@@ -59,7 +59,6 @@
 <?php
     }
 ?>
-
     <!-- CSS -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
