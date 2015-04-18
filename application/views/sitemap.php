@@ -19,7 +19,7 @@
 	for($i=0;$i<count($places);$i++) {
 ?>
 	<url>
-        <loc><?php echo 'http://twinder.io/hot/'.$places[$i]['city'].'/'.$$places[$i]['state']; ?></loc>
+        <loc><?php echo 'http://twinder.io/hot/'.$places[$i]['city'].'/'.$places[$i]['state']; ?></loc>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
