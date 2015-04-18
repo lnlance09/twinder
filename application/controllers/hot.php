@@ -100,7 +100,7 @@
 							'description' => 'See who the hottest, most popular users on Twinder are. Find the hottest men and women. Narrow your searches to specific areas and ages.',
 							'img' => 'http://twinder.io/public/img/favicon.ico',
 							'url' => 'http://twinder.io/'.$url,
-							'type' => 'article');
+							'type' => 'search');
 
 				// Set all of the info that needs to be passed to the header view
 				$header_info = array('title' => $title,

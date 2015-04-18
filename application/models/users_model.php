@@ -475,6 +475,10 @@
 									$city['lat'] = $coords['lat'];
 								}
 							}
+						} else {
+							$city['name'] = 'San Francisco';
+							$city['lon'] = -122.4206;
+							$city['lat'] = 37.7750;
 						}
 						break;
 
@@ -503,6 +507,11 @@
 								$state['lon'] = $coords['lng'];
 								$state['lat'] = $coords['lat'];
 							}
+						} else {
+							$state['name'] = 'California';
+							$state['abbrev'] = 'CA';
+							$state['lon'] = '';
+							$state['lat'] = '';
 						}
 						break;
 

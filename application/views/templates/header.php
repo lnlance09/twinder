@@ -20,9 +20,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="">
-    <meta name="author" content="Lance Newman">
-    
+    <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Tinder.io, Tinder Online">
+
     <!-- Google Plus -->
     <link rel="publisher" href="https://plus.google.com/lnlance09">
 
@@ -45,8 +44,8 @@
     <!-- Profile Meta Tags -->
     <link rel="canonical" href="http://examples.opengraphprotocol.us/profile.html">
     <meta property="profile:first_name" content="<?php echo $profile_name; ?>">
-    <meta property="profile:username" content="<?php echo $username; ?>">
-    <meta property="profile:gender" content="<?php echo $gender; ?>">
+    <meta property="profile:username" content="<?php echo $meta['username']; ?>">
+    <meta property="profile:gender" content="<?php echo FormatGender($gender); ?>">
 <?php
         }
 ?>
@@ -60,6 +59,7 @@
 <?php
     }
 ?>
+
     <!-- CSS -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
@@ -140,7 +140,7 @@
     if($session) {
 ?>
                 <li><a href="<?php echo $base_url.'users/discover'; ?>"><span class="glyphicon glyphicon-play-circle"></span> Play</a></li>
-                <li><a href="<?php echo $base_url.$profile_link; ?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+            <li><a href="<?php echo $base_url.$profile_link; ?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                 <li><a href="<?php echo $base_url.'settings'; ?>"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                 <li><a href="<?php echo $base_url.'users/Logout'; ?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 <?php
