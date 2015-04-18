@@ -1292,15 +1292,16 @@
 		 * @return {array|boolean} An array containing the number of rows returned and info about the users
 		 */
 		public function HottestByState($state, $sex) {
-			$sql = "SELECT users.*, last_seen.*
+			$this->db->cache_on();
+			$sql = "SELECT users.*, COUNT(*) AS count, last_seen.*
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
 					RIGHT JOIN last_seen ON likes.user_one = last_seen.seen_id
-					WHERE likes.match_id != ? AND users.gender = ? AND last_seen.state = ?
+					WHERE likes.match_id IS NOT NULL AND users.gender = ? AND last_seen.state = ?
 					GROUP BY likes.user_one
-					ORDER BY COUNT(*) DESC
+					ORDER BY count DESC
 					LIMIT 1";
-			$query = $this->db->query($sql, array('', $sex, $state));
+			$query = $this->db->query($sql, array($sex, $state));
 			$count = $query->num_rows();
 
 			if($count == 1) {
@@ -1320,7 +1321,7 @@
 								'state' => $row->state,
 								'miles_away' => $row->miles_away,
 								'datetime' => $row->datetime,
-								'match_count' => $this->GetMatchCount($row->tinder_id));
+								'match_count' => $row->count);
 				}
 
 				return array('count' => $count, 'hot' => $return);

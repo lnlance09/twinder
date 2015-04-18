@@ -796,19 +796,15 @@ span.sub_tip {
               font-size: 12px; } }
         .slide_wrapper #location_select_box .col-lg-6 .form-group #city_addon {
           padding: 6px 21px; }
-  .slide_wrapper #gender_box,
-  .slide_wrapper #interested_in_box {
+  .slide_wrapper #gender_box, .slide_wrapper #interested_in_box {
     height: auto;
     padding: 0px 0;
     border-bottom: none !important; }
-    .slide_wrapper #gender_box h2,
-    .slide_wrapper #interested_in_box h2 {
+    .slide_wrapper #gender_box h2, .slide_wrapper #interested_in_box h2 {
       margin-bottom: 5px; }
-    .slide_wrapper #gender_box .btn-group,
-    .slide_wrapper #interested_in_box .btn-group {
+    .slide_wrapper #gender_box .btn-group, .slide_wrapper #interested_in_box .btn-group {
       width: 100%; }
-      .slide_wrapper #gender_box .btn-group button,
-      .slide_wrapper #interested_in_box .btn-group button {
+      .slide_wrapper #gender_box .btn-group button, .slide_wrapper #interested_in_box .btn-group button {
         background: #eee !important;
         width: 100%; }
   .slide_wrapper #maps_box {
@@ -816,20 +812,23 @@ span.sub_tip {
     background: #f0f0f0;
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc; }
-  .slide_wrapper #state_autocomplete,
-  .slide_wrapper #city_autocomplete {
+  .slide_wrapper #state_autocomplete, .slide_wrapper #city_autocomplete {
     border: none; }
-    .slide_wrapper #state_autocomplete ul.list-group,
-    .slide_wrapper #city_autocomplete ul.list-group {
+    .slide_wrapper #state_autocomplete ul.list-group, .slide_wrapper #city_autocomplete ul.list-group {
       margin-bottom: 0;
       border-top: none; }
-      .slide_wrapper #state_autocomplete ul.list-group li,
-      .slide_wrapper #city_autocomplete ul.list-group li {
+      .slide_wrapper #state_autocomplete ul.list-group li, .slide_wrapper #city_autocomplete ul.list-group li {
         border: solid 1px #ddd;
         border-top: none; }
-        .slide_wrapper #state_autocomplete ul.list-group li:last-of-type,
-        .slide_wrapper #city_autocomplete ul.list-group li:last-of-type {
+        .slide_wrapper #state_autocomplete ul.list-group li:last-of-type, .slide_wrapper #city_autocomplete ul.list-group li:last-of-type {
           border-bottom: solid 1px #ddd; }
+    .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none {
+      margin-top: 5px;
+      border: solid 1px #ddd; }
+      @media screen and (max-width: 768px) {
+        .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none {
+          font-size: 18px;
+          padding: 12px; } }
 
 /**
  * FAQ

@@ -16,7 +16,7 @@
 	} else {
 ?>
 	<div class="none">
-		there are no results
+		no results
 	</div>
 <?php
 	}
