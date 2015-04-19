@@ -125,11 +125,11 @@ $(document).ready(function() {
                     // Set the result to true
                     result = 'true';
 
-                    // Load the new results
-                    RefreshResults();
-
                     // Load the pie chart
                     LoadChart(abbrev);
+
+                    // Load the new results
+                    RefreshResults();
                 } else {
                     result = 'false';
                 }
@@ -181,11 +181,11 @@ $(document).ready(function() {
                 // Reload the map
                 FinalizeMap($('#distance-value').text(), lat, lon, zoom);
 
-                // Load the new results
-                RefreshResults();
-
                 // Load the pie chart
                 LoadChart(abbrev);
+                
+                // Load the new results
+                RefreshResults();
             }
         });
     }
@@ -534,18 +534,7 @@ $(document).ready(function() {
     });
 
     /**
-     * 4 Q Filter
-     */
-    /*
-    $('#users_autocomplete').keyup(function(e) {
-        if(e.which != 27) {
-            RefreshResults();
-        } 
-    });
-    */
-
-    /**
-     * 5 Gender Filter
+     * 4 Gender Filter
      */
     $('.gender_filter').click(function() {
         $(this).siblings().removeClass('active');
@@ -558,7 +547,7 @@ $(document).ready(function() {
     });
 
     /**
-     * 6 Age Slider
+     * 5 Age Slider
      */
     $("#age_slider").noUiSlider({
         connect: true,
@@ -585,7 +574,7 @@ $(document).ready(function() {
     });
 
     /**
-     * 7 Distance Filter Slider
+     * 6 Distance Filter Slider
      */
     $('#distance_slider').noUiSlider({
         start: $('#distance-value').text(),

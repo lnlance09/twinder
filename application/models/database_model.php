@@ -189,57 +189,61 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetHottest($just, $sex, $min, $max, $q, $lon, $lat, $distance, $end) {
-			// Turn on DB caching
-			$this->db->cache_on();
+			/*
+			if(!empty($lon) && !empty($lon)) {
+				$sql .= " MBRContains
+		               	(
+		               		LineString
+		                    (
+		                       Point(".$lon." - ".$radius.", ".$lat." - ".$radius."),
+		                       Point(".$lon." + ".$radius.", ".$lat." + ".$radius.")
+		                    )
+		               		location
+		               	)
+		        		AND Distance(Point(".$lon.", ".$lat."), location) <= ".$radius." AND ";
+		    }
+		    */
 			$params = [];
-
 			$sql = ($just ? "SELECT users.id" : "SELECT tinder_id, first_name, age, username, profile_pic, bio");
 			
 			if(!empty($lon) && !empty($lat)) {
 				$sql .= ", (3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance";
 			}
-
 			$sql .= " FROM users 
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
-
 			if($sex != 'both' || is_numeric($min) || is_numeric($max)) {
 				$sql .= "WHERE";
 			}
-
 			// Filter the age
 			if($sex != 'both' && $sex != -1) {
 				array_push($params, $sex);
 				$sql .= " users.gender = ? AND ";
 			}
-
 			// Filter the minimum age
 			if(is_numeric($min)) {
 				array_push($params, $min);
 				$sql .= " users.age >= ? AND ";
 			}
-
 			// Filter the maximum age
 			if(is_numeric($max)) {
 				array_push($params, $max);
 				$sql .= " users.age <= ? ";
 			}
-
 			// Filter the search term
 			if(!empty($q)) {
 				array_push($params, '%'.trim($q).'%');
 				$sql .= " AND users.first_name LIKE ? ";
 			}
-
 			// Filter the distance
 			if(!empty($lon) && !empty($lat)) {
 				array_push($params, $distance);
-				$sql .= " HAVING distance < ?";
+				$sql .= " AND last_seen.lat BETWEEN ".$lat." - 1 AND ".$lat." + 1 AND last_seen.lon BETWEEN ".$lon." - 1 AND ".$lon." + 1 HAVING distance < ?";
 			}
-
 			if(!$just) {
 				$sql .= " LIMIT ".$end;
 			}
+	        // $sql = "INSERT INTO mytable VALUES (Point(51.484804, 0.296631))";
 
 			$query = $this->db->query($sql, $params);
 			$count = $query->num_rows();
@@ -936,7 +940,6 @@
 		 * @return {array} An array containing the number of rows returned and the avg age
 		 */
 		public function GetUsersInState($state, $gender = NULL) {
-			$this->db->cache_on();
 			$data = array($state);
 			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count
 					FROM users
@@ -1048,7 +1051,6 @@
 		 * @return {array|boolean} An array containing the number of rows returned and info about the users
 		 */
 		public function HottestByState($state, $sex) {
-			$this->db->cache_on();
 			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, COUNT(*) AS count
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
