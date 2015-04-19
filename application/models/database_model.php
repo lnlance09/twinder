@@ -137,7 +137,7 @@
 			// Turn on DB caching
 			$this->db->cache_on();
 			$this->db->select('username, tinder_id, first_name, age');
-			$this->db->where('id >', mt_rand(0, 250000));
+			$this->db->where('id >', mt_rand(0, 25000));
 			
 			if($limit) {
 				$this->db->limit($limit);
@@ -1048,7 +1048,7 @@
 		 */
 		public function HottestByState($state, $sex) {
 			$this->db->cache_on();
-			$sql = "SELECT users.*, COUNT(*) AS count, last_seen.*
+			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, COUNT(*) AS count
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
 					RIGHT JOIN last_seen ON likes.user_one = last_seen.seen_id
@@ -1065,18 +1065,8 @@
 				return array('tinder_id' => $row->tinder_id,
 							'name' => $row->first_name,
 							'username' => $row->username,
-							'gender' => $row->gender,
 							'age' => $row->age,
-							'bio' => $row->bio,
 							'pic' => $row->profile_pic,
-							'seen_id' => $row->seen_id,
-							'seen_by_id' => $row->seen_by_id,
-							'lon' => $row->lon,
-							'lat' => $row->lat,
-							'city' => $row->city,
-							'state' => $row->state,
-							'miles_away' => $row->miles_away,
-							'datetime' => $row->datetime,
 							'match_count' => $row->count);
 			} else {
 				return FALSE;
