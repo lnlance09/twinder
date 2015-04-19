@@ -856,6 +856,11 @@ span.sub_tip {
     color: #444;
     margin-bottom: 12px;
     line-height: 25px; }
+  #faq ol li,
+  #about ol li,
+  #terms ol li {
+    font-size: 14px;
+    line-height: 25px; }
 
 /**
  * Radar
