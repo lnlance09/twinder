@@ -150,7 +150,7 @@
 				$count = $this->database->GetHottest(TRUE, $gender, $min, $max, $q, $lon, $lat, $distance, NULL);
 
 				// Calculate all of the info for the pagination in the view
-				$per_page = 20;
+				$per_page = 10;
 				$pages = ceil($count/$per_page);
 				$page = ($page < $pages ? $page : 0);
 				$end = ($page+1)*$per_page;
