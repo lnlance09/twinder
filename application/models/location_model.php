@@ -225,6 +225,7 @@
 		 * @return {array} An array containing 5 locations
 		 */
 		public function FooterPlaces() {
+			$this->db->cache_on();
 			$sql = "SELECT city, state_abbrev
 					FROM locations 
 					WHERE id > ?

@@ -936,6 +936,7 @@
 		 * @return {array} An array containing the number of rows returned and the avg age
 		 */
 		public function GetUsersInState($state, $gender = NULL) {
+			$this->db->cache_on();
 			$data = array($state);
 			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count
 					FROM users
