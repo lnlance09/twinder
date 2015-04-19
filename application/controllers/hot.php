@@ -23,8 +23,6 @@
 				// Get all of the URL parameters
 				$default = array('gender', 'city', 'state', 'distance', 'min', 'max', 'page');
 				$params = $this->uri->uri_to_assoc(2, $default);
-				// FormatArray($params);
-				// die;
 
 				// Get the validated query parameters
 				$valids = $this->user->ValidateParams($params);
@@ -144,41 +142,28 @@
 			public function GetHottest() {
 				// Get all of the query string parameters
 				$params = $this->input->get();		
-				foreach($params as $key => $value) {
-					$$key = $value;
+				foreach($params as $key => $val) {
+					$$key = $val;
 				}
-				
-				// Get all of the hottest users
-				$hot = $this->database->GetHottest(FALSE, $gender, $min, $max, $q, $lon, $lat, $distance);
-				$count = $hot['count'];
 
-				// Get the city and state
-				$location = $this->loc->MapquestLatLon($lat, $lon);
+				// Get the count
+				$count = $this->database->GetHottest(TRUE, $gender, $min, $max, $q, $lon, $lat, $distance, NULL);
 
 				// Calculate all of the info for the pagination in the view
 				$per_page = 20;
 				$pages = ceil($count/$per_page);
-				// var_dump($page);
-
-				// Validate the page
 				$page = ($page < $pages ? $page : 0);
-				$start = $page*$per_page;
+				$end = ($page+1)*$per_page;
 
-				if($page == ($pages-1)) {
-					if($page == 0) {
-						$end = $count;
-					} else {
-						$mod = $count%$per_page;
-						$end = ($mod > 0 ? $start+$mod : $start+$per_page);
-					}
-				} else {
-					$end = $start+$per_page;
-				}
+				// Get the hottest
+				$hot = $this->database->GetHottest(FALSE, $gender, $min, $max, $q, $lon, $lat, $distance, $end);
 
 				// Define all of the parameters
 				$params = array('gender' => $gender,
 								'lon' => $lon,
 								'lat' => $lat,
+								'state' => $state,
+								'abbrev' => $abbrev,
 								'distance' => $distance,
 								'min' => $min,
 								'max' => $max,
@@ -190,16 +175,15 @@
 				// Define all of the info that will be passed to the view
 				$info = array('q_string' => http_build_query($params), 
 							'hot' => $hot, 
-							'state' => $this->loc->FullFromAbbrev($location['state']),
-							'abbrev' => $location['state'],
-							'states' => $this->loc->States(),
+							'state' => $state,
+							'abbrev' => $abbrev,
+							'end' => $hot['count'],
 							'count' => $count,
 							'left_over' => $count-(($page+1)*$per_page),
-							'end' => $end,
 							'page' => $page,
 							'pages' => $pages,
 							'new_page' => $page+1);
-				// FormatArray(array_slice($info, 5));
+				// FormatArray(array_slice($info, 4));
 
 				// Load the view
 				$this->load->view('backend/hot', $info); 

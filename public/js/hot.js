@@ -87,8 +87,6 @@ $(document).ready(function() {
 
         // Resize the map accordingly
         google.maps.event.trigger(map, 'resize');
-
-        // Adjust the height of the map
         $('#google_maps').css('height', '250px');
     }
 
@@ -289,11 +287,14 @@ $(document).ready(function() {
                     gender: $('[name="gender"]').attr('title'), 
                     distance: $('#distance-value'),
                     lon: $('#drag_lon'), 
-                    lat: $('#drag_lat'),  
+                    lat: $('#drag_lat'), 
+                    state: $('#state'),
+                    abbrev: $('#abbrev'), 
                     min: $('#lower-value'), 
                     max: $('#upper-value'), 
                     page: $('#page'),
-                    q: $('#users_autocomplete')
+                    q: $('#users_autocomplete'),
+                    count: $('#hot_count')
                 };
 
         for(var index in params) {
@@ -304,6 +305,7 @@ $(document).ready(function() {
                     break;
 
                 case'q':
+                case'state':
 
                     var val = params[index].val();
                     break;

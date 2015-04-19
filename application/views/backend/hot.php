@@ -1,8 +1,7 @@
 <?php
 	$base_url = $this->config->base_url();
-    $js_url = $base_url.'public/js/';
 ?>
-    <!--Write the page number for the JS to work -->
+    <!-- Write the page number for the JS to work -->
     <div class="hidden" id="load_page"><?php echo $page; ?></div>
 
     <div class="sub_load">
@@ -12,8 +11,6 @@
         <div id="media_container">
 <?php
     	for($i=0;$i<$end;$i++) {
-            // Define the style
-            $style = ($i == ($end-1) ? 'style="border-bottom: solid 1px #ccc;"' : NULL);
             $id = $hot['users'][$i]['tinder_id'];
     		$name = $hot['users'][$i]['name'];
     		$age = $hot['users'][$i]['age'];
@@ -21,7 +18,7 @@
     		$img = $hot['users'][$i]['profile_pic'];
             $link = $hot['users'][$i]['link'];
 ?>
-            <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'" <?php echo $style; ?>>
+            <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'">
                 <div class="media-left media-top">
                     <a href="<?php echo $base_url.$link; ?>">
                         <img src="<?php echo $img; ?>" class="media-object img-circle" alt="<?php echo $name; ?>">
@@ -42,8 +39,9 @@
         }
     }
 ?>
-            <div id="append"></div>
         </div>
+
+        <div id="append"></div>
     </div>
 <?php
     if($count == 0) {
@@ -53,7 +51,7 @@
     </div>
 <?php
     } else {
-        if($new_page != $pages) {
+        if($new_page < $pages) {
 ?>
     <div class="text-center">
         <button type="button" class="btn btn-default" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
@@ -64,32 +62,28 @@
 ?>
     <script>
         var base_url = '<?php echo $base_url; ?>';
-        $('#hot_result_num').text(FormatNumber(<?php echo $count; ?>));
-
-        function FormatNumber(num) {
-            if(num > 1000) {
-                var floor = Math.floor(num/1000);
-                var decimal = Math.ceil(num/100)-(floor*10); 
-                return floor +'.'+ decimal +'K';
-            } else {
-                return num;
-            }
-        }
+        $('#hot_result_num').text('<?php echo FormatNumber($count); ?>');
 
         function GetFullURL() {
             var str;
             var params = {
-                        gender: $('[name="gender"]'), 
+                        gender: $('[name="gender"]').attr('title'), 
                         city: $('#city'), 
-                        state: $('#state_ref'), 
+                        state: $('#state_ref'),
+                        abbrev: $('#abbev'), 
                         distance: $('#distance-value'), 
                         min: $('#lower-value'), 
                         max: $('#upper-value'), 
-                        page: $('#load_page')
+                        page: $('#load_page'),
                     };
 
             for(var index in params) {
                 switch(index) {
+                    case'gender':
+
+                        var val = params[index];
+                        break;
+
                     case'city':
 
                         var val = params[index].val();
@@ -107,15 +101,6 @@
                         // Set the default value of the state to 'new york'
                         if(val == '') {
                             var val = 'new york';
-                        }
-                        break;
-
-                    case'gender':
-
-                        var val = params[index].text().trim().toLowerCase();
-
-                        if(val === undefined || val == '') {
-                            var val = 'both';
                         }
                         break;
 
@@ -145,7 +130,7 @@
             $('#append').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
             var new_page = '<?php echo $new_page; ?>';
             var data = '<?php echo $q_string; ?>&page='+ new_page;
-            // console.log(data);
+            console.log(data);
 
             $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
                 $('#hot_load .ajax-loader').fadeOut();

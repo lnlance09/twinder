@@ -20,17 +20,11 @@
 		 * @return {int|boolean} The location ID from the DB or FALSE
 		 */
 		public function CheckCityAndState($city, $state) {
-			$sql = "SELECT id FROM locations 
+			$sql = "SELECT COUNT(*) AS count FROM locations 
 					WHERE city = ? AND (state = ? OR state_abbrev = ?)"; 
 			$query = $this->db->query($sql, array($city, $state, $state));
-			
-			if($query->num_rows() == 1) { 
-				foreach($query->result() as $row) {
-					return $row->id;
-				}
-			} else {
-				return FALSE;
-			}
+			$result = $query->result();
+			return ($result[0]->count == 1 ? TRUE : FALSE);
 		}
 
 		/**
@@ -90,7 +84,6 @@
 			$query = $this->db->get('locations');
 			$count = $query->num_rows();
 			$i = 0;
-
 			$return = [];
 
 			foreach($query->result() as $row) {
@@ -118,7 +111,6 @@
 			$query = $this->db->get('locations');
 			$count = $query->num_rows();
 			$i = 0;
-
 			$return = [];
 
 			foreach($query->result() as $row) {
@@ -194,7 +186,6 @@
 		    // Decode the response
 		    $decode = @json_decode($data, TRUE);
 		    $location = $decode['results'][0]['locations'][0];
-
 		    return array('country' => $location['adminArea1'],
 		    			'city' => $location['adminArea5'], 
 		    			'state' => $location['adminArea3'],
@@ -216,8 +207,7 @@
 
 			$query = $this->db->get('locations');
 			$count = $query->num_rows();
-			$i = 0;
-
+			$i = 0; 
 			$return = [];
 
 			foreach($query->result() as $row) {

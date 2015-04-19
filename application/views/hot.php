@@ -77,7 +77,7 @@
 <?php
     for($i=0;$i<count($genders);$i++) {
         $class = ($gender == $genders[$i]['name'] ? ' active' : '');
-        $name = ($gender == $genders[$i]['name'] ? ' gender' : '');
+        $name = ($gender == $genders[$i]['name'] ? 'gender' : '');
 ?>
                     <div class="col-lg-4 text-center gender_filter<?php echo $class; ?>" title="<?php echo $genders[$i]['num']; ?>" name="<?php echo $name; ?>">
                         <?php echo ucwords($genders[$i]['name']); ?>

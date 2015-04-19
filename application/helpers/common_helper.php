@@ -27,13 +27,11 @@
 		    if($post === TRUE) {
 		    	curl_setopt($ch, CURLOPT_POST, TRUE);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-		    } else{
-		    	if($post == 'PUT') {
-			    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-			    	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-			    } elseif($post == 'DELETE') {
-			    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-			    }
+		    } elseif($post == 'PUT') {
+			    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+			    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+			} elseif($post == 'DELETE') {
+			    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			}
 
 		    $data = curl_exec($ch);
@@ -172,7 +170,6 @@
 				default:
 
 					return 'both';
-					break;
 			}
 		}
 
@@ -195,7 +192,6 @@
 				default:
 
 					return '-1';
-					break;
 			}
 		}
 
@@ -282,7 +278,6 @@
 		 */
 		function ReturnPicsArray($photos) {
 			$pics = [];
-
 			for($i=0;$i<count($photos);$i++) {
 				$pics[$i] = $photos[$i]['processedFiles'][0]['url'];
 			}
@@ -296,7 +291,6 @@
 		 */
 		function ReturnProfilePic($photos) {
 			$key = 0;
-
 			for($i=0;$i<count($photos);$i++) {
 				if(array_key_exists('main', $photos[$i])) {
 					if($photos[$i]['main'] == 'main') {
@@ -389,7 +383,6 @@
 	            case'passes':
 
 	                return 'thumbs-down';
-	                break;
 	        }
 	    }
 
