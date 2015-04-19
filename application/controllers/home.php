@@ -53,18 +53,19 @@
 
 				if($valid) {
 					// Get info about the state for each gender
-					$all = $this->database->GetUsersInState($state);
 					$male = $this->database->GetUsersInState($state, 0);
 					$female = $this->database->GetUsersInState($state, 1);
+					$all = $male['count']+$female['count'];
+					$avg = ceil(($male['avg_age']+$female['avg_age'])/2);
 
 					// Get the hottest user from the given state
 					$mr = $this->database->HottestByState($state, 0);
 					$mrs = $this->database->HottestByState($state, 1);
 
-					$data = array('total_count' => FormatNumber($all['count']),
+					$data = array('total_count' => FormatNumber($all),
 								'male_count' => $male['count'],
 								'female_count' => $female['count'],
-								'avg' => $all['avg_age'],
+								'avg' => $avg,
 								'mr_link' => FormatUserLink($mr['tinder_id'], $mr['username']),
 								'mrs_link' => FormatUserLink($mrs['tinder_id'], $mr['username']),
 								'mr_pic' => ChangePicSize($mr['pic'], 172),

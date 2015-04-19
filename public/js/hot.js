@@ -536,11 +536,13 @@ $(document).ready(function() {
     /**
      * 4 Q Filter
      */
+    /*
     $('#users_autocomplete').keyup(function(e) {
         if(e.which != 27) {
             RefreshResults();
         } 
     });
+    */
 
     /**
      * 5 Gender Filter
