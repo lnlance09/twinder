@@ -54,6 +54,30 @@
 		}
 
 		/**
+		 * Return a semi-random list of locations for the footer
+		 * @return {array} An array containing 5 locations
+		 */
+		public function FooterPlaces() {
+			$sql = "SELECT city, state_abbrev
+					FROM locations 
+					WHERE id > ?
+					GROUP BY state
+					LIMIT 5";
+			$query = $this->db->query($sql, array(mt_rand(95867, 105000)));
+			$count = $query->num_rows();
+			$i = 0;
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
+
+				$i++;
+			}
+
+			return $return;
+		}
+
+		/**
 		 * Get the full name of a state based upon it's abbreviation
 		 * @param {string} [state] The two letter abbreviation of the state
 		 * @return {string} The full name of the state from its two letter abbreviation
@@ -75,7 +99,6 @@
 		 * @return {array} An array containing the number of rows returned and the states
 		 */
 		public function GetStates($state) {
-			$this->db->cache_on();
 			$this->db->select('state, state_abbrev');
 			$this->db->like('state', $state);
 			$this->db->order_by('state', 'asc');
@@ -102,7 +125,6 @@
 		 * @return {array} An array containing the number of rows and info about the cities
 		 */
 		public function GetCities($state, $city) {
-			$this->db->cache_on();
 			$this->db->select('city, lon, lat');
 			$this->db->where('state', $state);
 			$this->db->like('city', $city);
@@ -197,8 +219,6 @@
 		 * @return An array containing random locations
 		 */
 		public function RandomLocations($limit = NULL) {
-			// Turn on DB caching
-			$this->db->cache_on();
 			$this->db->select('city, state_abbrev');
 
 			if($limit) {
@@ -217,32 +237,6 @@
 			}
 
 			shuffle($return);
-			return $return;
-		}
-
-		/**
-		 * Return a semi-random list of locations for the footer
-		 * @return {array} An array containing 5 locations
-		 */
-		public function FooterPlaces() {
-			$this->db->cache_on();
-			$sql = "SELECT city, state_abbrev
-					FROM locations 
-					WHERE id > ?
-					GROUP BY state
-					LIMIT 5";
-			$query = $this->db->query($sql, array(mt_rand(95867, 105000)));
-			$count = $query->num_rows();
-			$i = 0;
-
-			$return = [];
-
-			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
-
-				$i++;
-			}
-
 			return $return;
 		}
 

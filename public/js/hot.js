@@ -1,5 +1,4 @@
-$(document).ready(function() {
-    var base_url = $('#base_url').text().trim(); 
+    var base_url = $('#base_url').text(); 
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0993c7"}]}];
 
     // Check to see if the user's browser supports GeoLocation
@@ -9,13 +8,218 @@ $(document).ready(function() {
         alert('Geolocation is not supported by this browser');
     }
 
-    /**
-     * Load Google Maps and load the results based upon the given criteria
-     * @param {int} [miles] The number of miles. The distance filter
-     * @param {decimal} [lat] The latitude coordinate
-     * @param {decimal} [lon] The longitude coordinate
-     * @param {int} [zoom] The zoom value
-     */
+    // 2 State Autocomplete
+    $('#state').keyup(function(e) {
+        if(e.which != 27) {
+            var value = $(this).val(); 
+            var data = 'state='+ value;
+            
+            // Load the results
+            $('#state_autocomplete').load(base_url +'home/GetStates', data, function() {
+                $('#state_autocomplete').slideDown();
+
+                // Upon click of one of the items from the autocomplete panel
+                $('#state_autocomplete ul li').click(function() {
+                    // Get the state's name and abbreviation
+                    var abbrev = $(this).attr('name');
+                    var state = $(this).text().trim();
+
+                    // Slide up the autocomplete panelx
+                    $('#state_autocomplete').slideUp();
+                    $('#city_autocomplete').slideUp();
+
+                    // Update the latitude and longitude coordinates
+                    CoordsFromLocation(null, state, abbrev);
+
+                    $.ajax({
+                        url: base_url +'hot/HottestUser',
+                        data: {
+                            gender: 1,
+                            state: abbrev
+                        },
+                        success: function(data) {
+            
+                        }
+                    });
+                });
+            });
+        } else {
+             $('#state_autocomplete').slideUp();
+        }
+    });
+
+    // 3 City Autocomplete
+    $('#city').keyup(function(e) {
+        if(e.which != 27) {
+            // Get the value of the city and the state
+            var state = $('#state_ref').text().trim();
+            var abbrev = $('#abbrev').text().trim();
+            var data = 'state='+ state +'&city='+ $(this).val();
+            
+            // Load the results
+            $('#city_autocomplete').load(base_url +'home/GetCities', data, function() {
+                // Slide the autocomplete panel down
+                $('#city_autocomplete').slideDown();
+
+                // Upon click of one of the items from the autocomplete panel
+                $('#city_autocomplete ul li').click(function() {
+                    // Slide up the autocomplete panel
+                    $('#city_autocomplete').slideUp();
+
+                    // Update the latitude and longitude coordinates
+                    CoordsFromLocation($(this).text().trim(), state, abbrev);
+                });
+            });
+        } else {
+             $('#city_autocomplete').slideUp();
+        }
+    });
+
+    // 4 Gender Filter
+    $('.gender_filter').click(function() {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(this).siblings().attr('name', '');
+        $(this).attr('name', 'gender');
+
+        // Load the new results
+        RefreshResults();
+    });
+
+    // 5 Age Slider
+    $("#age_slider").noUiSlider({
+        connect: true,
+        behaviour: 'tap',
+        start: [$('#lower-value').text(), $('#upper-value').text()],
+        step: 1,
+        format: wNumb({
+            decimals: 0
+        }),
+        range: {
+            'min': [18],
+            'max': [50]
+        }
+    });
+
+    $("#age_slider").Link('lower').to($('#lower-value'));
+    $("#age_slider").Link('upper').to($('#upper-value'));
+
+    // Age Trigger
+    $('#age_slider').click(function() {
+        RefreshResults();
+    });
+
+    // 6 Distance Filter Slider
+    $('#distance_slider').noUiSlider({
+        start: $('#distance-value').text(),
+        connect: 'lower',
+        step: 1,
+        format: wNumb({
+            decimals: 0
+        }),
+        range: {
+          'min': 1,
+          'max': 100
+        }
+    });
+
+    $('#distance_slider').Link('lower').to($('#distance-value'));
+
+    // Distance Filter Trigger
+    $('#distance_slider').change(function() {
+        // Load the map again
+        var lon = $('#drag_lon').text();
+        var lat = $('#drag_lat').text();
+        var distance = $('#distance-value').text();
+        FinalizeMap(distance, lat, lon, null);
+        RefreshResults();
+    });
+
+    // Reflect the changes from the sliders on the document
+    function leftValue(value, handle, slider) {
+        $(this).text(handle.parent()[0].style.left);
+    }
+
+    // Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
+    function ShowPosition(position) {
+        // Get the lat & lon coordinates
+        var set = $('#set_location').text().trim();
+        var lon = $('#drag_lon').text();
+        var lat = $('#drag_lat').text();
+
+        // If the location parameters aren't set, then get the user's current location
+        if(set == 'false') {
+            var lon = position.coords.longitude;
+            var lat = position.coords.latitude;
+
+            // Update the new lon & lat coordinates 
+            $('#drag_lon').text(lon);
+            $('#drag_lat').text(lat);
+            GetLocationName(lon, lat);
+        } else {
+            RefreshResults();
+            LoadChart($('#abbrev').text());
+        }
+
+        // Load the initial results
+        FinalizeMap($('#distance-value').text(), lat, lon, null);
+    }
+
+    // In the event of a GeoLocation error, reference the error 
+    function ShowError(error) {
+        // Get the lat & lon coordinates
+        var set = $('#set_location').text().trim();
+        var lon = $('#drag_lon').text();
+        var lat = $('#drag_lat').text();
+
+        // If the location parameters aren't set, then get the user's current location
+        if(set == 'false') {
+            // Update the new lon & lat coordinates with the default to NYC
+            var lon = -122.4206;
+            var lat = 37.7750;
+            $('#drag_lon').text(lon);
+            $('#drag_lat').text(lat);
+            GetLocationName(lon, lat);
+        } else {
+            // Load the new results
+            RefreshResults();
+            LoadChart($('#abbrev').text());
+        }
+
+        // Load the initial results
+        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
+
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("User denied the request for Geolocation");
+                break;
+
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information is unavailable");
+                break;
+
+            case error.TIMEOUT:
+                console.log("The request to get user location timed out");
+                break;
+
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred");
+                break;
+        }
+    }
+
+    // Load the new results with the updated parameters in the #hot_load div
+    function RefreshResults() {
+        $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
+        // console.log(GetParams());
+
+        $('#hot_load').load('http://twinder.io/hot/GetHottest', GetParams(), function() {
+            $('#hot_load .ajax-loader').fadeOut();
+            ChangeTitleURL();
+        });
+    }
+
+    // Load Google Maps and load the results based upon the given criteria
     function FinalizeMap(miles, lat, lon, zoom) {
         if(zoom == null) {
             var tenth = miles*0.05;
@@ -41,7 +245,6 @@ $(document).ready(function() {
                 position: LatLon,
                 draggable: true,
                 animation: google.maps.Animation.DROP,
-                // icon: 'http://maps.google.com/mapfiles/ms/icons/red-pushpin.png',
             });
 
         // Make the marker draggable
@@ -53,7 +256,7 @@ $(document).ready(function() {
             $('#drag_lat').text(lat);
             $('#drag_lon').text(lon);
             var loc = GetLocationName(lon, lat);
-            console.log('Log: '+ loc);
+            // console.log('Log: '+ loc);
 
             // If the location is in the US, then center the marker
             if(loc == 'true') {
@@ -90,11 +293,7 @@ $(document).ready(function() {
         $('#google_maps').css('height', '250px');
     }
 
-    /**
-     * Get the state and city names of a place from its lat & lon coordinates
-     * @param {decimal} [lon] The longitude coordinate
-     * @param {decimal} [lat] The latitude coordinate
-     */
+    // Get the state and city names of a place from its lat & lon coordinates
     function GetLocationName(lon, lat) {
         var result = '';
 
@@ -111,7 +310,6 @@ $(document).ready(function() {
                 var city = obj.city;
                 var abbrev = obj.state;
                 var state = obj.full_name;
-                console.log(obj);
 
                 if(country == 'US') {
                     // Update the city and state
@@ -125,11 +323,9 @@ $(document).ready(function() {
                     // Set the result to true
                     result = 'true';
 
-                    // Load the new results
-                    RefreshResults();
-
-                    // Load the pie chart
+                    // Load the pie chart and the new results
                     LoadChart(abbrev);
+                    RefreshResults();
                 } else {
                     result = 'false';
                 }
@@ -139,12 +335,7 @@ $(document).ready(function() {
         return result;
     }
 
-    /**
-     * Get the longitude and latitude coordinates of a place from its city and state
-     * @param {string} [city] The name of the city
-     * @param {string} [state] The full name of the state
-     * @param {string} [abbrev] The state's abbreviation
-     */
+    // Get the longitude and latitude coordinates of a place from its city and state
     function CoordsFromLocation(city, state, abbrev) {
         $.ajax({
             url: base_url +'home/LocationFromCity',
@@ -154,7 +345,6 @@ $(document).ready(function() {
             },
             success: function(data) {
                 var obj = JSON.parse(data);
-                // console.log(obj);
                 var lon = obj.lng;
                 var lat = obj.lat;
 
@@ -181,18 +371,15 @@ $(document).ready(function() {
                 // Reload the map
                 FinalizeMap($('#distance-value').text(), lat, lon, zoom);
 
-                // Load the new results
-                RefreshResults();
-
-                // Load the pie chart
+                // Load the pie chart and the new results
                 LoadChart(abbrev);
+                RefreshResults();
             }
         });
     }
 
     function LoadChart(state) {
-        var data = 'state='+ state;
-        $('#chart_load').load(base_url +'home/DrawPieChart', data, function() {
+        $('#chart_load').load(base_url +'home/DrawPieChart', 'state='+ state, function() {
             $('#chart_load .ajax-loader').fadeOut();
 
             $('[data-toggle="tooltip"]').tooltip({
@@ -202,9 +389,7 @@ $(document).ready(function() {
         });
     }
 
-    /**
-     * Change the title and URL of a document without reloading the page
-     */
+    // Change the title and URL of a document without reloading the page
     function ChangeTitleURL() {
         var title = DefineTitle() +' - Twinder';
         var url = GetFullURL();
@@ -215,9 +400,7 @@ $(document).ready(function() {
         document.title = title;
     }
 
-    /**
-     * Form the URL based upon all of the search parameters
-     */
+    // Form the URL based upon all of the search parameters
     function GetFullURL() {
         var str;
         var params = {
@@ -278,9 +461,7 @@ $(document).ready(function() {
         return str.substr(9, str.length-10) +'?q='+ q;
     }
 
-    /**
-     * Grab all of the parameters to update the search results
-     */
+    // Grab all of the parameters to update the search results
     function GetParams() {
         var str;
         var params = {
@@ -325,9 +506,7 @@ $(document).ready(function() {
         return str.substr(9, str.length-10);
     }
 
-    /**
-     * Format the title of the document based upon the search parameters
-     */
+    // Format the title of the document based upon the search parameters
     function DefineTitle() {
         var title = 'The hottest ';
         var gender = $('[name="gender"]').attr('title');
@@ -365,254 +544,3 @@ $(document).ready(function() {
 
         return title;
     }
-
-    /**
-     * Load the new results with the updated parameters in the #hot_load div
-     */
-    function RefreshResults() {
-        $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-
-        $('#hot_load').load(base_url +'hot/GetHottest', GetParams(), function() {
-            $('#hot_load .ajax-loader').fadeOut();
-            ChangeTitleURL();
-        });
-    }
-
-    /**
-     * Reflect the changes from the sliders on the document
-     */
-    function leftValue(value, handle, slider) {
-        $(this).text(handle.parent()[0].style.left);
-    }
-
-    /*
-     * In the event of a GeoLocation error, reference the error 
-     */
-    function ShowError(error) {
-        // Get the lat & lon coordinates
-        var set = $('#set_location').text().trim();
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        // console.log('Lon: '+ lon +', Lat: '+ lat);
-
-        // If the location parameters aren't set, then get the user's current location
-        if(set == 'false') {
-            // Update the new lon & lat coordinates with the default to NYC
-            var lon = -122.4206;
-            var lat = 37.7750;
-            $('#drag_lon').text(lon);
-            $('#drag_lat').text(lat);
-            GetLocationName(lon, lat);
-        } else {
-            // Load the new results
-            RefreshResults();
-            LoadChart($('#abbrev').text());
-        }
-
-        // Load the initial results
-        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
-
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation");
-                break;
-
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable");
-                break;
-
-            case error.TIMEOUT:
-                console.log("The request to get user location timed out");
-                break;
-
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred");
-                break;
-        }
-    }
-
-    /**
-     * Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
-     * @param {object} The cliet's position
-     */
-    function ShowPosition(position) {
-        // Get the lat & lon coordinates
-        var set = $('#set_location').text().trim();
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        // console.log('Lon: '+ lon +', Lat: '+ lat);
-
-        // If the location parameters aren't set, then get the user's current location
-        if(set == 'false') {
-            var lon = position.coords.longitude;
-            var lat = position.coords.latitude;
-
-            // Update the new lon & lat coordinates 
-            $('#drag_lon').text(lon);
-            $('#drag_lat').text(lat);
-            GetLocationName(lon, lat);
-        } else {
-            // Load the new results
-            RefreshResults();
-            LoadChart($('#abbrev').text());
-        }
-
-        // Load the initial results
-        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
-    }
-
-    /**
-     * 2 State Autocomplete
-     */
-    $('#state').keyup(function(e) {
-        if(e.which != 27) {
-            var value = $(this).val(); 
-            var data = 'state='+ value;
-            
-            // Load the results
-            $('#state_autocomplete').load(base_url +'home/GetStates', data, function() {
-                $('#state_autocomplete').slideDown();
-
-                // Upon click of one of the items from the autocomplete panel
-                $('#state_autocomplete ul li').click(function() {
-                    // Get the state's name and abbreviation
-                    var abbrev = $(this).attr('name');
-                    var state = $(this).text().trim();
-
-                    // Slide up the autocomplete panelx
-                    $('#state_autocomplete').slideUp();
-                    $('#city_autocomplete').slideUp();
-
-                    // Update the latitude and longitude coordinates
-                    CoordsFromLocation(null, state, abbrev);
-
-                    $.ajax({
-                        url: base_url +'hot/HottestUser',
-                        data: {
-                            gender: 1,
-                            state: abbrev
-                        },
-                        success: function(data) {
-                            // var obj = JSON.parse(data);
-                            console.log(data);
-                        }
-                    });
-                });
-            });
-        } else {
-             $('#state_autocomplete').slideUp();
-        }
-    });
-
-    /**
-     * 3 City Autocomplete
-     */
-    $('#city').keyup(function(e) {
-        if(e.which != 27) {
-            // Get the value of the city and the state
-            var state = $('#state_ref').text().trim();
-            var abbrev = $('#abbrev').text().trim();
-            var data = 'state='+ state +'&city='+ $(this).val();
-            
-            // Load the results
-            $('#city_autocomplete').load(base_url +'home/GetCities', data, function() {
-                // Slide the autocomplete panel down
-                $('#city_autocomplete').slideDown();
-
-                // Upon click of one of the items from the autocomplete panel
-                $('#city_autocomplete ul li').click(function() {
-                    // Slide up the autocomplete panel
-                    $('#city_autocomplete').slideUp();
-
-                    // Update the latitude and longitude coordinates
-                    CoordsFromLocation($(this).text().trim(), state, abbrev);
-                });
-            });
-        } else {
-             $('#city_autocomplete').slideUp();
-        }
-    });
-
-    /**
-     * 4 Q Filter
-     */
-    /*
-    $('#users_autocomplete').keyup(function(e) {
-        if(e.which != 27) {
-            RefreshResults();
-        } 
-    });
-    */
-
-    /**
-     * 5 Gender Filter
-     */
-    $('.gender_filter').click(function() {
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $(this).siblings().attr('name', '');
-        $(this).attr('name', 'gender');
-
-        // Load the new results
-        RefreshResults();
-    });
-
-    /**
-     * 6 Age Slider
-     */
-    $("#age_slider").noUiSlider({
-        connect: true,
-        behaviour: 'tap',
-        start: [$('#lower-value').text(), $('#upper-value').text()],
-        step: 1,
-        format: wNumb({
-            decimals: 0
-        }),
-        range: {
-            'min': [18],
-            'max': [50]
-        }
-    });
-
-    $("#age_slider").Link('lower').to($('#lower-value'));
-    $("#age_slider").Link('upper').to($('#upper-value'));
-
-    /**
-     * Age Trigger
-     */
-    $('#age_slider').click(function() {
-        RefreshResults();
-    });
-
-    /**
-     * 7 Distance Filter Slider
-     */
-    $('#distance_slider').noUiSlider({
-        start: $('#distance-value').text(),
-        connect: 'lower',
-        step: 1,
-        format: wNumb({
-            decimals: 0
-        }),
-        range: {
-          'min': 1,
-          'max': 100
-        }
-    });
-
-    $('#distance_slider').Link('lower').to($('#distance-value'));
-
-    /**
-     * Distance Filter Trigger
-     */
-    $('#distance_slider').change(function() {
-        // Load the map again
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        var distance = $('#distance-value').text();
-        FinalizeMap(distance, lat, lon, null);
-        
-        // Load the new results
-        RefreshResults();
-    });
-});

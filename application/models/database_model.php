@@ -7,7 +7,7 @@
 			$this->load->helper('common_helper');
 
 			// Set the memory limit to unlimited
-			ini_set('memory_limit', -1);
+			// ini_set('memory_limit', -1);
 		}
 
 		/**
@@ -134,8 +134,6 @@
 		 * @return {array|boolean} An array containing the links, names and ages of the users
 		 */
 		public function GetAllUsers($limit = NULL) {
-			// Turn on DB caching
-			$this->db->cache_on();
 			$this->db->select('username, tinder_id, first_name, age');
 			$this->db->where('id >', mt_rand(0, 25000));
 			
@@ -189,10 +187,7 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetHottest($just, $sex, $min, $max, $q, $lon, $lat, $distance, $end) {
-			// Turn on DB caching
-			$this->db->cache_on();
 			$params = [];
-
 			$sql = ($just ? "SELECT users.id" : "SELECT tinder_id, first_name, age, username, profile_pic, bio");
 			
 			if(!empty($lon) && !empty($lat)) {
@@ -206,6 +201,21 @@
 			if($sex != 'both' || is_numeric($min) || is_numeric($max)) {
 				$sql .= "WHERE";
 			}
+
+			/*
+			if(!empty($lon) && !empty($lon)) {
+				$sql .= " MBRContains
+		               	(
+		               		LineString
+		                    (
+		                       Point(".$lon." - ".$radius.", ".$lat." - ".$radius."),
+		                       Point(".$lon." + ".$radius.", ".$lat." + ".$radius.")
+		                    )
+		               		location
+		               	)
+		        		AND Distance(Point(".$lon.", ".$lat."), location) <= ".$radius." AND ";
+		    }
+		    */
 
 			// Filter the age
 			if($sex != 'both' && $sex != -1) {
@@ -240,6 +250,10 @@
 			if(!$just) {
 				$sql .= " LIMIT ".$end;
 			}
+
+	        // $sql = "INSERT INTO mytable VALUES (Point(51.484804, 0.296631))";
+			// echo $sql;
+			// die;
 
 			$query = $this->db->query($sql, $params);
 			$count = $query->num_rows();
@@ -936,7 +950,6 @@
 		 * @return {array} An array containing the number of rows returned and the avg age
 		 */
 		public function GetUsersInState($state, $gender = NULL) {
-			$this->db->cache_on();
 			$data = array($state);
 			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count
 					FROM users
@@ -1048,7 +1061,6 @@
 		 * @return {array|boolean} An array containing the number of rows returned and info about the users
 		 */
 		public function HottestByState($state, $sex) {
-			$this->db->cache_on();
 			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, COUNT(*) AS count
 					FROM likes 
 					LEFT JOIN users ON likes.user_one = users.tinder_id
