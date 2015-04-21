@@ -5,10 +5,6 @@
         <div id="signin">
             <h1 class="page-header">
                 <span itemprop="headline"><?php echo $header; ?></span>
-
-                <!-- Print out the number of users -->
-                <span id="hot_result_num" class="pull-right"></span>
-                <span class="clearfix"></span>
             </h1>
 
             <div class="slide_wrapper">
@@ -97,11 +93,13 @@
             </div>
 
             <!-- Charts -->
+            <!--
             <div id="chart_load">
                 <div class="ajax-loader">
                     <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
                 </div>
             </div>
+            -->
         </div>
     </div>
 

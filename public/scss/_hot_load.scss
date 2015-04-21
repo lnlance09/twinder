@@ -2,7 +2,9 @@
  * Hot load
  */
 #hot_load {
-    margin: 10px 0 0 0;
+    margin: 10px 0;
+    border-bottom: solid 1px #ccc;
+    padding-bottom: 10px;
 
     .main_none {
         border: solid 1px $border-color;

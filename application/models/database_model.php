@@ -186,9 +186,9 @@
 		 * @param {int} [end] The ending point
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
-		public function GetHottest($just, $sex, $min, $max, $q, $lon, $lat, $distance, $end) {
+		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
 			$params = [];
-			$sql = ($just ? "SELECT users.id" : "SELECT tinder_id, first_name, age, username, profile_pic, bio");
+			$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
 			
 			if(!empty($lon) && !empty($lat)) {
 				$sql .= ", (3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance";
@@ -198,8 +198,14 @@
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
 
-			if($sex != 'both' || is_numeric($min) || is_numeric($max)) {
+			if($sex != 'both' || is_numeric($min) || is_numeric($max) || !empty($lon) || !empty($lat)) {
 				$sql .= "WHERE";
+			}
+
+			if(!empty($lon) || !empty($lat)) {
+				array_push($params, $lat, $lat, $lon, $lon);
+				$sql .= " last_seen.lat BETWEEN ? - 1 AND ? + 1
+						AND last_seen.lon BETWEEN ? - 1 AND ? + 1 AND ";
 			}
 
 			// Filter the age
@@ -232,37 +238,25 @@
 				$sql .= " HAVING distance < ?";
 			}
 
-			if(!$just) {
-				$sql .= " LIMIT ".$end;
-			}
-
-	        // $sql = "INSERT INTO mytable VALUES (Point(51.484804, 0.296631))";
-			// echo $sql;
-			// die;
-
+			$sql .= " LIMIT ".$end;
 			$query = $this->db->query($sql, $params);
 			$count = $query->num_rows();
+			$data = [];
+			$i = 0;
 
-			if($just) {
-				return $count;
-			} else {
-				$data = [];
-				$i = 0;
-
-				foreach($query->result() as $row) {
-					$data[$i] = array('tinder_id' => $row->tinder_id,
-									'name' => $row->first_name,
-									'age' => $row->age,
-									'bio' => BioDefault($row->bio, $row->first_name),
-									'profile_pic' => $row->profile_pic,
-									'link' => FormatUserLink($row->tinder_id, $row->username),
-									'distance' => $row->distance);
-					
-					$i++;
-				}
-
-				return array('count' => $count, 'users' => $data);
+			foreach($query->result() as $row) {
+				$data[$i] = array('tinder_id' => $row->tinder_id,
+								'name' => $row->first_name,
+								'age' => $row->age,
+								'bio' => BioDefault($row->bio, $row->first_name),
+								'profile_pic' => $row->profile_pic,
+								'link' => FormatUserLink($row->tinder_id, $row->username),
+								'distance' => $row->distance);
+				
+				$i++;
 			}
+
+			return array('count' => $count, 'users' => $data);
 		}
 
 		/**
@@ -934,22 +928,22 @@
 		 * @param {string} [$state] The two letter abbreviation code of the given state
 		 * @return {array} An array containing the number of rows returned and the avg age
 		 */
-		public function GetUsersInState($state, $gender = NULL) {
-			$data = array($state);
-			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count
+		public function GetUsersInState($state) {
+			$sql = "SELECT AVG(users.age) AS age, COUNT(users.id) AS count, users.gender
 					FROM users
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id
-					WHERE last_seen.state = ?";
+					WHERE last_seen.state = ?
+					GROUP BY users.gender";
+			$query = $this->db->query($sql, array($state));
 
-			if(is_numeric($gender)) {
-				$sql .= " AND users.gender = ?";
-				array_push($data, $gender);
+			foreach($query->result() as $row) {
+				$key = ($row->gender == 0 ? 'female' : 'male');
+				$data[$key] = array('count' => $row->count, 'avg_age' => ceil($row->age));
 			}
-
-			$query = $this->db->query($sql, $data);
-			$result = $query->result();
-			return array('count' => $result[0]->count, 'avg_age' => ceil($result[0]->age));
+			
+			$data['total'] = array('count' => $data['male']['count']+$data['female']['count'], 'avg_age' => ceil(($data['male']['avg_age']+$data['female']['avg_age'])/2));
+			return $data;
 		}
 
 		/**
@@ -1041,31 +1035,36 @@
 
 		/**
 		 * Get the hottest male or female in a given state
-		 * @param {int} [sex] The gender code. 0 for men. 1 for women
 		 * @param {string} [state] The state's two letter abbreviation to target
 		 * @return {array|boolean} An array containing the number of rows returned and info about the users
 		 */
-		public function HottestByState($state, $sex) {
-			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, COUNT(*) AS count
-					FROM likes 
-					LEFT JOIN users ON likes.user_one = users.tinder_id
-					RIGHT JOIN last_seen ON likes.user_one = last_seen.seen_id
-					WHERE likes.match_id IS NOT NULL AND users.gender = ? AND last_seen.state = ?
-					GROUP BY likes.user_one
-					ORDER BY count DESC
-					LIMIT 1";
-			$query = $this->db->query($sql, array($sex, $state));
+		public function HottestByState($state) {
+			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, users.gender, COUNT(votes.*) AS count
+					FROM votes 
+					LEFT JOIN users ON votes.user_two = users.tinder_id
+					RIGHT JOIN last_seen ON votes.user_two = last_seen.seen_id
+					WHERE last_seen.state = ?
+					GROUP BY users.gender
+					ORDER BY count LIMIT 2";
+			$query = $this->db->query($sql, array($state));
 			$count = $query->num_rows();
+			$i = 0;
 
-			if($count == 1) {
-				$result = $query->result();
-				$row = $result[0];
-				return array('tinder_id' => $row->tinder_id,
-							'name' => $row->first_name,
-							'username' => $row->username,
-							'age' => $row->age,
-							'pic' => $row->profile_pic,
-							'match_count' => $row->count);
+			if($count > 0) {
+				foreach($query->result() as $row) {
+					$key = ($row->gender == 0 ? 'mr' : 'mrs');
+					$data[$key] = array('tinder_id' => $row->tinder_id,
+										'name' => $row->first_name,
+										'username' => $row->username,
+										'age' => $row->age,
+										'pic' => $row->profile_pic,
+										'votes' => $row->count);
+
+					$i++;
+				}
+
+				FormatArray($data);
+				return($data);
 			} else {
 				return FALSE;
 			}

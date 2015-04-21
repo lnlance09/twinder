@@ -52,7 +52,7 @@
     if(!empty($mr_name)) {
 ?>
                     <span><?php echo $mr_name.', '.$mr_age; ?></span><br>
-                    <span><?php echo $mr_count; ?> matches</span>
+                    <span><?php echo $mr_count; ?> votes</span>
 <?php
     }
 ?>
@@ -84,7 +84,7 @@
     if(!empty($mrs_name)) {
 ?>
                     <span><?php echo $mrs_name.', '.$mrs_age; ?></span><br>
-                    <span><?php echo $mrs_count; ?> matches</span>
+                    <span><?php echo $mrs_count; ?> votes</span>
 <?php
     }
 ?>

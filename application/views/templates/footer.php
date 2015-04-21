@@ -132,12 +132,6 @@
     <script src="<?php echo $js_url; ?>discover.js"></script>
 <?php
     } else {
-        if($controller == 'hot') {
-?>
-    <!-- Charts JS -->
-    <script src="<?php echo $js_url; ?>charts/chart.min.js"></script>
-<?php
-        }
 ?>
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
 <?php

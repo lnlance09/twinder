@@ -51,10 +51,10 @@
     </div>
 <?php
     } else {
-        if($new_page < $pages) {
+        if(($count%$per_page) > 0) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-default" id="see_more">See more (<?php echo number_format($left_over); ?>)</button>
+        <button type="button" class="btn btn-default" id="see_more">see more</button>
     </div>
 <?php
         }
@@ -62,15 +62,13 @@
 ?>
     <script>
         var base_url = '<?php echo $base_url; ?>';
-        $('#hot_result_num').text('<?php echo FormatNumber($count); ?>');
 
         function GetFullURL() {
             var str;
             var params = {
-                        gender: $('[name="gender"]').attr('title'), 
+                        gender: $('[name="gender"]').text().trim(),
                         city: $('#city'), 
                         state: $('#state_ref'),
-                        abbrev: $('#abbev'), 
                         distance: $('#distance-value'), 
                         min: $('#lower-value'), 
                         max: $('#upper-value'), 
@@ -128,8 +126,7 @@
 
         $('button#see_more').click(function(e) {
             $('#append').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-            var new_page = '<?php echo $new_page; ?>';
-            var data = '<?php echo $q_string; ?>&page='+ new_page;
+            var data = '<?php echo $query; ?>&page=<?php echo $new_page; ?>';
             console.log(data);
 
             $('#hot_load').load(base_url +'hot/GetHottest', data, function() {

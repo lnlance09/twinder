@@ -146,44 +146,39 @@
 					$$key = $val;
 				}
 
-				// Get the count
-				$count = $this->database->GetHottest(TRUE, $gender, $min, $max, $q, $lon, $lat, $distance, NULL);
-
 				// Calculate all of the info for the pagination in the view
 				$per_page = 10;
-				$pages = ceil($count/$per_page);
-				$page = ($page < $pages ? $page : 0);
-				$end = ($page+1)*$per_page;
+				$point = (($page+1)*$per_page)+1;
 
 				// Get the hottest
-				$hot = $this->database->GetHottest(FALSE, $gender, $min, $max, $q, $lon, $lat, $distance, $end);
+				$hot = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, $point);
+				
+				if($point > $hot['count']) {
+					$end = $hot['count'];
+				} else {
+					$end = $point;
+				}
 
 				// Define all of the parameters
 				$params = array('gender' => $gender,
 								'lon' => $lon,
 								'lat' => $lat,
+								'city' => $city,
 								'state' => $state,
-								'abbrev' => $abbrev,
 								'distance' => $distance,
 								'min' => $min,
 								'max' => $max,
-								'q' => $q,
-								'page' => $page,
-								'count' => $count);
-				// FormatArray($params);
+								'q' => $q);
 
 				// Define all of the info that will be passed to the view
-				$info = array('q_string' => http_build_query($params), 
+				$info = array('query' => http_build_query($params), 
 							'hot' => $hot, 
-							'state' => $state,
-							'abbrev' => $abbrev,
-							'end' => $hot['count'],
-							'count' => $count,
-							'left_over' => $count-(($page+1)*$per_page),
+							'end' => $end,
+							'count' => $hot['count'],
+							'per_page' => $per_page, 
 							'page' => $page,
-							'pages' => $pages,
 							'new_page' => $page+1);
-				// FormatArray(array_slice($info, 4));
+				// FormatArray(array_slice($info, 2));
 
 				// Load the view
 				$this->load->view('backend/hot', $info); 
