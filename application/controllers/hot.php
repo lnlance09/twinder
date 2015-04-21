@@ -163,8 +163,6 @@
 				$params = array('gender' => $gender,
 								'lon' => $lon,
 								'lat' => $lat,
-								'city' => $city,
-								'state' => $state,
 								'distance' => $distance,
 								'min' => $min,
 								'max' => $max,
