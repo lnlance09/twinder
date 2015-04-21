@@ -6,9 +6,9 @@
 .facebook.com	TRUE	/	FALSE	1422140770	reg_ext_ref	deleted
 .facebook.com	TRUE	/	FALSE	1	reg_fb_ref	deleted
 .facebook.com	TRUE	/	FALSE	1	reg_fb_gate	deleted
-.facebook.com	TRUE	/	TRUE	1436415839	c_user	100008569698355
-#HttpOnly_.facebook.com	TRUE	/	FALSE	1436415839	fr	0ThB0Mndp987qEwJF.AWU51GfjwW6lKiAgecaUHe0cKg4.BUxCWp.mC.AAA.0.AWVLZpnK
-#HttpOnly_.facebook.com	TRUE	/	TRUE	1436415839	xs	195%3AronIBwBu46JI6g%3A2%3A1422140841%3A18309
-.facebook.com	TRUE	/	FALSE	1436415839	csm	2
+.facebook.com	TRUE	/	TRUE	1437369890	c_user	100008569698355
+#HttpOnly_.facebook.com	TRUE	/	FALSE	1437369890	fr	0ThB0Mndp987qEwJF.AWVE-yCKeMdfQzY2WJnc4to3OHc.BUxCWp.mC.AAA.0.AWUQzdJA
+#HttpOnly_.facebook.com	TRUE	/	TRUE	1437369890	xs	195%3AronIBwBu46JI6g%3A2%3A1422140841%3A18309
+.facebook.com	TRUE	/	FALSE	1437369890	csm	2
 #HttpOnly_.facebook.com	TRUE	/	TRUE	1485212841	lu	ggOVQCpGeLBMp9woXYjcTihQ
-#HttpOnly_.facebook.com	TRUE	/	TRUE	1436415839	s	Aa69giST9cTzouEz.BUxCWp
+#HttpOnly_.facebook.com	TRUE	/	TRUE	1437369890	s	Aa69giST9cTzouEz.BUxCWp

@@ -136,6 +136,7 @@
 		public function GetAllUsers($limit = NULL) {
 			$this->db->select('username, tinder_id, first_name, age');
 			$this->db->where('id >', mt_rand(0, 25000));
+			$this->db->order_by('views', 'DESC');
 			
 			if($limit) {
 				$this->db->limit($limit);

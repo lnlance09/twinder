@@ -78,17 +78,13 @@
 				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Store all of the gender filters in an array
-				$genders = array(array('num' => 0, 'name' => 'men'),
-		                    	array('num' => 1, 'name' => 'women'),
-		                    	array('num' => -1, 'name' => 'both'));
+				$genders = array(array('num' => 0, 'name' => 'men'), array('num' => 1, 'name' => 'women'), array('num' => -1, 'name' => 'both'));
 
 				// Define the title of the document based upon the query parameters
 				$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
 
 				// Define the full URL with all of the parameters
 				$url = 'hot/'.$this->uri->assoc_to_uri($array);
-
-				// Add the search query parameter to the URL if necessary
 				if(!empty($q)) {
 					$url .= '?q='.$q;
 				}
@@ -152,12 +148,7 @@
 
 				// Get the hottest
 				$hot = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, $point);
-				
-				if($point > $hot['count']) {
-					$end = $hot['count'];
-				} else {
-					$end = $point;
-				}
+				$end = ($point > $hot['count'] ? $hot['count'] : $point);
 
 				// Define all of the parameters
 				$params = array('gender' => $gender,
