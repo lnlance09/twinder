@@ -19,7 +19,11 @@
             $link = $hot['users'][$i]['link'];
 
             // Show the highligthed text
-            $highlight = preg_replace("/(".$q.")/i", '<span class="highlight">$1</span>', $bio);
+            if(!empty($q)) {
+                $highlight = str_replace($q, '<span class="highlight">'.$q.'</span>', $bio);
+            } else {
+                $highlight = $bio;
+            }
 ?>
             <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'">
                 <div class="media-left media-top">

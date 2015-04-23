@@ -215,7 +215,7 @@ $(document).ready(function() {
 
                 case'page':
 
-                    var val = parseInt(params[index].text().trim() + parseInt(1));
+                    var val = parseInt(params[index].text().trim()) + parseInt(1);
                     break;
 
                 default:
