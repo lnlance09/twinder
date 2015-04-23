@@ -145,6 +145,33 @@
 		}
 
 		/**
+		 * Query the DB to get matching states from the autocomplete form
+		 * @param {string} [q] The query string
+		 * @return {array} An array containing the number of rows returned and the cities and states
+		 */
+		public function GetLocations($q) {
+			$sql = "SELECT city, state, COUNT(*) AS count
+					FROM last_seen 
+					WHERE city LIKE ?
+					OR state LIKE ?
+					GROUP BY city, state 
+					ORDER BY count DESC
+					LIMIT 5";
+			$query = $this->db->query($sql, array('%'.$q.'%', '%'.$q.'%'));
+			$count = $query->num_rows();
+			$i = 0;
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$return[$i] = array('city' => $row->city, 'state' => $row->state);
+
+				$i++;
+			}
+
+			return array('count' => $count, 'places' => $return);
+		}
+
+		/**
 		 * Calculate the distance between two geographical locations in miles
 		 * @param {decimal} [lat_from] The latitude coordinate of the first location
 		 * @param {decimal} [lon_from] The longitude coordinate of the first location

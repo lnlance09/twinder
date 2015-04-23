@@ -78,8 +78,7 @@
                 border: none;
             }
 
-            &:hover,
-            &.active {
+            &:hover, &.active {
                 color: $white;
                 background: $green;
             }
@@ -120,8 +119,7 @@
     border-left: none !important;
 }
 
-#gender_box,
-#interested_in_box {
+#gender_box, #interested_in_box {
     height: auto;
     padding: 0px 0;
     border-bottom: none !important;

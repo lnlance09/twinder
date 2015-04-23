@@ -19,12 +19,11 @@ ul.list-group {
         &:hover {
             background: $blue;
             color: $white;
-            transition: 0.4s;
+            transition: 0.2s;
 
-            a,
-            span {
+            a, span {
                 color: #fff;
-                transition: 0.4s;
+                transition: 0.2s;
             }
         }
 

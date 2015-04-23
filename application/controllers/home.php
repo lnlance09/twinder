@@ -18,30 +18,6 @@
 
 			public function Index() {
 				header('Location: '.$this->base_url.'hot');
-				die;
-
-				// Get the user ID
-				$user_id = $this->session->userdata('user_id');
-			
-				if(!$user_id) {
-					header('Location: '.$this->base_url.'hot');
-				} else {
-					// Define the meta tags
-					$meta_info = array('description' => 'Tinder for Web',
-									'img' => $this->base_url.'public/img/',
-									'url' => $this->base_url);
-
-					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'WeTinder',
-										'session' => FALSE,
-										'header' => '',
-										'meta' => $meta_info);
-
-					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('main'); 
-					$this->load->view('templates/footer'); 
-				}
 			}
 
 			public function DrawPieChart() {
@@ -77,6 +53,17 @@
 								'abbrev' => $state);
 					$this->load->view('backend/chart', $data); 
 				}
+			}
+
+			public function GetLocations() {
+				// Get the query string from the URL
+				$q = $this->input->get('q');
+
+				// Get the places from the location model
+				$places = $this->loc->GetLocations(trim($q));
+
+				// Load the view
+				$this->load->view('autocomplete/places', $places);
 			}
 
 			// Autocomplete for states

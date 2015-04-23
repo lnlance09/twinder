@@ -11,32 +11,14 @@
                 <form method="GET" action="<?php echo $base_url; ?>" id="search_hot">
                     <div id="filter_box">
                         <div class="col-lg-12 settings_box" id="location_select_box">
-                           
-                            <!-- State Autocomplete -->
-                            <div class="col-lg-6 pull-left">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-addon"><span id="top_stateface" class="stateface stateface-<?php echo strtolower($abbrev); ?>"></span></div>
-                                        <input type="text" class="form-control" id="state" placeholder="State" value="<?php echo $state; ?>" />
-                                    </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon" id="city_addon"><i class="fa fa-building-o"></i></div>
+                                    <input type="text" class="form-control" id="location" placeholder="Pick a place" value="<?php echo $location; ?>" />
                                 </div>
-
-                                <div id="state_autocomplete"></div>
                             </div>
 
-                            <!-- City Autocomplete -->
-                            <div class="col-lg-6 pull-left">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-addon" id="city_addon"><i class="fa fa-building-o"></i></div>
-                                        <input type="text" class="form-control" id="city" placeholder="City" value="<?php echo $city; ?>" />
-                                    </div>
-                                </div>
-
-                                <div id="city_autocomplete"></div>
-                            </div>
-
-                            <div class="clearfix"></div>
+                            <div id="location_autocomplete"></div>
                         </div>
 
                         <!-- Google Maps -->
@@ -91,37 +73,6 @@
                     <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
                 </div>
             </div>
-
-            <!-- Charts -->
-            <!--
-            <div id="chart_load">
-                <div class="ajax-loader">
-                    <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
-                </div>
-            </div>
-            -->
-        </div>
-    </div>
-
-    <!-- The out-of-bounds modal -->
-    <div class="modal fade" id="bounds_modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">
-                        Twinder only works in 'Murica
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    </h3>
-                </div>
-
-                <div class="modal-body text-center">
-                    <img class="svg" id="error" src="<?php echo $base_url; ?>public/img/svg/404.svg" width="200" height="200" alt="error"/>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -129,6 +80,7 @@
     <div class="hidden" id="drag_lon"><?php echo $lon; ?></div>
     <div class="hidden" id="drag_lat"><?php echo $lat; ?></div>
     <div class="hidden" id="state_ref"><?php echo $state; ?></div>
+    <div class="hidden" id="city"><?php echo $city; ?></div>
     <div class="hidden" id="abbrev"><?php echo $abbrev; ?></div>
     <div class="hidden" id="set_location"><?php echo $set; ?></div>
     <div class="hidden" id="page"><?php echo $page; ?></div>

@@ -114,7 +114,7 @@
 									'gender' => strtolower($gender),
 									'city' => $city['name'],
 									'state' => $state['name'],
-									'abbrev' => $state['abbrev'],
+									'location' => (empty($city['name']) ? $state['name'] : $city['name'].', '.$state['name']),
 									'lon' => $lon,
 									'lat' => $lat,
 									'distance' => $distance,

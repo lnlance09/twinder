@@ -79,12 +79,12 @@
                 switch(index) {
                     case'gender':
 
-                        var val = params[index];
+                        var val = params[index].toLowerCase();
                         break;
 
                     case'city':
 
-                        var val = params[index].val();
+                        var val = params[index].text();
 
                         // Set the default value of the city to 'null'
                         if(val == '') {

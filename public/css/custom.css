@@ -213,11 +213,10 @@ ul.list-group li {
   ul.list-group li:hover {
     background: #0993c7;
     color: #fff;
-    transition: 0.4s; }
-    ul.list-group li:hover a,
-    ul.list-group li:hover span {
+    transition: 0.2s; }
+    ul.list-group li:hover a, ul.list-group li:hover span {
       color: #fff;
-      transition: 0.4s; }
+      transition: 0.2s; }
   ul.list-group li img {
     border: none;
     vertical-align: middle; }
@@ -770,34 +769,32 @@ span.sub_tip {
   .slide_wrapper .active {
     background: #f0f0f0; }
   .slide_wrapper #location_select_box {
-    padding: 15px 0 !important;
+    padding: 15px !important;
     width: 100%; }
-    .slide_wrapper #location_select_box .col-lg-6 {
-      width: 50%; }
-      .slide_wrapper #location_select_box .col-lg-6 .form-group {
-        margin-bottom: 0;
-        width: 100%; }
-        .slide_wrapper #location_select_box .col-lg-6 .form-group .input-group-addon {
-          padding: 6px;
-          border: solid 1px #ccc;
-          background: #f0f0f0;
-          border-right: none;
-          width: 50px; }
-          @media screen and (max-width: 768px) {
-            .slide_wrapper #location_select_box .col-lg-6 .form-group .input-group-addon {
-              width: 40px; } }
-          .slide_wrapper #location_select_box .col-lg-6 .form-group .input-group-addon span {
-            font-size: 20px; }
-        .slide_wrapper #location_select_box .col-lg-6 .form-group .form-control {
-          outline: none;
-          box-shadow: none;
-          border-top-right-radius: 4px;
-          border-bottom-right-radius: 4px; }
-          @media screen and (max-width: 768px) {
-            .slide_wrapper #location_select_box .col-lg-6 .form-group .form-control {
-              font-size: 12px; } }
-        .slide_wrapper #location_select_box .col-lg-6 .form-group #city_addon {
-          padding: 6px 21px; }
+    .slide_wrapper #location_select_box .form-group {
+      margin-bottom: 0;
+      width: 100%; }
+      .slide_wrapper #location_select_box .form-group .input-group-addon {
+        padding: 6px;
+        border: solid 1px #ccc;
+        background: #f0f0f0;
+        border-right: none;
+        width: 50px; }
+        @media screen and (max-width: 768px) {
+          .slide_wrapper #location_select_box .form-group .input-group-addon {
+            width: 40px; } }
+        .slide_wrapper #location_select_box .form-group .input-group-addon span {
+          font-size: 20px; }
+      .slide_wrapper #location_select_box .form-group .form-control {
+        outline: none;
+        box-shadow: none;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px; }
+        @media screen and (max-width: 768px) {
+          .slide_wrapper #location_select_box .form-group .form-control {
+            font-size: 12px; } }
+      .slide_wrapper #location_select_box .form-group #city_addon {
+        padding: 6px 21px; }
   .slide_wrapper #gender_box, .slide_wrapper #interested_in_box {
     height: auto;
     padding: 0px 0;
@@ -814,21 +811,23 @@ span.sub_tip {
     background: #f0f0f0;
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc; }
-  .slide_wrapper #state_autocomplete, .slide_wrapper #city_autocomplete {
-    border: none; }
-    .slide_wrapper #state_autocomplete ul.list-group, .slide_wrapper #city_autocomplete ul.list-group {
-      margin-bottom: 0;
-      border-top: none; }
-      .slide_wrapper #state_autocomplete ul.list-group li, .slide_wrapper #city_autocomplete ul.list-group li {
+  .slide_wrapper #state_autocomplete, .slide_wrapper #city_autocomplete, .slide_wrapper #location_autocomplete {
+    display: none;
+    border: none;
+    margin-top: 5px; }
+    .slide_wrapper #state_autocomplete ul.list-group, .slide_wrapper #city_autocomplete ul.list-group, .slide_wrapper #location_autocomplete ul.list-group {
+      margin: 5px 0;
+      border-top: solid 1px #ddd; }
+      .slide_wrapper #state_autocomplete ul.list-group li, .slide_wrapper #city_autocomplete ul.list-group li, .slide_wrapper #location_autocomplete ul.list-group li {
         border: solid 1px #ddd;
         border-top: none; }
-        .slide_wrapper #state_autocomplete ul.list-group li:last-of-type, .slide_wrapper #city_autocomplete ul.list-group li:last-of-type {
+        .slide_wrapper #state_autocomplete ul.list-group li:last-of-type, .slide_wrapper #city_autocomplete ul.list-group li:last-of-type, .slide_wrapper #location_autocomplete ul.list-group li:last-of-type {
           border-bottom: solid 1px #ddd; }
-    .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none {
+    .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none, .slide_wrapper #location_autocomplete .none {
       margin-top: 5px;
       border: solid 1px #ddd; }
       @media screen and (max-width: 768px) {
-        .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none {
+        .slide_wrapper #state_autocomplete .none, .slide_wrapper #city_autocomplete .none, .slide_wrapper #location_autocomplete .none {
           font-size: 18px;
           padding: 12px; } }
 
@@ -969,19 +968,15 @@ span.sub_tip {
 #maps_box {
   border-left: none !important; }
 
-#gender_box,
-#interested_in_box {
+#gender_box, #interested_in_box {
   height: auto;
   padding: 0px 0;
   border-bottom: none !important; }
-  #gender_box h2,
-  #interested_in_box h2 {
+  #gender_box h2, #interested_in_box h2 {
     margin-bottom: 5px; }
-  #gender_box .btn-group,
-  #interested_in_box .btn-group {
+  #gender_box .btn-group, #interested_in_box .btn-group {
     width: 100%; }
-    #gender_box .btn-group button,
-    #interested_in_box .btn-group button {
+    #gender_box .btn-group button, #interested_in_box .btn-group button {
       background: #eee !important;
       width: 100%; }
 
