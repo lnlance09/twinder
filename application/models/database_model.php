@@ -229,8 +229,11 @@
 
 			// Filter the search term
 			if(!empty($q)) {
-				array_push($params, '%'.trim($q).'%');
-				$sql .= " AND users.first_name LIKE ? ";
+				array_push($params, '%'.trim($q).'%', '%'.trim($q).'%');
+				$sql .= " AND (
+							users.first_name LIKE ? 
+							OR users.bio LIKE ?
+							)";
 			}
 
 			// Filter the distance

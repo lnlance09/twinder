@@ -163,7 +163,7 @@
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state);
+				$return[$i] = array('city' => $row->city, 'state' => $row->state, 'count' => $row->count);
 
 				$i++;
 			}

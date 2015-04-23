@@ -163,6 +163,7 @@
 				$info = array('query' => http_build_query($params), 
 							'hot' => $hot, 
 							'end' => $end,
+							'q' => $q,
 							'count' => $hot['count'],
 							'per_page' => $per_page, 
 							'page' => $page,

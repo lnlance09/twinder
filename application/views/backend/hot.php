@@ -17,6 +17,9 @@
             $bio = $hot['users'][$i]['bio'];
     		$img = $hot['users'][$i]['profile_pic'];
             $link = $hot['users'][$i]['link'];
+
+            // Show the highligthed text
+            $highlight = preg_replace("/(".$q.")/i", '<span class="highlight">$1</span>', $bio);
 ?>
             <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'">
                 <div class="media-left media-top">
@@ -31,7 +34,7 @@
                     </h4>
 
                     <p>
-                        <?php echo BioLinks($bio); ?>
+                        <?php echo BioLinks($highlight); ?>
                     </p>
                 </div>
             </div>

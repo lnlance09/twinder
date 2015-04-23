@@ -221,7 +221,6 @@ ul.list-group li {
     border: none;
     vertical-align: middle; }
   ul.list-group li span {
-    font-size: 24px;
     display: inline-block;
     vertical-align: middle; }
   ul.list-group li div {
@@ -714,10 +713,12 @@ span.sub_tip {
       font-size: 20px;
       font-weight: 600; }
       #hot_load #media_container .media h4 span.pull-right {
-        font-size: 18px; }
+        font-size: 16px; }
     #hot_load #media_container .media p {
       margin: 0;
       font-size: 16px; }
+      #hot_load #media_container .media p span.highlight {
+        color: red; }
     #hot_load #media_container .media img {
       width: 100px;
       margin: 0;
