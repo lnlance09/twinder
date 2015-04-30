@@ -21,7 +21,6 @@
 
 					// Get the match count of the user who is currently logged in
 					$match_count = $this->database->GetMatchCount($tinder_id);
-					
 					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 					$pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 				} else {

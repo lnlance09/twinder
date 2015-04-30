@@ -1,3 +1,4 @@
+
 <?php 
 	if(!defined('BASEPATH')) {
 		exit('No direct script access allowed');
@@ -17,7 +18,6 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
 				$user_id = $this->session->userdata('user_id');
 
 				// Make sure the user is logged in
@@ -55,38 +55,38 @@
 					// Store all of the gender values in an array
 					$genders = array(array('num' => 0, 'name' => 'Male'), array('num' => 1, 'name' => 'Female'));
 
-					$settings_info = array('distance' => $info['distance_filter'],
-											'min' => $info['age_filter_min'],
-											'max' => $info['age_filter_max'],
-											'gender_filter' => $info['gender_filter'],
-											'gender' => $info['gender'],
-											'username' => $username,
-											'city' => $loc['city'],
-											'state' => $loc['state'],
-											'lon' => $lon,
-											'lat' => $lat,
-										    'filters' => $filters,
-										    'genders' => $genders);
+					$settings = array('distance' => $info['distance_filter'],
+									'min' => $info['age_filter_min'],
+									'max' => $info['age_filter_max'],
+									'gender_filter' => $info['gender_filter'],
+									'gender' => $info['gender'],
+									'username' => $username,
+									'city' => $loc['city'],
+									'state' => $loc['state'],
+									'lon' => $lon,
+									'lat' => $lat,
+								    'filters' => $filters,
+								    'genders' => $genders);
 
 					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Settings',
-										'session' => TRUE,
-										'header' => 'Settings',
-										'name' => $this->session->userdata('first_name'),
-										'auth' => $auth,
-										'tinder_id' => $tinder_id,
-										'profile_link' => $profile_link,
-										'profile_pic' => $profile_pic);
+					$header = array('title' => 'Settings',
+									'session' => TRUE,
+									'header' => 'Settings',
+									'name' => $this->session->userdata('first_name'),
+									'auth' => $auth,
+									'tinder_id' => $tinder_id,
+									'profile_link' => $profile_link,
+									'profile_pic' => $profile_pic);
 
 					// Get all of the data for the footer view
-					$locations = $this->loc->FooterPlaces();
-					$rand_users = $this->database->GetAllUsers(5);
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+					$places = $this->loc->FooterPlaces();
+					$users = $this->database->GetAllUsers(5);
+					$footer = array('locations' => $places, 'users' => $users);
 
 					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('settings', $settings_info); 
-					$this->load->view('templates/footer', $footer_info); 
+					$this->load->view('templates/header', $header); 
+					$this->load->view('settings', $settings); 
+					$this->load->view('templates/footer', $footer); 
 				} else {
 					header('Location: '.$this->base_url);
 				}
@@ -94,15 +94,15 @@
 
 			public function UpdateSettings() {
 				$query = $this->input->post();
-				foreach($query as $key => $value) {
-					$$key = $value;
+				foreach($query as $key => $val) {
+					$$key = $val;
 				}
 
 				// Set the auth token
 				$auth = $this->session->userdata('token');
 
 				// Update all of the settings
-				$info = $this->user->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
+				$this->user->UpdateSettings($auth, $distance, $max, $min, $interested_in, $gender);
 
 				// Update the username in the DB
 				$this->database->UpdateUser($this->session->userdata('tinder_id'), array('username' => $username));
@@ -116,8 +116,7 @@
 				$username = $this->input->get('username');
 
 				// Check to see if the username exists
-				$check = $this->database->CheckUsername($username, $this->session->userdata('tinder_id'));
-				echo $check;
+				echo $this->database->CheckUsername($username, $this->session->userdata('tinder_id'));
 			}
 		}
 	}

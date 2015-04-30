@@ -7,8 +7,6 @@
 		
 		public function __construct() {       
 			parent:: __construct();
-
-			$this->load->helper('common_helper');
 		}
 
 		/**

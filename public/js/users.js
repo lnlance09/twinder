@@ -253,7 +253,6 @@ $(document).ready(function() {
                     }
                 });
             });
-            break;
     }
 
     $('#click_hot, #click_not').click(function() {
@@ -348,7 +347,6 @@ $(document).ready(function() {
                 if(my_tinder_id != tinder_id && my_tinder_id != '') {
                     labels['mutual_passes'] = 'Mutual passes';
                 }
-                break;
         }
 
         $('#fa_type').attr('class', 'fa fa-'+ fa +' fa-2x');

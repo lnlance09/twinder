@@ -17,8 +17,6 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
-
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
@@ -33,22 +31,22 @@
 									'type' => 'article');
 
 					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Sign In',
-										'type' => 'article',
-										'session' => FALSE,
-										'header' => 'Sign in to Facebook',
-										'meta' => $meta_info,
-										'auth' => NULL);
+					$header = array('title' => 'Sign In',
+									'type' => 'article',
+									'session' => FALSE,
+									'header' => 'Sign in to Facebook',
+									'meta' => $meta_info,
+									'auth' => NULL);
 
 					// Get all of the data for the footer view
-					$locations = $this->loc->FooterPlaces();
-					$rand_users = $this->database->GetAllUsers(5);
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+					$places = $this->loc->FooterPlaces();
+					$users = $this->database->GetAllUsers(5);
+					$footer = array('locations' => $places, 'users' => $users);
 
 					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
+					$this->load->view('templates/header', $header); 
 					$this->load->view('signin'); 
-					$this->load->view('templates/footer', $footer_info); 
+					$this->load->view('templates/footer', $footer); 
 				}
 			}
 

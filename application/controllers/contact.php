@@ -17,8 +17,6 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
-
 				// Get the user ID
 				$user_id = $this->session->userdata('user_id');
 
@@ -44,26 +42,26 @@
 									'type' => 'article');
 
 				// Set all of the info that needs to be passed to the header view
-				$header_info = array('title' => 'Contact Us',
-									'type' => 'article',
-									'session' => $session,
-									'header' => 'Contact Us',
-									'auth' => $auth,
-									'tinder_id' => $tinder_id,
-									'name' => $this->session->userdata('first_name'),
-									'meta' => $meta_info,
-									'profile_link' => $profile_link,
-									'profile_pic' => $profile_pic);
+				$header = array('title' => 'Contact Us',
+								'type' => 'article',
+								'session' => $session,
+								'header' => 'Contact Us',
+								'auth' => $auth,
+								'tinder_id' => $tinder_id,
+								'name' => $this->session->userdata('first_name'),
+								'meta' => $meta_info,
+								'profile_link' => $profile_link,
+								'profile_pic' => $profile_pic);
 
 				// Get all of the data for the footer view
-				$locations = $this->loc->FooterPlaces();
-				$rand_users = $this->database->GetAllUsers(5);
-				$footer_info = array('locations' => $locations, 'users' => $rand_users);
+				$places = $this->loc->FooterPlaces();
+				$users = $this->database->GetAllUsers(5);
+				$footer = array('locations' => $places, 'users' => $users);
 
 				// Load all of the views
-				$this->load->view('templates/header', $header_info); 
+				$this->load->view('templates/header', $header); 
 				$this->load->view('contact'); 
-				$this->load->view('templates/footer', $footer_info); 
+				$this->load->view('templates/footer', $footer); 
 			}
 
 			public function Send() {

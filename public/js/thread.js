@@ -2,9 +2,6 @@ $(document).ready(function() {
 	var base_url = $('#base_url').text();
 	var match_id = $('#match_id').text();
 	var match_type = $('#match_type').text();
-	// console.log(match_id);
-	// console.log(match_type); 
-
 	var data = 'id='+ match_id;
 
 	// Load the previous threads in the conversation

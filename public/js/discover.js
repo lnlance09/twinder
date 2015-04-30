@@ -29,7 +29,8 @@ $(document).ready(function() {
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
         var user_url = base_url +'users/DiscoverLoad';
-        var data = 'auth='+ auth +'&lon='+ lon +'&lat='+ lat +'&index=0&type=new';
+        var data = 'lon='+ lon +'&lat='+ lat +'&index=0&type=new';
+        console.log(data);
 
         // Load the results
         $('#users_load').load(user_url, data, function() {
@@ -75,7 +76,6 @@ $(document).ready(function() {
 
                 // Determine the API endpoint
                 var el_id = $(this).attr('id');
-
                 if(el_id == 'pass_user') {
                     var endpoint = 'PassUser';
                 } else {

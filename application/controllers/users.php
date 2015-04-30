@@ -75,9 +75,8 @@
 							$edit = $this->user->CanEdit($user_info['tinder_id'], $tinder_id);
 						} else {
 							// Get all of the data for the view
-							$locations = $this->loc->FooterPlaces();
-							$rand_users = $this->database->GetAllUsers(5);
-
+							$places = $this->loc->FooterPlaces();
+							$users = $this->database->GetAllUsers(5);
 							$_user = array('name' => $user_info['name'], 
 										'gender' => FormatPossesion($user_info['gender']), 
 										'pic' => ChangePicSize($user_info['profile_pic'], 84));
@@ -87,8 +86,8 @@
 										'match_count' => $match_count,
 										'profile_link' => FormatUserLink($tinder_id, $username),
 										'profile_pic' => ChangePicSize($pic, 84),
-										'locations' => $locations,
-										'users' => $rand_users,
+										'locations' => $places,
+										'users' => $users,
 										'user' => $_user);
 
 							// Load the error view page and quit the script
@@ -124,26 +123,26 @@
 						
 						// Define the meta tags
 						$meta_info = array('title' => MetaSubject($user_info['username'], $user_info['name']),
-										'description' => MetaSubject($user_info['username'], $user_info['name']),
+										'description' => (empty($user_info['bio']) ? $user_info['name']."'s Tinder Profile" : $user_info['bio']),
 										'img' => $user_info['profile_pic'],
 										'url' => 'http://twinder.io/'.$user_info['link'],
 										'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']),
 										'type' => 'profile');
 
 						// Set all of the info that needs to be passed to the header view
-						$header_info = array('title' => $user_info['name'],
-											'type' => 'profile',
-											'session' => $session,
-											'header' => $user_info['name'],
-											'auth' => $token,
-											'tinder_id' => $tinder_id,
-											'name' => $name,
-											'profile_name' => $user_info['name'],
-											'gender' => $user_info['gender'],
-											'username' => $user_info['username'],
-											'meta' => $meta_info,
-											'profile_link' => $profile_link,
-											'profile_pic' => $profile_pic);
+						$header = array('title' => $user_info['name'],
+										'type' => 'profile',
+										'session' => $session,
+										'header' => $user_info['name'],
+										'auth' => $token,
+										'tinder_id' => $tinder_id,
+										'name' => $name,
+										'profile_name' => $user_info['name'],
+										'gender' => $user_info['gender'],
+										'username' => $user_info['username'],
+										'meta' => $meta_info,
+										'profile_link' => $profile_link,
+										'profile_pic' => $profile_pic);
 
 						// Update the user's views
 						$user_info['views'] = $this->database->UpdateProfileViews($user_info['views'], $user_info['tinder_id']); 
@@ -161,41 +160,39 @@
 						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id);
 						
 						// Set all of the info that needs to be passed to the body view
-						$body_info = array('user_info' => $user_info,
-										'pic_count' => count($user_info['pics']),
-										'session' => $session,
-										'report' => $report,
-										'like' => $like,
-										'edit' => $edit,
-										'lat' => $last_seen['data']['lat'],
-										'lon' => $last_seen['data']['lon'],
-										'city' => $last_seen['data']['city'],
-										'state' => $last_seen['data']['state'],
-										'distance' => $last_seen['data']['miles_away'],
-										'last_seen' => FormatLastSeenText($last_seen, $this->base_url),
-										'can_vote' => $can_vote,
-										'votes' => $votes,
-										'stats' => $user_stats,
-										'con_icon' => ReturnFA($tabs['active']),
-										'sub_tab' => $tab,
-										'tab_active' => $tabs['active'],
-										'tabs' => $tabs['tabs']);
+						$body = array('user_info' => $user_info,
+									'pic_count' => count($user_info['pics']),
+									'session' => $session,
+									'report' => $report,
+									'like' => $like,
+									'edit' => $edit,
+									'lat' => $last_seen['data']['lat'],
+									'lon' => $last_seen['data']['lon'],
+									'city' => $last_seen['data']['city'],
+									'state' => $last_seen['data']['state'],
+									'distance' => $last_seen['data']['miles_away'],
+									'last_seen' => FALSE,
+									'can_vote' => $can_vote,
+									'votes' => $votes,
+									'stats' => $user_stats,
+									'con_icon' => ReturnFA($tabs['active']),
+									'sub_tab' => $tab,
+									'tab_active' => $tabs['active'],
+									'tabs' => $tabs['tabs']);
 
 						if($like['perm'] == 'can_like') {
-							$body_info['my_info'] = array('name' => $name,
-														'pic' => ChangePicSize($pic, 172),
-														'link' => $profile_link);
+							$body['my_info'] = array('name' => $name, 'pic' => ChangePicSize($pic, 172), 'link' => $profile_link);
 						}
 
 						// Get all of the data for the footer view
-						$locations = $this->loc->FooterPlaces();
-						$rand_users = $this->database->GetAllUsers(5);
-						$footer_info = array('locations' => $locations, 'users' => $rand_users);
+						$places = $this->loc->FooterPlaces();
+						$users = $this->database->GetAllUsers(5);
+						$footer = array('locations' => $places, 'users' => $users);
 
 						// Load all of the views
-						$this->load->view('templates/header', $header_info); 
-						$this->load->view('profile', $body_info); 
-						$this->load->view('templates/footer', $footer_info); 
+						$this->load->view('templates/header', $header); 
+						$this->load->view('profile', $body); 
+						$this->load->view('templates/footer', $footer); 
 					}
 				} else {
 					header('Location: '.$this->base_url);
@@ -220,30 +217,30 @@
 								'type' => 'article');
 
 					// Set all of the info that needs to be passed to the header view
-					$header_info = array('title' => 'Play',
-										'session' => TRUE,
-										'header' => NULL,
-										'auth' => $this->session->userdata('token'),
-										'tinder_id' => $tinder_id,
-										'name' => $this->session->userdata('first_name'),
-										'meta' => $meta,
-										'profile_link' => $profile_link,
-										'profile_pic' => $profile_pic);
+					$header = array('title' => 'Play',
+									'session' => TRUE,
+									'header' => NULL,
+									'auth' => $this->session->userdata('token'),
+									'tinder_id' => $tinder_id,
+									'name' => $this->session->userdata('first_name'),
+									'meta' => $meta,
+									'profile_link' => $profile_link,
+									'profile_pic' => $profile_pic);
 
 					// Set all of the info that needs to be passed to the dashboard view
-					$body_info = array('pic' => ChangePicSize($pic, 172),
-									'link' => $profile_link,
-									'name' => $this->session->userdata('first_name'));
+					$body = array('pic' => ChangePicSize($pic, 172),
+								'link' => $profile_link,
+								'name' => $this->session->userdata('first_name'));
 
 					// Get all of the data for the footer view
-					$locations = $this->loc->FooterPlaces();
-					$rand_users = $this->database->GetAllUsers(5);
-					$footer_info = array('locations' => $locations, 'users' => $rand_users);
+					$places = $this->loc->FooterPlaces();
+					$users = $this->database->GetAllUsers(5);
+					$footer = array('locations' => $places, 'users' => $users);
 
 					// Load all of the views
-					$this->load->view('templates/header', $header_info); 
-					$this->load->view('find_users', $body_info); 
-					$this->load->view('templates/footer', $footer_info); 
+					$this->load->view('templates/header', $header); 
+					$this->load->view('find_users', $body); 
+					$this->load->view('templates/footer', $footer); 
 				} else {
 					header('Location: '.$this->base_url);
 				}
@@ -255,14 +252,14 @@
 
 				if($user_id) {
 					$tinder_id = $this->session->userdata('tinder_id');
-					$token = $this->session->userdata('token');
 					$username = $this->session->userdata('username');
+					$token = $this->session->userdata('token');
 					$pic = $this->session->userdata('profile_pic');
 
 					// Get all of the parameters from the URL
 					$params = $this->input->get();	
-					foreach($params as $key => $value) {
-						$$key = $value;
+					foreach($params as $key => $val) {
+						$$key = $val;
 					}
 
 					// If the user is requesting a new batch, then ping the location in request a fresh batch of users
@@ -293,11 +290,9 @@
 
 						// If there isn't a recs timeout
 						if($info) {
-							// Remove all of the batches from the previous load
-							$this->database->RemoveAllBatch($user_id);
-
-							// Insert the user batch into the DB
-							$this->database->InsertBatch($user_id, $tinder_id, $info, $lon, $lat);
+							// Remove all of the batches from the previous load and insert a new one
+							$this->database->RemoveAllBatch($tinder_id);
+							$this->database->InsertBatch($tinder_id, $info, $lon, $lat);
 							$new = TRUE;
 						} else {
 							$new = FALSE;
@@ -309,7 +304,7 @@
 					// If there wasn't an error, then present him/her with their most recent info from Tinder
 					if($new) {
 						// Get the most recent batch user
-						$next = $this->database->GetBatchUser($user_id);
+						$next = $this->database->GetBatchUser($tinder_id);
 
 						// Lookup the user to see if there's any mutual likes or friends
 						$lookup = $this->user->UserLookup($next, $token);
@@ -373,7 +368,6 @@
 					case'passed_by':
 
 						$results = $this->database->GetMutualPasses($id, TRUE, $q);
-						break;
 				}
 				// FormatArray($results, TRUE);
 
@@ -419,7 +413,6 @@
 					// Get the match info
 					$match = $this->user->GetMatchInfo($id, $this->session->userdata('token'));
 					$user_id = $match['results']['participants'][1];
-
 					$data = array('name' => $match['results']['person']['name'],
 								'pic' => ReturnProfilePic($match['results']['person']['photos']),
 								'id' => $match['results']['person']['_id']);
@@ -485,10 +478,8 @@
 						}
 
 						// Remove the batch user from the DB and then insert him/her into the likes table
-						$this->database->RemoveBatchUser($id, $user_id);
+						$this->database->RemoveBatchUser($tinder_id, $id);
 						$this->database->InsertIntoLikes($tinder_id, $id, $match, $last_active, $created_at);
-
-						// Echo out the match ID
 						echo $match_id;
 					} else {
 						echo '';
@@ -502,9 +493,7 @@
 
 				if($user_id) {
 					// Log the user out of Tinder
-					$logout = $this->user->Logout($this->session->userdata('token'));
-
-					// Unset the session data
+					$this->user->Logout($this->session->userdata('token'));
 					$items = array('username' => '', 'user_id' => '', 'auth' => '', 'tinder_id' => '');
 					$this->session->unset_userdata($items);
 				}
@@ -516,6 +505,7 @@
 			public function PassUser() {
 				// Make sure that the user is logged in
 				$user_id = $this->session->userdata('user_id');
+				$tinder_id = $this->session->userdata('tinder_id');
 
 				if($user_id) {
 					// Get the user ID from the URL
@@ -525,8 +515,8 @@
 					$pass = $this->user->PassUser($id, $this->session->userdata('token'));
 
 					// Remove the batch user from the DB and then insert him/her into the passes table
-					$this->database->RemoveBatchUser($id, $user_id);
-					$this->database->InsertIntoPasses($this->session->userdata('tinder_id'), $id);
+					$this->database->RemoveBatchUser($tinder_id, $id);
+					$this->database->InsertIntoPasses($tinder_id, $id);
 				}
 				echo 'done';
 			}
@@ -537,8 +527,8 @@
 				if($user_id) {
 					// Get the form parameters from the URL
 					$id = $this->input->get('id');
-					$reason = $this->input->get('reason');
 					$text = $this->input->get('text');
+					$reason = $this->input->get('reason');
 
 					if(empty($text)) {
 						$text = NULL;

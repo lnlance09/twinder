@@ -2,12 +2,6 @@
 	class Database_model extends CI_Model {
 		public function __construct() {       
 			parent:: __construct();
-
-			// Load the helper file
-			$this->load->helper('common_helper');
-
-			// Set the memory limit to unlimited
-			// ini_set('memory_limit', -1);
 		}
 
 		/**
@@ -48,10 +42,9 @@
 			$this->db->select('action');
 			$this->db->where(array('user_one' => $my_id, 'user_two' => $his_id));
 			$query = $this->db->get('votes');
-			$count = $query->num_rows();
 			// echo $count;
 
-			if($count == 1) {
+			if($query->num_rows() == 1) {
 				$result = $query->result();
 				return (int)$result[0]->action;
 			} else {
@@ -81,7 +74,6 @@
 			$last = $this->GetLastSeen($his_tinder_id);
 			
 			if($lon && $lat) {
-				// If there is a record of the user existing
 				if($last) {
 					// Make sure the user isn't updating their own profile and the user is logged in
 					if(!empty($my_tinder_id) && $his_tinder_id != $my_tinder_id) {
@@ -89,7 +81,6 @@
 						if($last['seen_id'] != $last['seen_by_id']) {
 							// Check to see if your proximity is closer than the one currently on record
 							if($distance < $last['miles_away']) {
-								// Get the name of the city and state based upon the lat & lon coordinates
 								$loc = $this->loc->MapquestLatLon($lat, $lon);
 
 								// Update the last seen row in the table
@@ -135,7 +126,6 @@
 		 */
 		public function GetAllUsers($limit = NULL) {
 			$this->db->select('username, tinder_id, first_name, age');
-			$this->db->where('id >', mt_rand(0, 25000));
 			$this->db->order_by('views', 'DESC');
 			
 			if($limit) {
@@ -143,10 +133,9 @@
 			}
 			
 			$query = $this->db->get('users');
-			$count = $query->num_rows();
 			$i = 0;
 
-			if($count > 0) {
+			if($query->num_rows() > 0) {
 				foreach($query->result() as $row) {
 					$return[$i] = array('id' => $row->tinder_id,
 										'link' => FormatUserLink($row->tinder_id, $row->username),
@@ -163,12 +152,12 @@
 
 		/**
 		 * Get the user that is next in line to be either liked or passed
-		 * @param {int} [id] The user ID of the Tinder user 
+		 * @param {int} [id] The Tinder ID of the Tinder user 
 		 * @return {int} [tinder_id] The Tinder ID of the next batch user
 		 */
 		public function GetBatchUser($id) {
 			$this->db->select('tinder_id');
-			$this->db->where('user_id', $id);
+			$this->db->where('my_tinder_id', $id);
 			$this->db->limit(1);
 			$query = $this->db->get('batches');
 			$result = $query->result();
@@ -244,7 +233,6 @@
 
 			$sql .= " LIMIT ".$end;
 			$query = $this->db->query($sql, $params);
-			$count = $query->num_rows();
 			$data = [];
 			$i = 0;
 
@@ -260,7 +248,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'users' => $data);
+			return array('count' => $query->num_rows(), 'users' => $data);
 		}
 
 		/**
@@ -349,7 +337,6 @@
 		 */
 		public function GetLikes($tinder_id, $inverse, $q = NULL) {
 			$params = array($tinder_id);
-
 			$sql = "SELECT users.*, likes.*
 					FROM users
 					JOIN likes";
@@ -367,9 +354,8 @@
 
 			$sql .= " GROUP BY users.tinder_id ORDER BY likes.datetime DESC";
 			$query = $this->db->query($sql, $params);
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -388,7 +374,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'users' => $return);
+			return array('count' => $query->num_rows(), 'users' => $return);
 		}
 
 		/**
@@ -437,18 +423,18 @@
 			$sql .= "GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($tinder_id, '%'.trim($q).'%'));
 			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				// Set all of the user's info in an array
 				$user_info = array('tinder_id' => $row->tinder_id,
-								'first_name' => $row->first_name,
-								'username' => $row->username,
-								'profile_pic' => $row->profile_pic,
-								'age' => $row->age,
-								'bio' => $row->bio,
-								'link' => FormatUserLink($row->tinder_id, $row->username));
+									'first_name' => $row->first_name,
+									'username' => $row->username,
+									'profile_pic' => $row->profile_pic,
+									'age' => $row->age,
+									'bio' => $row->bio,
+									'link' => FormatUserLink($row->tinder_id, $row->username));
 
 				// Get the last message from the msg table
 				$msg = $this->GetLastMsg($row->match_id);
@@ -488,16 +474,15 @@
 		 * @return {array|boolean} An array containing the Tinder ID's of the two users in the match
 		 */
 		public function GetMatchInfo($id) {
-			$sql = "SELECT users.tinder_id, users.first_name, users.age, users.profile_pic, users.username, likes.views, likes.unmatched, likes.unmatched_by, likes.datetime
+			$sql = "SELECT tinder_id, first_name, age, profile_pic, username, users.views, unmatched, unmatched_by, datetime
 					FROM users
 					JOIN likes
 					ON users.tinder_id = likes.user_one
 					WHERE likes.match_id = ?";
 			$query = $this->db->query($sql, array($id));
-			$count = $query->num_rows();
-			$i = 0;
 			
-			if($count == 2) {
+			if($query->num_rows() == 2) {
+				$i = 0;
 				foreach($query->result() as $row) {
 					$data[$i] = array('id' => $row->tinder_id,
 									'name' => $row->first_name,
@@ -512,9 +497,7 @@
 					$i++;
 				}
 
-				return array('user_one' => $data[0], 
-							'user_two' => $data[1], 
-							'created_at' => $data[1]['created_at']);
+				return array('user_one' => $data[0], 'user_two' => $data[1], 'created_at' => $data[1]['created_at']);
 			} else {
 				return FALSE;
 			} 
@@ -577,9 +560,8 @@
 
 			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, $params);
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$return[$i] = array('tinder_id' => $row->tinder_id,
@@ -589,9 +571,11 @@
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'age' => $row->age);
+
+				$i++;
 			}
 
-			return array('count' => $count, 'users' => $return);
+			return array('count' => $query->num_rows(), 'users' => $return);
 		}
 
 		/**
@@ -650,9 +634,8 @@
 
 			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($my_id, $his_id, '%'.trim($q).'%'));
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -671,7 +654,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'users' => $return);
+			return array('count' => $query->num_rows(), 'users' => $return);
 		}
 
 		/**
@@ -698,7 +681,6 @@
 			}
 
 			$sql .= " GROUP BY users.tinder_id";
-
 			$query = $this->db->query($sql, array($my_id, $his_id, '%'.trim($q).'%'));
 			return $query->num_rows();
 		}
@@ -728,9 +710,8 @@
 
 			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($my_id, $his_id, '%'.trim($q).'%'));
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -748,7 +729,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'users' => $return);
+			return array('count' => $query->num_rows(), 'users' => $return);
 		}
 
 		/**
@@ -801,9 +782,8 @@
 
 			$sql .= " GROUP BY users.tinder_id";
 			$query = $this->db->query($sql, array($tinder_id, '%'.trim($q).'%'));
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$user_info = array('tinder_id' => $row->tinder_id,
@@ -821,7 +801,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'users' => $return);
+			return array('count' => $query->num_rows(), 'users' => $return);
 		}
 
 		/**
@@ -833,9 +813,8 @@
 			$this->db->select('lon, lat, city, state, country, datetime');
 			$this->db->where('tinder_id', $tinder_id);
 			$query = $this->db->get('pings');
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$return[$i] = array('lon' => $row->lon,
@@ -848,12 +827,12 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'pings' => $return);
+			return array('count' => $query->num_rows(), 'pings' => $return);
 		}
 
 		/**
 		 * Get all of the messages from a given thread
-		 * @param {string} [match_id] The Match ID
+		 * @param {string} [match_id] The thread ID
 		 * @return {array|boolean} An array containing all of the messages between two users
 		 */
 		public function GetThread($match_id) {
@@ -861,9 +840,8 @@
 			$this->db->where('match_id', $match_id);
 			$this->db->order_by('datetime', 'ASC');
 			$query = $this->db->get('msg');
-			$count = $query->num_rows();
-			$i = 0;
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
 				$return[$i] = array('to' => $row->user_from,
@@ -874,7 +852,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'data' => $return);
+			return array('count' => $query->num_rows(), 'data' => $return);
 		}
 
 		/**
@@ -891,10 +869,9 @@
 					OR users.username = ?
 					ORDER BY pic_order ASC";
 			$query = $this->db->query($sql, array($id, $id));
-			$count = $query->num_rows();
-			$i = 0;
 
-			if($count > 0) {
+			if($query->num_rows() > 0) {
+				$i = 0;
 				$return = [];
 
 				foreach($query->result() as $row) {
@@ -1051,10 +1028,9 @@
 					GROUP BY users.gender
 					ORDER BY count LIMIT 2";
 			$query = $this->db->query($sql, array($state));
-			$count = $query->num_rows();
-			$i = 0;
 
-			if($count > 0) {
+			if($query->num_rows() > 0) {
+				$i = 0;
 				foreach($query->result() as $row) {
 					$key = ($row->gender == 0 ? 'mr' : 'mrs');
 					$data[$key] = array('tinder_id' => $row->tinder_id,
@@ -1067,7 +1043,7 @@
 					$i++;
 				}
 
-				FormatArray($data);
+				// FormatArray($data);
 				return($data);
 			} else {
 				return FALSE;
@@ -1076,13 +1052,12 @@
 
 		/**
 		 * Insert a batch of new users from the discovery process into the DB
-		 * @param {int} [user_id] The user ID of the user who is logged in
-		 * @param {string} [tinder_id] The tinder ID of the user who is logged in
+		 * @param {string} [tinder_id] The Tinder ID of the user who is logged in
 		 * @param {array} [info] An array of users that was obtained from Tinder's API
 		 * @param {decimal} [lon] The longitude coordinate of the user who is logged in
 		 * @param {decimal} [lat] The latitude coordinate of the user who is logged in
 		 */
-		public function InsertBatch($user_id, $tinder_id, $info, $lon, $lat) {
+		public function InsertBatch($tinder_id, $info, $lon, $lat) {
 			for($i=0;$i<count($info);$i++) {
 				// Insert each batch user accordingly
 				$data = array('tinder_id' => $info[$i]['tinder_id'],
@@ -1096,11 +1071,11 @@
 
 				// Check to see if there is a record of the user existing in the batches table
 				$this->db->select('COUNT(*) AS count');
-				$this->db->where(array('tinder_id' => $info[$i]['tinder_id'], 'user_id' => $user_id));
+				$this->db->where(array('tinder_id' => $info[$i]['tinder_id'], 'my_tinder_id' => $tinder_id));
 				$result = $this->db->get('batches')->result();
 			
 				if($result[0]->count == 0) {
-					$data = array('user_id' => $user_id, 'tinder_id' => $info[$i]['tinder_id']);
+					$data = array('my_tinder_id' => $tinder_id, 'tinder_id' => $info[$i]['tinder_id']);
 					$this->db->insert('batches', $data);
 				}
 
@@ -1180,12 +1155,17 @@
 		 * @param {array} [data] The array containing the column keys and values
 		 */
 		public function InsertMessage($data) {
+			$info = $data;
+			if(array_key_exists('datetime', $data)) {
+				unset($data['datetime']);
+			} 
+
 			$this->db->select('COUNT(*) AS count');
 			$this->db->where($data);
 			$query = $this->db->get('msg')->result();
 			
 			if($query[0]->count == 0) {
-				$this->db->insert('msg', $data);
+				$this->db->insert('msg', $info);
 			}
 		}
 		
@@ -1305,19 +1285,19 @@
 
 		/**
 		 * Remove all batch users from the DB
-		 * @param {int} [id] The user ID of the user who is currently logged in
+		 * @param {int} [id] The Tinder ID of the user who is currently logged in
 		 */
 		public function RemoveAllBatch($id) {
-			$this->db->delete('batches', array('user_id' => $id)); 
+			$this->db->delete('batches', array('my_tinder_id' => $id)); 
 		}
 
 		/**
 		 * Remove a batch user from the batches table
+		 * @param {string} [my_id] The Tinder ID of the user who is currently logged in
 		 * @param {string} [id] The Tinder ID of the user who is to be removed
-		 * @param {string} [my_id] The user ID of the user who is currently logged in
 		 */
-		public function RemoveBatchUser($id, $my_id) {
-			$this->db->delete('batches', array('tinder_id' => $id, 'user_id' => $my_id)); 
+		public function RemoveBatchUser($my_id, $id) {
+			$this->db->delete('batches', array('my_tinder_id' => $my_id, 'tinder_id' => $id)); 
 		}
 
 		/**
@@ -1376,15 +1356,15 @@
 					// Check to see if there is a record of each match participant in the DB
 					if($person) {
 						// Insert a row into the users table if necessary
-						$user_data = array('tinder_id' => $person['_id'],
-										'first_name' => $person['name'],
-										'dob' => date('M j, Y', strtotime($person['birth_date'])),
-										'age' => ReturnAge($person['birth_date']),
-										'bio' => $person['bio'],
-										'gender' => $person['gender'],
-										'last_activity_date' => $person['ping_time'],
-										'profile_pic' => ReturnProfilePic($person['photos']));
-						$this->InsertUser($user_data);
+						$user = array('tinder_id' => $person['_id'],
+									'first_name' => $person['name'],
+									'dob' => date('M j, Y', strtotime($person['birth_date'])),
+									'age' => ReturnAge($person['birth_date']),
+									'bio' => $person['bio'],
+									'gender' => $person['gender'],
+									'last_activity_date' => $person['ping_time'],
+									'profile_pic' => ReturnProfilePic($person['photos']));
+						$this->InsertUser($user);
 
 						// Insert each user's pics
 						$this->InsertPics($person['_id'], ReturnPicsArray($person['photos']));
@@ -1410,8 +1390,8 @@
 					}
 				}	
 
+				// Insert all of the messages into the msg table
 				if(array_key_exists('messages', $updates[$i])) {
-					// Insert all of the messages into the msg table
 					$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
 				}
 			}
@@ -1438,9 +1418,8 @@
 				$this->db->select('user_one, user_two');
 				$this->db->where('match_id', $blocks[$i]);
 				$query = $this->db->get('likes');
-				$num = $query->num_rows();
 
-				if($num > 0) {
+				if($query->num_rows() > 0) {
 					foreach($query->result() as $row) {
 						$user_one = $row->user_one;
 						$user_two = $row->user_two;
@@ -1492,35 +1471,27 @@
 
 		/**
 		 * Sync all of the messages from a given thread with Twinder's DB
-		 * @param {array} [messages] An array from Tinder's 'matches' API endpoint
+		 * @param {array} [msgs] An array from Tinder's 'matches' API endpoint
 		 */
-		public function UpdateThread($messages, $count) {
-			// Loop thru each message
+		public function UpdateThread($msgs, $count) {
 			for($i=0;$i<$count;$i++) {
-				if(array_key_exists($i, $messages)) {
-					$msg = trim($messages[$i]['message']);
+				if(array_key_exists($i, $msgs)) {
+					$msg = trim($msgs[$i]['message']);
 
-					if(!empty($messages[$i]['match_id']) && !empty($msg)) {
-						$id = $messages[$i]['match_id'];
-						$to = $messages[$i]['to'];
-						$from = $messages[$i]['from'];
-						$time = $messages[$i]['sent_date'];
-						$raw = $messages[$i]['message'];
+					if(!empty($msgs[$i]['match_id']) && !empty($msg)) {
+						$id = $msgs[$i]['match_id'];
+						$to = $msgs[$i]['to'];
+						$from = $msgs[$i]['from'];
+						$time = $msgs[$i]['sent_date'];
+						$raw = $msgs[$i]['message'];
 
-						// See if there is a record of each message existing in the DB
-						$params = array('match_id' => $id, 'msg' => $raw, 'user_to' => $to, 'user_from' => $from);
-						$this->db->select('COUNT(*) AS count');
-						$this->db->where($params);
-						$query = $this->db->get('msg')->result();
-
-						if($query[0]->count == 0) {
-							$data = array('match_id' => $id,
-										'msg' => $raw,
-										'user_from' => $from,
-										'user_to' => $to,
-										'datetime' => strtotime($time));
-							$this->db->insert('msg', $data);
-						}
+						// Insert the message
+						$data = array('match_id' => $id,
+									'msg' => $raw,
+									'user_from' => $from,
+									'user_to' => $to,
+									'datetime' => strtotime($time));
+						$this->InsertMessage($data);
 					}
 				}
 			}

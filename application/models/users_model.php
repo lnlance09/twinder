@@ -220,7 +220,6 @@
 			} else {
 				$results = $users['results'];
 				$users = [];
-
 				for($i=0;$i<count($results);$i++){
 					$users[$i] = array('tinder_id' => $results[$i]['_id'],
 									'name' => $results[$i]['name'],

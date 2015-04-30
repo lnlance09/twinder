@@ -43,7 +43,7 @@
 				<?php echo $datetime; ?>
 			</p>
 
-			<img src="<?php echo $his_img; ?>" width="172" class="img-circle" alt="<?php echo $his_name; ?>"> 
+			<img src="<?php echo $his_img; ?>" width="172" class="img-circle" alt="<?php echo $his_name; ?>"><br><br>
 
 			<?php echo Openers(); ?>
 		</div>

@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf8mb4">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API">
 
@@ -127,11 +127,6 @@
         </div>
     </div>
 
-    <!-- Write all of the hidden values that need to be used by JS files -->
-    <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
-    <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
-    <div id="auth" class="hidden"><?php echo $auth; ?></div>
-
     <div id="wrapper">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav" id="sidebar">     
@@ -161,3 +156,8 @@
                 </div>
             </form>
         </div>
+
+        <!-- Write all of the hidden values that need to be used by JS files -->
+        <div id="base_url" class="hidden"><?php echo $base_url; ?></div>
+        <div id="my_tinder_id" class="hidden"><?php echo $tinder_id; ?></div>
+        <div id="auth" class="hidden"><?php echo $auth; ?></div>

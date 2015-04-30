@@ -17,7 +17,6 @@
 			}
 
 			public function Index() {
-				$admin_id = $this->session->userdata('admin_id');
 				$auth = $this->session->userdata('token');
 				$user_id = $this->session->userdata('user_id');
 				$tinder_id = $this->session->userdata('tinder_id');
@@ -40,14 +39,10 @@
 						if($tinder_id == $match['user_one']['id'] || $tinder_id == $match['user_two']['id']) {
 							// Get info about the given match
 							$live = $this->user->GetMatchInfo($id, $auth);
-							// FormatArray($live);
-							// die;
 
 							// Make sure the match still exists
 							if($live['status'] == 200) {
-								// Update the thread
-								$messages = $live['results']['messages'];
-								$this->database->UpdateThread($messages, count($messages));
+								$this->database->UpdateThread($live['results']['messages'], count($live['results']['messages']));
 								$can_send = 'true';
 							} else {
 								$can_send = FALSE;
@@ -58,31 +53,31 @@
 							$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 							// Set all of the info that needs to be passed to the header view
-							$header_info = array('title' => $match['user_one']['name'].' and '.$match['user_two']['name'],
-												'name' => $this->session->userdata('first_name'),
-												'auth' => $auth,
-												'session' => $session,
-												'tinder_id' => $tinder_id,
-												'profile_link' => $profile_link,
-												'profile_pic' => $profile_img);
+							$header = array('title' => $match['user_one']['name'].' and '.$match['user_two']['name'],
+											'name' => $this->session->userdata('first_name'),
+											'auth' => $auth,
+											'session' => $session,
+											'tinder_id' => $tinder_id,
+											'profile_link' => $profile_link,
+											'profile_pic' => $profile_img);
 
 							// Define the body info
-							$body_info = array('match_id' => $id,
-											'user_one' => $match['user_one'],
-											'user_two' => $match['user_two'],
-											'my_tinder_id' => $tinder_id = $this->session->userdata('tinder_id'),
-											'unmatched' => $match['user_one']['unmatched'],
-											'can_send' => $can_send);
+							$body = array('match_id' => $id,
+										'user_one' => $match['user_one'],
+										'user_two' => $match['user_two'],
+										'my_tinder_id' => $tinder_id = $this->session->userdata('tinder_id'),
+										'unmatched' => $match['user_one']['unmatched'],
+										'can_send' => $can_send);
 
 							// Get all of the data for the footer view
-							$locations = $this->loc->FooterPlaces();
-							$rand_users = $this->database->GetAllUsers(5);
-							$footer_info = array('locations' => $locations, 'users' => $rand_users);
+							$places = $this->loc->FooterPlaces();
+							$users = $this->database->GetAllUsers(5);
+							$footer = array('locations' => $places, 'users' => $users);
 
 							// Load all of the views
-							$this->load->view('templates/header', $header_info); 
-							$this->load->view('match', $body_info); 
-							$this->load->view('templates/footer', $footer_info); 
+							$this->load->view('templates/header', $header); 
+							$this->load->view('match', $body); 
+							$this->load->view('templates/footer', $footer); 
 						} else {
 							header('Location: '.$this->base_url);
 						}

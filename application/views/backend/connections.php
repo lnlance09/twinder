@@ -9,29 +9,22 @@
         // Loop thru each user
         for($i=0;$i<$end;$i++) {
 			$user = $connections[$i]['user_info'];
-            $_id = $user['tinder_id'];
-			$name = $user['first_name'];
-			$age = $user['age'];
-            $bio = $user['bio'];
-            $img = $user['profile_pic'];
-
-            // Set the link
             $link = $base_url.$user['link'];
 ?>
         <div class="media" onclick="location.href='<?php echo $link; ?>'">
             <div class="media-left media-top">
                 <a href="<?php echo $link; ?>">
-                    <img src="<?php echo $img; ?>" class="media-object img-circle" alt="<?php echo $name; ?>">
+                    <img src="<?php echo $user['profile_pic']; ?>" class="media-object img-circle" alt="<?php echo $user['first_name']; ?>">
                 </a>
             </div>
             
             <div class="media-body text-left">
                 <h4 class="media-heading">
-                    <a href="<?php echo $link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
+                    <a href="<?php echo $link; ?>" title="<?php echo $user['first_name']; ?>"><?php echo $user['first_name']; ?></a>, <?php echo $user['age']; ?>
                 </h4>
 
                 <p>
-                    <?php echo $bio; ?>
+                    <?php echo $user['bio']; ?>
                 </p>
             </div>
         </div>
@@ -55,9 +48,8 @@
         var tinder_id = '<?php echo $id; ?>';
 
         $('button#see_more').click(function(e) {
-            $('#con_load_box .text-center').prepend('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-
             e.preventDefault();
+            $('#con_load_box .text-center').prepend('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
             var new_page = '<?php echo $new_page; ?>';
             var data = 'type='+ type +'&page='+ new_page +'&id='+ tinder_id;
     

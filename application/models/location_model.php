@@ -8,9 +8,6 @@
 
 			// Define the URL for the MapQuest API
 			$this->mapquest_url = 'http://www.mapquestapi.com/geocoding/v1/address?';
-
-			// Set the memory limit to unlimited
-			ini_set('memory_limit', -1);
 		}
 
 		/**
@@ -58,22 +55,20 @@
 		 * @return {array} An array containing 5 locations
 		 */
 		public function FooterPlaces() {
-			$sql = "SELECT city, state_abbrev
-					FROM locations 
-					WHERE id > ?
-					GROUP BY state
-					LIMIT 5";
-			$query = $this->db->query($sql, array(mt_rand(95867, 105000)));
-			$count = $query->num_rows();
-			$i = 0;
+			$sql = "SELECT city, state 
+					FROM last_seen 
+					GROUP BY city, state";
+			$query = $this->db->query($sql);
 			$return = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
+				$return[$i] = array('city' => $row->city, 'state' => $row->state);
 
 				$i++;
 			}
 
+			shuffle($return);
 			return $return;
 		}
 
@@ -84,38 +79,12 @@
 		 */
 		public function FullFromAbbrev($state) {
 			$states = $this->States();
-
 			foreach($states as $key => $val) {
 				if($key == $state) {
 					return ucwords(strtolower($val));
 					break;
 				}
 			}
-		}
-
-		/**
-		 * Query the DB to get matching states from the autocomplete form
-		 * @param {string} [state] The name of the state
-		 * @return {array} An array containing the number of rows returned and the states
-		 */
-		public function GetStates($state) {
-			$this->db->select('state, state_abbrev');
-			$this->db->like('state', $state);
-			$this->db->order_by('state', 'asc');
-			$this->db->limit(5);
-			$this->db->distinct();
-			$query = $this->db->get('locations');
-			$count = $query->num_rows();
-			$i = 0;
-			$return = [];
-
-			foreach($query->result() as $row) {
-				$return[$i] = array('name' => $row->state, 'abbrev' => strtolower($row->state_abbrev));
-
-				$i++;
-			}
-
-			return array('count' => $count, 'states' => $return);
 		}
 
 		/**
@@ -131,7 +100,6 @@
 			$this->db->order_by('city', 'asc');
 			$this->db->limit(5);
 			$query = $this->db->get('locations');
-			$count = $query->num_rows();
 			$i = 0;
 			$return = [];
 
@@ -141,7 +109,7 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'cities' => $return);
+			return array('count' => $query->num_rows(), 'cities' => $return);
 		}
 
 		/**
@@ -152,13 +120,10 @@
 		public function GetLocations($q) {
 			$sql = "SELECT city, state, COUNT(*) AS count
 					FROM last_seen 
-					WHERE city LIKE ?
-					OR state LIKE ?
+					WHERE city LIKE ? OR state LIKE ?
 					GROUP BY city, state 
-					ORDER BY count DESC
-					LIMIT 5";
+					ORDER BY count DESC LIMIT 5";
 			$query = $this->db->query($sql, array('%'.$q.'%', '%'.$q.'%'));
-			$count = $query->num_rows();
 			$i = 0;
 			$return = [];
 
@@ -168,7 +133,31 @@
 				$i++;
 			}
 
-			return array('count' => $count, 'places' => $return);
+			return array('count' => $query->num_rows(), 'places' => $return);
+		}
+
+		/**
+		 * Query the DB to get matching states from the autocomplete form
+		 * @param {string} [state] The name of the state
+		 * @return {array} An array containing the number of rows returned and the states
+		 */
+		public function GetStates($state) {
+			$this->db->distinct();
+			$this->db->select('state, state_abbrev');
+			$this->db->like('state', $state);
+			$this->db->order_by('state', 'asc');
+			$this->db->limit(5);
+			$query = $this->db->get('locations');
+			$i = 0;
+			$return = [];
+
+			foreach($query->result() as $row) {
+				$return[$i] = array('name' => $row->state, 'abbrev' => strtolower($row->state_abbrev));
+
+				$i++;
+			}
+
+			return array('count' => $query->num_rows(), 'states' => $return);
 		}
 
 		/**
@@ -180,17 +169,11 @@
 		 * @return {int} The number of miles between two locations
 		 */
 		public function Haversine($lat_from, $lon_from, $lat_to, $lon_to) {
-			$radius = 6371000;
 			$delta_lat = deg2rad($lat_to-$lat_from);
 			$delta_lon = deg2rad($lon_to-$lon_from);
-			
-			$a = sin($delta_lat/2) * sin($delta_lat/2) +
-				cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) *
-				sin($delta_lon/2) * sin($delta_lon/2);
+			$a = sin($delta_lat/2) * sin($delta_lat/2) + cos(deg2rad($lat_from)) * cos(deg2rad($lat_to)) * sin($delta_lon/2) * sin($delta_lon/2);
 			$c = 2*atan2(sqrt($a), sqrt(1-$a));
-
-			// Convert the distance from meters to miles
-			return ceil(($radius*$c)*0.000621371);
+			return ceil((6371000*$c)*0.000621371);
 		}
 
 		/**
@@ -202,21 +185,14 @@
 		public function MapquestLocation($city, $state) {
 			// Define the parameter
 			$param = (!empty($city) && !empty($city) ? $city.','.$state : $state);
-
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->mapquest_url.'location='.urlencode($param).'&key='.$this->mapquest_key);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
-
-		    // Decode the response
-		    $decode = @json_decode($data, TRUE);
 		    
-		    if($decode['info']['statuscode'] == 400) {
-		    	return array('lat' => NULL, 'lng' => NULL);
-		    } else {
-				return $decode['results'][0]['locations'][0]['latLng'];
-			}
+		    $decode = @json_decode($data, TRUE);
+		    return ($decode['info']['statuscode'] == 400 ? array('lat' => NULL, 'lng' => NULL) : $decode['results'][0]['locations'][0]['latLng']);
 		}
 
 		/**
@@ -231,14 +207,13 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
-
-		    // Decode the response
+		    
 		    $decode = @json_decode($data, TRUE);
-		    $location = $decode['results'][0]['locations'][0];
-		    return array('country' => $location['adminArea1'],
-		    			'city' => $location['adminArea5'], 
-		    			'state' => $location['adminArea3'],
-		    			'full_name' => $this->FullFromAbbrev($location['adminArea3']));
+		    $loc = $decode['results'][0]['locations'][0];
+		    return array('country' => $loc['adminArea1'],
+		    			'city' => $loc['adminArea5'], 
+		    			'state' => $loc['adminArea3'],
+		    			'full_name' => $this->FullFromAbbrev($loc['adminArea3']));
 		}
 
 		/**
@@ -253,9 +228,7 @@
 			}
 
 			$query = $this->db->get('locations');
-			$count = $query->num_rows();
 			$i = 0; 
-			$return = [];
 
 			foreach($query->result() as $row) {
 				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
@@ -324,14 +297,5 @@
 						'WV' => 'WEST VIRGINIA',
 						'WI' => 'WISCONSIN',
 						'WY' => 'WYOMING');
-		}
-
-		/**
-		 * Validate either a latitude or longitude coordinate using regex
-		 * @param {decimal} [coordinate] The coordinate to be tested
-		 * @return {boolean} 
-		 */
-		public function ValidateCoordinate($coordinate) {
-			return preg_match('/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $coordinate);
 		}
 	}

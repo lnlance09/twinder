@@ -137,7 +137,7 @@
 <?php
     } 
 
-    if($base_url != '/wetinder/') {
+    if($base_url != '/twinder/') {
 ?>
     <!-- StatCounter -->
     <script type="text/javascript">

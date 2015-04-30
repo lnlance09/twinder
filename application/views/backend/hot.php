@@ -11,34 +11,25 @@
         <div id="media_container">
 <?php
     	for($i=0;$i<$end;$i++) {
-            $id = $hot['users'][$i]['tinder_id'];
-    		$name = $hot['users'][$i]['name'];
-    		$age = $hot['users'][$i]['age'];
-            $bio = $hot['users'][$i]['bio'];
-    		$img = $hot['users'][$i]['profile_pic'];
-            $link = $hot['users'][$i]['link'];
+            $user = $hot['users'][$i];
 
             // Show the highligthed text
-            if(!empty($q)) {
-                $highlight = str_replace($q, '<span class="highlight">'.$q.'</span>', $bio);
-            } else {
-                $highlight = $bio;
-            }
+            $high = (!empty($q) ? str_replace($q, '<span class="highlight">'.$q.'</span>', $user['bio']) : $user['bio']);
 ?>
-            <div class="media" onclick="location.href='<?php echo $base_url.$link; ?>'">
+            <div class="media" onclick="location.href='<?php echo $base_url.$user['link']; ?>'">
                 <div class="media-left media-top">
-                    <a href="<?php echo $base_url.$link; ?>">
-                        <img src="<?php echo $img; ?>" class="media-object img-circle" alt="<?php echo $name; ?>">
+                    <a href="<?php echo $base_url.$user['link']; ?>">
+                        <img src="<?php echo $user['profile_pic']; ?>" class="media-object img-circle" alt="<?php echo $user['name']; ?>">
                     </a>
                 </div>
                 
                 <div class="media-body text-left">
                     <h4 class="media-heading">
-                        <a href="<?php echo $base_url.$link; ?>" title="<?php echo $name; ?>"><?php echo $name; ?></a>, <?php echo $age; ?>
+                        <a href="<?php echo $base_url.$user['link']; ?>" title="<?php echo $user['name']; ?>"><?php echo $user['name']; ?></a>, <?php echo $user['age']; ?>
                     </h4>
 
                     <p>
-                        <?php echo BioLinks($highlight); ?>
+                        <?php echo BioLinks($high); ?>
                     </p>
                 </div>
             </div>
@@ -116,7 +107,6 @@
 
                     default:
                         var val = params[index].text().trim();
-                        break;
                 }
 
                 str += index +'/'+ val +'/';

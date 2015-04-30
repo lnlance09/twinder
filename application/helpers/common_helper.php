@@ -27,10 +27,7 @@
 		    if($post === TRUE) {
 		    	curl_setopt($ch, CURLOPT_POST, TRUE);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-		    } elseif($post == 'PUT') {
-			    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-			    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-			} elseif($post == 'DELETE') {
+		    } elseif($post == 'DELETE') {
 			    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			}
 
@@ -86,7 +83,6 @@
 		 */
 		function BioLinks($bio) {
 			$terms = array('@', 'instagram', 'ig:', 'insta:', 'Instagram', 'Ig:', 'Insta', 'INSTAGRAM', 'IG:', 'INSTA');
-			// $ig_bio = preg_replace('/(?<=^|\s)'.implode('|', $terms).'([a-z0-9_]+)/i', '<a href="https://instagram.com/$1" target="_blank">$1</a>', $bio);
 			$ig_bio = preg_replace('/\b('.implode('|', $terms).')\s*[:-]\s*\K([\w.]+)\b/', '<a href="http://instagram.com/$2" target="_blank">$2</a>', $bio);
 			$hash_bio = preg_replace('/#(\w+)/', ' <a href="http://twitter.com/hashtag/$1" target="_blank">#$1</a> ', $ig_bio);
 			return trim($hash_bio);
@@ -230,8 +226,7 @@
 		function FormatTime($time) {
 			if($time != 'Just now' && substr($time, -3) != 'ago') {
 				$time = date_diff(date_create(), date_create($time));
-				// FormatArray($time);
-
+			
 				// Format the date difference by minutes, hours, days and months
 				$seconds = $time->format('%s');
 				$mins = $time->format('%i');
@@ -315,43 +310,6 @@
 			} else {
 				return $file;
 			}
-		}
-
-		/**
-		 * Format the popup window for the Google Maps API
-		 * @param {array} [data] An array containg info about the user
-		 * @param {string} [base_url] The base URL of WeTinder
-		 */
-		function FormatLastSeenText($data, $base_url) {
-			// Save the user's info as variables
-			$user_info = $data['user'];
-			$name = $user_info['name'];
-			$link = $user_info['link'];
-			$pic = ChangePicSize($user_info['profile_pic'], 172);
-
-			// Save the location data
-			$loc_data = $data['data'];
-
-			$text = '<div class="media" id="infowindow">
-			            <div class="media-left media-top">
-			                <a href="'.$base_url.$link.'">
-			                    <img src="'.$pic.'" class="media-object img-circle" alt="'.$name.'">
-			                </a>
-			            </div>
-			            
-			            <div class="media-body text-left">
-			                <h4 class="media-heading">
-			                    Last Seen By <a href="'.$base_url.$link.'" title="'.$name.'">'.$name.'</a>
-			                </h4>
-
-			                <p>
-			                    '.number_format($loc_data['miles_away']).' miles away from '.$loc_data['city'].', '.$loc_data['state'].' <br>
-
-			                    '.FormatTime($loc_data['datetime']).'
-			                </p>
-			            </div>
-			        </div>';
-			return trim($text);
 		}
 
 		/**
@@ -489,7 +447,6 @@
 					if(!$same && $session) {
 						array_push($tabs, 'mutual_matches');
 					}
-					break;
 			}
 
 			return array('tabs' => $tabs, 'active' => $active);
@@ -530,4 +487,3 @@
 			return trim($title);
 		}
 	}
-?>

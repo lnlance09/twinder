@@ -97,42 +97,42 @@
 							'type' => 'website');
 
 				// Set all of the info that needs to be passed to the header view
-				$header_info = array('title' => $title,
-									'type' => 'article',
-									'session' => $session,
-									'header' => 'Browse',
-									'auth' => $auth,
-									'tinder_id' => $tinder_id,
-									'name' => $this->session->userdata('first_name'),
-									'meta' => $meta,
-									'q' => $q,
-									'profile_link' => $profile_link,
-									'profile_pic' => $profile_pic);
+				$header = array('title' => $title,
+								'type' => 'article',
+								'session' => $session,
+								'header' => 'Browse',
+								'auth' => $auth,
+								'tinder_id' => $tinder_id,
+								'name' => $this->session->userdata('first_name'),
+								'meta' => $meta,
+								'q' => $q,
+								'profile_link' => $profile_link,
+								'profile_pic' => $profile_pic);
 
 				// Define the body info
-				$body_info = array('genders' => $genders,
-									'gender' => strtolower($gender),
-									'city' => $city['name'],
-									'state' => $state['name'],
-									'location' => (empty($city['name']) ? $state['name'] : $city['name'].', '.$state['name']),
-									'lon' => $lon,
-									'lat' => $lat,
-									'distance' => $distance,
-									'min' => $min,
-									'max' => $max,
-									'q' => $q,
-									'page' => $page,
-									'set' => $set);
+				$body = array('genders' => $genders,
+							'gender' => strtolower($gender),
+							'city' => $city['name'],
+							'state' => $state['name'],
+							'location' => (empty($city['name']) ? $state['name'] : $city['name'].', '.$state['name']),
+							'lon' => $lon,
+							'lat' => $lat,
+							'distance' => $distance,
+							'min' => $min,
+							'max' => $max,
+							'q' => $q,
+							'page' => $page,
+							'set' => $set);
 
 				// Get all of the data for the footer view
-				$locations = $this->loc->FooterPlaces();
-				$rand_users = $this->database->GetAllUsers(5);
-				$footer_info = array('locations' => $locations, 'users' => $rand_users);
+				$places = $this->loc->FooterPlaces();
+				$users = $this->database->GetAllUsers(5);
+				$footer = array('locations' => $places, 'users' => $users);
 
 				// Load all of the views
-				$this->load->view('templates/header', $header_info); 
-				$this->load->view('hot', $body_info); 
-				$this->load->view('templates/footer', $footer_info); 
+				$this->load->view('templates/header', $header); 
+				$this->load->view('hot', $body); 
+				$this->load->view('templates/footer', $footer); 
 			}
 
 			public function GetHottest() {
