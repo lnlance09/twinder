@@ -861,7 +861,7 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetUserInfo($id) {
-			$sql = "SELECT users.tinder_id, users.first_name, users.username, users.dob, users.age, users.bio, users.gender, users.profile_pic, users.last_activity_date, users.ig_username, users.views, pics.*
+			$sql = "SELECT users.tinder_id, first_name, username, dob, age, bio, gender, profile_pic, last_activity_date, ig_username, views, pics.*
 					FROM users
 					JOIN pics 
 					ON users.tinder_id = pics.tinder_id
