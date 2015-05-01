@@ -35,11 +35,13 @@
             </div>
 <?php
         }
-    }
 ?>
         </div>
 
         <div id="append"></div>
+<?php
+    }
+?>
     </div>
 <?php
     if($count == 0) {
@@ -49,10 +51,10 @@
     </div>
 <?php
     } else {
-        if(($count%$per_page) > 0) {
+        if(($page+1) < $pages) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-default" id="see_more">see more</button>
+        <button type="button" class="btn btn-default" id="see_more">see more (<?php echo $left_over; ?>)</button>
     </div>
 <?php
         }
@@ -124,11 +126,13 @@
         $('button#see_more').click(function(e) {
             $('#append').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
             var data = '<?php echo $query; ?>&page=<?php echo $new_page; ?>';
-            console.log(data);
+            // console.log(data);
 
             $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
                 $('#hot_load .ajax-loader').fadeOut();
                 ChangeTitleURL();
             });
         });
+
+        $('#hot_count_num').text('<?php echo $count; ?>');
     </script>

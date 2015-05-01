@@ -142,13 +142,34 @@
 					$$key = $val;
 				}
 
+				if(!isset($q)) {
+					$q = NULL;
+				}
+
+				// Get the total number of results
+				$count = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, NULL);
+				
 				// Calculate all of the info for the pagination in the view
 				$per_page = 10;
+				$pages = ceil($count/$per_page);
+
+				if($page == ($pages-1)) {
+					$mod = $count%$per_page;
+
+					if($mod == 0) {
+						$end = ($page*$per_page)+$per_page;
+					} else {
+						$end = ($page*$per_page)+$mod;
+					}
+				} else {
+					$end = ($page*$per_page)+$per_page;
+				}
+
+				$left_over = $count-(($page+1)*$per_page);
 				$point = (($page+1)*$per_page)+1;
 
 				// Get the hottest
 				$hot = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, $point);
-				$end = ($point > $hot['count'] ? $hot['count'] : $point);
 
 				// Define all of the parameters
 				$params = array('gender' => $gender,
@@ -164,9 +185,11 @@
 							'hot' => $hot, 
 							'end' => $end,
 							'q' => $q,
-							'count' => $hot['count'],
+							'count' => $count,
+							'left_over' => $left_over,
 							'per_page' => $per_page, 
 							'page' => $page,
+							'pages' => $pages,
 							'new_page' => $page+1);
 				// FormatArray(array_slice($info, 2));
 

@@ -1,8 +1,8 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text(); 
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0993c7"}]}];
-    var _city = 'New York';
-    var _state = 'New York';
+    var _city = 'San Francisco';
+    var _state = 'California';
 
     // Check to see if the user's browser supports GeoLocation
     if(navigator.geolocation) {
@@ -53,7 +53,7 @@ $(document).ready(function() {
             // Update the new coordinates on the map
             $('#drag_lat').text(lat);
             $('#drag_lon').text(lon);
-            var loc = GetLocationName(lon, lat);
+            var loc = GetLocationName(lon, lat, true);
             map.setCenter(new google.maps.LatLng(lat, lon));
         });
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
      * @param {decimal} [lon] The longitude coordinate
      * @param {decimal} [lat] The latitude coordinate
      */
-    function GetLocationName(lon, lat) {
+    function GetLocationName(lon, lat, reset) {
         $.ajax({
             url: base_url +'home/LocationFromCoords',
             async: true,
@@ -110,7 +110,7 @@ $(document).ready(function() {
                 $('#location').val(city +', '+ state);
                 
                 // Load the new results
-                RefreshResults();
+                RefreshResults(reset);
             }
         }); 
     }
@@ -120,7 +120,7 @@ $(document).ready(function() {
      * @param {string} [city] The name of the city
      * @param {string} [state] The full name of the state
      */
-    function CoordsFromLocation(city, state) {
+    function CoordsFromLocation(city, state, reset) {
         $.ajax({
             url: base_url +'home/LocationFromCity',
             async: true,
@@ -154,7 +154,7 @@ $(document).ready(function() {
                 FinalizeMap($('#distance-value').text(), lat, lon, zoom);
 
                 // Load the new results
-                RefreshResults();
+                RefreshResults(reset);
             }
         });
     }
@@ -233,7 +233,7 @@ $(document).ready(function() {
     /**
      * Grab all of the parameters to update the search results
      */
-    function GetParams() {
+    function GetParams(reset) {
         var str;
         var params = {
                     gender: $('[name="gender"]').attr('title'), 
@@ -242,9 +242,12 @@ $(document).ready(function() {
                     lat: $('#drag_lat'),  
                     min: $('#lower-value'), 
                     max: $('#upper-value'), 
-                    page: $('#page'),
-                    q: $('#users_autocomplete')
+                    page: $('#page')
                 };
+
+        if(reset === false) {
+            params['q'] = $('#users_autocomplete');
+        } 
 
         for(var index in params) {
             switch(index) {
@@ -317,12 +320,14 @@ $(document).ready(function() {
     /**
      * Load the new results with the updated parameters in the #hot_load div
      */
-    function RefreshResults() {
+    function RefreshResults(reset) {
         $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-        console.log(GetParams());
-        console.log(GetFullURL());
 
-        $('#hot_load').load(base_url +'hot/GetHottest', GetParams(), function() {
+        if(reset === true) {
+            $('#users_autocomplete').val('');
+        }
+
+        $('#hot_load').load(base_url +'hot/GetHottest', GetParams(reset), function() {
             $('#hot_load .ajax-loader').fadeOut();
             ChangeTitleURL();
         });
@@ -349,10 +354,10 @@ $(document).ready(function() {
             var lat = 37.7750;
             $('#drag_lon').text(lon);
             $('#drag_lat').text(lat);
-            GetLocationName(lon, lat);
+            GetLocationName(lon, lat, false);
         } else {
             // Load the new results
-            RefreshResults();
+            RefreshResults(false);
         }
 
         // Load the initial results
@@ -373,7 +378,6 @@ $(document).ready(function() {
 
             case error.UNKNOWN_ERROR:
                 console.log("An unknown error occurred");
-                break;
         }
     }
 
@@ -396,10 +400,10 @@ $(document).ready(function() {
             // Update the new lon & lat coordinates 
             $('#drag_lon').text(lon);
             $('#drag_lat').text(lat);
-            GetLocationName(lon, lat);
+            GetLocationName(lon, lat, false);
         } else {
             // Load the new results
-            RefreshResults();
+            RefreshResults(false);
         }
 
         // Load the initial results
@@ -424,7 +428,7 @@ $(document).ready(function() {
                     var state = $(this).attr('state');
 
                     // Update the latitude and longitude coordinates
-                    CoordsFromLocation(city, state);
+                    CoordsFromLocation(city, state, true);
                 });
             });
         } else {
@@ -435,10 +439,11 @@ $(document).ready(function() {
     /**
      * 3 Q Filter
      */
-    $('#users_autocomplete').keyup(function(e) {
-        if(e.which != 27) {
-            RefreshResults();
-        } 
+    $('#navbar_form').submit(function(e) {
+        e.preventDefault();
+        var redirect = GetFullURL();
+        // console.log(base_url + redirect);
+        window.location.href = base_url +'hot/'+ redirect;
     });
 
     /**
@@ -451,7 +456,7 @@ $(document).ready(function() {
         $(this).attr('name', 'gender');
 
         // Load the new results
-        RefreshResults();
+        RefreshResults(false);
     });
 
     /**
@@ -478,7 +483,7 @@ $(document).ready(function() {
      * Age Trigger
      */
     $('#age_slider').click(function() {
-        RefreshResults();
+        RefreshResults(false);
     });
 
     /**
@@ -510,6 +515,6 @@ $(document).ready(function() {
         FinalizeMap(distance, lat, lon, null);
         
         // Load the new results
-        RefreshResults();
+        RefreshResults(false);
     }); 
 });

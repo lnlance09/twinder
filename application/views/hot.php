@@ -5,6 +5,9 @@
         <div id="signin">
             <h1 class="page-header">
                 <span itemprop="headline"><?php echo $header; ?></span>
+
+                <span class="pull-right" id="hot_count_num"></span>
+                <span class="clearfix"></span>
             </h1>
 
             <div class="slide_wrapper">
@@ -14,7 +17,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon" id="city_addon"><i class="fa fa-building-o"></i></div>
-                                    <input type="text" class="form-control" id="location" placeholder="Pick a place" value="<?php echo $location; ?>" />
+                                    <input type="text" class="form-control" id="location" placeholder="Pick a place" value="">
                                 </div>
                             </div>
 

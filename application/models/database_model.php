@@ -231,24 +231,34 @@
 				$sql .= " HAVING distance < ?";
 			}
 
-			$sql .= " LIMIT ".$end;
-			$query = $this->db->query($sql, $params);
-			$data = [];
-			$i = 0;
-
-			foreach($query->result() as $row) {
-				$data[$i] = array('tinder_id' => $row->tinder_id,
-								'name' => $row->first_name,
-								'age' => $row->age,
-								'bio' => BioDefault($row->bio, $row->first_name),
-								'profile_pic' => $row->profile_pic,
-								'link' => FormatUserLink($row->tinder_id, $row->username),
-								'distance' => $row->distance);
-				
-				$i++;
+			// Add the limit if necessary
+			if($end) {
+				$sql .= " LIMIT ".$end;
 			}
 
-			return array('count' => $query->num_rows(), 'users' => $data);
+			// Execute the query
+			$query = $this->db->query($sql, $params);
+			
+			if($end) {
+				$data = [];
+				$i = 0;
+
+				foreach($query->result() as $row) {
+					$data[$i] = array('tinder_id' => $row->tinder_id,
+									'name' => $row->first_name,
+									'age' => $row->age,
+									'bio' => BioDefault($row->bio, $row->first_name),
+									'profile_pic' => $row->profile_pic,
+									'link' => FormatUserLink($row->tinder_id, $row->username),
+									'distance' => $row->distance);
+					
+					$i++;
+				}
+
+				return array('count' => $query->num_rows(), 'users' => $data);
+			} else {
+				return $query->num_rows();
+			}
 		}
 
 		/**

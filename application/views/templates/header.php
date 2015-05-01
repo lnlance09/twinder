@@ -19,6 +19,7 @@
 <html lang="en">
 <head>
     <meta charset="utf8mb4">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API">
 
@@ -148,7 +149,7 @@
         </div>
 
         <div id="search_container">
-            <form method="GET" action="<?php echo $base_url; ?>hot/gender/both">
+            <form method="GET" id="navbar_form" action="<?php echo $base_url; ?>hot/gender/both">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input type="text" class="form-control" placeholder="Search" name="q" id="users_autocomplete" value="<?php echo $val; ?>" autocomplete="off">
