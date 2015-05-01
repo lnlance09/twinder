@@ -83,7 +83,6 @@
 							$info = array('name' => $name,
 										'auth' => $token,
 										'tinder_id' => $tinder_id,
-										'match_count' => $match_count,
 										'profile_link' => FormatUserLink($tinder_id, $username),
 										'profile_pic' => ChangePicSize($pic, 84),
 										'locations' => $places,

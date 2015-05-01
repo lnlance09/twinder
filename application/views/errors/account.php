@@ -52,7 +52,6 @@
                             <span id="like_count">
                                 <!-- The match count -->
                                 <i class="fa fa-heart" id="heart_icon"></i> 
-                                <span id="match_count_num"><?php echo $match_count; ?></span>
                             </span> 
                         </a>
                      
