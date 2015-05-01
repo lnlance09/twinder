@@ -199,7 +199,7 @@
 			if($num > 10000) {
 				$floor = floor($num/1000);
 				$decimal = ceil($num/100)-($floor*10); 
-				return $floor.'.'.(float)$decimal.'k';
+				return $floor.'.'.rtrim($decimal, '0').'k';
 			} elseif(is_numeric($num)) {
 				return number_format($num);
 			} else {
