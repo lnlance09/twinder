@@ -437,7 +437,7 @@
 			// Set all of the param variables to their default values
 			$gender = 'both';
 			$city = array('name' => '', 'lon' => '', 'lat' => '');
-			$state = array('name' => '', 'abbrev' => '', 'lon' => '', 'lat' => '');
+			$state = array('name' => '', 'lon' => '', 'lat' => '');
 			$distance = 50;
 			$min = 18;
 			$max = 50;
@@ -461,16 +461,17 @@
 						if(!empty($val)) {
 							// If the state is set, then query the DB to see if the city in the given state exists
 							if(isset($params['state'])) {
-								$check = $this->loc->CheckCityAndState(urldecode($val), urldecode($params['state']));
+								// Get the lat & lon coordinates
+								$city['name'] = urldecode($val);
+								$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
 
-								// If the place exists, then decode it
-								if($check) {
-									$city['name'] = urldecode($val);
-
-									// Get the lat & lon coordinates
-									$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
+								if(!empty($coords['lng']) && !empty($coords['lat'])) {
 									$city['lon'] = $coords['lng'];
 									$city['lat'] = $coords['lat'];
+								} else {
+									$city['name'] = 'San Francisco';
+									$city['lon'] = -122.4206;
+									$city['lat'] = 37.7750;
 								}
 							}
 						} else {
@@ -485,29 +486,13 @@
 
 						// The default state is NULL
 						if(!empty($val)) {
-							// Check to see if the state exists
-							$check = $this->loc->CheckState(urldecode($val));
-
-							// If the state exists, then decode it
-							if($check) {
-								// If the state is the full name, get its abbreviation
-								if(strlen(urldecode($val)) != 2) {
-									$state['abbrev'] = $this->loc->ConvertState(urldecode($val));
-									$state['name'] = ucwords(strtolower(urldecode($val)));
-								} else {
-									// If not, get its full name
-									$state['abbrev'] = strtolower(urldecode($val));
-									$state['name'] = $this->loc->FullFromAbbrev(urldecode($val));
-								}
-								
-								// Get the place's lat & lon coordinates
-								$coords = $this->loc->MapquestLocation(NULL, $state['abbrev']);
-								$state['lon'] = $coords['lng'];
-								$state['lat'] = $coords['lat'];
-							}
+							// Get the place's lat & lon coordinates
+							$coords = $this->loc->MapquestLocation(NULL, urldecode($val));
+							$state['name'] = urldecode($val);
+							$state['lon'] = $coords['lng'];
+							$state['lat'] = $coords['lat'];
 						} else {
 							$state['name'] = 'California';
-							$state['abbrev'] = 'CA';
 							$state['lon'] = '';
 							$state['lat'] = '';
 						}
