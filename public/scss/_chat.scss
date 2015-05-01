@@ -89,7 +89,7 @@
   box-shadow: 0 1px 2px rgba(black, 0.2);
 
   p {
-    font-size: 24px;
+    font-size: 20px;
     margin: 0 0 0.2rem 0;
 
     @media screen and (max-width: $break-small) {
@@ -98,7 +98,7 @@
   }
 
   time {
-    font-size: 16px;
+    font-size: 13px;
     color: #ccc;
 
     @media screen and (max-width: $break-small) {

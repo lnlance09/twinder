@@ -5,6 +5,15 @@
 <?php
     if($count > 0) {
     	for($i=0;$i<$count;$i++) {
+    		$trim = trim($messages[$i]['message']);
+           	$pos = stripos(trim($messages[$i]['message']), "twinder.io");
+
+            if($pos) {
+				$msg = nl2br(substr($trim, 0, $pos-18));
+			} else {
+				$msg = nl2br($messages[$i]['message']);
+			}
+
     		// if(!empty($messages[$i]['message'])) {
     			if($messages[$i]['from'] == $user_one['id']) {
 ?>
@@ -14,7 +23,7 @@
       		</div>
 
 			<div class="messages">
-        		<p><?php echo $messages[$i]['message']; ?></p>
+        		<p><?php echo $msg; ?></p>
         		<time datetime="2009-11-13T20:00"><?php echo $user_two['name']; ?> • <?php echo $messages[$i]['datetime']; ?></time>
       		</div>
 		</li>
@@ -27,7 +36,7 @@
       		</div>
 
 			<div class="messages">
-        		<p><?php echo $messages[$i]['message']; ?></p>
+        		<p><?php echo $msg; ?></p>
         		<time datetime="2009-11-13T20:00"><?php echo $user_one['name']; ?> • <?php echo $messages[$i]['datetime']; ?></time>
       		</div>
 		</li>

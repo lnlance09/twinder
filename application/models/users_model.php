@@ -271,7 +271,8 @@
 		 * @return {array} An array from Tinder's API
 		 */
 		public function SendMessage($id, $msg, $auth) {
-			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg));
+			$sig = "\r\n 🔥 Sent from twinder.io";
+			$info = SendRequest('user/matches/'.$id, $auth, TRUE, array('message' => $msg.$sig));
 			return @json_decode($info, TRUE);
 		}
 

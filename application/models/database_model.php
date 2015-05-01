@@ -1244,12 +1244,13 @@
 			// Insert
 			if($query->num_rows() == 0) {
 				$this->db->insert('users', $user_data);
+				$id = $this->db->insert_id();
 
 				if($settings_data) {
 					$settings_data['tinder_id'] = $user_data['tinder_id'];
 					$this->db->insert('settings', $settings_data);
 				}
-				return array('user_id' => $this->db->insert_id(), 'username' => NULL);
+				return array('user_id' => $id, 'username' => NULL);
 			} else {
 				// Update
 				$row = $query->row_array();
@@ -1403,12 +1404,12 @@
 							$this->CreateLastSeen($data);
 						}
 					}
-				}	
 
-				// Insert all of the messages into the msg table
-				if(array_key_exists('messages', $updates[$i])) {
-					$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
-				}
+					// Insert all of the messages into the msg table
+					if(array_key_exists('messages', $updates[$i])) {
+						$this->UpdateThread($updates[$i]['messages'], count($updates[$i]['messages']));	
+					}
+				}	
 			}
 		}
 

@@ -28,7 +28,8 @@
 			}
 
 			public function Test() {
-				
+				$info = $this->user->UserLookup('543cebbe4c1508686cb3cd3a', '8ebdf6ff-ba6a-4e7e-b711-1d80dedf3651');
+				var_dump($info);
 			}
 
 			public function Ping() {

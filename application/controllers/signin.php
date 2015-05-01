@@ -58,8 +58,6 @@
 
 					// Log the user in and get the auth token
 					$login = $this->user->SyncAccount($username, $password);
-					// FormatArray($login);
-					// die;
 
 					if($login) {
 						$this->session->set_userdata($login);
