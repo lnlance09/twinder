@@ -178,7 +178,12 @@
 		 */
 		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
 			$params = [];
-			$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
+
+			if($end) {
+				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
+			} else {
+				$sql = "SELECT users.id";
+			}
 			
 			if(!empty($lon) && !empty($lat)) {
 				$sql .= ", (3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance";

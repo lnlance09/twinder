@@ -54,7 +54,7 @@
         if(($page+1) < $pages) {
 ?>
     <div class="text-center">
-        <button type="button" class="btn btn-default" id="see_more">see more (<?php echo $left_over; ?>)</button>
+        <button type="button" class="btn btn-default" id="see_more">see more (<?php echo number_format($left_over); ?>)</button>
     </div>
 <?php
         }
@@ -134,5 +134,5 @@
             });
         });
 
-        $('#hot_count_num').text('<?php echo $count; ?>');
+        $('#hot_count_num').text('<?php echo FormatNumber($count); ?>');
     </script>
