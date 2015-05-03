@@ -5,7 +5,6 @@
         <div id="signin">
             <h1 class="page-header">
                 <span itemprop="headline"><?php echo $header; ?></span>
-
                 <span class="pull-right" id="hot_count_num"></span>
                 <span class="clearfix"></span>
             </h1>

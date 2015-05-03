@@ -33,6 +33,8 @@
 				$min = $valids['min'];
 				$max = $valids['max'];
 				$page = $valids['page'];
+				// FormatArray($valids);
+				// die;
 
 				// Get the search parameter from the URL
 				$q = $this->input->get('q');
@@ -61,6 +63,9 @@
 					$lat = $this->session->userdata('lat');
 					$set = 'false';
 				}
+
+				// var_dump($set);
+				// die;
 
 				// Check to see if the client is logged in
 				if($user_id) {

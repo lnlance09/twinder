@@ -3,6 +3,8 @@ $(document).ready(function() {
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0993c7"}]}];
     var _city = 'San Francisco';
     var _state = 'California';
+    var _lon = '-122.4206';
+    var _lat = '37.7750';
 
     // Check to see if the user's browser supports GeoLocation
     if(navigator.geolocation) {
@@ -107,7 +109,12 @@ $(document).ready(function() {
                 // Update the city and state
                 $('#state_ref').text(state);
                 $('#city').text(city);
-                $('#location').val(city +', '+ state);
+
+                if(country == 'US') {
+                    $('#location').val(city +', '+ state);
+                } else {
+                    $('#location').val(city +', '+ country);
+                }
                 
                 // Load the new results
                 RefreshResults(reset);
@@ -322,7 +329,6 @@ $(document).ready(function() {
      */
     function RefreshResults(reset) {
         $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
-
         if(reset === true) {
             $('#users_autocomplete').val('');
         }
@@ -342,19 +348,16 @@ $(document).ready(function() {
      */
     function ShowError(error) {
         // Get the lat & lon coordinates
-        var set = $('#set_location').text().trim();
+        var set = $('#set_location').text();
         var lon = $('#drag_lon').text();
         var lat = $('#drag_lat').text();
         // console.log('Lon: '+ lon +', Lat: '+ lat);
 
         // If the location parameters aren't set, then get the user's current location
         if(set == 'false') {
-            // Update the new lon & lat coordinates with the default to NYC
-            var lon = -122.4206;
-            var lat = 37.7750;
-            $('#drag_lon').text(lon);
-            $('#drag_lat').text(lat);
-            GetLocationName(lon, lat, false);
+            $('#drag_lon').text(_lon);
+            $('#drag_lat').text(_lat);
+            GetLocationName(_lon, _lat, false);
         } else {
             // Load the new results
             RefreshResults(false);
@@ -402,13 +405,14 @@ $(document).ready(function() {
             $('#drag_lat').text(lat);
             GetLocationName(lon, lat, false);
         } else {
-            // Load the new results
             RefreshResults(false);
         }
 
         // Load the initial results
         FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
     }
+
+
 
     /**
      * 2 Location Autocomplete
@@ -436,6 +440,8 @@ $(document).ready(function() {
         }
     });
 
+
+
     /**
      * 3 Q Filter
      */
@@ -445,6 +451,8 @@ $(document).ready(function() {
         // console.log(base_url + redirect);
         window.location.href = base_url +'hot/'+ redirect;
     });
+
+
 
     /**
      * 4 Gender Filter
@@ -458,6 +466,8 @@ $(document).ready(function() {
         // Load the new results
         RefreshResults(false);
     });
+
+
 
     /**
      * 5 Age Slider
@@ -485,6 +495,8 @@ $(document).ready(function() {
     $('#age_slider').click(function() {
         RefreshResults(false);
     });
+
+
 
     /**
      * 6 Distance Filter Slider
