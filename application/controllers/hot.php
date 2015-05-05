@@ -153,12 +153,11 @@
 				$per_page = 10;
 				$pages = ceil($count/$per_page);
 
-				if($page == ($pages-1)) {
+				if($page >= ($pages-1)) {
 					$end = $count;
 				} else {
 					$end = ($page*$per_page)+$per_page;
 				}
-
 
 				$left_over = $count-(($page+1)*$per_page);
 				$point = (($page+1)*$per_page)+1;
