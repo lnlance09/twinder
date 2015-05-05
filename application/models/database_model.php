@@ -182,7 +182,7 @@
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
 			} else {
-				$sql = "SELECT id";
+				$sql = "SELECT users.id";
 			}
 			
 			if(!empty($lon) && !empty($lat)) {
