@@ -113,6 +113,42 @@
 		}
 
 		/**
+		 * Find places that are close to a given place
+		 * @param {decimal} [lon] The longitude coordinate
+		 * @param {decimal} [lat] The latitude coordinate
+		 * @return {array} An array containing info about the list of places
+		 */
+		public function GetCloseBy($lon, $lat) {
+			$sql = "SELECT lon, lat, city, state,
+					(3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance
+					FROM last_seen
+					GROUP BY city, state
+					ORDER BY distance ASC
+					LIMIT 5";
+			$query = $this->db->query($sql);
+			$data = [];
+			$i = 0;
+
+			foreach($query->result() as $row) {
+				if(strlen($row->state) == 2) {
+					$flag = ($row->state == 'SP' ? 'Brazil' : 'United States');
+				} else {
+					$flag = $row->state;
+				}
+
+				$data[$i] = array('lon' => $row->lon,
+								'lat' => $row->lat,
+								'city' => $row->city,
+								'state' => $row->state,
+								'distance' => ceil($row->distance),
+								'flag' => $flag);
+				$i++;
+			}
+
+			return array('count' => $query->num_rows(), 'places' => $data);
+		}
+
+		/**
 		 * Query the DB to get matching states from the autocomplete form
 		 * @param {string} [q] The query string
 		 * @return {array} An array containing the number of rows returned and the cities and states
@@ -190,7 +226,6 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
-		    
 		    $decode = @json_decode($data, TRUE);
 		    return ($decode['info']['statuscode'] == 400 ? array('lat' => NULL, 'lng' => NULL) : $decode['results'][0]['locations'][0]['latLng']);
 		}
@@ -207,7 +242,6 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
-		    
 		    $decode = @json_decode($data, TRUE);
 		    $loc = $decode['results'][0]['locations'][0];
 		    return array('country' => $loc['adminArea1'],

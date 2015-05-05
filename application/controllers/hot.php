@@ -8,11 +8,7 @@
 				
 				// Get the base URL
 				$this->base_url = $this->config->base_url();
-
-				// Load the session library
 				$this->load->library('session');
-
-				// Load all of the models
 				$this->load->model('users_model', 'user');
 			}
 
@@ -63,7 +59,6 @@
 					$lat = $this->session->userdata('lat');
 					$set = 'false';
 				}
-
 				// var_dump($set);
 				// die;
 
@@ -174,7 +169,15 @@
 				$point = (($page+1)*$per_page)+1;
 
 				// Get the hottest
-				$hot = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, $point);
+				if($count > 0) {
+					$hot = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, $point);
+					$places = NULL;
+				} else {
+					$hot = NULL;
+
+					// Get some places that are close by
+					$places = $this->loc->GetCloseBy($lon, $lat);
+				}
 
 				// Define all of the parameters
 				$params = array('gender' => $gender,
@@ -188,6 +191,7 @@
 				// Define all of the info that will be passed to the view
 				$info = array('query' => http_build_query($params), 
 							'hot' => $hot, 
+							'places' => $places,
 							'end' => $end,
 							'q' => $q,
 							'count' => $count,

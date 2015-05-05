@@ -85,7 +85,7 @@
             }
 
             #city_addon {
-                padding: 6px 21px;
+                cursor: pointer;
             }
         }
     }
@@ -112,8 +112,6 @@
     #maps_box {
         padding: 0;
         background: #f0f0f0;
-        border-top: solid 1px #ccc;
-        border-bottom: solid 1px #ccc;
     }
 
     #state_autocomplete, #city_autocomplete, #location_autocomplete {

@@ -15,8 +15,11 @@
                         <div class="col-lg-12 settings_box" id="location_select_box">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="input-group-addon" id="city_addon"><i class="fa fa-building-o"></i></div>
-                                    <input type="text" class="form-control" id="location" placeholder="Pick a place" value="">
+                                    <div class="input-group-addon" id="city_addon">
+                                        <a href="#" title="test" data-toggle="tooltip"><i class="fa fa-map-marker fa-lg"></i></a>
+                                    </div>
+                                    
+                                    <input type="text" class="form-control" id="location" placeholder="Pick a place" value="<?php echo $location; ?>">
                                 </div>
                             </div>
 
@@ -27,7 +30,7 @@
                         <div class="col-lg-12 settings_box" id="maps_box">
                             <div id="google_maps">
                                 <div class="ajax-loader">
-                                    <i class="fa fa-cog fa-4x fa-spin"></i>
+                                    <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
                                 </div>
                             </div>
                         </div>

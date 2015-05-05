@@ -68,7 +68,7 @@
                     <ul>
 <?php
     // Loop thru the random locations
-    for($i=0;$i<4;$i++) {
+    for($i=0;$i<5;$i++) {
         $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
 ?>
                         <li>

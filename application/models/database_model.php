@@ -178,11 +178,11 @@
 		 */
 		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
 			$params = [];
-
+			
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
 			} else {
-				$sql = "SELECT users.id";
+				$sql = "SELECT COUNT(*) AS count";
 			}
 			
 			if(!empty($lon) && !empty($lat)) {
@@ -256,13 +256,13 @@
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'distance' => $row->distance);
-					
 					$i++;
 				}
 
 				return array('count' => $query->num_rows(), 'users' => $data);
 			} else {
-				return $query->num_rows();
+				$row = $query->result();
+				return (array_key_exists(0, $row) ? $row[0]->count : FALSE);
 			}
 		}
 

@@ -10,10 +10,41 @@
         border: solid 1px $border-color;
         padding: 15px;
         margin: 10px 0;
+
+        #ghost {
+            width: 150px;
+            height: 150px;
+
+            path {
+                fill: $blue !important;
+            }
+
+            + p {
+                margin: 8px 0 2px 0;
+                font-size: 22px;
+            }
+        }
+
+        + ul.list-group {
+            border: solid 1px #ddd;
+            margin-top: 12px;
+
+            li {
+                font-size: 18px;
+                border-top: solid 1px #ddd;
+
+                &:first-of-type {
+                    border-top: none;
+                }
+        
+                .miles {
+                    font-style: italic;
+                }
+            }
+        }
     }
 
     #media_container {
-
         .media {
             padding: 7px 10px;
             border: solid 1px $border-color;

@@ -611,7 +611,7 @@ span.sub_tip {
   opacity: 1; }
 
 .tooltip {
-  z-index: 99999999;
+  z-index: 99999999 !important;
   font-size: 20px; }
   .tooltip p {
     margin-top: 7px;
@@ -625,14 +625,14 @@ span.sub_tip {
   padding: 7px 15px 10px 15px;
   line-height: 1;
   opacity: 1 !important;
-  z-index: 99999999; }
+  z-index: 99999999 !important; }
 
 .tooltip.top .tooltip-arrow {
   margin-left: -6px;
   bottom: -1px;
   border-width: 6px 6px 0;
   border-top-color: #000;
-  z-index: 99999999; }
+  z-index: 99999999 !important; }
 
 #header-section {
   min-height: 250px;
@@ -703,6 +703,24 @@ span.sub_tip {
     border: solid 1px #ddd;
     padding: 15px;
     margin: 10px 0; }
+    #hot_load .main_none #ghost {
+      width: 150px;
+      height: 150px; }
+      #hot_load .main_none #ghost path {
+        fill: #0993c7 !important; }
+      #hot_load .main_none #ghost + p {
+        margin: 8px 0 2px 0;
+        font-size: 22px; }
+    #hot_load .main_none + ul.list-group {
+      border: solid 1px #ddd;
+      margin-top: 12px; }
+      #hot_load .main_none + ul.list-group li {
+        font-size: 18px;
+        border-top: solid 1px #ddd; }
+        #hot_load .main_none + ul.list-group li:first-of-type {
+          border-top: none; }
+        #hot_load .main_none + ul.list-group li .miles {
+          font-style: italic; }
   #hot_load #media_container .media {
     padding: 7px 10px;
     border: solid 1px #ddd;
@@ -795,7 +813,7 @@ span.sub_tip {
           .slide_wrapper #location_select_box .form-group .form-control {
             font-size: 12px; } }
       .slide_wrapper #location_select_box .form-group #city_addon {
-        padding: 6px 21px; }
+        cursor: pointer; }
   .slide_wrapper #gender_box, .slide_wrapper #interested_in_box {
     height: auto;
     padding: 0px 0;
@@ -809,9 +827,7 @@ span.sub_tip {
         width: 100%; }
   .slide_wrapper #maps_box {
     padding: 0;
-    background: #f0f0f0;
-    border-top: solid 1px #ccc;
-    border-bottom: solid 1px #ccc; }
+    background: #f0f0f0; }
   .slide_wrapper #state_autocomplete, .slide_wrapper #city_autocomplete, .slide_wrapper #location_autocomplete {
     display: none;
     border: none;

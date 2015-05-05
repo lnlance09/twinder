@@ -6,12 +6,20 @@ $(document).ready(function() {
     var _lon = '-122.4206';
     var _lat = '37.7750';
 
-    // Check to see if the user's browser supports GeoLocation
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(ShowPosition, ShowError);
-    } else {
-        alert('Geolocation is not supported by this browser');
-    }
+    console.log($('#drag_lat').text());
+    // Load the map and the results
+    FinalizeMap($('#distance-value').text(), $('#drag_lat').text(), $('#drag_lon').text(), 10);
+    RefreshResults(false);
+
+    $('#city_addon').click(function(e) {
+        $('#google_maps').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
+        
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(ShowPosition, ShowError);
+        } else {
+            alert('Geolocation is not supported by this browser');
+        }
+    });
 
     /**
      * Load Google Maps and load the results based upon the given criteria
@@ -104,8 +112,7 @@ $(document).ready(function() {
                 var city = obj.city;
                 var abbrev = obj.state;
                 var state = obj.full_name;
-                // console.log(obj);
-
+                
                 // Update the city and state
                 $('#state_ref').text(state);
                 $('#city').text(city);
@@ -159,8 +166,6 @@ $(document).ready(function() {
 
                 // Reload the map
                 FinalizeMap($('#distance-value').text(), lat, lon, zoom);
-
-                // Load the new results
                 RefreshResults(reset);
             }
         });
@@ -173,8 +178,6 @@ $(document).ready(function() {
         var title = DefineTitle() +' - Twinder';
         var url = GetFullURL();
         var new_url = base_url +'hot/'+ url;
-
-        // Change the URL
         window.history.replaceState('', title, new_url);
         document.title = title;
     }
@@ -287,7 +290,7 @@ $(document).ready(function() {
      * Format the title of the document based upon the search parameters
      */
     function DefineTitle() {
-        var title = 'The hottest ';
+        var title = 'Browse ';
         var gender = $('[name="gender"]').attr('title');
         var distance = $('#distance-value').text();
         var city = $('#city').text();
@@ -396,19 +399,14 @@ $(document).ready(function() {
         // console.log('Lon: '+ lon +', Lat: '+ lat);
 
         // If the location parameters aren't set, then get the user's current location
-        if(set == 'false') {
-            var lon = position.coords.longitude;
-            var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var lat = position.coords.latitude;
 
-            // Update the new lon & lat coordinates 
-            $('#drag_lon').text(lon);
-            $('#drag_lat').text(lat);
-            GetLocationName(lon, lat, false);
-        } else {
-            RefreshResults(false);
-        }
+        // Update the new lon & lat coordinates 
+        $('#drag_lon').text(lon);
+        $('#drag_lat').text(lat);
 
-        // Load the initial results
+        GetLocationName(lon, lat, false);
         FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
     }
 

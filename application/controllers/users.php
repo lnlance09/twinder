@@ -121,12 +121,12 @@
 						$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
 						
 						// Define the meta tags
-						$meta_info = array('title' => MetaSubject($user_info['username'], $user_info['name']),
-										'description' => (empty($user_info['bio']) ? $user_info['name']."'s Tinder Profile" : $user_info['bio']),
-										'img' => $user_info['profile_pic'],
-										'url' => 'http://twinder.io/'.$user_info['link'],
-										'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']),
-										'type' => 'profile');
+						$meta = array('title' => MetaSubject($user_info['username'], $user_info['name']),
+									'description' => (empty($user_info['bio']) ? $user_info['name']."'s Tinder Profile" : $user_info['bio']),
+									'img' => $user_info['profile_pic'],
+									'url' => 'http://twinder.io/'.$user_info['link'],
+									'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']),
+									'type' => 'profile');
 
 						// Set all of the info that needs to be passed to the header view
 						$header = array('title' => $user_info['name'],
@@ -139,7 +139,7 @@
 										'profile_name' => $user_info['name'],
 										'gender' => $user_info['gender'],
 										'username' => $user_info['username'],
-										'meta' => $meta_info,
+										'meta' => $meta,
 										'profile_link' => $profile_link,
 										'profile_pic' => $profile_pic);
 
@@ -154,6 +154,8 @@
 
 						// Get the votes of the user
 						$votes = $this->database->GetVoteStats($id);
+						// FormatArray($votes);
+						// die;
 
 						// Get all of the stats of the user who is being viewed
 						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id);

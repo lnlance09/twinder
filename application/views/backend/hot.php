@@ -47,8 +47,33 @@
     if($count == 0) {
 ?>
     <div class="main_none">
-        There are no results
+        <img class="svg" id="ghost" src="<?php echo $base_url; ?>public/img/svg/snowden.svg" width="150" height="150" alt="no results">
+
+        <p>
+            Sorry, try these places instead...
+        </p>
     </div>
+
+    
+        <ul class="list-group text-left">
+<?php
+    for($i=0;$i<$places['count'];$i++) {
+        $place = $places['places'][$i];
+?>
+        <li class="list-group-item">
+            <a href="#"><img src="<?php echo $base_url.'public/img/flags/'.$place['flag']; ?>.png" width="24" alt="<?php echo $place['state']; ?>"> <?php echo $place['city']; ?></a>
+
+            <span class="miles pull-right">
+                <?php echo number_format($place['distance']); ?> miles
+            </span>
+
+            <span class="clearfix"></span>
+        </li>
+<?php
+    }
+?>
+        </ul>
+    
 <?php
     } else {
         if(($page+1) < $pages) {
@@ -135,4 +160,32 @@
         });
 
         $('#hot_count_num').text('<?php echo FormatNumber($count); ?>');
+
+        // SVG script
+        jQuery('img.svg').each(function() {
+            var $img = jQuery(this);
+            var imgID = $img.attr('id');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+            jQuery.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                var $svg = jQuery(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if(typeof imgID !== 'undefined') {
+                    $svg = $svg.attr('id', imgID);
+                }
+                // Add replaced image's classes to the new SVG
+                if(typeof imgClass !== 'undefined') {
+                    $svg = $svg.attr('class', imgClass +' replaced-svg');
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Replace image with new SVG
+                $img.replaceWith($svg);
+            }, 'xml');
+        });
     </script>

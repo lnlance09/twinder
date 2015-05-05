@@ -65,6 +65,7 @@
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
+
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>

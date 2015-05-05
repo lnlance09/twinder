@@ -272,7 +272,7 @@ $(document).ready(function() {
                 vote: vote
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if(data == 'true') {
                     if(_id == 'click_hot') {
                         $('#vote_stats .col-lg-6:nth-of-type(2)').fadeOut(300, function() {

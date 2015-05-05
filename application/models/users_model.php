@@ -457,7 +457,6 @@
 					// Set the default city
 					case'city':
 
-						// The default city is NULL
 						if(!empty($val)) {
 							// If the state is set, then query the DB to see if the city in the given state exists
 							if(isset($params['state'])) {
@@ -493,8 +492,8 @@
 							$state['lat'] = $coords['lat'];
 						} else {
 							$state['name'] = 'California';
-							$state['lon'] = '';
-							$state['lat'] = '';
+							$state['lon'] = -122.4206;
+							$state['lat'] = 37.7750;
 						}
 						break;
 
