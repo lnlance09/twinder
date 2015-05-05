@@ -54,13 +54,12 @@
         </p>
     </div>
 
-    
-        <ul class="list-group text-left">
+    <ul class="list-group text-left">
 <?php
     for($i=0;$i<$places['count'];$i++) {
         $place = $places['places'][$i];
 ?>
-        <li class="list-group-item">
+        <li class="list-group-item" onclick="location.href='<?php echo $base_url.'hot/gender/both/state/'.$place['state'].'/city/'.$place['city']; ?>'">
             <a href="#"><img src="<?php echo $base_url.'public/img/flags/'.$place['flag']; ?>.png" width="24" alt="<?php echo $place['state']; ?>"> <?php echo $place['city']; ?></a>
 
             <span class="miles pull-right">

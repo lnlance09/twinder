@@ -6,7 +6,6 @@ $(document).ready(function() {
     var _lon = '-122.4206';
     var _lat = '37.7750';
 
-    console.log($('#drag_lat').text());
     // Load the map and the results
     FinalizeMap($('#distance-value').text(), $('#drag_lat').text(), $('#drag_lon').text(), 10);
     RefreshResults(false);
@@ -331,6 +330,7 @@ $(document).ready(function() {
      * Load the new results with the updated parameters in the #hot_load div
      */
     function RefreshResults(reset) {
+        $('#hot_count_num').text('');
         $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
         if(reset === true) {
             $('#users_autocomplete').val('');
