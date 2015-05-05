@@ -182,7 +182,7 @@
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
 			} else {
-				$sql = "SELECT COUNT(*) AS count";
+				$sql = "SELECT id";
 			}
 			
 			if(!empty($lon) && !empty($lat)) {
@@ -261,8 +261,7 @@
 
 				return array('count' => $query->num_rows(), 'users' => $data);
 			} else {
-				$row = $query->result();
-				return (array_key_exists(0, $row) ? $row[0]->count : FALSE);
+				return $query->num_rows();
 			}
 		}
 
