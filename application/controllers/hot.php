@@ -159,7 +159,7 @@
 					if($mod == 0) {
 						$end = ($page*$per_page)+$per_page;
 					} else {
-						$end = ($page*$per_page)+$mod;
+						$end = ($page*$per_page)-$mod;
 					}
 				} else {
 					$end = ($page*$per_page)+$per_page;
