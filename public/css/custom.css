@@ -570,8 +570,7 @@ button:focus {
       color: #fff;
       margin: 0; }
       #footer #copyright p a {
-        color: #fff;
-        text-decoration: underline; }
+        color: #fff; }
         #footer #copyright p a:hover {
           text-decoration: underline; }
 
