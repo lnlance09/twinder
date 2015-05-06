@@ -51,7 +51,7 @@
                     <ul>
 <?php
     // Loop thru the random users
-    //for($i=0;$i<4;$i++) {
+    for($i=0;$i<4;$i++) {
 ?>
                         <li>
                             <a href="<?php echo $base_url.$users[$i]['link']; ?>">
@@ -59,7 +59,7 @@
                             </a>
                         </li>
 <?php
-    //}
+    }
 ?>
                     </ul>
                 </div>
