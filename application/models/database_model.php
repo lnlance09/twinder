@@ -880,7 +880,7 @@
 					JOIN pics 
 					ON users.tinder_id = pics.tinder_id
 					WHERE users.tinder_id = ?
-					
+					OR users.username = ?
 					ORDER BY pic_order ASC";
 			$query = $this->db->query($sql, array($id, $id));
 
