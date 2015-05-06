@@ -40,7 +40,7 @@
 
 					// Get all of the data for the footer view
 					$places = $this->loc->FooterPlaces();
-					$users = $this->database->GetAllUsers(5);
+					$users = array(); // $this->database->GetAllUsers(5);
 					$footer = array('locations' => $places, 'users' => $users);
 
 					// Load all of the views
