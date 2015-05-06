@@ -875,12 +875,12 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetUserInfo($id) {
-			$sql = "SELECT users.tinder_id, first_name, username, dob, age, bio, gender, profile_pic, last_activity_date, ig_username, views, pics.*
+			$sql = "SELECT users.tinder_id, first_name, username, dob, age, bio, gender, profile_pic, last_activity_date, ig_username, views, pics.filename
 					FROM users
 					JOIN pics 
 					ON users.tinder_id = pics.tinder_id
 					WHERE users.tinder_id = ?
-					OR users.username = ?
+					
 					ORDER BY pic_order ASC";
 			$query = $this->db->query($sql, array($id, $id));
 
@@ -907,7 +907,7 @@
 										'views' => $row->views);
 					}
 
-					$return['pics'][$i] = array('file' => $row->filename, 'order' => $row->pic_order);
+					$return['pics'][$i] = array('file' => $row->filename);
 		
 					$i++;
 				}
