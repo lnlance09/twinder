@@ -883,7 +883,7 @@
 					OR users.username = ?
 					OR users.id = ?
 					ORDER BY pic_order ASC";
-			$query = $this->db->query($sql, array($id, $id));
+			$query = $this->db->query($sql, array($id, $id, $id));
 
 			if($query->num_rows() > 0) {
 				$i = 0;
