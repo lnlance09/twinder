@@ -496,17 +496,17 @@ button:focus {
     @media screen and (max-width: 1024px) {
       #footer #list_name {
         padding: 20px 0; } }
-    #footer #list_name .col-lg-4 {
+    #footer #list_name .col-lg-3 {
       font-size: 24px;
       padding: 8px 0;
-      text-align: center;
+      text-align: left;
       color: #fff;
       float: left;
-      width: 33%; }
+      width: 25%; }
       @media screen and (max-width: 1024px) {
-        #footer #list_name .col-lg-4 {
+        #footer #list_name .col-lg-3 {
           display: none; } }
-      #footer #list_name .col-lg-4 .fa {
+      #footer #list_name .col-lg-3 .fa {
         color: #fff !important;
         font-weight: 600; }
     #footer #list_name #slogan {
@@ -528,38 +528,40 @@ button:focus {
     @media screen and (min-width: 1200px) {
       #footer #sub_footer {
         padding: 0 120px; } }
-    #footer #sub_footer .col-lg-4 {
+    #footer #sub_footer .col-lg-3 {
       float: left;
-      width: 33%;
+      width: 25%;
       margin: 0;
       padding: 0; }
       @media screen and (max-width: 1024px) {
-        #footer #sub_footer .col-lg-4 {
+        #footer #sub_footer .col-lg-3 {
           width: 100%; } }
-      #footer #sub_footer .col-lg-4 ul {
+      #footer #sub_footer .col-lg-3 ul {
         -webkit-padding-start: 0;
         list-style: none;
         width: 100%;
         margin: 8px 0; }
-        #footer #sub_footer .col-lg-4 ul li {
+        #footer #sub_footer .col-lg-3 ul li {
           text-align: left;
-          padding: 6px 0;
-          text-align: center; }
-          #footer #sub_footer .col-lg-4 ul li .twitter-follow-button {
+          padding: 6px 0; }
+          @media screen and (max-width: 1024px) {
+            #footer #sub_footer .col-lg-3 ul li {
+              text-align: center; } }
+          #footer #sub_footer .col-lg-3 ul li .twitter-follow-button {
             margin-left: 0px; }
-          #footer #sub_footer .col-lg-4 ul li a {
+          #footer #sub_footer .col-lg-3 ul li a {
             color: #666;
             font-size: 16px; }
             @media screen and (max-width: 768px) {
-              #footer #sub_footer .col-lg-4 ul li a {
+              #footer #sub_footer .col-lg-3 ul li a {
                 font-size: 12px; } }
             @media (min-width: 768px) and (max-width: 1024px) {
-              #footer #sub_footer .col-lg-4 ul li a {
+              #footer #sub_footer .col-lg-3 ul li a {
                 font-size: 16px; } }
             @media screen and (min-width: 320px) and (max-width: 320px) {
-              #footer #sub_footer .col-lg-4 ul li a {
+              #footer #sub_footer .col-lg-3 ul li a {
                 font-size: 10px; } }
-            #footer #sub_footer .col-lg-4 ul li a:hover {
+            #footer #sub_footer .col-lg-3 ul li a:hover {
               text-decoration: underline; }
   #footer #copyright {
     background-color: #000;

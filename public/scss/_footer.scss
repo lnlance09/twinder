@@ -13,17 +13,17 @@
             padding: 20px 0;
         }
 
-        .col-lg-4 {
+        .col-lg-3 {
             @media screen and (max-width: $break-medium) {
                display: none; 
             }
 
             font-size: 24px;
             padding: 8px 0;
-            text-align: center;
+            text-align: left;
             color: $white;
             float: left;
-            width: 33%;
+            width: 25%;
 
             .fa {
                 color: $white !important;
@@ -56,9 +56,9 @@
             padding: 0 $side-padding;
         }
 
-        .col-lg-4 {
+        .col-lg-3 {
             float: left;
-            width: 33%;
+            width: 25%;
             margin: 0;
             padding: 0;
 
@@ -76,9 +76,9 @@
                     text-align: left;
                     padding: 6px 0;
 
-                    //@media screen and (max-width: $break-medium) {
+                    @media screen and (max-width: $break-medium) {
                         text-align: center;
-                    //}
+                    }
 
                     .twitter-follow-button {
                         margin-left: 0px;
