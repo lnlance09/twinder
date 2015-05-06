@@ -85,15 +85,6 @@
                     Don't make the foolish mistake of underestimating the intelligence of network administarators. Sooner or later, the folks at Tinder will recoginize that it's just a script going through the motions and not a real person.
                 </p>
 
-
-                <h2>
-                    Is there a way to disguise your location?
-                </h2>
-
-                <p>
-                    Yes, of course. But, again, this app is for using Tinder for legitimate purposes. 
-                    WeTinder will not allow you to use anything other than your real location.
-                </p>
             </div>
 
             <meta content="Dating" itemprop="genre">
