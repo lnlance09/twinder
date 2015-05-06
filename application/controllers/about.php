@@ -53,8 +53,7 @@
 
 				// Get all of the data for the footer view
 				$places = $this->loc->FooterPlaces();
-				$users = $this->database->GetAllUsers(5);
-				$footer = array('locations' => $places, 'users' => $users);
+				$footer = array('locations' => $places);
 
 				// Load all of the views
 				$this->load->view('templates/header', $header); 

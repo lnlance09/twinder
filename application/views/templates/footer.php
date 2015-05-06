@@ -14,19 +14,15 @@
 ?>
         <div class="text-center" id="footer">
             <div id="list_name">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <i class="fa fa-rocket"></i> About
                 </div>
 
-                <div class="col-lg-3">
-                    <i class="fa fa-globe"></i> People
-                </div>
-
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <i class="fa fa-map-marker"></i> Places
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <i class="fa fa-twitter"></i> Follow Us
                 </div>
 
@@ -38,7 +34,7 @@
             <div class="clearfix"></div>
 
             <div id="sub_footer">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <ul>
                         <li><a href="<?php echo $base_url; ?>about">about</a></li>
                         <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
@@ -47,24 +43,7 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-3">
-                    <ul>
-<?php
-    // Loop thru the random users
-    for($i=0;$i<4;$i++) {
-?>
-                        <li>
-                            <a href="<?php echo $base_url.$users[$i]['link']; ?>">
-                                <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
-                            </a>
-                        </li>
-<?php
-    }
-?>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <ul>
 <?php
     // Loop thru the random locations
@@ -80,7 +59,7 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <ul>
                         <!-- Twitter Button -->
                         <li>
