@@ -882,7 +882,7 @@
 					WHERE users.tinder_id = ?
 					OR users.username = ?
 					ORDER BY pic_order ASC";
-			$query = $this->db->query($sql, array($id, $id, $id));
+			$query = $this->db->query($sql, array($id, $id));
 
 			if($query->num_rows() > 0) {
 				$i = 0;
