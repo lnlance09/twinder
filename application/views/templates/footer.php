@@ -106,7 +106,14 @@
 
     <!-- jQuery and Bootstrap JS files -->
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
+
+<?php
+    if($controller == 'signin') {
+?>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
+<?php
+    }
+?>
     <script src="<?php echo $js_url; ?>bootstrap/bootstrap.min.js"></script>
     <script src="<?php echo $js_url; ?>main.js"></script>
 <?php

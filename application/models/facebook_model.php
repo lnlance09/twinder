@@ -78,7 +78,6 @@
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);  
 				$data = curl_exec($ch);   
 				// echo $data;
-				
 			    $curl_info = curl_getinfo($ch);
 
 				// Get the headers and then the HTTP code

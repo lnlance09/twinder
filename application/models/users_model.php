@@ -29,7 +29,7 @@
 
 			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
 				// Send a request to Tinder's auth endpoint to get a new token
-				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token));
+				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token, 'locale' => 'en'));
 				$decode = @json_decode($info, TRUE);
 
 				if(is_array($decode)) {
