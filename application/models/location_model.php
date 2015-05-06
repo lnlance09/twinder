@@ -57,7 +57,8 @@
 		public function FooterPlaces() {
 			$sql = "SELECT city, state 
 					FROM last_seen 
-					GROUP BY city, state";
+					GROUP BY city, state
+					LIMIT 5";
 			$query = $this->db->query($sql);
 			$return = [];
 			$i = 0;
@@ -68,7 +69,7 @@
 				$i++;
 			}
 
-			shuffle($return);
+			// shuffle($return);
 			return $return;
 		}
 
