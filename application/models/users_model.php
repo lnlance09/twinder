@@ -467,6 +467,7 @@
 								if(!empty($coords['lng']) && !empty($coords['lat'])) {
 									$city['lon'] = $coords['lng'];
 									$city['lat'] = $coords['lat'];
+									$state['name'] = urldecode($params['state']);
 								} else {
 									$city['name'] = 'San Francisco';
 									$city['lon'] = -122.4206;
@@ -491,7 +492,9 @@
 								$state['name'] = urldecode($val);
 								$state['lon'] = $coords['lng'];
 								$state['lat'] = $coords['lat'];
-							} 
+							} else {
+								$state['name'] = ;
+							}
 						} else {
 							$state['name'] = 'California';
 							$state['lon'] = -122.4206;
