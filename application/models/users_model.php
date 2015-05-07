@@ -492,9 +492,7 @@
 								$state['name'] = urldecode($val);
 								$state['lon'] = $coords['lng'];
 								$state['lat'] = $coords['lat'];
-							} else {
-								$state['name'] = ;
-							}
+							} 
 						} else {
 							$state['name'] = 'California';
 							$state['lon'] = -122.4206;
