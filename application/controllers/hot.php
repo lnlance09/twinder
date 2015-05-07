@@ -45,15 +45,10 @@
 								'page' => $page);
 				
 				// Determine whether to use the coordinates of the city or the state
-				if($state['lon'] != NULL && $state['lat'] != NULL) {
-					if($city['lon'] != NULL && $city['lat'] != NULL) {
-						$lon = $city['lon'];
-						$lat = $city['lat'];
-					} else {
-						$lon = $state['lon'];
-						$lat = $state['lat'];
-					}
-					$set = 'true';
+				if($city['lon'] != NULL && $city['lat'] != NULL) {
+					$lon = $city['lon'];
+					$lat = $city['lat'];
+					$set = 'true'; 
 				} else {
 					$lon = $this->session->userdata('lon');
 					$lat = $this->session->userdata('lat');
