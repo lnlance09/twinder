@@ -457,27 +457,19 @@
 					// Set the default city
 					case'city':
 
-						if(!empty($val)) {
-							// If the state is set, then query the DB to see if the city in the given state exists
-							if(isset($params['state'])) {
-								// Get the lat & lon coordinates
-								$city['name'] = urldecode($val);
-								$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
+						// Get the lat & lon coordinates
+						$city['name'] = urldecode($val);
+						$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
 
-								if(!empty($coords['lng']) && !empty($coords['lat'])) {
-									$city['lon'] = $coords['lng'];
-									$city['lat'] = $coords['lat'];
-									$state['name'] = urldecode($params['state']);
-								} else {
-									$city['name'] = 'San Francisco';
-									$city['lon'] = -122.4206;
-									$city['lat'] = 37.7750;
-								}
-							}
+						if(!empty($coords['lng']) && !empty($coords['lat'])) {
+							$city['lon'] = $coords['lng'];
+							$city['lat'] = $coords['lat'];
+							$state['name'] = urldecode($params['state']);
 						} else {
-							$city['name'] = 'San Francisco';
-							$city['lon'] = -122.4206;
-							$city['lat'] = 37.7750;
+							$city['name'] = 'Everywhere';
+							$city['lon'] = 1.839432;
+							$city['lat'] = 42.397129;
+							$state['name'] = '';
 						}
 						break;
 

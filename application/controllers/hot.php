@@ -43,17 +43,6 @@
 								'min' => $min,
 								'max' => $max,
 								'page' => $page);
-				
-				// Determine whether to use the coordinates of the city or the state
-				if($city['lon'] != NULL && $city['lat'] != NULL) {
-					$lon = $city['lon'];
-					$lat = $city['lat'];
-					$set = 'true'; 
-				} else {
-					$lon = $this->session->userdata('lon');
-					$lat = $this->session->userdata('lat');
-					$set = 'false';
-				}
 				// var_dump($set);
 				// die;
 
@@ -110,14 +99,13 @@
 							'city' => $city['name'],
 							'state' => $state['name'],
 							'location' => (empty($city['name']) ? $state['name'] : $city['name'].', '.$state['name']),
-							'lon' => $lon,
-							'lat' => $lat,
+							'lon' => $city['lon'],
+							'lat' => $city['lat'],
 							'distance' => $distance,
 							'min' => $min,
 							'max' => $max,
 							'q' => $q,
-							'page' => $page,
-							'set' => $set);
+							'page' => $page);
 
 				// Get all of the data for the footer view
 				$places = $this->loc->FooterPlaces();
