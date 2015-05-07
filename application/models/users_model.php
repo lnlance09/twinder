@@ -485,11 +485,13 @@
 
 						// The default state is NULL
 						if(!empty($val)) {
-							// Get the place's lat & lon coordinates
-							$coords = $this->loc->MapquestLocation(NULL, urldecode($val));
-							$state['name'] = urldecode($val);
-							$state['lon'] = $coords['lng'];
-							$state['lat'] = $coords['lat'];
+							if(empty($city['name'])) {
+								// Get the place's lat & lon coordinates
+								$coords = $this->loc->MapquestLocation(NULL, urldecode($val));
+								$state['name'] = urldecode($val);
+								$state['lon'] = $coords['lng'];
+								$state['lat'] = $coords['lat'];
+							} 
 						} else {
 							$state['name'] = 'California';
 							$state['lon'] = -122.4206;
