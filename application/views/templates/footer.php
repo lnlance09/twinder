@@ -107,16 +107,6 @@
                             </li>
 
                             <li>
-                                <a class="twitter-share-button"
-                                    data-url="<?php echo $base_url; ?>"
-                                    data-text="Twinder - Tinder for Web"
-                                    data-via="TwinderIO"
-                                    data-hashtags="Twinder,TinderForWeb">
-                                    Tweet
-                                </a>
-                            </li>
-
-                            <li>
                                 <a href="http://instagram.com/twinder.io?ref=badge" class="ig-b- ig-b-v-24"><img src="//badges.instagram.com/static/images/ig-badge-view-24.png" alt="Instagram" /></a>
                             </li>
                         </ul>
