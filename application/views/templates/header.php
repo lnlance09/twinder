@@ -142,7 +142,7 @@
 <?php
     } else {
 ?>
-                <li><a href="<?php echo $base_url.'signin'; ?>"><span class="glyphicon glyphicon-log-in"></span> Try it</a></li>
+                <li><a href="<?php echo $base_url.'signin'; ?>">Try it</a></li>
 <?php
     }
 ?>
