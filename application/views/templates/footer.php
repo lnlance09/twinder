@@ -130,7 +130,9 @@
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
 
 <?php
-    if(in_array($controller, $slider_pages) || $controller == 'signin') {
+    if(in_array($controller, $slider_pages) 
+    || $controller == 'signin'
+    || $controller == 'users' && strtolower($method) == 'discover') {
 ?>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
 <?php

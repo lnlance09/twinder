@@ -2,9 +2,7 @@ $(document).ready(function() {
     var base_url = $('#base_url').text(); 
     var auth = $('#auth').text();
     
-    /**
-     * Draw the radiating circle while loading a new batch of users
-     */
+    // Draw the radiating circle while loading a new batch of user
     function AddCircle() {
         var $circle = $('<div class="circle"></div>');
         $circle.animate({
