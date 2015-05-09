@@ -117,7 +117,7 @@
                             </li>
 
                             <li>
-                                <a href="http://instagram.com/twinderio?ref=badge" class="ig-b- ig-b-v-24"><img src="//badges.instagram.com/static/images/ig-badge-view-24.png" alt="Instagram" /></a>
+                                <a href="http://instagram.com/twinder.io?ref=badge" class="ig-b- ig-b-v-24"><img src="//badges.instagram.com/static/images/ig-badge-view-24.png" alt="Instagram" /></a>
                             </li>
                         </ul>
                     </div>
