@@ -30,8 +30,8 @@
 					$tinder_id = NULL;
 				}
 
-				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
+				$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+				$pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Define the meta tags
 				$meta_info = array('description' => "Twinder's Terms of Service",
@@ -48,8 +48,8 @@
 								'tinder_id' => $tinder_id,
 								'name' => $this->session->userdata('first_name'),
 								'meta' => $meta_info,
-								'profile_link' => $profile_link,
-								'profile_pic' => $profile_pic);
+								'link' => $link,
+								'pic' => $pic);
 
 				// Get all of the data for the footer view
 				$places = $this->loc->FooterPlaces();

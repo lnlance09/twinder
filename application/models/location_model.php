@@ -55,7 +55,7 @@
 		 * @return {array} An array containing 5 locations
 		 */
 		public function FooterPlaces() {
-			$sql = "SELECT city, state 
+			$sql = "SELECT city, state, lat, lon
 					FROM last_seen 
 					GROUP BY lat, lon";
 			$query = $this->db->query($sql);
@@ -63,7 +63,10 @@
 			$i = 0;
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state);
+				$return[$i] = array('city' => $row->city, 
+								'state' => $row->state,
+								'lat' => $row->lat,
+								'lon' => $row->lon);
 
 				$i++;
 			}
@@ -141,7 +144,7 @@
 								'city' => $row->city,
 								'state' => $row->state,
 								'distance' => ceil($row->distance),
-								'flag' => $flag);
+								'flag' => str_replace(' ', '-', $flag));
 				$i++;
 			}
 
@@ -226,8 +229,9 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
+		    
 		    $decode = @json_decode($data, TRUE);
-		    return ($decode['info']['statuscode'] == 400 ? array('lat' => NULL, 'lng' => NULL) : $decode['results'][0]['locations'][0]['latLng']);
+		    return ($decode['info']['statuscode'] == 400 ? FALSE : $decode['results'][0]['locations'][0]);
 		}
 
 		/**
@@ -242,8 +246,10 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$data = curl_exec($ch);
 		    curl_close($ch);
+		    
 		    $decode = @json_decode($data, TRUE);
 		    $loc = $decode['results'][0]['locations'][0];
+		    // return($loc);
 		    return array('country' => $loc['adminArea1'],
 		    			'city' => $loc['adminArea5'], 
 		    			'state' => $loc['adminArea3'],

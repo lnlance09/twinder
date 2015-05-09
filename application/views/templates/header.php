@@ -101,14 +101,14 @@
 ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img src="<?php echo $profile_pic; ?>" alt="Me" class="thumbnail">
+                            <img src="<?php echo $pic; ?>" alt="Me" class="thumbnail">
 
                             <span id="header_name"><?php echo $name; ?></span>
                         </a>
                      
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="<?php echo $base_url; ?>users/discover">Play <span class="glyphicon glyphicon-play-circle"></span></a></li>
-                            <li><a href="<?php echo $base_url.$profile_link; ?>">Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                            <li><a href="<?php echo $base_url.$link; ?>">Profile <span class="glyphicon glyphicon-user"></span></a></li>
                             <li><a href="<?php echo $base_url; ?>settings">Settings <span class="glyphicon glyphicon-cog"></span></a></li>
                             <li><a href="<?php echo $base_url; ?>users/Logout">Logout <span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
@@ -136,7 +136,7 @@
     if($session) {
 ?>
                 <li><a href="<?php echo $base_url.'users/discover'; ?>"><span class="glyphicon glyphicon-play-circle"></span> Play</a></li>
-                <li><a href="<?php echo $base_url.$profile_link; ?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="<?php echo $base_url.$link; ?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                 <li><a href="<?php echo $base_url.'settings'; ?>"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                 <li><a href="<?php echo $base_url.'users/Logout'; ?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 <?php

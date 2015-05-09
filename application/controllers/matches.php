@@ -49,8 +49,8 @@
 							}
 
 							// Format the user's profile pic and their page link
-							$profile_img = ChangePicSize($profile_pic, 172);
-							$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+							$img = ChangePicSize($profile_pic, 172);
+							$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
 
 							// Set all of the info that needs to be passed to the header view
 							$header = array('title' => $match['user_one']['name'].' and '.$match['user_two']['name'],
@@ -58,8 +58,8 @@
 											'auth' => $auth,
 											'session' => $session,
 											'tinder_id' => $tinder_id,
-											'profile_link' => $profile_link,
-											'profile_pic' => $profile_img);
+											'link' => $link,
+											'pic' => $img);
 
 							// Define the body info
 							$body = array('match_id' => $id,

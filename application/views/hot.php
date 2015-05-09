@@ -86,6 +86,5 @@
     <div class="hidden" id="drag_lat"><?php echo $lat; ?></div>
     <div class="hidden" id="state_ref"><?php echo $state; ?></div>
     <div class="hidden" id="city"><?php echo $city; ?></div>
-    <div class="hidden" id="abbrev"><?php echo $abbrev; ?></div>
-    <div class="hidden" id="set_location"><?php echo $set; ?></div>
+    <div class="hidden" id="all"><?php echo $all; ?></div>
     <div class="hidden" id="page"><?php echo $page; ?></div>

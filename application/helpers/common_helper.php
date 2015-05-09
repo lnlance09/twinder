@@ -460,8 +460,10 @@
 		 * @param {int} [distance] The distance filter in miles
 		 * @param {int} [min] The minimum age filter
 		 * @param {int} [max] The maxmimum age filter
+		 * @param {boolean} [all] 
+		 * @return {str} The returned title
 		 */
-		function DefineTitle($gender, $city, $state, $distance, $min, $max) {
+		function DefineTitle($gender, $city, $state, $distance, $min, $max, $all) {
 			$title = 'Browse ';
 
 			// Format the gender
@@ -474,14 +476,8 @@
 				$title .= 'ages '.$min.' to '.$max.' ';
 			}
 
-			// Format the city
-			if(!empty($city)) {
-				$title .= 'within '.$distance.' miles of '.$city.', ';
-			}
-
-			// Format the state
-			if(!empty($state)) {
-				$title .= $state;
+			if(!$all) {
+				$title .= 'within '.$distance.' miles of '.$city.', '.$state;
 			}
 
 			return trim($title);

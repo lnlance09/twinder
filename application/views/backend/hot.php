@@ -90,39 +90,38 @@
         function GetFullURL() {
             var str;
             var params = {
-                        gender: $('[name="gender"]').text().trim(),
-                        city: $('#city'), 
-                        state: $('#state_ref'),
+                        gender: $('[name="gender"]'), 
+                        lat: $('#drag_lat'), 
+                        lon: $('#drag_lon'), 
                         distance: $('#distance-value'), 
                         min: $('#lower-value'), 
                         max: $('#upper-value'), 
-                        page: $('#load_page'),
+                        page: $('#page')
                     };
 
             for(var index in params) {
                 switch(index) {
-                    case'gender':
-
-                        var val = params[index].toLowerCase();
-                        break;
-
-                    case'city':
+                    case'lon':
 
                         var val = params[index].text();
-
-                        // Set the default value of the city to 'null'
-                        if(val == '') {
-                            var val = 'null';
+                        if(val == '' || val == 2.169919) {
+                            var val = 'all';
                         }
                         break;
 
-                    case'state':
+                    case'lat':
 
                         var val = params[index].text();
+                        if(val == '' || val == 41.387917) {
+                            var val = 'all';
+                        }
+                        break;
 
-                        // Set the default value of the state to 'new york'
-                        if(val == '') {
-                            var val = 'new york';
+                    case'gender':
+
+                        var val = params[index].text().trim().toLowerCase();
+                        if(val === undefined || val == '') {
+                            var val = 'both';
                         }
                         break;
 
@@ -150,7 +149,7 @@
         $('button#see_more').click(function(e) {
             $('#append').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
             var data = '<?php echo $query; ?>&page=<?php echo $new_page; ?>';
-            // console.log(data);
+            console.log(data);
 
             $('#hot_load').load(base_url +'hot/GetHottest', data, function() {
                 $('#hot_load .ajax-loader').fadeOut();
@@ -159,7 +158,9 @@
         });
 
         $('#hot_count_num').text('<?php echo FormatNumber($count); ?>');
-
+<?php
+    if($count == 0) {
+?>
         // SVG script
         jQuery('img.svg').each(function() {
             var $img = jQuery(this);
@@ -187,4 +188,7 @@
                 $img.replaceWith($svg);
             }, 'xml');
         });
+<?php
+    }
+?>
     </script>

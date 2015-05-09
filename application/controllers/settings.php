@@ -36,8 +36,8 @@
 					$loc = $this->loc->MapquestLatLon($lat, $lon);
 
 					// Get the user's profile link
-					$profile_link = FormatUserLink($tinder_id, $username);
-					$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 172);
+					$link = FormatUserLink($tinder_id, $username);
+					$pic = ChangePicSize($this->session->userdata('profile_pic'), 172);
 
 					if($info['gender'] == 0) {
 						$same = 'Gay';
@@ -75,8 +75,8 @@
 									'name' => $this->session->userdata('first_name'),
 									'auth' => $auth,
 									'tinder_id' => $tinder_id,
-									'profile_link' => $profile_link,
-									'profile_pic' => $profile_pic);
+									'link' => $link,
+									'pic' => $pic);
 
 					// Get all of the data for the footer view
 					$places = $this->loc->FooterPlaces();

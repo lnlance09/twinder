@@ -101,7 +101,7 @@
 				$city = $this->input->get('city');
 				$state = $this->input->get('state');
 				$geo = $this->loc->MapquestLocation($city, $state);
-				echo json_encode($geo);
+				echo json_encode($geo['latLng']);
 			}
 		}
 	}

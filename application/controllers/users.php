@@ -111,8 +111,8 @@
 
 					if($active) {
 						// Format the user's profile link
-						$profile_link = FormatUserLink($tinder_id, $username);
-						$profile_pic = ChangePicSize($pic, 172);
+						$link = FormatUserLink($tinder_id, $username);
+						$pic = ChangePicSize($pic, 172);
 
 						// Get the tab list based upon the tab in the URL
 						$tabs = ReturnTabs($tab, $same, $session);
@@ -140,8 +140,8 @@
 										'gender' => $user_info['gender'],
 										'username' => $user_info['username'],
 										'meta' => $meta,
-										'profile_link' => $profile_link,
-										'profile_pic' => $profile_pic);
+										'link' => $link,
+										'pic' => $pic);
 
 						// Update the user's views
 						$user_info['views'] = $this->database->UpdateProfileViews($user_info['views'], $user_info['tinder_id']); 
@@ -209,8 +209,8 @@
 					$pic = $this->session->userdata('profile_pic');
 
 					// Save the user's link to their profile
-					$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-					$profile_pic = ChangePicSize($pic, 84);
+					$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+					$pic = ChangePicSize($pic, 84);
 
 					$meta = array('description' => 'Discover on Twinder',
 								'img' => 'http://twinder.io/public/img/favicon.ico',
@@ -225,8 +225,8 @@
 									'tinder_id' => $tinder_id,
 									'name' => $this->session->userdata('first_name'),
 									'meta' => $meta,
-									'profile_link' => $profile_link,
-									'profile_pic' => $profile_pic);
+									'link' => $link,
+									'pic' => $pic);
 
 					// Set all of the info that needs to be passed to the dashboard view
 					$body = array('pic' => ChangePicSize($pic, 172),

@@ -178,6 +178,7 @@
 		 */
 		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
 			$params = [];
+			var_dump($lon);
 			
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
@@ -193,14 +194,8 @@
 					JOIN last_seen
 					ON users.tinder_id = last_seen.seen_id ";
 
-			if($sex != 'both' || is_numeric($min) || is_numeric($max) || !empty($lon) || !empty($lat)) {
+			if($sex != 'both' || is_numeric($min) || is_numeric($max)) {
 				$sql .= "WHERE";
-			}
-
-			if(!empty($lon) || !empty($lat)) {
-				array_push($params, $lat, $lat, $lon, $lon);
-				$sql .= " last_seen.lat BETWEEN ? - 1 AND ? + 1
-						AND last_seen.lon BETWEEN ? - 1 AND ? + 1 AND ";
 			}
 
 			// Filter the age
@@ -255,7 +250,7 @@
 									'bio' => BioDefault($row->bio, $row->first_name),
 									'profile_pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
-									'distance' => $row->distance);
+									'distance' => (!empty($lon) && !empty($lat) ? $row->distance : NULL));
 					$i++;
 				}
 

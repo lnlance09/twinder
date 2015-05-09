@@ -1,109 +1,138 @@
 #footer {
     z-index: 99999999;
 
-    #list_name {
-        background-color: $green;
-        padding: 0 20px;
-    
-        @media screen and (min-width: $break-large) {
-            padding: 0 $side-padding;
-        }
-
-        @media screen and (max-width: $break-medium) {
-            padding: 20px 0;
-        }
-
-        .col-lg-3 {
-            @media screen and (max-width: $break-medium) {
-               display: none; 
-            }
-
-            font-size: 24px;
-            padding: 8px 0;
-            text-align: left;
-            color: $white;
-            float: left;
-            width: 25%;
-
-            .fa {
-                color: $white !important;
-                font-weight: 600;
-            }
-        }
-
-        #slogan {
-            display: none;
-
-            @media screen and (max-width: $break-medium) {
-               display: block;
-               font-size: 22px;
-               color: $white; 
-               font-weight: 700;
-
-                @media (min-width: $break-small) and (max-width: $break-medium) {
-                    font-size: 28px;
-                }
-            }
-        }
-    }
-
     #sub_footer {
-        background-color: $white;
-        text-align: center;
-        padding: 0 20px;
-        
-        @media screen and (min-width: $break-large) {
-            padding: 0 $side-padding;
+        #top_footer {
+            background: #eee;
         }
 
-        .col-lg-3 {
-            float: left;
-            width: 25%;
-            margin: 0;
+        .col-lg-12 {
+            text-align: center;
             padding: 0;
-
-            @media screen and (max-width: $break-medium) {
-                width: 100%;
+            
+            @media screen and (min-width: $break-large) {
+                padding: 0 $side-padding;
             }
 
-            ul {
-                -webkit-padding-start: 0;
-                list-style: none;
-                width: 100%;
-                margin: 8px 0;
-
-                li {
-                    text-align: left;
-                    padding: 6px 0;
+            .col-lg-3 {
+                .m_line {
+                    width: 100%;
+                    padding: 10px 0;
+                    background: $blue;
+                    color: $white;
+                    font-weight: 600;
+                    font-size: 22px;
 
                     @media screen and (max-width: $break-medium) {
-                        text-align: center;
+                        display: none;
                     }
+                }
 
-                    .twitter-follow-button {
-                        margin-left: 0px;
+                .fa {
+                    color: $white;
+                }
+
+                &:nth-of-type(2) {
+                     .m_line {
+                        background: $salmon;
                     }
+                }
 
-                    a {
-                        color: #666;
-                        font-size: 16px;
+                &:nth-of-type(3) {
+                     .m_line {
+                        background: $green;
+                    }
+                }
 
-                        // Phone
-                        @media screen and (max-width: $break-small) {
-                            font-size: 12px;
+                &:nth-of-type(4) {
+                     .m_line {
+                        background: #c61931;
+                    }
+                }
+
+                .hide_rasp {
+                    width: 100%;
+                    padding: 10px 0;
+                    background: $blue;
+                    color: $white;
+                    font-weight: 600;
+                    font-size: 22px;
+                    display: none;
+                }
+
+                &:nth-of-type(2) {
+                    .hide_rasp {
+                        background: $salmon;
+                    }
+                }
+
+                &:nth-of-type(3) {
+                    .hide_rasp {
+                        background: $green;
+                    }
+                }
+
+                &:nth-of-type(4) {
+                    .hide_rasp {
+                        background: #c61931;
+                    }
+                }
+
+                float: left;
+                width: 25%;
+                margin: 0;
+                padding: 0;
+
+                @media screen and (max-width: $break-medium) {
+                    width: 100%;
+                }
+
+                @media screen and (max-width: $break-small) {
+                    .hide_rasp {
+                        display: block;
+                    }   
+                }
+
+                ul {
+                    -webkit-padding-start: 0;
+                    list-style: none;
+                    width: 100%;
+                    margin: 8px 0;
+                    padding: 0 10px;
+
+                    li {
+                        text-align: left;
+                        padding: 6px 0;
+
+                        @media screen and (max-width: $break-medium) {
+                            text-align: center;
                         }
 
-                        // Tablet
-                        @media (min-width: $break-small) and (max-width: $break-medium) {
+                        .twitter-follow-button {
+                            margin-left: 0px;
+                        }
+
+                        a {
+                            color: #090127;
                             font-size: 16px;
-                        }
 
-                        @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
-                            font-size: 10px;
-                        }
-            
-                        &:hover {
-                            text-decoration: underline;
+                            // Phone
+                            @media screen and (max-width: $break-small) {
+                                font-size: 13px;
+                            }
+
+                            // Tablet
+                            @media (min-width: $break-small) and (max-width: $break-medium) {
+                                font-size: 16px;
+                            }
+
+                            @media screen and (min-width: $iphone_five_width) and (max-width: $iphone_five_width)  {
+                                font-size: 10px;
+                            }
+                
+                            &:hover {
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }

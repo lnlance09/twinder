@@ -13,84 +13,116 @@
     $slider_pages = array('settings', 'hot');
 ?>
         <div class="text-center" id="footer">
-            <div id="list_name">
-                <div class="col-lg-3">
-                    <i class="fa fa-rocket"></i> About
-                </div>
-
-                <div class="col-lg-3">
-                    <i class="fa fa-globe"></i> People
-                </div>
-
-                <div class="col-lg-3">
-                    <i class="fa fa-map-marker"></i> Places
-                </div>
-
-                <div class="col-lg-3">
-                    <i class="fa fa-twitter"></i> Follow Us
-                </div>
-
-                <div class="col-lg-12" id="slogan">Tinder for Web</div>
-
-                <div class="clearfix"></div>
-            </div>
-
-            <div class="clearfix"></div>
-
             <div id="sub_footer">
-                <div class="col-lg-3">
-                    <ul>
-                        <li><a href="<?php echo $base_url; ?>about">about</a></li>
-                        <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
-                        <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
-                        <li><a href="<?php echo $base_url; ?>contact">contact</a></li>
-                    </ul>
+                <div class="col-lg-12" id="top_footer">
+                    <div class="col-lg-3">
+                        <div class="m_line">
+                            <i class="fa fa-rocket fa-lg"></i> About
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="m_line">
+                            <i class="fa fa-user fa-lg"></i> Random People
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="m_line">
+                            <i class="fa fa-map-marker fa-lg"></i> Random Places
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="m_line">
+                            <i class="fa fa-twitter fa-lg"></i> Follow Us
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-3">
-                    <ul>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        <div class="hide_rasp">
+                            <i class="fa fa-rocket fa-lg"></i> About
+                        </div>
+
+                        <ul>
+                            <li><a href="<?php echo $base_url; ?>about">about</a></li>
+                            <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
+                            <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
+                            <li><a href="<?php echo $base_url; ?>contact">contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="hide_rasp">
+                            <i class="fa fa-user fa-lg"></i> Random People
+                        </div>
+
+                        <ul>
 <?php
     // Loop thru the random users
     for($i=0;$i<4;$i++) {
 ?>
-                        <li>
-                            <a href="<?php echo $base_url.$users[$i]['link']; ?>">
-                                <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
-                            </a>
-                        </li>
+                            <li>
+                                <a href="<?php echo $base_url.$users[$i]['link']; ?>">
+                                    <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
+                                </a>
+                            </li>
 <?php
     }
 ?>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <div class="col-lg-3">
-                    <ul>
+                    <div class="col-lg-3">
+                        <div class="hide_rasp">
+                            <i class="fa fa-map-marker fa-lg"></i> Random Places
+                        </div>
+
+                        <ul>
 <?php
     // Loop thru the random locations
-    for($i=0;$i<5;$i++) {
-        $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
+    for($i=0;$i<4;$i++) {
+        $url = $base_url.'hot/gender/both/lon/'.$locations[$i]['lon'].'/lat/'.$locations[$i]['lat'].'/';
 ?>
-                        <li>
-                            <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
-                        </li>
+                            <li>
+                                <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
+                            </li>
 <?php
     }
 ?>
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
 
-                <div class="col-lg-3">
-                    <ul>
-                        <!-- Twitter Button -->
-                        <li>
-                            <a href="https://twitter.com/TwinderIO" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderIO</a>
+                    <div class="col-lg-3">
+                        <div class="hide_rasp">
+                            <i class="fa fa-twitter fa-lg"></i> Follow Us
+                        </div>
 
-                            <script>
-                                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-                            </script>
-                        </li>
-                    </ul>
+                        <ul>
+                            <!-- Twitter Button -->
+                            <li>
+                                <a href="https://twitter.com/TwinderIO" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderIO</a>
+                            </li>
+
+                            <li>
+                                <a class="twitter-share-button"
+                                    data-url="<?php echo $base_url; ?>"
+                                    data-text="Twinder - Tinder for Web"
+                                    data-via="TwinderIO"
+                                    data-hashtags="Twinder,TinderForWeb">
+                                    Tweet
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="http://instagram.com/twinderio?ref=badge" class="ig-b- ig-b-v-24"><img src="//badges.instagram.com/static/images/ig-badge-view-24.png" alt="Instagram" /></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="clearfix"></div>
                 </div>
 
                 <div class="clearfix"></div>
@@ -106,7 +138,15 @@
 
     <!-- jQuery and Bootstrap JS files -->
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
+
+<?php
+    if(in_array($controller, $slider_pages) || $controller == 'signin') {
+?>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
+<?php
+    }
+?>
+
     <script src="<?php echo $js_url; ?>bootstrap/bootstrap.min.js"></script>
     <script src="<?php echo $js_url; ?>main.js"></script>
 <?php
@@ -150,5 +190,9 @@
 <?php
     }
 ?>
+    <!-- Twitter JS -->
+    <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    </script>
 </body>
 </html>

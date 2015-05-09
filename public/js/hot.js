@@ -1,13 +1,14 @@
 $(document).ready(function() {
     var base_url = $('#base_url').text(); 
     var styles = [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#aadd55"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#0993c7"}]}];
-    var _city = 'San Francisco';
-    var _state = 'California';
-    var _lon = '-122.4206';
-    var _lat = '37.7750';
 
     // Load the map and the results
-    FinalizeMap($('#distance-value').text(), $('#drag_lat').text(), $('#drag_lon').text(), 10);
+    var distance = $('#distance-value').text();
+    var lon = $('#drag_lon').text();
+    var lat = $('#drag_lat').text();
+    var all = $('#all').text();
+    console.log(all);
+    FinalizeMap(distance, lat, lon, 10, all);
     RefreshResults(false);
 
     $('#city_addon').click(function(e) {
@@ -20,14 +21,12 @@ $(document).ready(function() {
         }
     });
 
-    /**
-     * Load Google Maps and load the results based upon the given criteria
-     * @param {int} [miles] The number of miles. The distance filter
-     * @param {decimal} [lat] The latitude coordinate
-     * @param {decimal} [lon] The longitude coordinate
-     * @param {int} [zoom] The zoom value
-     */
-    function FinalizeMap(miles, lat, lon, zoom) {
+    // Load Google Maps and load the results based upon the given criteria
+    function FinalizeMap(miles, lat, lon, zoom, all) {
+        if(all == 'true') {
+            var zoom = 2;
+        }
+
         if(zoom == null) {
             var tenth = miles*0.05;
             var zoom = parseInt(10)-parseInt(tenth);
@@ -62,6 +61,7 @@ $(document).ready(function() {
             // Update the new coordinates on the map
             $('#drag_lat').text(lat);
             $('#drag_lon').text(lon);
+            $('#all').text('false');
             var loc = GetLocationName(lon, lat, true);
             map.setCenter(new google.maps.LatLng(lat, lon));
         });
@@ -72,31 +72,29 @@ $(document).ready(function() {
             map.setCenter(marker.getPosition());
         });
 
-        // Convert the miles to meters and draw the radius
-        var radius = {
-            strokeColor: '#ad5',
-            strokeOpacity: 0.8,
-            strokeWeight: 1,
-            fillColor: '#ad5',
-            fillOpacity: 0.35,
-            map: map,
-            center: LatLon,
-            radius: Math.ceil(miles/0.000621371)
-        };
+        if($('#all').text() == 'false') {
+            // Convert the miles to meters and draw the radius
+            var radius = {
+                strokeColor: '#ad5',
+                strokeOpacity: 0.8,
+                strokeWeight: 1,
+                fillColor: '#ad5',
+                fillOpacity: 0.35,
+                map: map,
+                center: LatLon,
+                radius: Math.ceil(miles/0.000621371)
+            };
 
-        circle = new google.maps.Circle(radius);
-        circle.bindTo('center', marker, 'position');
+            circle = new google.maps.Circle(radius);
+            circle.bindTo('center', marker, 'position');
+        }
 
         // Resize the map accordingly
         google.maps.event.trigger(map, 'resize');
         $('#google_maps').css('height', '250px');
     }
 
-    /**
-     * Get the state and city names of a place from its lat & lon coordinates
-     * @param {decimal} [lon] The longitude coordinate
-     * @param {decimal} [lat] The latitude coordinate
-     */
+    // Get the state and city names of a place from its lat & lon coordinates
     function GetLocationName(lon, lat, reset) {
         $.ajax({
             url: base_url +'home/LocationFromCoords',
@@ -113,13 +111,24 @@ $(document).ready(function() {
                 var state = obj.full_name;
                 
                 // Update the city and state
-                $('#state_ref').text(state);
                 $('#city').text(city);
 
                 if(country == 'US') {
-                    $('#location').val(city +', '+ state);
+                    $('#state_ref').text(state);
+
+                    if(city != '') {
+                        $('#location').val(city +', '+ state);
+                    } else {
+                        $('#location').val(state);
+                    }
                 } else {
-                    $('#location').val(city +', '+ country);
+                    $('#state_ref').text(country);
+
+                    if(city != '') {
+                        $('#location').val(city +', '+ country);
+                    } else {
+                        $('#location').val(country);
+                    }
                 }
                 
                 // Load the new results
@@ -128,11 +137,7 @@ $(document).ready(function() {
         }); 
     }
 
-    /**
-     * Get the longitude and latitude coordinates of a place from its city and state
-     * @param {string} [city] The name of the city
-     * @param {string} [state] The full name of the state
-     */
+    // Get the longitude and latitude coordinates of a place from its city and state
     function CoordsFromLocation(city, state, reset) {
         $.ajax({
             url: base_url +'home/LocationFromCity',
@@ -170,9 +175,7 @@ $(document).ready(function() {
         });
     }
 
-    /**
-     * Change the title and URL of a document without reloading the page
-     */
+    // Change the title and URL of a document without reloading the page
     function ChangeTitleURL() {
         var title = DefineTitle() +' - Twinder';
         var url = GetFullURL();
@@ -181,15 +184,13 @@ $(document).ready(function() {
         document.title = title;
     }
 
-    /**
-     * Form the URL based upon all of the search parameters
-     */
+    // Form the URL based upon all of the search parameters
     function GetFullURL() {
         var str;
         var params = {
                     gender: $('[name="gender"]'), 
-                    city: $('#city').text(), 
-                    state: $('#state_ref'), 
+                    lat: $('#drag_lat'), 
+                    lon: $('#drag_lon'), 
                     distance: $('#distance-value'), 
                     min: $('#lower-value'), 
                     max: $('#upper-value'), 
@@ -198,19 +199,19 @@ $(document).ready(function() {
 
         for(var index in params) {
             switch(index) {
-                case'city':
+                case'lon':
 
-                    var val = params[index];
-                    if(val == '') {
-                        var val = _city;
+                    var val = params[index].text();
+                    if(val == '' || val == 2.169919) {
+                        var val = 'all';
                     }
                     break;
 
-                case'state':
+                case'lat':
 
                     var val = params[index].text();
-                    if(val == '') {
-                        var val = _state;
+                    if(val == '' || val == 41.387917) {
+                        var val = 'all';
                     }
                     break;
 
@@ -229,7 +230,6 @@ $(document).ready(function() {
 
                 default:
                     var val = params[index].text().trim();
-                    break;
             }
 
             str += index +'/'+ val +'/';
@@ -239,9 +239,7 @@ $(document).ready(function() {
         return str.substr(9, str.length-10) +'?q='+ q;
     }
 
-    /**
-     * Grab all of the parameters to update the search results
-     */
+    // Grab all of the parameters to update the search results
     function GetParams(reset) {
         var str;
         var params = {
@@ -251,7 +249,8 @@ $(document).ready(function() {
                     lat: $('#drag_lat'),  
                     min: $('#lower-value'), 
                     max: $('#upper-value'), 
-                    page: $('#page')
+                    page: $('#page'),
+                    all: $('#all')
                 };
 
         if(reset === false) {
@@ -281,13 +280,11 @@ $(document).ready(function() {
 
             str += index +'='+ val +'&';
         }
-
+    
         return str.substr(9, str.length-10);
     }
 
-    /**
-     * Format the title of the document based upon the search parameters
-     */
+    // Format the title of the document based upon the search parameters
     function DefineTitle() {
         var title = 'Browse ';
         var gender = $('[name="gender"]').attr('title');
@@ -298,6 +295,7 @@ $(document).ready(function() {
         var max = $('#upper-value').text();
         var page = $('#page').text();
         var q = $('#users_autocomplete').val();
+        var all = $('#all').text();
 
         // Format the gender
         if(gender == 0) {
@@ -311,24 +309,14 @@ $(document).ready(function() {
             title += 'ages '+ min +' to '+ max +' ';
         }
 
-        title += 'within '+ distance +' miles of ';
-
-        // Format the city
-        if(city != '' && city != 'null') {
-            title +=  city +', ';
-        }
-
-        // Format the state
-        if(state != '') {
-            title += state;
+        if(all == 'false') {
+            title += 'within '+ distance +' miles of '+ city +', '+ state;
         }
 
         return title;
     }
 
-    /**
-     * Load the new results with the updated parameters in the #hot_load div
-     */
+    // Load the new results with the updated parameters in the #hot_load div
     function RefreshResults(reset) {
         $('#hot_count_num').text('');
         $('#hot_load').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
@@ -336,37 +324,23 @@ $(document).ready(function() {
             $('#users_autocomplete').val('');
         }
 
+        console.log(GetParams(reset));
         $('#hot_load').load(base_url +'hot/GetHottest', GetParams(reset), function() {
             $('#hot_load .ajax-loader').fadeOut();
             ChangeTitleURL();
         });
     }
 
+    // For the slider
     function leftValue(value, handle, slider) {
         $(this).text(handle.parent()[0].style.left);
     }
 
-    /*
-     * In the event of a GeoLocation error, reference the error 
-     */
+    // In the event of a GeoLocation error, reference the error 
     function ShowError(error) {
-        // Get the lat & lon coordinates
-        var set = $('#set_location').text();
         var lon = $('#drag_lon').text();
         var lat = $('#drag_lat').text();
-        // console.log('Lon: '+ lon +', Lat: '+ lat);
-
-        // If the location parameters aren't set, then get the user's current location
-        if(set == 'false') {
-            $('#drag_lon').text(_lon);
-            $('#drag_lat').text(_lat);
-            GetLocationName(_lon, _lat, false);
-        } else {
-            // Load the new results
-            RefreshResults(false);
-        }
-
-        // Load the initial results
+        GetLocationName(lon, lat, false);
         FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
 
         switch(error.code) {
@@ -387,13 +361,8 @@ $(document).ready(function() {
         }
     }
 
-    /**
-     * Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
-     * @param {object} The cliet's position
-     */
+    // Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
     function ShowPosition(position) {
-        // Get the lat & lon coordinates
-        var set = $('#set_location').text();
         var lon = $('#drag_lon').text();
         var lat = $('#drag_lat').text();
         // console.log('Lon: '+ lon +', Lat: '+ lat);
@@ -401,8 +370,6 @@ $(document).ready(function() {
         // If the location parameters aren't set, then get the user's current location
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
-
-        // Update the new lon & lat coordinates 
         $('#drag_lon').text(lon);
         $('#drag_lat').text(lat);
 
@@ -410,11 +377,7 @@ $(document).ready(function() {
         FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
     }
 
-
-
-    /**
-     * 2 Location Autocomplete
-     */
+    // 2 Location Autocomplete
     $('#location').keyup(function(e) {
         var length = $(this).val().length;
 
@@ -428,6 +391,7 @@ $(document).ready(function() {
                     $('#location_autocomplete').slideUp();
                     var city = $(this).attr('city');
                     var state = $(this).attr('state');
+                    $('#all').text('true');
 
                     // Update the latitude and longitude coordinates
                     CoordsFromLocation(city, state, true);
@@ -438,11 +402,7 @@ $(document).ready(function() {
         }
     });
 
-
-
-    /**
-     * 3 Q Filter
-     */
+    // 3 Q Filter
     $('#navbar_form').submit(function(e) {
         e.preventDefault();
         var redirect = GetFullURL();
@@ -450,26 +410,16 @@ $(document).ready(function() {
         window.location.href = base_url +'hot/'+ redirect;
     });
 
-
-
-    /**
-     * 4 Gender Filter
-     */
+    // 4 Gender Filter
     $('.gender_filter').click(function() {
         $(this).siblings().removeClass('active');
         $(this).addClass('active');
         $(this).siblings().attr('name', '');
         $(this).attr('name', 'gender');
-
-        // Load the new results
         RefreshResults(false);
     });
 
-
-
-    /**
-     * 5 Age Slider
-     */
+    // 5 Age Slider
     $("#age_slider").noUiSlider({
         connect: true,
         behaviour: 'tap',
@@ -487,18 +437,12 @@ $(document).ready(function() {
     $("#age_slider").Link('lower').to($('#lower-value'));
     $("#age_slider").Link('upper').to($('#upper-value'));
 
-    /**
-     * Age Trigger
-     */
+    // Age Trigger
     $('#age_slider').click(function() {
         RefreshResults(false);
     });
 
-
-
-    /**
-     * 6 Distance Filter Slider
-     */
+    // 6 Distance Filter Slider
     $('#distance_slider').noUiSlider({
         start: $('#distance-value').text(),
         connect: 'lower',
@@ -514,17 +458,16 @@ $(document).ready(function() {
 
     $('#distance_slider').Link('lower').to($('#distance-value'));
 
-    /**
-     * Distance Filter Trigger
-     */
+    // Distance Filter Trigger
     $('#distance_slider').change(function() {
-        // Load the map again
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        var distance = $('#distance-value').text();
-        FinalizeMap(distance, lat, lon, null);
-        
-        // Load the new results
-        RefreshResults(false);
+        var all = $('#all').text();
+
+        if(all == 'false') {
+            var lon = $('#drag_lon').text();
+            var lat = $('#drag_lat').text();
+            var distance = $('#distance-value').text();
+            FinalizeMap(distance, lat, lon, null);
+            RefreshResults(false);
+        }
     }); 
 });

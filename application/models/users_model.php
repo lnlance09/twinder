@@ -436,8 +436,6 @@
 		public function ValidateParams($params) {
 			// Set all of the param variables to their default values
 			$gender = 'both';
-			$city = array('name' => '', 'lon' => '', 'lat' => '');
-			$state = array('name' => '', 'lon' => '', 'lat' => '');
 			$distance = 50;
 			$min = 18;
 			$max = 50;
@@ -455,22 +453,11 @@
 						break;
 
 					// Set the default city
-					case'city':
+					case'lon':
 
 						// Get the lat & lon coordinates
-						$city['name'] = urldecode($val);
-						$coords = $this->loc->MapquestLocation($city['name'], urldecode($params['state']));
-
-						if(!empty($coords['lng']) && !empty($coords['lat'])) {
-							$city['lon'] = $coords['lng'];
-							$city['lat'] = $coords['lat'];
-							$state['name'] = urldecode($params['state']);
-						} else {
-							$city['name'] = 'Everywhere';
-							$city['lon'] = 1.839432;
-							$city['lat'] = 42.397129;
-							$state['name'] = '';
-						}
+						$loc = $this->loc->MapquestLatLon($params['lat'], $params['lon']);
+						// FormatArray($loc);
 						break;
 
 					// Set the default distance
@@ -504,8 +491,7 @@
 			}
 
 			return array('gender' => $gender, 
-						'city' => $city, 
-						'state' => $state,  
+						'place' => $loc, 
 						'distance' => $distance, 
 						'min' => $min, 
 						'max' => $max, 

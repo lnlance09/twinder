@@ -17,34 +17,32 @@
 				$user_id = $this->session->userdata('user_id');
 
 				// Get all of the URL parameters
-				$default = array('gender', 'city', 'state', 'distance', 'min', 'max', 'page');
+				$default = array('gender', 'lat', 'lon', 'distance', 'min', 'max', 'page');
 				$params = $this->uri->uri_to_assoc(2, $default);
+				// echo "<br><br><br>";
+				// FormatArray($params);
 
 				// Get the validated query parameters
 				$valids = $this->user->ValidateParams($params);
 				$gender = $valids['gender'];
-				$city = $valids['city'];
-				$state = $valids['state'];
+				$place = $valids['place'];
 				$distance = $valids['distance'];
 				$min = $valids['min'];
 				$max = $valids['max'];
 				$page = $valids['page'];
-				// FormatArray($valids);
-				// die;
+				$all = ($params['lat'] == 'all' || empty($params['lat']) ? 'true' : 'false');
 
 				// Get the search parameter from the URL
 				$q = $this->input->get('q');
 
 				// Get the full URL
 				$array = array('gender' => $gender,
-								'city' => $city['name'],
-								'state' => $state['name'],
+								'lat' => ($all == 'true' ? 41.387917 : $params['lat']),
+								'lon' => ($all == 'true' ? 2.169919 : $params['lon']),
 								'distance' => $distance,
 								'min' => $min,
 								'max' => $max,
 								'page' => $page);
-				// var_dump($set);
-				// die;
 
 				// Check to see if the client is logged in
 				if($user_id) {
@@ -58,14 +56,14 @@
 				}
 
 				// Format the user's profile link
-				$profile_link = FormatUserLink($tinder_id, $this->session->userdata('username'));
-				$profile_pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
+				$link = FormatUserLink($tinder_id, $this->session->userdata('username'));
+				$pic = ChangePicSize($this->session->userdata('profile_pic'), 174);
 
 				// Store all of the gender filters in an array
 				$genders = array(array('num' => 0, 'name' => 'men'), array('num' => 1, 'name' => 'women'), array('num' => -1, 'name' => 'both'));
 
 				// Define the title of the document based upon the query parameters
-				$title = DefineTitle($gender, $city['name'], $state['name'], $distance, $min, $max);
+				$title = DefineTitle($gender, $place['city'], $place['state'], $distance, $min, $max, $all);
 
 				// Define the full URL with all of the parameters
 				$url = 'hot/'.$this->uri->assoc_to_uri($array);
@@ -90,22 +88,23 @@
 								'name' => $this->session->userdata('first_name'),
 								'meta' => $meta,
 								'q' => $q,
-								'profile_link' => $profile_link,
-								'profile_pic' => $profile_pic);
+								'link' => $link,
+								'pic' => $pic);
 
 				// Define the body info
 				$body = array('genders' => $genders,
 							'gender' => strtolower($gender),
-							'city' => $city['name'],
-							'state' => $state['name'],
-							'location' => (empty($city['name']) ? $state['name'] : $city['name'].', '.$state['name']),
-							'lon' => $city['lon'],
-							'lat' => $city['lat'],
+							'city' => $place['city'],
+							'state' => $place['state'],
+							'location' => ($all == 'true' ? 'Everywhere' : $place['city'].', '.$place['state']),
+							'lon' => ($all == 'true' ? 2.169919 : $params['lon']),
+							'lat' => ($all == 'true' ? 41.387917 : $params['lat']),
 							'distance' => $distance,
 							'min' => $min,
 							'max' => $max,
 							'q' => $q,
-							'page' => $page);
+							'page' => $page,
+							'all' => $all);
 
 				// Get all of the data for the footer view
 				$places = $this->loc->FooterPlaces();
@@ -120,13 +119,20 @@
 
 			public function GetHottest() {
 				// Get all of the query string parameters
-				$params = $this->input->get();		
-				foreach($params as $key => $val) {
+				$param = $this->input->get();		
+				foreach($param as $key => $val) {
 					$$key = $val;
 				}
 
 				if(!isset($q)) {
 					$q = NULL;
+				}
+
+				// FormatArray($param);
+				// Set to all if necessary
+				if($all == 'true') {
+					$lon = NULL;
+					$lat = NULL;
 				}
 
 				// Get the total number of results
@@ -163,7 +169,8 @@
 								'distance' => $distance,
 								'min' => $min,
 								'max' => $max,
-								'q' => $q);
+								'q' => $q,
+								'all' => $all);
 
 				// Define all of the info that will be passed to the view
 				$info = array('query' => http_build_query($params), 
