@@ -182,7 +182,7 @@
 									'tabs' => $tabs['tabs']);
 
 						if($like['perm'] == 'can_like') {
-							$body['my_info'] = array('name' => $name, 'pic' => ChangePicSize($pic, 172), 'link' => $profile_link);
+							$body['my_info'] = array('name' => $name, 'pic' => ChangePicSize($pic, 172), 'link' => $link);
 						}
 
 						// Get all of the data for the footer view
