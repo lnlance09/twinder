@@ -117,7 +117,7 @@
     } else {
 ?>
                     <li class="active">
-                        <button class="btn btn-primary" type="button" onclick="location.href='<?php echo $base_url; ?>signin'">Sign In</button>
+                        <button class="btn btn-primary" type="button" onclick="location.href='<?php echo $base_url; ?>signin'">Start Using</button>
                     </li>
 <?php
     }
@@ -142,7 +142,7 @@
 <?php
     } else {
 ?>
-                <li><a href="<?php echo $base_url.'signin'; ?>"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+                <li><a href="<?php echo $base_url.'signin'; ?>"><span class="glyphicon glyphicon-log-in"></span> Start Using</a></li>
 <?php
     }
 ?>
