@@ -227,7 +227,9 @@
 			// Filter the distance
 			if(!empty($lon) && !empty($lat)) {
 				array_push($params, $distance);
-				$sql .= " HAVING distance < ?";
+				$sql .= " AND last_seen.lat BETWEEN ".$lat." - 1 AND ".$lat." + 1
+						AND last_seen.lon BETWEEN ".$lon." - 1 AND ".$lon." + 1
+						HAVING distance < ?";
 			}
 
 			// Add the limit if necessary
