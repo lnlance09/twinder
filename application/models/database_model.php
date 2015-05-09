@@ -178,7 +178,6 @@
 		 */
 		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
 			$params = [];
-			var_dump($lon);
 			
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
