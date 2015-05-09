@@ -27,6 +27,10 @@ body, html {
     overflow-x: hidden;
 }
 
+.form-control, .btn, .input-group-addon, img.thumbnail {
+    border-radius: 0 !important;
+}
+
 h1 {
     padding-top: 30px;
     color: $black;

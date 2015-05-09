@@ -6,6 +6,7 @@
 
     .modal-content {
         margin-top: 60px;
+        border-radius: 0;
 
         .modal-header {
             padding: 4px 9px;
@@ -113,6 +114,10 @@
             }
         }
     }
+}
+
+.panel {
+    border-radius: 0;
 }
 
 #gallery_modal {
