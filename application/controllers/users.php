@@ -230,7 +230,7 @@
 
 					// Set all of the info that needs to be passed to the dashboard view
 					$body = array('pic' => ChangePicSize($pic, 172),
-								'link' => $profile_link,
+								'link' => $link,
 								'name' => $this->session->userdata('first_name'));
 
 					// Get all of the data for the footer view
