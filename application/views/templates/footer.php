@@ -23,13 +23,13 @@
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-user fa-lg"></i> Random People
+                            <i class="fa fa-user fa-lg"></i> People
                         </div>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-map-marker fa-lg"></i> Random Places
+                            <i class="fa fa-map-marker fa-lg"></i> Places
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-user fa-lg"></i> Random People
+                            <i class="fa fa-user fa-lg"></i> People
                         </div>
 
                         <ul>
@@ -77,7 +77,7 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-map-marker fa-lg"></i> Random Places
+                            <i class="fa fa-map-marker fa-lg"></i> Places
                         </div>
 
                         <ul>
