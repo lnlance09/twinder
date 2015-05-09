@@ -111,7 +111,7 @@
 										Last seen near
 
 										<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-											<a href="<?php echo $base_url.'hot/gender/both/city/'.$city.'/state/'.$state.'/'; ?>" itemprop="url">
+											<a href="<?php echo $base_url.'hot/gender/both/lat/'.$lat.'/lon/'.$lon.'/'; ?>" itemprop="url">
 												<span itemprop="addressLocality"><?php echo $city; ?></span>
 											</a>
 										</span>
@@ -122,7 +122,7 @@
 								
 									<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
 							            <meta content="<?php echo $lat; ?>" itemprop="latitude">
-							            <meta content="<?php echo $lat; ?>" itemprop="longitude">
+							            <meta content="<?php echo $lon; ?>" itemprop="longitude">
 							        </span>
 								</ul>
 

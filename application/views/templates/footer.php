@@ -35,7 +35,7 @@
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-twitter fa-lg"></i> Follow Us
+                            <i class="fa fa-twitter fa-lg"></i> Follow
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-twitter fa-lg"></i> Follow Us
+                            <i class="fa fa-twitter fa-lg"></i> Follow
                         </div>
 
                         <ul>

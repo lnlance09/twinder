@@ -391,7 +391,7 @@ $(document).ready(function() {
                     $('#location_autocomplete').slideUp();
                     var city = $(this).attr('city');
                     var state = $(this).attr('state');
-                    $('#all').text('true');
+                    $('#all').text('false');
 
                     // Update the latitude and longitude coordinates
                     CoordsFromLocation(city, state, true);
