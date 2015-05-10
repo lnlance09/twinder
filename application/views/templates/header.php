@@ -35,7 +35,6 @@
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Twinder">
     <meta property="og:type" content="<?php echo $meta['type']; ?>">
-    <meta property="og:title" content="<?php echo $title; ?>">
     <meta property="og:image" content="<?php echo $meta['img']; ?>">
     <meta property="og:url" content="<?php echo $meta['url']; ?>">
     <meta property="og:description" name="description" content="<?php echo $meta['description']; ?>">

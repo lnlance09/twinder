@@ -15,6 +15,12 @@
 		<priority>0.8</priority>
 	</url>
 
+	<url>
+        <loc>http://twinder.io/hot</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
 <?php
 	for($i=0;$i<$places['count'];$i++) {
 ?>
