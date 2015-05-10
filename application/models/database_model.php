@@ -217,11 +217,20 @@
 
 			// Filter the search term
 			if(!empty($q)) {
-				array_push($params, '%'.trim($q).'%', '%'.trim($q).'%');
-				$sql .= " AND (
-							users.first_name LIKE ? 
-							OR users.bio LIKE ?
-							)";
+				$sql .= " AND (";
+				
+				$exp = explode(' ', trim($q));
+				for($i=0;$i<count($exp);$i++) {
+					array_push($params, '%'.trim($exp[$i]).'%', '%'.trim($exp[$i]).'%');
+
+					if($i > 0) {
+						$sql .= "OR ";
+					}
+					
+					$sql .= " users.first_name LIKE ? OR users.bio LIKE ?";
+				}
+
+				$sql .= ")";
 			}
 
 			// Filter the distance
@@ -257,16 +266,6 @@
 
 				return array('count' => $query->num_rows(), 'users' => $data);
 			} else {
-				// $row = $query->result();
-				
-				/*
-				if(array_key_exists(0, $row)) {
-					return $row[0]->count;
-				} else {
-					return 0;
-				}
-				*/
-
 				return $query->num_rows();
 			}
 		}

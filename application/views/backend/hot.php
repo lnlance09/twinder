@@ -12,9 +12,6 @@
 <?php
     	for($i=0;$i<$end;$i++) {
             $user = $hot['users'][$i];
-
-            // Show the highligthed text
-            $high = (!empty($q) ? str_replace($q, '<span class="highlight">'.$q.'</span>', $user['bio']) : $user['bio']);
 ?>
             <div class="media" onclick="location.href='<?php echo $base_url.$user['link']; ?>'">
                 <div class="media-left media-top">
@@ -29,7 +26,7 @@
                     </h4>
 
                     <p>
-                        <?php echo BioLinks($high); ?>
+                        <?php echo BioLinks($user['bio']); ?>
                     </p>
                 </div>
             </div>
