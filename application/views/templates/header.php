@@ -101,7 +101,6 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <img src="<?php echo $pic; ?>" alt="Me" class="thumbnail">
-
                             <span id="header_name"><?php echo $name; ?></span>
                         </a>
                      
@@ -116,7 +115,7 @@
     } else {
 ?>
                     <li class="active">
-                        <button class="btn btn-primary" type="button" onclick="location.href='<?php echo $base_url; ?>signin'">Try it</button>
+                        <button class="btn btn-primary" type="button" onclick="location.href='<?php echo $base_url; ?>signin'"><i class="fa fa-refresh fa-lg"></i> Sync my account</button>
                     </li>
 <?php
     }
@@ -141,7 +140,7 @@
 <?php
     } else {
 ?>
-                <li><a href="<?php echo $base_url.'signin'; ?>">Try it</a></li>
+                <li><a href="<?php echo $base_url.'signin'; ?>"><i class="fa fa-refresh fa-lg"></i> Sync my account</a></li>
 <?php
     }
 ?>
