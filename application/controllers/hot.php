@@ -138,6 +138,7 @@
 				// Get the total number of results
 				$count = $this->database->GetHottest($gender, $min, $max, $q, $lon, $lat, $distance, NULL);
 				
+				echo $count;
 				// Calculate all of the info for the pagination in the view
 				$per_page = 10;
 				$pages = ceil($count/$per_page);
