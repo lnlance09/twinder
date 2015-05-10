@@ -53,28 +53,26 @@ $(document).ready(function() {
                     draggable: true,
                     animation: google.maps.Animation.DROP,
                 });
-        }
 
-        // Make the marker draggable
-        google.maps.event.addListener(marker, 'dragend', function(marker) { 
-            lat = marker.latLng.lat();
-            lon = marker.latLng.lng();
+            // Make the marker draggable
+            google.maps.event.addListener(marker, 'dragend', function(marker) { 
+                lat = marker.latLng.lat();
+                lon = marker.latLng.lng();
 
-            // Update the new coordinates on the map
-            $('#drag_lat').text(lat);
-            $('#drag_lon').text(lon);
-            $('#all').text('false');
-            var loc = GetLocationName(lon, lat, true);
-            map.setCenter(new google.maps.LatLng(lat, lon));
-        });
+                // Update the new coordinates on the map
+                $('#drag_lat').text(lat);
+                $('#drag_lon').text(lon);
+                $('#all').text('false');
+                var loc = GetLocationName(lon, lat, true);
+                map.setCenter(new google.maps.LatLng(lat, lon));
+            });
 
-        // Zoom in and center the marker upon click of the marker
-        google.maps.event.addListener(marker, 'click', function() {
-            map.setZoom(15);
-            map.setCenter(marker.getPosition());
-        });
+            // Zoom in and center the marker upon click of the marker
+            google.maps.event.addListener(marker, 'click', function() {
+                map.setZoom(15);
+                map.setCenter(marker.getPosition());
+            });
 
-        if($('#all').text() == 'false') {
             // Convert the miles to meters and draw the radius
             var radius = {
                 strokeColor: '#ad5',
