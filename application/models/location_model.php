@@ -260,24 +260,21 @@
 		 * Query the DB to get a random array of locations
 		 * @return An array containing random locations
 		 */
-		public function RandomLocations($limit = NULL) {
-			$this->db->select('city, state_abbrev');
-
-			if($limit) {
-				$this->db->limit($limit);
-			}
-
-			$query = $this->db->get('locations');
-			$i = 0; 
+		public function SeoLocations() {
+			$sql = "SELECT lat, lon
+					FROM last_seen
+					GROUP BY lat, lon";
+			$query = $this->db->query($sql);
+			$data = [];
+			$i = 0;
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state_abbrev);
-
+				$data[$i] = array('lat' => $row->lat, 'lon' => $row->lon);
+				
 				$i++;
 			}
 
-			shuffle($return);
-			return $return;
+			return array('count' => $query->num_rows(), 'data' => $data);
 		}
 
 		/**

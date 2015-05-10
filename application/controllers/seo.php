@@ -18,7 +18,7 @@
 				// $users = $this->database->GetAllUsers();
 
 				// Get the most popular place
-				$places = $this->loc->RandomLocations();
+				$places = $this->loc->SeoLocations();
 
 				// Define the info for the sitemap view
 				$info = array('places' => $places);

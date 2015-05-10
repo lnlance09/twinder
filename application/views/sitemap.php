@@ -16,10 +16,10 @@
 	</url>
 
 <?php
-	for($i=0;$i<count($places);$i++) {
+	for($i=0;$i<$places['count'];$i++) {
 ?>
 	<url>
-        <loc><?php echo 'http://twinder.io/hot/'.$places[$i]['city'].'/'.$places[$i]['state']; ?></loc>
+        <loc><?php echo 'http://twinder.io/hot/gender/both/lat/'.$places['data'][$i]['lat'].'/lon/'.$places['data'][$i]['lon']; ?></loc>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
