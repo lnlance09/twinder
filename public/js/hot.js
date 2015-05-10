@@ -46,12 +46,14 @@ $(document).ready(function() {
         map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Twinder Radar'}));
         map.setMapTypeId('map_style');
 
-        var marker = new google.maps.Marker({
-                map: map,
-                position: LatLon,
-                draggable: true,
-                animation: google.maps.Animation.DROP,
-            });
+        if($('#all').text() == 'false') {
+            var marker = new google.maps.Marker({
+                    map: map,
+                    position: LatLon,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                });
+        }
 
         // Make the marker draggable
         google.maps.event.addListener(marker, 'dragend', function(marker) { 
