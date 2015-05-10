@@ -378,6 +378,13 @@ $(document).ready(function() {
     }
 
     // 2 Location Autocomplete
+    $('#location').click(function(e) {
+        var val = $(this).val().trim();
+        //if(val == 'Everywhere') {
+            $(this).val('');
+        //}
+    });
+
     $('#location').keyup(function(e) {
         var length = $(this).val().length;
 
