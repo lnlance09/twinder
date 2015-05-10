@@ -182,7 +182,7 @@
 			if($end) {
 				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
 			} else {
-				$sql = "SELECT users.id";
+				$sql = "SELECT COUNT(*) AS count";
 			}
 			
 			if(!empty($lon) && !empty($lat)) {
@@ -227,8 +227,8 @@
 			// Filter the distance
 			if(!empty($lon) && !empty($lat)) {
 				array_push($params, $distance);
-				$sql .= " AND last_seen.lat BETWEEN ".$lat." - 1 AND ".$lat." + 1
-						AND last_seen.lon BETWEEN ".$lon." - 1 AND ".$lon." + 1
+				$sql .= " AND last_seen.lat BETWEEN ".$lat." - 2 AND ".$lat." + 2
+						AND last_seen.lon BETWEEN ".$lon." - 2 AND ".$lon." + 2
 						HAVING distance < ?";
 			}
 
@@ -257,7 +257,14 @@
 
 				return array('count' => $query->num_rows(), 'users' => $data);
 			} else {
-				return $query->num_rows();
+				$row = $query->result();
+				
+				if(array_key_exists(0, $row)) {
+					return $row[0]->count;
+				} else {
+					return 0;
+				}
+				// return $query->num_rows();
 			}
 		}
 

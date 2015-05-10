@@ -159,7 +159,11 @@
 					$hot = NULL;
 
 					// Get some places that are close by
-					$places = $this->loc->GetCloseBy($lon, $lat);
+					if(!empty($lon) && !empty($lat)) {
+						$places = $this->loc->GetCloseBy($lon, $lat);
+					} else {
+						$places = NULL;
+					}
 				}
 
 				// Define all of the parameters

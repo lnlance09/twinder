@@ -50,14 +50,26 @@
         <img class="svg" id="ghost" src="<?php echo $base_url; ?>public/img/svg/snowden.svg" width="150" height="150" alt="no results">
 
         <p>
+<?php
+        if($pages) {
+?>
             Sorry, try these places instead...
+<?php
+        } else {
+?>
+            Sorry. No results.
+<?php
+        }
+?>
         </p>
     </div>
-
+<?php
+        if($pages) {
+?>
     <ul class="list-group text-left">
 <?php
-    for($i=0;$i<$places['count'];$i++) {
-        $place = $places['places'][$i];
+            for($i=0;$i<$places['count'];$i++) {
+                $place = $places['places'][$i];
 ?>
         <li class="list-group-item" onclick="location.href='<?php echo $base_url.'hot/gender/both/state/'.$place['state'].'/city/'.$place['city']; ?>'">
             <a href="#"><img src="<?php echo $base_url.'public/img/flags/'.$place['flag']; ?>.png" width="24" alt="<?php echo $place['state']; ?>"> <?php echo $place['city']; ?></a>
@@ -69,11 +81,12 @@
             <span class="clearfix"></span>
         </li>
 <?php
-    }
+            }
 ?>
         </ul>
     
 <?php
+        }
     } else {
         if(($page+1) < $pages) {
 ?>
