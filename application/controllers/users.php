@@ -44,7 +44,7 @@
 						$live = $this->user->UserLookup($user['tinder_id'], $token);
 
 						// If the user actually exists according to Tinder, then get their info and update the profile
-						if($live_info) {
+						if($live) {
 							$distance = $live_info['distance'];
 
 							// Update the users table with the most recent info about this user
