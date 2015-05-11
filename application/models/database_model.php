@@ -126,7 +126,7 @@
 		 */
 		public function GetAllUsers($limit = NULL) {
 			$this->db->select('username,tinder_id,first_name,age');
-			$this->db->order_by(NULL, 'RANDOM');
+			// $this->db->order_by(NULL, 'RANDOM');
 			
 			if($limit) {
 				$this->db->limit($limit);

@@ -46,7 +46,6 @@
 						// If the user actually exists according to Tinder, then get their info and update the profile
 						if($live) {
 							$distance = $live['distance'];
-
 							// Update the users table with the most recent info about this user
 							$data = array('first_name' => $live['name'],
 										'bio' => $live['bio'],
