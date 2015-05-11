@@ -15,14 +15,14 @@
 
 			public function Index() {
 				// Get the URL segments
-				$id = $this->uri->segment(2, NULL);
-				$tab = $this->uri->segment(3, 'likes');
+				$id = $this->uri->segment(1, NULL);
+				$tab = $this->uri->segment(2, 'likes');
 
 				// Get the info about the user
-				$user_info = $this->database->GetUserInfo($id);
+				$user = $this->database->GetUserInfo($id);
 
 				// If the user actually exists in the DB
-				if($user_info) {
+				if($user) {
 					// Find out if the client is logged in or not
 					$user_id = $this->session->userdata('user_id');
 					$session = ($user_id ? TRUE : FALSE);
@@ -38,48 +38,47 @@
 						$pic = $this->session->userdata('profile_pic');
 
 						// Findout if the user is viewing their own profile
-						$same = ($id == $tinder_id || $user_info['username'] == $username && !empty($username) ? TRUE : FALSE);
+						$same = ($id == $tinder_id || $user['username'] == $username && !empty($username) ? TRUE : FALSE);
 
 						// Make a request to Tinder to get the most recent info about this user
-						$live_info = $this->user->UserLookup($user_info['tinder_id'], $token);
+						$live = $this->user->UserLookup($user['tinder_id'], $token);
 
 						// If the user actually exists according to Tinder, then get their info and update the profile
 						if($live_info) {
-							// The user's distance from the person who was logged in
 							$distance = $live_info['distance'];
 
 							// Update the users table with the most recent info about this user
-							$data = array('first_name' => $live_info['name'],
-										'bio' => $live_info['bio'],
-										'dob' => $live_info['dob'],
-										'age' => $live_info['age'],
-										'gender' => $live_info['gender'],
-										'first_name' => $live_info['name'],
-										'last_activity_date' => $live_info['last_activity_date']);
-							if($live_info['instagram']) {
-								$data['ig_username'] = $live_info['instagram']['username'];
+							$data = array('first_name' => $live['name'],
+										'bio' => $live['bio'],
+										'dob' => $live['dob'],
+										'age' => $live['age'],
+										'gender' => $live['gender'],
+										'first_name' => $live['name'],
+										'last_activity_date' => $live['last_activity_date']);
+							if($live['instagram']) {
+								$data['ig_username'] = $live['instagram']['username'];
 							}
 
-							$this->database->UpdateUser($live_info['tinder_id'], $data);
+							$this->database->UpdateUser($live['tinder_id'], $data);
 
 							// Add these elements to the array
 							$keys = array('name', 'bio', 'distance', 'age', 'gender', 'gender_format', 'last_activity_date', 'profile_pic', 'last_activity_date');
 							foreach($keys as $key) {
-								$user_info[$key] = $live_info[$key];
+								$user[$key] = $live[$key];
 							}
 
 							// Check to see if this user is allowed to report this user
 							$active = TRUE;
-							$report = $this->database->CheckReport($tinder_id, $user_info['tinder_id']);
-							$like = $this->user->CanLike($user_info['tinder_id'], $tinder_id, $session);
-							$edit = $this->user->CanEdit($user_info['tinder_id'], $tinder_id);
+							$report = $this->database->CheckReport($tinder_id, $user['tinder_id']);
+							$like = $this->user->CanLike($user['tinder_id'], $tinder_id, $session);
+							$edit = $this->user->CanEdit($user['tinder_id'], $tinder_id);
 						} else {
 							// Get all of the data for the view
 							$places = $this->loc->FooterPlaces();
 							$users = $this->database->GetAllUsers(5);
-							$_user = array('name' => $user_info['name'], 
-										'gender' => FormatPossesion($user_info['gender']), 
-										'pic' => ChangePicSize($user_info['profile_pic'], 84));
+							$_user = array('name' => $user['name'], 
+										'gender' => FormatPossesion($user['gender']), 
+										'pic' => ChangePicSize($user['profile_pic'], 84));
 							$info = array('name' => $name,
 										'auth' => $token,
 										'tinder_id' => $tinder_id,
@@ -118,51 +117,47 @@
 						$tabs = ReturnTabs($tab, $same, $session);
 
 						// Update the user's last seen position
-						$last_seen = $this->database->EditLastSeen($tinder_id, $user_info['tinder_id'], $distance, $lon, $lat);
+						$last_seen = $this->database->EditLastSeen($tinder_id, $user['tinder_id'], $distance, $lon, $lat);
 						
 						// Define the meta tags
-						$meta = array('title' => MetaSubject($user_info['username'], $user_info['name']),
-									'description' => (empty($user_info['bio']) ? $user_info['name']."'s Tinder Profile" : $user_info['bio']),
-									'img' => $user_info['profile_pic'],
-									'url' => 'http://twinder.io/'.$user_info['link'],
-									'username' => (empty($user_info['username']) ? $user_info['tinder_id'] : $user_info['username']),
+						$meta = array('title' => MetaSubject($user['username'], $user['name']),
+									'description' => (empty($user['bio']) ? $user['name']."'s Tinder Profile" : $user['bio']),
+									'img' => $user['profile_pic'],
+									'url' => 'http://twinder.io/'.$user['link'],
+									'username' => (empty($user['username']) ? $user['tinder_id'] : $user['username']),
 									'type' => 'profile');
 
 						// Set all of the info that needs to be passed to the header view
-						$header = array('title' => $user_info['name'],
+						$header = array('title' => $user['name'],
 										'type' => 'profile',
 										'session' => $session,
-										'header' => $user_info['name'],
+										'header' => $user['name'],
 										'auth' => $token,
 										'tinder_id' => $tinder_id,
 										'name' => $name,
-										'profile_name' => $user_info['name'],
-										'gender' => $user_info['gender'],
-										'username' => $user_info['username'],
+										'profile_name' => $user['name'],
+										'gender' => $user['gender'],
+										'username' => $user['username'],
 										'meta' => $meta,
 										'link' => $link,
 										'pic' => $pic);
 
 						// Update the user's views
-						$user_info['views'] = $this->database->UpdateProfileViews($user_info['views'], $user_info['tinder_id']); 
+						$user_info['views'] = $this->database->UpdateProfileViews($user['views'], $user['tinder_id']); 
 						
 						// Can vote
 						$session_id = (!$tinder_id ? $this->session->userdata('session_id') : $tinder_id);
-						$can_vote = $this->database->CheckVote($session_id, $user_info['tinder_id']);
-						// var_dump($can_vote);
-						// die;
+						$can_vote = $this->database->CheckVote($session_id, $user['tinder_id']);
 
 						// Get the votes of the user
 						$votes = $this->database->GetVoteStats($id);
-						// FormatArray($votes);
-						// die;
 
 						// Get all of the stats of the user who is being viewed
-						$user_stats = $this->database->GetUserStats($user_info['tinder_id'], $tinder_id);
+						$user_stats = $this->database->GetUserStats($user['tinder_id'], $tinder_id);
 						
 						// Set all of the info that needs to be passed to the body view
-						$body = array('user_info' => $user_info,
-									'pic_count' => count($user_info['pics']),
+						$body = array('user_info' => $user,
+									'pic_count' => count($user['pics']),
 									'session' => $session,
 									'report' => $report,
 									'like' => $like,
@@ -196,7 +191,7 @@
 						$this->load->view('templates/footer', $footer); 
 					}
 				} else {
-					header('Location: '.$this->base_url);
+					header('Location: '.$this->base_url.'hot');
 				}
 			} 
 

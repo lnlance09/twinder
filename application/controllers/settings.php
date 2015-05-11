@@ -92,6 +92,28 @@
 				}
 			}
 
+			public function CheckUsername() {
+				// Get the username from the URL
+				$username = $this->input->get('username');
+
+				$pages = array('about', 
+								'contact', 
+								'faq', 
+								'discover', 
+								'hot', 
+								'terms', 
+								'signin', 
+								'matches', 
+								'settings');
+				
+				// Check to see if the username exists
+				if(!in_array($username, $pages)) {
+					echo $this->database->CheckUsername($username, $this->session->userdata('tinder_id'));
+				} else {
+					echo 1;
+				}
+			}
+
 			public function UpdateSettings() {
 				$query = $this->input->post();
 				foreach($query as $key => $val) {
@@ -109,14 +131,6 @@
 
 				// Update the username session variable
 				$this->session->set_userdata('username', $username);
-			}
-
-			public function CheckUsername() {
-				// Get the username from the URL
-				$username = $this->input->get('username');
-
-				// Check to see if the username exists
-				echo $this->database->CheckUsername($username, $this->session->userdata('tinder_id'));
 			}
 		}
 	}

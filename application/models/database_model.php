@@ -125,8 +125,8 @@
 		 * @return {array|boolean} An array containing the links, names and ages of the users
 		 */
 		public function GetAllUsers($limit = NULL) {
-			$this->db->select('username, tinder_id, first_name, age');
-			$this->db->order_by('views', 'DESC');
+			$this->db->select('username,tinder_id,first_name,age');
+			$this->db->order_by(NULL, 'RANDOM');
 			
 			if($limit) {
 				$this->db->limit($limit);
@@ -177,78 +177,47 @@
 		 * @return {array} An array containing the number of rows returned and info about the users
 		 */
 		public function GetHottest($sex, $min, $max, $q, $lon, $lat, $distance, $end) {
-			$params = [];
-			
 			if($end) {
-				$sql = "SELECT tinder_id, first_name, age, username, profile_pic, bio";
+				$this->db->select('tinder_id,first_name,age,username,profile_pic,bio');
 			} else {
-				$sql = "SELECT users.id";
+				$this->db->select('users.id');
 			}
 			
 			if(!empty($lon) && !empty($lat)) {
-				$sql .= ", (3959 * acos(cos(radians(".$lat.")) * cos(radians(last_seen.lat)) * cos(radians(last_seen.lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(last_seen.lat)))) AS distance";
+				$this->db->select(", (3959 * acos(cos(radians(".$lat.")) * cos(radians(lat)) * cos(radians(lon) - radians(".$lon.")) + sin(radians(".$lat.")) * sin(radians(lat)))) AS distance");
 			}
 
-			$sql .= " FROM users 
-					JOIN last_seen
-					ON users.tinder_id = last_seen.seen_id ";
+			$this->db->join('last_seen', 'users.tinder_id = last_seen.seen_id');
 
-			if($sex != 'both' || is_numeric($min) || is_numeric($max)) {
-				$sql .= "WHERE";
+			if($sex != -1) {
+				$this->db->where('gender', $sex);
 			}
 
-			// Filter the age
-			if($sex != 'both' && $sex != -1) {
-				array_push($params, $sex);
-				$sql .= " users.gender = ? AND ";
+			if($min > 18) {
+				$this->db->where('age >=', $min);
 			}
 
-			// Filter the minimum age
-			if(is_numeric($min)) {
-				array_push($params, $min);
-				$sql .= " users.age >= ? AND ";
+			if($max < 50) {
+				$this->db->where('age <=', $max);
 			}
 
-			// Filter the maximum age
-			if(is_numeric($max)) {
-				array_push($params, $max);
-				$sql .= " users.age <= ? ";
-			}
-
-			// Filter the search term
 			if(!empty($q)) {
-				$sql .= " AND (";
-				
-				$exp = explode(' ', trim($q));
-				for($i=0;$i<count($exp);$i++) {
-					array_push($params, '%'.trim($exp[$i]).'%', '%'.trim($exp[$i]).'%');
-
-					if($i > 0) {
-						$sql .= "OR ";
-					}
-					
-					$sql .= " users.first_name LIKE ? OR users.bio LIKE ?";
-				}
-
-				$sql .= ")";
+				$this->db->like('first_name', $q);
+				$this->db->or_like('bio', $q);
 			}
 
-			// Filter the distance
 			if(!empty($lon) && !empty($lat)) {
-				array_push($params, $distance);
-				$sql .= " AND last_seen.lat BETWEEN ".$lat." - 2 AND ".$lat." + 2
-						AND last_seen.lon BETWEEN ".$lon." - 2 AND ".$lon." + 2
-						HAVING distance < ?";
+				$this->db->where('lat BETWEEN '.$lat.' -2 AND '.$lat.' +2');
+				$this->db->where('lon BETWEEN '.$lon.' -2 AND '.$lon.' +2');
+				$this->db->having('distance <=', $distance);
 			}
 
-			// Add the limit if necessary
 			if($end) {
-				$sql .= " LIMIT ".$end;
+				$this->db->limit($end);
 			}
 
-			// Execute the query
-			$query = $this->db->query($sql, $params);
-			
+			$query = $this->db->get('users');
+
 			if($end) {
 				$data = [];
 				$i = 0;
@@ -258,7 +227,7 @@
 									'name' => $row->first_name,
 									'age' => $row->age,
 									'bio' => BioDefault($row->bio, $row->first_name),
-									'profile_pic' => $row->profile_pic,
+									'pic' => $row->profile_pic,
 									'link' => FormatUserLink($row->tinder_id, $row->username),
 									'distance' => (!empty($lon) && !empty($lat) ? $row->distance : NULL));
 					$i++;

@@ -11,31 +11,32 @@
     // Define the slider and maps pages
     $maps_pages = array('users', 'settings', 'hot');
     $slider_pages = array('settings', 'hot');
+    $ui_pages = array('settings', 'hot', 'signin');
 ?>
         <div class="text-center" id="footer">
             <div id="sub_footer">
                 <div class="col-lg-12" id="top_footer">
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-rocket fa-lg"></i> About
+                            <i class="fa fa-rocket"></i> About
                         </div>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-user fa-lg"></i> People
+                            <i class="fa fa-user"></i> People
                         </div>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-map-marker fa-lg"></i> Places
+                            <i class="fa fa-map-marker"></i> Places
                         </div>
                     </div>
 
                     <div class="col-lg-3">
                         <div class="m_line">
-                            <i class="fa fa-twitter fa-lg"></i> Follow
+                            <i class="fa fa-twitter"></i> Follow
                         </div>
                     </div>
                 </div>
@@ -43,7 +44,7 @@
                 <div class="col-lg-12">
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-rocket fa-lg"></i> About
+                            <i class="fa fa-rocket"></i> About
                         </div>
 
                         <ul>
@@ -56,7 +57,7 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-user fa-lg"></i> People
+                            <i class="fa fa-user"></i> People
                         </div>
 
                         <ul>
@@ -77,14 +78,14 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-map-marker fa-lg"></i> Places
+                            <i class="fa fa-map-marker"></i> Places
                         </div>
 
                         <ul>
 <?php
     // Loop thru the random locations
     for($i=0;$i<4;$i++) {
-        $url = $base_url.'hot/gender/both/lon/'.$locations[$i]['lon'].'/lat/'.$locations[$i]['lat'].'/';
+        $url = $base_url.'hot/gender/both/lat/'.$locations[$i]['lat'].'/lon/'.$locations[$i]['lon'].'/';
 ?>
                             <li>
                                 <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
@@ -97,7 +98,7 @@
 
                     <div class="col-lg-3">
                         <div class="hide_rasp">
-                            <i class="fa fa-twitter fa-lg"></i> Follow
+                            <i class="fa fa-twitter"></i> Follow
                         </div>
 
                         <ul>
@@ -130,8 +131,7 @@
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
 
 <?php
-    if(in_array($controller, $slider_pages) 
-    || $controller == 'signin'
+    if(in_array($controller, $ui_pages) 
     || $controller == 'users' && strtolower($method) == 'discover') {
 ?>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>

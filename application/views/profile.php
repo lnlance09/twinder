@@ -108,11 +108,10 @@
 									<!-- City and state -->
 									<li>
 										<i class="fa fa-map-marker fa-fw"></i> 
-										Last seen near
-
+										
 										<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 											<a href="<?php echo $base_url.'hot/gender/both/lat/'.$lat.'/lon/'.$lon.'/'; ?>" itemprop="url">
-												<span itemprop="addressLocality"><?php echo $city; ?></span>
+												<span itemprop="addressLocality"><?php echo $city.', '.$state; ?></span>
 											</a>
 										</span>
 									</li>

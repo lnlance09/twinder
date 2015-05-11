@@ -10,9 +10,16 @@
 				$this->base_url = $this->config->base_url();
 				$this->load->library('session');
 				$this->load->model('users_model', 'user');
+				$this->load->helper('url');
 			}
 
 			public function Index() {
+				$uri = uri_string();
+				$id = $this->uri->segment(1, NULL);
+				$tab = $this->uri->segment(2, 'likes');
+				echo $id;
+				die;
+
 				if($this->session->userdata('user_id')) {
 					$session = TRUE;
 					$name = $this->session->userdata('first_name'); 
@@ -32,8 +39,8 @@
 				}
 
 				// Get the footer info
-				$locations = $this->loc->FooterPlaces();
-				$rand_users = $this->database->GetAllUsers(5);
+				$places = $this->loc->FooterPlaces();
+				$users = $this->database->GetAllUsers(5);
 
 				// Store all of the data that needs to be passed to the view as an array
 				$data = array('session' => $session,
@@ -42,8 +49,8 @@
 							'match_count' => $match_count,
 							'profile_pic' => $pic,
 							'profile_link' => $link,
-							'locations' => $locations, 
-							'users' => $rand_users);
+							'locations' => $places, 
+							'users' => $users);
 				$this->load->view('errors/error', $data); 
 			}
 		}

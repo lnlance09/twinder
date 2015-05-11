@@ -1,9 +1,6 @@
 <?php
 	$base_url = $this->config->base_url();
 ?>
-    <!-- Write the page number for the JS to work -->
-    <div class="hidden" id="load_page"><?php echo $page; ?></div>
-
     <div class="sub_load">
 <?php
     if($count > 0) {
@@ -16,7 +13,7 @@
             <div class="media" onclick="location.href='<?php echo $base_url.$user['link']; ?>'">
                 <div class="media-left media-top">
                     <a href="<?php echo $base_url.$user['link']; ?>">
-                        <img src="<?php echo $user['profile_pic']; ?>" class="media-object img-circle" alt="<?php echo $user['name']; ?>">
+                        <img src="<?php echo $user['pic']; ?>" class="media-object img-circle" alt="<?php echo $user['name']; ?>">
                     </a>
                 </div>
                 
@@ -80,7 +77,7 @@
 <?php
             }
 ?>
-        </ul>
+    </ul>
     
 <?php
         }
@@ -94,6 +91,9 @@
         }
     }
 ?>
+    <!-- Write the page number for the JS to work -->
+    <div class="hidden" id="load_page"><?php echo $page; ?></div>
+
     <script>
         var base_url = '<?php echo $base_url; ?>';
 

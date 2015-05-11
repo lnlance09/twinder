@@ -128,7 +128,7 @@
 		 * @param {username} [username] The username of the user
 		 */
 		function FormatUserLink($tinder_id, $username) {
-			return (empty($username) ? 'users/'.$tinder_id : 'users/'.$username);
+			return (empty($username) ? $tinder_id : $username);
 		}
 
 		/**

@@ -40,10 +40,10 @@
 */
 
 // Default controller
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'hot';
 
 // 404 controller
-$route['404_override'] = 'error';
+$route['404_override'] = 'users';
 
 // Sitemap 
 $route['seo/sitemap\.xml'] = 'seo';

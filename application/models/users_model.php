@@ -28,7 +28,6 @@
 			// var_dump($token);
 
 			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
-				// Send a request to Tinder's auth endpoint to get a new token
 				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token, 'locale' => 'en'));
 				$decode = @json_decode($info, TRUE);
 
@@ -258,7 +257,7 @@
 		 */
 		public function ReportUser($tinder_id, $auth, $cause, $text = NULL) {
 			$data = array('cause' => (int)$cause);
-			$data['text'] = ($text ?: $text);
+			$data['text'] = ($text ? : $text);
 			$info = SendRequest('report/user/'.$tinder_id, $auth, TRUE, $data);
 			return @json_decode($info, TRUE);
 		}
@@ -486,7 +485,6 @@
 						} else {
 							$page = 0;
 						}
-						break;
 				}
 			}
 

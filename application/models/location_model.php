@@ -55,23 +55,23 @@
 		 * @return {array} An array containing 5 locations
 		 */
 		public function FooterPlaces() {
-			$sql = "SELECT city, state, lat, lon
-					FROM last_seen 
-					GROUP BY lat, lon";
-			$query = $this->db->query($sql);
+			$this->db->select('city,state,lat,lon');
+			$this->db->group_by('lat,lon');
+			$this->db->order_by(NULL, 'RANDOM');
+			$this->db->limit(5);
+			$query = $this->db->get('last_seen');
 			$return = [];
 			$i = 0;
 
 			foreach($query->result() as $row) {
 				$return[$i] = array('city' => $row->city, 
-								'state' => $row->state,
-								'lat' => $row->lat,
-								'lon' => $row->lon);
+									'state' => $row->state,
+									'lat' => $row->lat,
+									'lon' => $row->lon);
 
 				$i++;
 			}
 
-			shuffle($return);
 			return $return;
 		}
 
