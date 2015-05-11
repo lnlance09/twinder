@@ -363,18 +363,15 @@ $(document).ready(function() {
 
     // Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
     function ShowPosition(position) {
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        // console.log('Lon: '+ lon +', Lat: '+ lat);
-
         // If the location parameters aren't set, then get the user's current location
         var lon = position.coords.longitude;
         var lat = position.coords.latitude;
+        var distance = $('#distance-value').text().trim();
         $('#drag_lon').text(lon);
         $('#drag_lat').text(lat);
 
         GetLocationName(lon, lat, false);
-        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
+        FinalizeMap(distance, lat, lon, null, false);
     }
 
     // 2 Location Autocomplete
