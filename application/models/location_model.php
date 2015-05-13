@@ -55,11 +55,10 @@
 		 * @return {array} An array containing 5 locations
 		 */
 		public function FooterPlaces() {
-			$this->db->select('city,state,lat,lon');
-			$this->db->group_by('lat,lon');
+			$this->db->select('city, state, lat, lon');
 			$this->db->order_by('id', 'RANDOM');
 			$this->db->limit(5);
-			$query = $this->db->get('last_seen');
+			$query = $this->db->get('locations');
 			$return = [];
 			$i = 0;
 
