@@ -59,7 +59,7 @@
 		 * @return {boolean|string}
 		 */
 		public function CanLike($my_id, $his_id) {
-			if($my_id != $his_id) {
+			if($my_id != $his_id && !empty($my_id)) {
 				// See if there is already a liking between these two users
 				$me_like = $this->database->SeeIfLiked($my_id, $his_id, FALSE);
 
@@ -77,7 +77,7 @@
 					}
 				}
 			} else {
-				$like = array('perm' => FALSE, 'match_id' => FALSE);
+				$like = array('perm' => 'false', 'match_id' => FALSE);
 			}
 
 			return $like;

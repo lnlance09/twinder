@@ -253,6 +253,54 @@ $(document).ready(function() {
                     }
                 });
             });
+            break;
+
+        case'false':
+
+            $('#like_user, #resize_like_user').click(function() {
+                $('#sync_modal').modal('show');
+                
+                $('#why_trigger').click(function() {
+                    $('#fb_why').toggleClass('visible');
+                });
+
+                $('#signin_form').submit(function(e) {
+                    e.preventDefault();
+                    var username = $('input[name=username]').val();
+                    var password = $('input[name=password]').val();
+
+                    if(username != '' && password != '') {
+                        $('#sync_modal').modal('show');
+
+                        $.ajax({
+                            url: base_url +'signin/Login',
+                            type: 'POST',
+                            data: {
+                                username: username,
+                                password: password,
+                                submit: 'submit'
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                if(data.trim() == 'true') {
+                                    window.location = base_url +'users/discover';
+                                } else if(data == 'error') {
+                                    $('#sync_modal').modal('hide');
+                                    $('input[name=username]').css('border', 'solid 1px red');
+                                    $('input[name=password]').css('border', 'solid 1px red');
+                                } else {
+                                    console.log("Didn't submit");
+                                    $('input[name=username]').css('border', 'solid 1px red');
+                                    $('input[name=password]').css('border', 'solid 1px red');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#signin_form').effect('shake');
+                    }
+                }); 
+            });
+            break;
     }
 
     $('#click_hot, #click_not').click(function() {

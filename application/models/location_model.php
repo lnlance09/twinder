@@ -157,17 +157,16 @@
 		 * @return {array} An array containing the number of rows returned and the cities and states
 		 */
 		public function GetLocations($q) {
-			$sql = "SELECT city, state, COUNT(*) AS count
-					FROM last_seen 
+			$sql = "SELECT city, state
+					FROM locations 
 					WHERE city LIKE ? OR state LIKE ?
-					GROUP BY city, state 
-					ORDER BY count DESC LIMIT 5";
+					ORDER BY city DESC LIMIT 5";
 			$query = $this->db->query($sql, array('%'.$q.'%', '%'.$q.'%'));
 			$i = 0;
 			$return = [];
 
 			foreach($query->result() as $row) {
-				$return[$i] = array('city' => $row->city, 'state' => $row->state, 'count' => $row->count);
+				$return[$i] = array('city' => $row->city, 'state' => $row->state);
 
 				$i++;
 			}

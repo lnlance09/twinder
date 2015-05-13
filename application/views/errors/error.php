@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="<?php echo $css_url; ?>font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css?now=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $css_url; ?>custom.css">
 
     <title>Not Found - Twinder</title>
 </head>
@@ -110,102 +110,108 @@
         </div>
     </div>
 
+
     <div class="text-center" id="footer">
-        <div id="list_name">
-            <div class="col-lg-3">
-                <i class="fa fa-rocket"></i> About
-            </div>
-
-            <div class="col-lg-3">
-                <i class="fa fa-globe"></i> People
-            </div>
-
-            <div class="col-lg-3">
-                <i class="fa fa-map-marker"></i> Places
-            </div>
-
-            <div class="col-lg-3">
-                <i class="fa fa-twitter"></i> Follow Us
-            </div>
-
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="clearfix"></div>
-
         <div id="sub_footer">
-            <div class="col-lg-3">
-                <ul>
-                    <li><a href="<?php echo $base_url; ?>about">about</a></li>
-                    <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
-                    <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
-                    <li><a href="<?php echo $base_url; ?>contact">contact</a></li>
-                </ul>
+            <div class="col-lg-12" id="top_footer">
+                <div class="col-lg-3">
+                    <div class="m_line">
+                        <i class="fa fa-rocket"></i> About
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="m_line">
+                        <i class="fa fa-user"></i> People
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="m_line">
+                        <i class="fa fa-map-marker"></i> Places
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="m_line">
+                        <i class="fa fa-twitter"></i> Follow
+                    </div>
+                </div>
             </div>
 
-            <div class="col-lg-3">
-                <ul>
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                    <div class="hide_rasp">
+                        <i class="fa fa-rocket"></i> About
+                    </div>
+
+                    <ul>
+                        <li><a href="<?php echo $base_url; ?>about">about</a></li>
+                        <li><a href="<?php echo $base_url; ?>terms">terms</a></li>
+                        <li><a href="<?php echo $base_url; ?>faq">faq</a></li>
+                        <li><a href="<?php echo $base_url; ?>contact">contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="hide_rasp">
+                        <i class="fa fa-user"></i> People
+                    </div>
+
+                    <ul>
 <?php
     // Loop thru the random users
     for($i=0;$i<4;$i++) {
 ?>
-                    <li>
-                        <a href="<?php echo $base_url.$users[$i]['link']; ?>">
-                            <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
-                        </a>
-                    </li>
+                        <li>
+                            <a href="<?php echo $base_url.$users[$i]['link']; ?>">
+                                <?php echo $users[$i]['name'].', '.$users[$i]['age']; ?>
+                            </a>
+                        </li>
 <?php
     }
 ?>
-                </ul>
-            </div>
+                    </ul>
+                </div>
 
-            <div class="col-lg-3">
-                <ul>
+                <div class="col-lg-3">
+                    <div class="hide_rasp">
+                        <i class="fa fa-map-marker"></i> Places
+                    </div>
+
+                    <ul>
 <?php
     // Loop thru the random locations
     for($i=0;$i<4;$i++) {
-        $url = $base_url.'hot/gender/both/city/'.$locations[$i]['city'].'/state/'.$locations[$i]['state'].'/';
+        $url = $base_url.'hot/gender/both/lat/'.$locations[$i]['lat'].'/lon/'.$locations[$i]['lon'].'/';
 ?>
-                    <li>
-                        <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
-                    </li>
+                        <li>
+                            <a href="<?php echo $url; ?>"><?php echo $locations[$i]['city'].', '.$locations[$i]['state']; ?></a>
+                        </li>
 <?php
     }
 ?>
-                </ul>
-            </div>
+                    </ul>
+                </div>
 
-            <div class="col-lg-3">
-                <ul>
-                    <!-- Twitter Button -->
-                    <li>
-                        <a href="https://twitter.com/TwinderTweets" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderTweets</a>
+                <div class="col-lg-3">
+                    <div class="hide_rasp">
+                        <i class="fa fa-twitter"></i> Follow
+                    </div>
 
-                        <script>
-                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-                        </script>
-                    </li>
+                    <ul>
+                        <!-- Twitter Button -->
+                        <li>
+                            <a href="https://twitter.com/TwinderIO" class="twitter-follow-button" data-show-count="true" data-size="medium">Follow @TwinderIO</a>
+                        </li>
 
-                    <!-- Facebook Button -->
-                    <!--
-                    <li id="fb_like_button">
-                        <div id="fb-root"></div>
+                        <li>
+                            <a href="http://instagram.com/twinder.io?ref=badge" class="ig-b- ig-b-v-24"><img src="//badges.instagram.com/static/images/ig-badge-view-24.png" alt="Instagram"></a>
+                        </li>
+                    </ul>
+                </div>
 
-                        <script>
-                            (function(d, s, id) {
-                                var js, fjs = d.getElementsByTagName(s)[0];
-                                if (d.getElementById(id)) return;
-                                js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1430551347233092&version=v2.0";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            } (document, 'script', 'facebook-jssdk'));
-                        </script>
-
-                        <div class="fb-like-box" data-href="https://www.facebook.com/WeTinder" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
-                    </li>
-                    -->
-                </ul>
+                <div class="clearfix"></div>
             </div>
 
             <div class="clearfix"></div>
@@ -213,27 +219,24 @@
             
         <div id="copyright">
             <p>
-                Twinder © 2015 - a Lance Newman production
+                Twinder © 2015 - a <a href="http://twinder.io/users/lance">Lance Newman</a> production
             </p>
         </div>
     </div>
 
     <!-- jQuery and Bootstrap JS files -->
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
-    <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
     <script src="<?php echo $js_url; ?>bootstrap/bootstrap.min.js"></script>
     <script src="<?php echo $js_url; ?>main.js"></script>
 
     <!-- StatCounter -->
-    <!--
-    <script type="text/javascript">
+    <script>
         var sc_project = 10187180; 
         var sc_invisible = 1; 
         var sc_security = "f1a35707"; 
         var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
         document.write("<sc"+"ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></"+"script>");
     </script>
-    -->
 </body>
 </html>
     

@@ -11,7 +11,7 @@
     // Define the slider and maps pages
     $maps_pages = array('users', 'settings', 'hot');
     $slider_pages = array('settings', 'hot');
-    $ui_pages = array('settings', 'hot', 'signin');
+    $ui_pages = array('settings', 'hot', 'signin', 'users');
 ?>
         <div class="text-center" id="footer">
             <div id="sub_footer">
@@ -131,8 +131,7 @@
     <script src="<?php echo $js_url; ?>jquery/jquery.js"></script>
 
 <?php
-    if(in_array($controller, $ui_pages) 
-    || $controller == 'users' && strtolower($method) == 'discover') {
+    if(in_array($controller, $ui_pages)) {
 ?>
     <script src="<?php echo $js_url; ?>ui/jquery-ui.min.js"></script>
 <?php

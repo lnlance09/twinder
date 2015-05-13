@@ -140,6 +140,18 @@
     }
 }
 
+#terms_modal {
+
+    .modal-body {
+        padding: 6px 10px; 
+
+        p, a {
+            font-size: 16px;
+            margin: 0;
+        }
+    }
+}
+
 #sync_modal {
     text-align: center;
 
@@ -150,5 +162,31 @@
         border: solid 1px #ddd;
         background: #fff;
         margin-top: 100px;
+    }
+
+    #fb_why {
+        display: none;
+        margin-top: 4px;
+        border: solid 1px #ccc;
+        padding: 7px 11px;
+        background: #f0f0f0;
+
+        &.visible {
+            display: block;
+        }
+
+        p, a {
+            font-size: 16px;
+            text-align: left;
+            margin: 0;
+        }
+    }
+
+    span.pull-right {
+        margin-top: 7px;
+
+        a {
+            font-size: 14px;
+        }
     }
 }

@@ -17,7 +17,7 @@
 			}
 
 			public function Index() {
-				header('Location: '.$this->base_url.'hot');
+				
 			}
 
 			public function DrawPieChart() {

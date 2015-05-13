@@ -23,8 +23,8 @@
                 </h2>
 
                 <p>
-                    WeTinder works almost entirely in conjunction with the Tinder API. 
-                    Everything that you do on WeTinder will also be done on the actual app. 
+                    Twinder works almost entirely in conjunction with the Tinder API. 
+                    Everything that you do on Twinder will also be done on the actual app. 
                     However, none of what you do on the actual app will be done on here.  
                     You can like or pass another user. You can send and receive messages. 
                     You can search for certain users in particular.
@@ -36,20 +36,20 @@
                 </h2>
 
                 <p>
-                    WeTinder features a few distinctive elements that help give it a reputation that simply cannot be replicated on the mobile app. <br>
-                    Search for anyone: You can search for people by their names and ages insted of just by location. <br>
-                    Keep Records: Keep track of all of the people that you have liked/passed. <br>
-                    Find the most popular users: See the users that have gotten the most matches and likes. <br>
+                    Twinder features a few distinctive elements that help give it a reputation that simply cannot be replicated on the mobile app. <br>
+                    <b>Search for anyone:</b> You can search for people by their names and ages insted of just by location. <br>
+                    <b>Keep Records:</b> Keep track of all of the people that you have liked/passed. <br>
+                    <b>Find the most popular users:</b> See the users that have gotten the most matches and likes. <br>
                 </p>
 
 
                 <h2>
-                    Can I user WeTinder if I haven't signed up for Tinder?
+                    Can I user Twinder if I haven't signed up for Tinder?
                 </h2>
 
                 <p>
                     Unfortunately, no. You must have already created a Tinder profile on your phone or tablet. 
-                    Once you have done that, you can successfully use WeTinder.
+                    Once you have done that, you can successfully use Twinder.
                 </p>
 
 
@@ -66,11 +66,11 @@
 
 
                 <h2>
-                    Why does WeTinder need to access my location?
+                    Why does Twinder need to access my location?
                 </h2>
 
                 <p>
-                    WeTinder needs to access your current location to match you with Tinder users that are located within a certain mile radius that yu have specified in your app's settings.
+                    Twinder needs to access your current location to match you with Tinder users that are located within a certain mile radius that yu have specified in your app's settings.
                 </p>
 
 
@@ -79,7 +79,7 @@
                 </h2>
 
                 <p>
-                    I stumbled across an iPhone app called <a href="http://tinderliker.com/" target="_blank">"Liker"</a> a few months ago. It's remarkably similar to WeTinder in a few important respects. 
+                    I stumbled across an iPhone app called <a href="http://tinderliker.com/" target="_blank">"Liker"</a> a few months ago. It's remarkably similar to Twinder in a few important respects. 
                     However, this app completely disregards the many legitimate uses of Tinder so much that it almost becomes something of a robot. 
                     From my experiences reverse engineering Tinder, using "Liker" or any other third party app that automatically searches for new users and likes them all in a repeated fashion for long periods of time is a great way to get your Tinder account banned.
                     Don't make the foolish mistake of underestimating the intelligence of network administarators. Sooner or later, the folks at Tinder will recoginize that it's just a script going through the motions and not a real person.

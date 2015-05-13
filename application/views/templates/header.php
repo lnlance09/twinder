@@ -68,7 +68,6 @@
 <?php
     if(in_array($controller, $slider_pages)) {
 ?>
-    <link rel="stylesheet" href="<?php echo $css_url; ?>stateface.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.min.css">
     <link rel="stylesheet" href="<?php echo $css_url; ?>nouislider.pips.min.css">
 <?php

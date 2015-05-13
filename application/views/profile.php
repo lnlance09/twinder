@@ -57,7 +57,7 @@
 ?>
 							<button class="btn btn-warning" type="button" id="unmatch_user">Matched</button>
 <?php
-		} elseif($like['perm'] == 'can_like') {
+		} elseif($like['perm'] == 'can_like' || $like['perm'] == 'false') {
 ?>
 							<button class="btn btn-default" type="button" id="like_user"><i class="fa fa-heart"></i> Like</button>
 <?php
@@ -110,7 +110,7 @@
 										<i class="fa fa-map-marker fa-fw"></i> 
 										
 										<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-											<a href="<?php echo $base_url.'hot/gender/both/lat/'.$lat.'/lon/'.$lon.'/'; ?>" itemprop="url">
+											<a href="<?php echo $base_url.'hot/gender/both/lat/'.$lat.'/lon/'.$lon.'/'; ?>" itemprop="url" >
 												<span itemprop="addressLocality"><?php echo $city.', '.$state; ?></span>
 											</a>
 										</span>
@@ -124,64 +124,6 @@
 							            <meta content="<?php echo $lon; ?>" itemprop="longitude">
 							        </span>
 								</ul>
-
-								<div id="votes">
-									<div class="progress">
-										<div class="progress-bar progress-bar-primary mypopover" 
-											role="progressbar" 
-											aria-valuenow="<?php echo $votes['up_pct']; ?>" 
-											aria-valuemin="1" 
-											aria-valuemax="100" 
-											title="Hot" 
-											data-original-title="Hot" 
-											data-content="<?php echo $votes['up']; ?> votes" 
-											data-placement="bottom" 
-											data-toggle="popover" 
-											style="width:<?php echo ($votes['up_pct'] == 0 ? 50 : $votes['up_pct']); ?>%">
-											<?php echo $votes['up_pct']; ?>%
-										</div>
-
-										<div class="progress-bar progress-bar-warning mypopover" 
-											role="progressbar" 
-											aria-valuenow="<?php echo $votes['down_pct']; ?>" 
-											aria-valuemin="1" 
-											aria-valuemax="100" 
-											title="Not" 
-											data-original-title="Not" 
-											data-content="<?php echo $votes['down']; ?> votes" 
-											data-placement="bottom" 
-											data-toggle="popover" 
-											style="width: <?php echo ($votes['down_pct'] == 0 ? 50 : $votes['down_pct']); ?>%">
-											<?php echo $votes['down_pct']; ?>%
-										</div>
-									</div>
-
-									<div id="vote_stats">
-<?php
-	if($can_vote === FALSE) {
-?>
-										<div class="col-lg-6">
-											<button class="btn btn-default" type="button" id="click_hot"><i class="fa fa-thumbs-up"></i> Hot</button>
-										</div>		
-								
-										<div class="col-lg-6">
-											<button class="btn btn-default" type="button" id="click_not"><i class="fa fa-thumbs-down"></i> Not</button>
-										</div>
-
-										<div class="clearfix"></div>
-<?php
-	} elseif($can_vote == 0) {
-?>
-										<button class="btn btn-warning voted" type="button">#ivotednot</button>
-<?php
-	} elseif($can_vote == 1) {
-?>
-										<button class="btn btn-primary voted" type="button">#ivotedhot</button>
-<?php
-	}
-?>
-									</div>
-								</div>
 
 								<!-- The edit, like and unmatch buttons for mobile display -->
 								<div id="resize_edit">
@@ -398,30 +340,69 @@
 			  	</div>
 			</div>
 <?php
-    }
+    } elseif($like['perm'] == 'false') {
 ?>
-        </div>
+			<div id="sync_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	            <div class="modal-dialog">
+	                <div class="modal-content">
+	                	<div class="modal-header">
+	                        <h3 class="modal-title text-left">
+	                        	<img src="<?php echo $user_info['profile_pic']; ?>" alt="<?php echo $user_info['name']; ?>" class="img-circle" width="35">
+	                        	Log in to like <?php echo $user_info['name']; ?>
+	                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                        </h3>
+	                    </div>
 
-		<!-- Gallery modal -->
-        <div id="gallery_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                	<div class="modal-header">
-                        <h3 class="modal-title text-center">
-                        	<?php echo $user_info['name']; ?>
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        </h3>
-                    </div>
+						<form method="post" action="<?php echo $base_url; ?>signin/login" id="signin_form">
+		                    <div class="modal-body text-center">
+				                <input type="text" class="form-control" placeholder="Email or phone number" name="username"><br>
+				                <input type="password" class="form-control" placeholder="Password" name="password">
+					            <span class="pull-right"><a href="#" id="why_trigger">Why do I need to sign into Facebook?</a></span>
+					            <div class="clearfix"></div>
+		                	
+								<div id="fb_why">
+									<p>
+		                                Because the only way to sign into <a href="http://gotinder.com" target="_blank">Tinder</a> is with your Facebook account.
+		                                Signing into Twinder is effectively doing the same thing as signing into Tinder on your phone.
+		                            </p><br>
 
-                    <div class="modal-body text-center">
-                		<img src="" alt="<?php echo $user_info['name']; ?>" id="gallery_img" class="thumbnail">
-                	</div>
+		                            <p>
+		                                For answers to more questions that you might have, please visit our <a href="http://twinder.io/faq">FAQ</a> page.
+		                            </p>
+								</div>
+		                	</div>
 
-                	<div class="modal-footer">
-                		<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                	</div>
-                </div>
-            </div>
+		                	<div class="modal-footer">
+		                		<button class="btn btn-primary" type="submit" name="submit" value="submit">Sign in</button>
+		                	</div>
+		                </form>
+	                </div>
+	            </div>
+	        </div>
+<?php
+	}
+?>
+			<!-- Gallery modal -->
+	        <div id="gallery_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	            <div class="modal-dialog">
+	                <div class="modal-content">
+	                	<div class="modal-header">
+	                        <h3 class="modal-title text-center">
+	                        	<?php echo $user_info['name']; ?>
+	                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                        </h3>
+	                    </div>
+
+	                    <div class="modal-body text-center">
+	                		<img src="" alt="<?php echo $user_info['name']; ?>" id="gallery_img" class="thumbnail">
+	                	</div>
+
+	                	<div class="modal-footer">
+	                		<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	                	</div>
+	                </div>
+	            </div>
+	        </div>
         </div>
 
 		<!-- Write all of the JS variables -->

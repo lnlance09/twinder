@@ -10,15 +10,11 @@
 				$this->base_url = $this->config->base_url();
 				$this->load->library('session');
 				$this->load->model('users_model', 'user');
-				$this->load->helper('url');
 			}
 
 			public function Index() {
-				$uri = uri_string();
 				$id = $this->uri->segment(1, NULL);
 				$tab = $this->uri->segment(2, 'likes');
-				echo $id;
-				die;
 
 				if($this->session->userdata('user_id')) {
 					$session = TRUE;

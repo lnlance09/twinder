@@ -69,7 +69,6 @@
 							// Check to see if this user is allowed to report this user
 							$active = TRUE;
 							$report = $this->database->CheckReport($tinder_id, $user['tinder_id']);
-							$like = $this->user->CanLike($user['tinder_id'], $tinder_id, $session);
 							$edit = $this->user->CanEdit($user['tinder_id'], $tinder_id);
 						} else {
 							// Get all of the data for the view
@@ -93,7 +92,6 @@
 						}
 					} else {
 						$report = FALSE;
-						$like = FALSE;
 						$edit = FALSE;
 						$name = NULL;
 						$pic = NULL;
@@ -108,6 +106,9 @@
 					}
 
 					if($active) {
+						// Find out if the user can like this profile
+						$like = $this->user->CanLike($tinder_id, $user['tinder_id'], $session);
+
 						// Format the user's profile link
 						$link = FormatUserLink($tinder_id, $username);
 						$pic = ChangePicSize($pic, 172);
@@ -116,7 +117,7 @@
 						$tabs = ReturnTabs($tab, $same, $session);
 
 						// Update the user's last seen position
-						$last_seen = $this->database->EditLastSeen($tinder_id, $user['tinder_id'], $distance, $lon, $lat);
+						$seen = $this->database->EditLastSeen($tinder_id, $user['tinder_id'], $distance, $lon, $lat);
 						
 						// Define the meta tags
 						$meta = array('title' => MetaSubject($user['username'], $user['name']),
@@ -142,13 +143,11 @@
 										'pic' => $pic);
 
 						// Update the user's views
-						$user_info['views'] = $this->database->UpdateProfileViews($user['views'], $user['tinder_id']); 
+						$user['views'] = $this->database->UpdateProfileViews($user['views'], $user['tinder_id']); 
 						
 						// Can vote
 						$session_id = (!$tinder_id ? $this->session->userdata('session_id') : $tinder_id);
 						$can_vote = $this->database->CheckVote($session_id, $user['tinder_id']);
-
-						// Get the votes of the user
 						$votes = $this->database->GetVoteStats($id);
 
 						// Get all of the stats of the user who is being viewed
@@ -161,11 +160,11 @@
 									'report' => $report,
 									'like' => $like,
 									'edit' => $edit,
-									'lat' => $last_seen['data']['lat'],
-									'lon' => $last_seen['data']['lon'],
-									'city' => $last_seen['data']['city'],
-									'state' => $last_seen['data']['state'],
-									'distance' => $last_seen['data']['miles_away'],
+									'lat' => $seen['data']['lat'],
+									'lon' => $seen['data']['lon'],
+									'city' => $seen['data']['city'],
+									'state' => $seen['data']['state'],
+									'distance' => $seen['data']['miles_away'],
 									'last_seen' => FALSE,
 									'can_vote' => $can_vote,
 									'votes' => $votes,

@@ -40,17 +40,16 @@
 		            	'default_persistent' => 0); 
               
 			$ch = curl_init();  
-			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php/?login_attempt=1');
+			curl_setopt($ch, CURLOPT_URL, 'https://www.facebook.com/login.php?login_attempt=1');
 			curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);   
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);   
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
-			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
-			curl_exec($ch); 					
-		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
-			curl_close($ch);
+			curl_exec($ch); 			
+		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 			return $http;
 		}
 
@@ -63,34 +62,34 @@
 		public function FacebookToken($email, $password) {
 			$login = $this->FacebookLogin($email, $password);
 
-			if($login == 302) {
+			if($login == 200) {
 				// Define the cookies file
 				$cookies = $this->CookieFile($email);
 			    $uri = 'https://www.facebook.com/connect/login_success.html';
 				$url = 'https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.urlencode($uri).'&scope='.implode(',', $this->permissions).'&response_type=token';
-						
+
 				$ch = curl_init();  
 				curl_setopt($ch, CURLOPT_URL, $url);  
 				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
 				curl_setopt($ch, CURLOPT_HEADER, TRUE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
-				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);  
+				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
 				$data = curl_exec($ch);   
-				// echo $data;
-			    $curl_info = curl_getinfo($ch);
+			    $info = curl_getinfo($ch);
 
 				// Get the headers and then the HTTP code
-				$headers = substr($data, 0, $curl_info['header_size']);
+				$headers = substr($data, 0, $info['header_size']);
 				$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 				// Make sure that the HTTP redirects to a location that has an access token in the URL
 				if($code == 302) {
 					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
+					// FormatArray($break);
 
 					if(count($break) == 2) {
-						// Split the URL once more to get the access token value
 						$exp = explode('&', $break[1]);
 						$token = $exp[0];	
 					}  else {

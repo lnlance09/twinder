@@ -34,7 +34,7 @@
 					$header = array('title' => 'Sign In',
 									'type' => 'article',
 									'session' => FALSE,
-									'header' => 'Sign in to Facebook',
+									'header' => 'Sign in',
 									'meta' => $meta_info,
 									'auth' => NULL);
 
