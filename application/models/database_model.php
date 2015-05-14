@@ -189,7 +189,7 @@
 
 			$this->db->join('last_seen', 'users.tinder_id = last_seen.seen_id');
 
-			if($sex != -1) {
+			if($sex != -1 && $sex != 'both') {
 				$this->db->where('gender', $sex);
 			}
 
