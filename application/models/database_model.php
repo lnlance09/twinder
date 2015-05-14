@@ -201,17 +201,18 @@
 				$this->db->where('age <=', $max);
 			}
 
+			if(!empty($q)) {
+				$this->db->where("(first_name LIKE '%".$q."%' OR bio LIKE '%".$q."%')");
+			}
+
 			if(!empty($lon) && !empty($lat)) {
 				$this->db->where('lat BETWEEN '.$lat.' -2 AND '.$lat.' +2');
 				$this->db->where('lon BETWEEN '.$lon.' -2 AND '.$lon.' +2');
 				$this->db->having('distance <=', $distance);
 			}
 
-			if(!empty($q)) {
-				$this->db->like('first_name', $q);
-				$this->db->or_like('bio', $q);
-			}
-
+			$this->db->order_by('age', 'ASC');
+			
 			if($end) {
 				$this->db->limit($end);
 			}

@@ -156,11 +156,19 @@
 		 * @return {array} An array containing the number of rows returned and the cities and states
 		 */
 		public function GetLocations($q) {
-			$sql = "SELECT city, state
-					FROM locations 
-					WHERE city LIKE ? OR state LIKE ?
-					ORDER BY city DESC LIMIT 5";
-			$query = $this->db->query($sql, array('%'.$q.'%', '%'.$q.'%'));
+			$exp = explode(',', $q);
+			$this->db->select('city, state');
+
+			if(count($exp) > 1) {
+				$this->db->like('city', trim($exp[0]));
+				$this->db->like('state', trim(end($exp)));
+			} else {
+				$this->db->like('city', $q);
+			}
+
+			$this->db->order_by('city', 'ASC');
+			$this->db->limit(5);
+			$query = $this->db->get('locations');
 			$i = 0;
 			$return = [];
 

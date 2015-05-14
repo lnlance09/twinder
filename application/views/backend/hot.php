@@ -1,5 +1,6 @@
 <?php
 	$base_url = $this->config->base_url();
+    // $this->output->enable_profiler(TRUE);
 ?>
     <div class="sub_load">
 <?php
