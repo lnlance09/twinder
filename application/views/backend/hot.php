@@ -107,7 +107,7 @@
                         distance: $('#distance-value'), 
                         min: $('#lower-value'), 
                         max: $('#upper-value'), 
-                        page: $('#page')
+                        page: $('#load_page')
                     };
 
             for(var index in params) {
