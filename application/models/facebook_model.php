@@ -75,7 +75,7 @@
 				curl_setopt($ch, CURLOPT_URL, $url);  
 				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
 				curl_setopt($ch, CURLOPT_HEADER, TRUE);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+				// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
@@ -89,7 +89,7 @@
 					$headers = substr($data, 0, $info['header_size']);
 					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
-					// FormatArray($break);
+					FormatArray($break);
 
 					if(count($break) == 2) {
 						$exp = explode('&', $break[1]);
