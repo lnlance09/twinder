@@ -94,7 +94,7 @@
 						$token = trim($exp[0]);	
 					}  else {
 						$ch = curl_init();  
-						curl_setopt($ch, CURLOPT_URL, $break[0]);  
+						curl_setopt($ch, CURLOPT_URL, trim($break[0]));  
 						curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent); 
 						curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 						curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
@@ -105,14 +105,18 @@
 						$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 						curl_close($ch);
 
+						echo trim($break[0]);
+						
 						if($code == 302) {
 							$headers = substr($data, 0, $info['header_size']);
 							preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 							$break = explode('access_token=', $matches[1]);
 
+
 							if(count($break) == 2) {
 								$exp = explode('&', $break[1]);
 								$token = trim($exp[0]);	
+								$token = '';
 							} else {
 								$token = 'Failed';
 							}
