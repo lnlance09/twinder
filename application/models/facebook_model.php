@@ -48,6 +48,7 @@
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 			curl_exec($ch); 			
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		    curl_close($ch);
