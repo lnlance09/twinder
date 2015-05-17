@@ -69,7 +69,7 @@
 				// Define the cookies file
 				$cookies = $this->CookieFile($email);
 			    $uri = 'https://www.facebook.com/connect/login_success.html';
-				$url = 'https://www.facebook.com/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.urlencode($uri).'&scope='.implode(',', $this->permissions).'&response_type=token';
+				$url = 'https://www.facebook.com/v2.0/dialog/oauth?client_id='.$this->client_id.'&redirect_uri='.urlencode($uri).'&scope='.implode(',', $this->permissions).'&response_type=token';
 
 				$ch = curl_init();  
 				curl_setopt($ch, CURLOPT_URL, $url);  
