@@ -47,7 +47,8 @@
 			curl_setopt($ch, CURLOPT_POST, TRUE);  
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));     
 			curl_setopt($ch, CURLOPT_REFERER, 'https://www.facebook.com/');  
-			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies); 
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);  
 			curl_exec($ch); 			
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
 		    curl_close($ch);
@@ -88,7 +89,7 @@
 					$headers = substr($data, 0, $info['header_size']);
 					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
-					FormatArray($break);
+					// FormatArray($break);
 
 					if(count($break) == 2) {
 						$exp = explode('&', $break[1]);
