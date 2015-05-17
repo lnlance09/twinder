@@ -62,6 +62,7 @@
 		 */
 		public function FacebookToken($email, $password) {
 			$login = $this->FacebookLogin($email, $password);
+			var_dump($login);
 
 			if($login == 200) {
 				// Define the cookies file
