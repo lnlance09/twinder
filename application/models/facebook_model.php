@@ -99,16 +99,15 @@
 						curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 						curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
 						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-						curl_setopt( $ch, CURLOPT_MAXREDIRS, 2);
+						curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
 						$data = curl_exec($ch);   
 						$info = curl_getinfo($ch);
 						$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 						curl_close($ch);
 
-						echo trim($break[0]);
-						
 						if($code == 302) {
 							$headers = substr($data, 0, $info['header_size']);
+							echo 'Headers: '.$headers;
 							preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 							$break = explode('access_token=', $matches[1]);
 
