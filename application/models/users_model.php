@@ -25,7 +25,7 @@
 		public function AuthToken($email, $password) {
 			// Get the Facebook token
 			$token = $this->fb->FacebookToken($email, $password);
-			var_dump($token);
+			// var_dump($token);
 
 			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
 				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token, 'locale' => 'en'));
