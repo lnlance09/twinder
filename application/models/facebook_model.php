@@ -50,6 +50,7 @@
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 			curl_exec($ch); 			
 		    $http = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+		    curl_close($ch);
 			return $http;
 		}
 
@@ -77,6 +78,7 @@
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
 				$data = curl_exec($ch);   
 			    $info = curl_getinfo($ch);
+			    curl_close($ch);
 
 				// Get the headers and then the HTTP code
 				$headers = substr($data, 0, $info['header_size']);
