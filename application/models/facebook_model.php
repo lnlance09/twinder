@@ -74,6 +74,7 @@
 				curl_setopt($ch, CURLOPT_URL, $url);  
 				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
 				curl_setopt($ch, CURLOPT_HEADER, TRUE);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
