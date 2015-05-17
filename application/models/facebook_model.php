@@ -93,14 +93,13 @@
 						$exp = explode('&', $break[1]);
 						$token = trim($exp[0]);	
 					}  else {
-
 						$ch = curl_init();  
 						curl_setopt($ch, CURLOPT_URL, $break[0]);  
 						curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent); 
 						curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 						curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
 						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-						curl_setopt( $ch, CURLOPT_MAXREDIRS, 1);
+						curl_setopt( $ch, CURLOPT_MAXREDIRS, 2);
 						$data = curl_exec($ch);   
 						$info = curl_getinfo($ch);
 						$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
