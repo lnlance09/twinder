@@ -73,10 +73,9 @@
 				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
 				curl_setopt($ch, CURLOPT_HEADER, TRUE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
-				$data = curl_exec($ch);   
+				curl_exec($ch);   
 			    $info = curl_getinfo($ch);
 
 				// Get the headers and then the HTTP code
