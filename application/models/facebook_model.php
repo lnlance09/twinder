@@ -107,10 +107,9 @@
 
 						if($code == 302) {
 							$headers = substr($data, 0, $info['header_size']);
-							echo 'Headers: '.$headers;
-							preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
-							$break = explode('access_token=', $matches[1]);
-
+							// echo 'Headers: '.$headers;
+							preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $match);
+							$break = explode('access_token=', $match[1]);
 
 							if(count($break) == 2) {
 								$exp = explode('&', $break[1]);
