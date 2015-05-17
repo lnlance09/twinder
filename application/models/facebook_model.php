@@ -75,7 +75,6 @@
 				curl_setopt($ch, CURLOPT_URL, $url);  
 				curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);  
 				curl_setopt($ch, CURLOPT_HEADER, TRUE);
-				// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
@@ -89,13 +88,38 @@
 					$headers = substr($data, 0, $info['header_size']);
 					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
-					FormatArray($break);
 
 					if(count($break) == 2) {
 						$exp = explode('&', $break[1]);
 						$token = trim($exp[0]);	
 					}  else {
-						$token = 'Failed';
+
+						$ch = curl_init();  
+						curl_setopt($ch, CURLOPT_URL, $break[0]);  
+						curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent); 
+						curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
+						curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
+						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+						curl_setopt( $ch, CURLOPT_MAXREDIRS, 1);
+						$data = curl_exec($ch);   
+						$info = curl_getinfo($ch);
+						$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+						curl_close($ch);
+
+						if($code == 302) {
+							$headers = substr($data, 0, $info['header_size']);
+							preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
+							$break = explode('access_token=', $matches[1]);
+
+							if(count($break) == 2) {
+								$exp = explode('&', $break[1]);
+								$token = trim($exp[0]);	
+							} else {
+								$token = 'Failed';
+							}
+						} else {
+							$token = 'Perm';
+						}
 					}
 				} elseif($code == 200) {
 					$token = 'Permissions';
