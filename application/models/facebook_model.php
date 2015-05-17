@@ -62,7 +62,7 @@
 		 */
 		public function FacebookToken($email, $password) {
 			$login = $this->FacebookLogin($email, $password);
-			var_dump($login);
+			// var_dump($login);
 
 			if($login == 200) {
 				// Define the cookies file
@@ -78,12 +78,14 @@
 				curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);  
 				curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies); 
 				$data = curl_exec($ch);   
+				$info = curl_getinfo($ch);
 				$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				curl_close($ch);
 
 				// Make sure that the HTTP redirects to a location that has an access token in the URL
 				if($code == 302) {
-					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $data, $matches);
+					$headers = substr($data, 0, $info['header_size']);
+					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
 					// FormatArray($break);
 
