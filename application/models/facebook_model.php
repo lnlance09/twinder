@@ -87,7 +87,7 @@
 					$headers = substr($data, 0, $info['header_size']);
 					preg_match("!\r\n(?:Location|URI): *(.*?) *\r\n!", $headers, $matches);
 					$break = explode('access_token=', $matches[1]);
-					// FormatArray($break);
+					FormatArray($break);
 
 					if(count($break) == 2) {
 						$exp = explode('&', $break[1]);
