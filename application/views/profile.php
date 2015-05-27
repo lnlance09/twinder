@@ -89,7 +89,7 @@
 	// Display the username is necessary
 	if(!empty($user_info['username'])) {
 ?>
-								<p>@<a href="http://twinder.io/users/<?php echo $user_info['username']; ?>" itemprop="significantLink"><?php echo $user_info['username']; ?></a></p>
+								<p>@<a href="http://twinder.io/<?php echo $user_info['username']; ?>" itemprop="significantLink"><?php echo $user_info['username']; ?></a></p>
 <?php
 	}
 ?>
