@@ -74,6 +74,18 @@
 								$report = $this->database->CheckReport($tinder_id, $user['tinder_id']);
 								$edit = $this->user->CanEdit($user['tinder_id'], $tinder_id);
 							} else {
+								// Define the meta tags
+								$meta = array('title' => MetaSubject($user['username'], $user['name']),
+											'description' => $user['name']."'s Tinder Profile",
+											'img' => $user['profile_pic'],
+											'url' => 'http://twinder.io/'.$user['link'],
+											'username' => (empty($user['username']) ? $user['tinder_id'] : $user['username']),
+											'type' => 'profile');
+								
+								// Format the user's profile link
+								$link = FormatUserLink($tinder_id, $username);
+								$pic = ChangePicSize($pic, 172);
+
 								// Set all of the info that needs to be passed to the header view
 								$header = array('title' => $user['name'],
 												'type' => 'profile',
