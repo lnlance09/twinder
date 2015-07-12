@@ -167,8 +167,6 @@
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
 <?php
     } 
-
-    if($base_url != '/twinder/') {
 ?>
     <script>
         var sc_project = 10187180; 
@@ -177,9 +175,7 @@
         var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
         document.write("<sc"+"ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></"+"script>");
     </script>
-<?php
-    }
-?>
+
     <!-- Twitter JS -->
     <script>
         !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
