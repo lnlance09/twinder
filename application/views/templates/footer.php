@@ -167,18 +167,6 @@
     <script src="<?php echo $js_url.$controller; ?>.js"></script>
 <?php
     } 
-
-    if($base_url != '/twinder/') {
-?>
-    <script>
-        var sc_project = 10187180; 
-        var sc_invisible = 1; 
-        var sc_security = "f1a35707"; 
-        var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
-        document.write("<sc"+"ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></"+"script>");
-    </script>
-<?php
-    }
 ?>
     <!-- Twitter JS -->
     <script>
