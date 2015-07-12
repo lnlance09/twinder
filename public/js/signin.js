@@ -25,14 +25,24 @@ $(document).ready(function() {
 	                console.log(data);
 	                if(data.trim() == 'true') {
 	                	window.location = base_url +'users/discover';
-	                } else if(data == 'error') {
-	                	$('#sync_modal').modal('hide');
-	                	$('input[name=username]').css('border', 'solid 1px red');
-	                	$('input[name=password]').css('border', 'solid 1px red');
 	                } else {
-	                	console.log("Didn't submit");
 	                	$('input[name=username]').css('border', 'solid 1px red');
 	                	$('input[name=password]').css('border', 'solid 1px red');
+
+	                	switch(data) {
+	                		case'login error':
+
+	                			$('#login_error').text('Incorrect Facebook login credentials');
+	                			break;
+
+	                		case'token error':
+	                		case'authentication':
+
+	                			$('#login_error').text("Couldn't get an auth token from Tinder");
+	                	}
+
+	                	$('#login_error').slideDown();
+	                	$('#sync_modal').modal('hide');
 	                }
 	            }
 	        });

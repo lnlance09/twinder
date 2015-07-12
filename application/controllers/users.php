@@ -124,7 +124,7 @@
 							
 							// Define the meta tags
 							$meta = array('title' => MetaSubject($user['username'], $user['name']),
-										'description' => (empty($user['bio']) ? $user['name']."'s Tinder Profile" : $user['bio']),
+										'description' => $user['name']."'s Tinder Profile",
 										'img' => $user['profile_pic'],
 										'url' => 'http://twinder.io/'.$user['link'],
 										'username' => (empty($user['username']) ? $user['tinder_id'] : $user['username']),

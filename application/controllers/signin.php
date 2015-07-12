@@ -53,21 +53,24 @@
 			public function Login() {
 				// Make sure the form was submitted
 				if($this->input->post('submit') == 'submit') {
-					$username = $this->input->post('username');
-					$password = $this->input->post('password');
+					$email = $this->input->post('username');
+					$pass = $this->input->post('password');
+					// $email = 'mia_falco92@mail.com';
+					// $pass = 'Codecall87!';
 
 					// Log the user in and get the auth token
-					$login = $this->user->SyncAccount($username, $password);
-
-					if($login) {
+					$login = $this->user->SyncAccount($email, $pass);
+					// FormatArray($login);
+					
+					if(is_array($login)) {
 						$this->session->set_userdata($login);
 						$this->config->set_item('sess_expiration', 86400);
 						echo 'true';
 					} else {
-						echo 'error';
+						echo $login;
 					}
 				} else {
-					echo FALSE;	
+					echo 'false';	
 				}
 			}
 		}

@@ -1,11 +1,11 @@
-<?php 
+<?php
 	if(!defined('BASEPATH')) {
 		exit('No direct script access allowed');
 	} else {
 		class Seo extends CI_Controller {
-			public function __construct() {       
+			public function __construct() {
 				parent:: __construct();
-				
+
 				// Get the base URL
 				$this->base_url = $this->config->base_url();
 
@@ -24,22 +24,23 @@
 				$info = array('places' => $places);
 
 				// Load all of the views
-				$this->load->view('sitemap', $info); 
+				$this->load->view('sitemap', $info);
 			}
 
 			public function Test() {
-				$info = $this->user->UserLookup('543cebbe4c1508686cb3cd3a', '8ebdf6ff-ba6a-4e7e-b711-1d80dedf3651');
+				$info = $this->user->DeleteAccount('67cb1eaf-445d-4ff9-878f-e9621667c536');
 				var_dump($info);
+				FormatArray($info);
 			}
 
 			public function Ping() {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, 'https://api.gotinder.com/');
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Tinder/4.0.9 (iPhone; iOS 8.1.1; Scale/2.00)');
-			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			    $data = curl_exec($ch);
-			    curl_close($ch);
-			    echo $data;
+			  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			  $data = curl_exec($ch);
+			  curl_close($ch);
+			  echo $data;
 			}
 		}
 	}

@@ -65,6 +65,12 @@
 
         .modal-footer {
             text-align: right;
+
+            #login_error {
+                padding: 8px;
+                color: $white;
+                background: #08f;
+            }
         }
 
         .ajax-loader {

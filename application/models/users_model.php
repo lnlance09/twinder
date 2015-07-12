@@ -27,17 +27,28 @@
 			$token = $this->fb->FacebookToken($email, $password);
 			// var_dump($token);
 
-			if($token != 'Error' && $token != 'Failed' && $token != 'Permissions') {
-				$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token, 'locale' => 'en'));
-				$decode = @json_decode($info, TRUE);
+			switch($token) {
+				case'Error':
 
-				if(is_array($decode)) {
-					return (array_key_exists('user', $decode) ? $decode['user'] : FALSE);
-				} else {
-					return "Tinder couldn't authenticate";
-				}
-			} else {
-				return FALSE;
+					return 'login error';
+					break;
+
+				case'Failed':
+				case'Perm':
+
+					return 'token error';
+					break;
+
+				default:
+
+					$info = SendRequest('auth', NULL, TRUE, array('facebook_id' => NULL, 'facebook_token' => $token, 'locale' => 'en'));
+					$decode = @json_decode($info, TRUE);
+
+					if(is_array($decode)) {
+						return (array_key_exists('user', $decode) ? $decode['user'] : FALSE);
+					} else {
+						return 'authenticatication';
+					}
 			}
 		}
 
@@ -285,15 +296,22 @@
 			// Get the Tinder API token
 			$auth = $this->AuthToken($email, $password);
 
-			if($auth && $auth != "Tinder couldn't authenticate") {
+			// Make sure that the auth token was successfully gotten
+			if(is_array($auth)) {
 				// Seperate the first name from the last
 				$names = FormatNames($auth['full_name']);
 
 				// Get the user's latitude and longitude coordinates
 				$profile = $this->ProfileInfo($auth['api_token']);
 				$miles = $profile['distance_filter'];
-				$lon = $profile['pos']['lon'];
-				$lat = $profile['pos']['lat'];
+				
+				if(array_key_exists('pos', $profile)) {
+					$lon = $profile['pos']['lon'];
+					$lat = $profile['pos']['lat'];
+				} else {
+					$lon = FALSE;
+					$lat = FALSE;
+				}
 
 				// Define all of the user's info in an array
 				$user = array('tinder_id' => $auth['_id'],
@@ -303,7 +321,7 @@
 							'last_name' => $names['last_name'],
 							'age' => ReturnAge($auth['birth_date']),
 							'dob' => date('M j, Y', strtotime($auth['birth_date'])),
-							'bio' => $profile['bio'],
+							'bio' => trim($profile['bio']),
 							'gender' => $auth['gender'],
 							'profile_pic' => ReturnProfilePic($auth['photos']));
 
@@ -341,7 +359,7 @@
 				// Merge the settings and users arrays
 				return array_merge($user, $settings);
 			} else {
-				return FALSE;
+				return $auth;
 			}
 		}
 

@@ -4,10 +4,8 @@
     $css_url = $public_url.'css/';
     $img_url = $public_url.'img/';
 
-    // Get the controller name
+    // Get the controller and the method names
     $controller = $this->router->fetch_class();
-
-    // Get the method
     $method = $this->router->fetch_method();
     
     // Define the pages that need the slider and the ones that need meta tags
@@ -28,6 +26,7 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo $img_url; ?>favicon.ico">
+    
 <?php
     if(in_array($controller, $meta_pages)) {
 ?>

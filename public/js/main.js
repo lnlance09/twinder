@@ -4,10 +4,8 @@ $(document).ready(function() {
     var controller = $('#controller').text();
     // console.log(auth);
 
-    $('#main_icon').click(function(e) {
-        e.preventDefault();
-        $('#wrapper').toggleClass('active');
-    });
+    //var url = 'https://m.facebook.com/login.php?skip_api_login=1&api_key=464891386855067&signed_next=1&next=https%3A%2F%2Fm.facebook.com%2Fv2.0%2Fdialog%2Foauth%3Fredirect_uri%3Dhttps%253A%252F%252Fwww.facebook.com%252Fconnect%252Flogin_success.html%26scope%3Dbasic_info%252Cemail%252Cpublic_profile%252Cuser_about_me%252Cuser_activities%252Cuser_birthday%252Cuser_education_history%252Cuser_friends%252Cuser_interests%252Cuser_likes%252Cuser_location%252Cuser_photos%252Cuser_relationship_details%26response_type%3Dtoken%26client_id%3D464891386855067%26ret%3Dlogin&cancel_uri=https%3A%2F%2Fwww.facebook.com%2Fconnect%2Flogin_success.html%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%23_%3D_&display=touch&_rdr';
+    //window.open(url, 'Login to Facebook');
 
     // Query to check for any updates and/or matches/messages every 10 seconds
     if(auth != '') {

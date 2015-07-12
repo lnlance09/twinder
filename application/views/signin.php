@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        
+                        <div class="hidden" id="login_error"></div>
                     </div>
                 </div>
             </div>
