@@ -168,7 +168,8 @@
 
 			$this->db->order_by('city', 'ASC');
 			$this->db->limit(5);
-			$query = $this->db->get('locations');
+			$this->db->group_by('city, state');
+			$query = $this->db->get('last_seen');
 			$i = 0;
 			$return = [];
 

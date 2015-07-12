@@ -74,12 +74,25 @@
 								$report = $this->database->CheckReport($tinder_id, $user['tinder_id']);
 								$edit = $this->user->CanEdit($user['tinder_id'], $tinder_id);
 							} else {
-								// Get all of the data for the view
-								$places = $this->loc->FooterPlaces();
-								$users = $this->database->GetAllUsers(5);
+								// Set all of the info that needs to be passed to the header view
+								$header = array('title' => $user['name'],
+												'type' => 'profile',
+												'session' => $session,
+												'header' => $user['name'],
+												'auth' => $token,
+												'tinder_id' => $tinder_id,
+												'name' => $name,
+												'profile_name' => $user['name'],
+												'gender' => $user['gender'],
+												'username' => $user['username'],
+												'meta' => $meta,
+												'link' => $link,
+												'pic' => $pic);
+
+								// Define the body info
 								$_user = array('name' => $user['name'], 
-											'gender' => FormatPossesion($user['gender']), 
-											'pic' => ChangePicSize($user['profile_pic'], 84));
+												'gender' => FormatPossesion($user['gender']), 
+												'pic' => ChangePicSize($user['profile_pic'], 84));
 								$info = array('name' => $name,
 											'auth' => $token,
 											'tinder_id' => $tinder_id,
@@ -89,8 +102,15 @@
 											'users' => $users,
 											'user' => $_user);
 
+								// Get all of the data for the footer view
+								$places = $this->loc->FooterPlaces();
+								$users = $this->database->GetAllUsers(5);
+								$footer = array('locations' => $places, 'users' => $users);
+
 								// Load the error view page and quit the script
+								$this->load->view('templates/header', $header); 
 								$this->load->view('errors/account', $info);
+								$this->load->view('templates/footer', $footer); 
 								$active = FALSE;
 							}
 						} else {
