@@ -71,9 +71,9 @@ $(document).ready(function() {
 
     function ChangeURL(name, tab) {
         var title = name +' - Twinder';
-        var link = location.pathname.match(/\/users\/(.*)/)[1];
+        var link = location.pathname.match(/\/(.*)/)[1];
         var real = link.split('/');
-        var url = base_url + 'users/'+ real[0] +'/'+ tab;
+        var url = base_url + real[0] +'/'+ tab;
         window.history.replaceState('', title, url);
     }
 
