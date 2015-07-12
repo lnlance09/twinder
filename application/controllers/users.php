@@ -81,7 +81,7 @@
 											'url' => 'http://twinder.io/'.$user['link'],
 											'username' => (empty($user['username']) ? $user['tinder_id'] : $user['username']),
 											'type' => 'profile');
-								
+
 								// Format the user's profile link
 								$link = FormatUserLink($tinder_id, $username);
 								$pic = ChangePicSize($pic, 172);
@@ -102,17 +102,9 @@
 												'pic' => $pic);
 
 								// Define the body info
-								$_user = array('name' => $user['name'], 
-												'gender' => FormatPossesion($user['gender']), 
-												'pic' => ChangePicSize($user['profile_pic'], 84));
-								$info = array('name' => $name,
-											'auth' => $token,
-											'tinder_id' => $tinder_id,
-											'profile_link' => FormatUserLink($tinder_id, $username),
-											'profile_pic' => ChangePicSize($pic, 84),
-											'locations' => $places,
-											'users' => $users,
-											'user' => $_user);
+								$body = array('name' => $user['name'], 
+											'gender' => FormatPossesion($user['gender']), 
+											'pic' => ChangePicSize($user['profile_pic'], 84));
 
 								// Get all of the data for the footer view
 								$places = $this->loc->FooterPlaces();
@@ -121,7 +113,7 @@
 
 								// Load the error view page and quit the script
 								$this->load->view('templates/header', $header); 
-								$this->load->view('errors/account', $info);
+								$this->load->view('errors/account', array('user' => $body));
 								$this->load->view('templates/footer', $footer); 
 								$active = FALSE;
 							}
