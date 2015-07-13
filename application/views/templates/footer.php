@@ -2,10 +2,8 @@
     $base_url = $this->config->base_url();
     $js_url = $base_url.'public/js/';
 
-    // Get the controller name
+    // Get the controller and method names
     $controller = $this->router->fetch_class();
-
-    // Get the method
     $method = $this->router->fetch_method();
 
     // Define the slider and maps pages
