@@ -16,10 +16,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta Tags -->
     <meta charset="utf8mb4">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="Tinder, Twinder, Tinder for Web, Twinder.io, Tinder Online, Tinder Client, Tinder Web Client, Tinder API">
+    <meta name="title" content="<?php echo $title; ?>">
+    
+<?php
+    if(in_array($controller, $meta_pages)) {
+?>
+    <meta name="description" content="<?php echo $meta['description']; ?>">
+<?php
+    }
+?>
 
     <!-- Google Plus -->
     <link rel="publisher" href="https://plus.google.com/lnlance09">
@@ -37,6 +47,7 @@
     <meta property="og:image" content="<?php echo $meta['img']; ?>">
     <meta property="og:url" content="<?php echo $meta['url']; ?>">
     <meta property="og:description" name="description" content="<?php echo $meta['description']; ?>">
+
 <?php
         if($controller == 'users' && $method == 'index') {
 ?>
@@ -48,6 +59,7 @@
 <?php
         }
 ?>
+
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@TwinderIO">
@@ -58,6 +70,7 @@
 <?php
     }
 ?>
+
     <!-- CSS -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
     <link rel="stylesheet" href="<?php echo $css_url; ?>bootstrap.min.css">
