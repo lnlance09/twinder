@@ -26,16 +26,16 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-
                         <h3 class="modal-title">
                             <i class="fa fa-check fa-lg"></i> Your message has been sent
+
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         </h3>
                     </div>
 
                     <div class="modal-body">
                         <p>
-                            Your message has been sent. You will get a response back from WeTinder within the next 48 hours.
+                            Your message has been sent. You will get a response back from Twinder within the next 48 hours.
                         </p>
                     </div>
 

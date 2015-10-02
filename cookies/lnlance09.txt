@@ -7,8 +7,8 @@
 #HttpOnly_.facebook.com	TRUE	/	FALSE	1	reg_fb_gate	deleted
 #HttpOnly_.facebook.com	TRUE	/	FALSE	1	reg_fb_ref	deleted
 .facebook.com	TRUE	/	TRUE	0	c_user	15725716
-#HttpOnly_.facebook.com	TRUE	/	FALSE	1444475288	fr	0uIqumvrzW3uuAx9i.AWWirM89WkqKeABuYG849Rfipjc.BVokqY.UG.AAA.0.AWXdFYJ3
-#HttpOnly_.facebook.com	TRUE	/	TRUE	0	xs	201%3AVMe36VuC55Ferw%3A2%3A1436699288%3A12188
+#HttpOnly_.facebook.com	TRUE	/	FALSE	1450703355	fr	0uIqumvrzW3uuAx9i.AWUvbp2_OwkCP9x00leD7IXFBYs.BVokqY.7U.AAA.0.AWW4Nqyj
+#HttpOnly_.facebook.com	TRUE	/	TRUE	0	xs	130%3AJ91lLYmpndgYyA%3A2%3A1442927352%3A12188
 .facebook.com	TRUE	/	FALSE	0	csm	2
-#HttpOnly_.facebook.com	TRUE	/	TRUE	0	s	Aa5YUyb_3rQrzx6Y.BVokqY
-#HttpOnly_.facebook.com	TRUE	/	TRUE	1499771288	lu	RQago5r1Kf_INNIRwPV9X8qw
+#HttpOnly_.facebook.com	TRUE	/	TRUE	0	s	Aa79iTVKOMqEW99u.BWAVL4
+#HttpOnly_.facebook.com	TRUE	/	TRUE	1505999355	lu	SQH_eleHcAuTq3tDLtK1uC4w

@@ -77,6 +77,13 @@
         ul.navbar-nav {
             @media screen and (max-width: $break-medium) {
                 -webkit-padding-start: 0 !important;
+                width: 100%;
+
+                li {
+                    button {
+                        width: 100%;
+                    }
+                }
             }
 
             > li {
@@ -150,6 +157,7 @@
                                 display: inline;
                                 margin-bottom: 0;
                                 vertical-align: middle;
+                                border: none;
                             }
 
                             #like_count {

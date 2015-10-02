@@ -7,14 +7,15 @@ $(document).ready(function() {
     var lon = $('#drag_lon').text();
     var lat = $('#drag_lat').text();
     var all = $('#all').text();
-    console.log(all);
     FinalizeMap(distance, lat, lon, 10, all);
     RefreshResults(false);
 
+    // Get the user's current location
     $('#city_addon').click(function(e) {
         $('#google_maps').html('<div class="ajax-loader"><i class="fa fa-circle-o-notch fa-4x fa-spin"></i></div>');
         
         if(navigator.geolocation) {
+            $('#all').text('false');
             navigator.geolocation.getCurrentPosition(ShowPosition, ShowError);
         } else {
             alert('Geolocation is not supported by this browser');
@@ -46,7 +47,7 @@ $(document).ready(function() {
         map.mapTypes.set('map_style', new google.maps.StyledMapType(styles, {name: 'Twinder Radar'}));
         map.setMapTypeId('map_style');
 
-        if($('#all').text() == 'false') {
+        if(all == 'false') {
             var marker = new google.maps.Marker({
                     map: map,
                     position: LatLon,
@@ -94,6 +95,50 @@ $(document).ready(function() {
         $('#google_maps').css('height', '250px');
     }
 
+
+
+    // In the event of a GeoLocation error, reference the error 
+    function ShowError(error) {
+        var lon = $('#drag_lon').text();
+        var lat = $('#drag_lat').text();
+        GetLocationName(lon, lat, false);
+        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
+
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("User denied the request for Geolocation");
+                break;
+
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information is unavailable");
+                break;
+
+            case error.TIMEOUT:
+                console.log("The request to get user location timed out");
+                break;
+
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred");
+        }
+    }
+
+
+
+    // Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
+    function ShowPosition(position) {
+        // If the location parameters aren't set, then get the user's current location
+        var lon = position.coords.longitude;
+        var lat = position.coords.latitude;
+        var distance = $('#distance-value').text().trim();
+        $('#drag_lon').text(lon);
+        $('#drag_lat').text(lat);
+
+        GetLocationName(lon, lat, false);
+        FinalizeMap(distance, lat, lon, null, 'false');
+    }
+
+
+
     // Get the state and city names of a place from its lat & lon coordinates
     function GetLocationName(lon, lat, reset) {
         $.ajax({
@@ -137,6 +182,8 @@ $(document).ready(function() {
         }); 
     }
 
+
+
     // Get the longitude and latitude coordinates of a place from its city and state
     function CoordsFromLocation(city, state, reset) {
         $.ajax({
@@ -175,6 +222,8 @@ $(document).ready(function() {
         });
     }
 
+
+
     // Change the title and URL of a document without reloading the page
     function ChangeTitleURL() {
         var title = DefineTitle() +' - Twinder';
@@ -183,6 +232,8 @@ $(document).ready(function() {
         window.history.replaceState('', title, new_url);
         document.title = title;
     }
+
+
 
     // Form the URL based upon all of the search parameters
     function GetFullURL() {
@@ -239,6 +290,8 @@ $(document).ready(function() {
         return str.substr(9, str.length-10) +'?q='+ q;
     }
 
+
+
     // Grab all of the parameters to update the search results
     function GetParams(reset) {
         var str;
@@ -284,6 +337,8 @@ $(document).ready(function() {
         return str.substr(9, str.length-10);
     }
 
+
+
     // Format the title of the document based upon the search parameters
     function DefineTitle() {
         var title = 'Browse ';
@@ -316,6 +371,8 @@ $(document).ready(function() {
         return title;
     }
 
+
+
     // Load the new results with the updated parameters in the #hot_load div
     function RefreshResults(reset) {
         $('#hot_count_num').text('');
@@ -331,48 +388,7 @@ $(document).ready(function() {
         });
     }
 
-    // For the slider
-    function leftValue(value, handle, slider) {
-        $(this).text(handle.parent()[0].style.left);
-    }
 
-    // In the event of a GeoLocation error, reference the error 
-    function ShowError(error) {
-        var lon = $('#drag_lon').text();
-        var lat = $('#drag_lat').text();
-        GetLocationName(lon, lat, false);
-        FinalizeMap($('#distance-value').text().trim(), lat, lon, null);
-
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation");
-                break;
-
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable");
-                break;
-
-            case error.TIMEOUT:
-                console.log("The request to get user location timed out");
-                break;
-
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred");
-        }
-    }
-
-    // Determine the client's longitude and latitude coordinates based upon their position and load the maps and results based upon the search parameters
-    function ShowPosition(position) {
-        // If the location parameters aren't set, then get the user's current location
-        var lon = position.coords.longitude;
-        var lat = position.coords.latitude;
-        var distance = $('#distance-value').text().trim();
-        $('#drag_lon').text(lon);
-        $('#drag_lat').text(lat);
-
-        GetLocationName(lon, lat, false);
-        FinalizeMap(distance, lat, lon, null, false);
-    }
 
     // 2 Location Autocomplete
     $('#location').click(function(e) {
@@ -470,8 +486,13 @@ $(document).ready(function() {
             var lon = $('#drag_lon').text();
             var lat = $('#drag_lat').text();
             var distance = $('#distance-value').text();
-            FinalizeMap(distance, lat, lon, null);
+            FinalizeMap(distance, lat, lon, null, 'false');
             RefreshResults(false);
         }
     }); 
+
+    // For the slider
+    function leftValue(value, handle, slider) {
+        $(this).text(handle.parent()[0].style.left);
+    }
 });

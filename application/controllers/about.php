@@ -14,6 +14,9 @@
 
 				// Load all of the models
 				$this->load->model('users_model', 'user');
+
+				// Load the parser library
+				$this->load->library('parser');
 			}
 
 			public function Index() { 

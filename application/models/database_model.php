@@ -126,7 +126,7 @@
 		 */
 		public function GetAllUsers($limit = NULL) {
 			$this->db->select('username,tinder_id,first_name,age');
-			$this->db->where('id >', mt_rand(0, 740000));
+			$this->db->where('id >', mt_rand(0, 250000));
 			
 			if($limit) {
 				$this->db->limit($limit);
@@ -193,7 +193,7 @@
 				$this->db->where('gender', $sex);
 			}
 
-			if($min > 18) {
+			if($min > 17) {
 				$this->db->where('age >=', $min);
 			}
 

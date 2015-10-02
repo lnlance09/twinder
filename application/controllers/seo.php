@@ -11,6 +11,7 @@
 
 				// Load all of the models
 				$this->load->model('users_model', 'user');
+				$this->load->model('facebook_model', 'fb');
 			}
 
 			public function Index() {
@@ -28,19 +29,18 @@
 			}
 
 			public function Test() {
-				$info = $this->user->DeleteAccount('67cb1eaf-445d-4ff9-878f-e9621667c536');
-				var_dump($info);
-				FormatArray($info);
+				$login = $this->fb->FacebookToken('mia_falco92@mail.com', 'Codecall87!');
+				// echo $login;
 			}
 
 			public function Ping() {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, 'https://api.gotinder.com/');
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Tinder/4.0.9 (iPhone; iOS 8.1.1; Scale/2.00)');
-			  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-			  $data = curl_exec($ch);
-			  curl_close($ch);
-			  echo $data;
+			  	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			  	$data = curl_exec($ch);
+			  	curl_close($ch);
+			  	echo $data;
 			}
 		}
 	}

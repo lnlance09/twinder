@@ -97,7 +97,7 @@
                     <span id="we">Twinder</span>
                 </a>
 
-                <button type="button" class="navbar-toggle" id="main_icon">
+                <button type="button" class="navbar-toggle" id="main_icon" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="glyphicon glyphicon-menu-hamburger"></span>
                 </button>
 
@@ -105,7 +105,7 @@
             </div>
 
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right pull-right">
+                <ul class="nav navbar-nav navbar-right pull-right" style="margin: 0;">
 <?php
     if($session) {
 ?>

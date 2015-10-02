@@ -11,7 +11,7 @@
             <form method="post" action="<?php echo $base_url; ?>signin/login" id="signin_form">
                 <input type="text" class="form-control" placeholder="Email or phone number" name="username"><br>
                 <input type="password" class="form-control" placeholder="Password" name="password"><br>
-                <button class="btn btn-primary pull-right" type="submit" name="submit" value="submit">Sign in</button>
+                <button class="btn btn-success pull-right" type="submit" name="submit" value="submit">Sign in</button>
                 <div class="clearfix"></div>
             </form>
 
@@ -30,7 +30,6 @@
                     <div class="modal-header">
                         <h3 class="modal-title">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <i class="fa fa-facebook-square fa-lg"></i> 
                             Why must I sign into Facebook?
                         </h3>
                     </div>
